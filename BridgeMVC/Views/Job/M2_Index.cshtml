@@ -1,0 +1,127 @@
+﻿@model IEnumerable<BridgeMVC.Models.Job>
+
+@{
+    ViewBag.Title = "Index";
+    string BridgeLastUsed = (string)Session["BridgeModule"];
+    string UserSignature = (string)Session["UserSignature"];
+    string colorY, colorN, colorTask;
+    colorY = "background-color:#5296c3; color:transparent;";
+    colorN = "background-color:azure; color:transparent;";
+    colorTask = "background-color:#81d078; color:transparent;";
+
+
+    var users = ViewBag.users;
+
+}
+
+<p class="btn btn-secondary">
+    @Html.ActionLink("Create New", "Create")
+</p>
+
+<p style="float:right" class="btn btn-secondary">
+    @Html.ActionLink("Whiteboard", "Whiteboard")
+</p>
+<table class="table table-mid-align-rows">
+    <colgroup>
+        <col span="1" style="width: 21%;">
+        <col span="1" style="width: 26%;">
+        <col span="1" style="width: 26%;">
+        <col span="1" style="width: 9%;">
+        <col span="1" style="width: 9%;">
+        <col span="1" style="width: 9%;">
+
+    </colgroup>
+    <tr>
+        <th>           Job ID        </th>
+        <th>           Customer      </th>
+        <th>           Designation   </th>
+        <th>           FEE           </th>
+        <th>           VERIFY        </th>
+        <th>           IORA          </th>
+
+        <th> </th>
+        @*<th>            @Html.DisplayNameFor(model => model.TaskHandler)        </th>
+            <th>            @Html.DisplayNameFor(model => model.Completed)        </th>*@
+
+    </tr>
+
+    @foreach (var item in Model)
+    {
+
+
+        string styleT1 = "";
+        styleT1 = item.Task1 == "Y" ? colorY : styleT1;
+        styleT1 = item.Task1 == "N" ? colorN : styleT1;
+        styleT1 = item.Task1 == "TASK" ? colorTask : styleT1;
+
+
+        string styleT2 = "";
+        styleT2 = item.Task2 == "Y" ? colorY : styleT2;
+        styleT2 = item.Task2 == "N" ? colorN : styleT2;
+        styleT2 = item.Task2 == "TASK" ? colorTask : styleT2;
+
+        string styleT3 = "";
+        styleT3 = item.Task3 == "Y" ? colorY : styleT3;
+        styleT3 = item.Task3 == "N" ? colorN : styleT3;
+        styleT3 = item.Task3 == "TASK" ? colorTask : styleT3;
+
+        string styleT4 = "";
+        styleT4 = item.Task4 == "Y" ? colorY : styleT4;
+        styleT4 = item.Task4 == "N" ? colorN : styleT4;
+        styleT4 = item.Task4 == "TASK" ? colorTask : styleT4;
+
+        styleT1 = styleT1 + "; cursor: pointer;";
+        styleT2 = styleT2 + "; cursor: pointer;";
+        styleT3 = styleT3 + "; cursor: pointer;";
+        styleT4 = styleT4 + "; cursor: pointer;";
+
+        string editlink1 = "'/Job/M2_Task1/" + item.Id + "'";
+        string editlink2 = "'/Job/M2_Task2/" + item.Id +  "'";
+        string editlink3 = "'/Job/M2_Task3/" + item.Id + "?npsid=" + item.NpsJobId + "&fee=" + item.Fee + "'";
+        //string editlink4 = "'/Job/M2_Task4/" + item.Id + "'";
+        <tr>
+            <td>
+                @Html.DisplayFor(modelItem => item.NpsJobId)
+            </td>
+            <td>
+                @Html.DisplayFor(modelItem => item.CustomerName)
+            </td>
+            <td>
+                @Html.DisplayFor(modelItem => item.ProdDescription)
+            </td>
+            <td style="@styleT1" onclick="location.href=@editlink1">
+                @Html.DisplayFor(modelItem => item.Task1)
+            </td>
+            <td style="@styleT2" onclick="location.href=@editlink2">
+                @Html.DisplayFor(modelItem => item.Task2)
+            </td>
+            <td style="@styleT3" onclick="location.href=@editlink3">
+                @Html.DisplayFor(modelItem => item.Task3)
+            </td>
+            
+            @*<td style="@styleT4" onclick="location.href=@editlink4">
+                @Html.DisplayFor(modelItem => item.Task4)
+            </td>*@
+            @*<td>
+                    @Html.DisplayFor(modelItem => item.Task5)
+                </td>*@
+            @*<td>
+                    @Html.DisplayFor(modelItem => item.TaskHandler)
+                </td>
+                <td>
+                    @Html.DisplayFor(modelItem => item.Completed)
+                </td>*@
+            @*<td>
+                    @Html.ActionLink("Edit", "M2_Edit", new { id = item.Id }) |
+                    @Html.ActionLink("Details", "Details", new { id = item.Id })
+                </td>*@
+        </tr>
+    }
+
+</table>
+
+<script>
+    var users = @Html.Raw(Json.Encode(users));
+
+    console.log(users);
+</script>

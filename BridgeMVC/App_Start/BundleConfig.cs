@@ -9,6 +9,7 @@ namespace BridgeMVC
         public static void RegisterBundles(BundleCollection bundles)
         {
             bundles.Add(new ScriptBundle("~/bundles/jquery").Include(
+                "~/Scripts/jquery-ui-1.12.1.js",
                         "~/Scripts/jquery-{version}.js"));
 
             bundles.Add(new ScriptBundle("~/bundles/jqueryval").Include(
@@ -23,6 +24,7 @@ namespace BridgeMVC
                       "~/Scripts/bootstrap.js"));
 
             bundles.Add(new StyleBundle("~/Content/css").Include(
+
                       "~/Content/bootstrap.css",
                       "~/Content/site.css"));
         }

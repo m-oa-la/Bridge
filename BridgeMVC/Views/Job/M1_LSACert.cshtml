@@ -1,0 +1,168 @@
+﻿@model BridgeMVC.Models.Job
+@{
+    ViewBag.Title = "M1_Task1";
+    string UserSignature = (string)Session["UserSignature"];
+    string bridgeModule = (string)Session["BridgeModule"];
+    //var LCertType = ViewBag.LCertType;
+    //var LCertAction = ViewBag.LCertAction;
+    //var LMainProdType = ViewBag.LMainProdType;
+    //var LSubProdType = ViewBag.LSubProdType;
+    //var LUser = ViewBag.LUser;
+    var BLSACert = ViewBag.BLSACert;
+    var bcolor = "#03C5EA";
+
+}
+
+<style>
+
+    /* Might want to wrap a span around your checkbox text */
+    .checkboxtext {
+        /* Checkbox text */
+        font-size: 110%;
+        display: inline;
+    }
+
+    .thinTB {
+        border: solid;
+        border-width: thin;
+        border-color: gray;
+    }
+
+        .thinTB tr td {
+            border: solid;
+            border-width: thin;
+            border-color: gray;
+        }
+
+    td {
+        height: 36px;
+    }
+
+    h2 {
+        zoom: 1;
+        font-family: Verdana;
+        font-size: 14.5px;
+        color: black;
+    }
+
+    .autotxt {
+        zoom: 1;
+        font-family: Verdana;
+        font-size: 12px;
+        color: black;
+    }
+</style>
+
+<h1>
+    <font face="Broader View" size="4" color=@bcolor>
+        MED LSA CERTIFICATE AUTO-TEXT
+    </font>
+</h1>
+
+<h2>Product description</h2>
+<div class="autotxt" id="prodDesp">
+</div>
+
+<h2>Application/Limitation</h2>
+<div class="autotxt" id="appLimit">
+</div>
+
+
+<h2>Type Examination documentation </h2>
+
+<table>
+    <tr>
+        <td><u><i>Drawing No.</i></u></td>
+        <td><u><i>Rev.</i></u></td>
+        <td><u><i>Title(s)</i></u></td>
+    </tr>
+    <tr>
+        <td>xxxx-xxx-xx</td>
+        <td>0</td>
+        <td>General Arrangement</td>
+    </tr>
+
+</table>
+
+
+
+<h2>Tests carried out </h2>
+<div class="autotxt" id="tests">
+</div>
+<table>
+    <tr>
+        <td><u><i>Description</i></u></td>
+        <td><u><i>Report</i></u></td>
+        <td><u><i>Date(s)</i></u></td>
+        <td><u><i>Witnessed by</i></u></td>
+    </tr>
+    <tr>
+        <td>GA-xxxxx Rev.1</td>
+        <td>xxxx-xxx-xx</td>
+        <td>xxxx-xxx-xx</td>
+        <td>DNV GL xxxxxx, Norway</td>
+    </tr>
+
+</table>
+
+<h2>Marking of product</h2>
+<div class="autotxt" id="marking">
+</div>
+
+<h2 id="retentionTitle"></h2>
+<div class="autotxt" id="retention">
+</div>
+
+<h2>END OF CERTIFICATE </h2>
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+<script>
+    var TargetUser;
+    var BEmail;
+    var taskStatus;
+    var taskNo = 1;
+    //read viewbag's info.
+    var userSignature = "@UserSignature";
+    var bm = "@bridgeModule";
+    var Job = @Html.Raw(Json.Encode(Model));
+
+    var BLSACert = @Html.Raw(Json.Encode(BLSACert));
+
+    var B = eval("true");
+
+    console.log(Job);
+    console.log(BLSACert);
+
+    $.each(BLSACert, function (key, data) {
+        var condition;
+        var bookMarkName = data.BookMarkName;
+        var chName = bookMarkName.split("_")[0]
+
+        if (data.Condition != null) {
+            condition = eval(data.Condition);
+        } else {
+            condition = true;
+        }
+        if (condition) {
+           $("#" + chName).append(eval(data.Formula) + "<br/>");
+        }
+    });
+
+
+
+
+
+
+</script>

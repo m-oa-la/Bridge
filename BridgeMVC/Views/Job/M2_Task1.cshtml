@@ -1,0 +1,260 @@
+﻿@model BridgeMVC.Models.Job
+
+@{
+    ViewBag.Title = "M2_Task1";
+    string UserSignature = (string)Session["UserSignature"];
+    string bridgeModule = (string)Session["BridgeModule"];
+    var LCertType = ViewBag.LCertType;
+    var LCertAction = ViewBag.LCertAction;
+    var LMainProdType = ViewBag.LMainProdType;
+    var LSubProdType = ViewBag.LSubProdType;
+    var LUser = ViewBag.LUser;
+
+}
+
+<style>
+    .bing {
+        float: left;
+        /*width: 450px;*/
+        padding: 0.5em 1em 0.5em 1em;
+        min-width: 400px;
+        font-weight: bold;
+    }
+
+    .form-control {
+        font-weight: normal;
+    }
+</style>
+
+
+
+<h2>Fee Setting</h2>
+
+
+@using (Html.BeginForm())
+{
+    @Html.AntiForgeryToken()
+
+    <div class="form-horizontal">
+        <hr />
+        @Html.ValidationSummary(true, "", new { @class = "text-danger" })
+        @Html.HiddenFor(model => model.Id)
+        @Html.HiddenFor(model => model.Tag)
+        @Html.HiddenFor(model => model.BridgeModule)
+
+        @Html.HiddenFor(model => model.Task1)
+
+        @*@Html.EditorFor(model => model.Task1, new { htmlAttributes = new { @class = "form-control" } })*@
+        @Html.HiddenFor(model => model.Task2, new { htmlAttributes = new { @class = "form-control" } })
+        @Html.HiddenFor(model => model.Task3, new { htmlAttributes = new { @class = "form-control" } })
+        @Html.HiddenFor(model => model.Task4, new { htmlAttributes = new { @class = "form-control" } })
+
+        @Html.HiddenFor(model => model.Completed)
+        @Html.HiddenFor(model => model.SubOrderNo)
+
+
+
+        <div class="bing col-lg-6">
+            NPS Job ID:
+            @Html.EditorFor(model => model.NpsJobId, new { htmlAttributes = new { @class = "form-control", id = "NpsJobId" } })
+            @Html.ValidationMessageFor(model => model.NpsJobId, "", new { @class = "text-danger" })
+        </div>
+        <div class="bing col-lg-6">
+            Customer:
+            @Html.EditorFor(model => model.CustomerName, new { htmlAttributes = new { @class = "form-control" } })
+            @Html.ValidationMessageFor(model => model.CustomerName, "", new { @class = "text-danger" })
+        </div>
+
+        <div class="bing col-lg-6">
+            Sales Order:
+            @Html.EditorFor(model => model.SalesOrderNo, new { htmlAttributes = new { @class = "form-control" } })
+            @Html.ValidationMessageFor(model => model.SalesOrderNo, "", new { @class = "text-danger" })
+        </div>
+
+
+
+        <div class="bing col-lg-6">
+            Designation:
+            @Html.EditorFor(model => model.ProdDescription, new { htmlAttributes = new { @class = "form-control" } })
+            @Html.ValidationMessageFor(model => model.ProdDescription, "", new { @class = "text-danger" })
+        </div>
+
+        <div class="bing col-lg-6">
+            Certificate type:
+            @Html.DropDownListFor(model => model.CertType, new List<SelectListItem> { new SelectListItem { Text = Model.CertType, Value = Model.CertType } }, new { @class = "form-control", id = "selectCertType" })
+        </div>
+
+        <div class="bing col-lg-6">
+            Issurance type:
+            @Html.DropDownListFor(model => model.CertAction, new List<SelectListItem> { new SelectListItem { Text = Model.CertAction, Value = Model.CertAction } }, new { @class = "form-control", id = "selectCertAction" })
+        </div>
+
+        <div class="bing col-lg-6">
+            Job Received Time:
+            @Html.EditorFor(model => model.ReceivedTime, new { htmlAttributes = new { @class = "form-control", @Value = Model.ReceivedTime?.ToString("yyyy.MM.dd HH:mm:ss") } })
+
+        </div>
+        <div class="bing col-lg-6">
+            Main Equipment category:
+            @Html.DropDownListFor(model => model.MainProdType, new List<SelectListItem> { new SelectListItem { Text = Model.MainProdType, Value = Model.MainProdType } }, new { @class = "form-control", id = "selectMainProdType" })
+        </div>
+        <div class="bing col-lg-6">
+            Sub Equipment category:
+            @Html.DropDownListFor(model => model.SubProdType, new List<SelectListItem> { new SelectListItem { Text = Model.SubProdType, Value = Model.SubProdType } }, new { @class = "form-control", id = "selectSubProdType" })
+        </div>
+        <div class="bing col-lg-6">
+            Maximum working load:
+            @Html.EditorFor(model => model.MWL, new { htmlAttributes = new { @class = "form-control" } })
+            @Html.ValidationMessageFor(model => model.MWL, "", new { @class = "text-danger" })
+        </div>
+        <iframe id="iframe" frameborder="0" src="@Url.Content("~/Rule/Index")" style="width: 100%; height: 200px;"></iframe>
+
+        <div class="bing col-lg-6">
+            Fee (External, incl. TSA/MSA):
+            @Html.EditorFor(model => model.Fee, new { htmlAttributes = new { @class = "form-control" } })
+            @Html.ValidationMessageFor(model => model.Fee, "", new { @class = "text-danger" })
+        </div>
+        <div class="bing col-lg-6">
+            Fee setter
+            @Html.EditorFor(model => model.FeeSetter, new { htmlAttributes = new { @class = "form-control", id = "feeSetter" } })
+            @Html.ValidationMessageFor(model => model.FeeSetter, "", new { @class = "text-danger" })
+        </div>
+
+        <div class="bing col-lg-6">
+            Fee set time
+
+            @Html.EditorFor(model => model.FeeSetTime, new { htmlAttributes = new { @class = "form-control", id = "feeSetTime", @Value = Model.FeeSetTime?.ToString("yyyy.MM.dd HH:mm:ss") } })
+            @Html.ValidationMessageFor(model => model.FeeSetTime, "", new { @class = "text-danger" })
+        </div>
+        <div class="bing col-lg-6" hidden>
+            Taskhandler
+            @Html.EditorFor(model => model.TaskHandler, new { htmlAttributes = new { @class = "form-control", id = "taskHandler" } })
+            @Html.ValidationMessageFor(model => model.TaskHandler, "", new { @class = "text-danger" })
+        </div>
+
+
+        <div class=" col-lg-12 ">
+            <h4 style="clear:both;">Note:</h4>
+            @Html.EditorFor(model => model.ApprNote, new { htmlAttributes = new { @class = "form-control", style = "height:100px" } })
+            @Html.ValidationMessageFor(model => model.ApprNote, "", new { @class = "text-danger" })
+        </div>
+
+
+
+        <h2 id="TaskStatus" class="col-lg-12" style="background-color:lightgray"></h2>
+
+        <h2>&nbsp;</h2>
+
+        <div class="form-group" style="clear:both;">
+            <div class="col-md-12">
+                <input type="submit" value="Save" class="btn btn-default" id="saveButton" readonly />
+                <input value="Re-open" class="btn btn-info" style="float:right" id="ReOpenTask" readonly />
+                <input value="Task completed" class="btn btn-default" style="float:right" id="TaskComplete" readonly />
+            </div>
+        </div>
+    </div>
+}
+<hr />
+
+@*//next task*@
+<div class="col-lg-12">
+    <div class="col-lg-5">
+        <h3>Please select the new task handler:</h3>
+        <select id="selectListHandler" class="form-control"></select>
+    </div>
+    <div class="col-lg-5">
+        <h3> and new task:</h3>
+        <select id="selectListTask" class="form-control"></select>
+    </div>
+</div>
+<h4>&nbsp;</h4>
+<a href="#" name="emailLink" id="emailLink" class="btn btn-info" style="float:right">Send job to the new task handler</a>
+
+@section Scripts {
+    @Scripts.Render("~/bundles/jqueryval")
+}
+
+<script>
+    //Define global variables
+
+    //read viewbag's info.
+    var userSignature = "@UserSignature";
+    var bm = "@bridgeModule";
+    var Job = @Html.Raw(Json.Encode(Model));
+
+
+    var LMainProdType = @Html.Raw(Json.Encode(LMainProdType));
+    var LSubProdType = @Html.Raw(Json.Encode(LSubProdType));
+    var LUser = @Html.Raw(Json.Encode(LUser));
+    var LCertAction = @Html.Raw(Json.Encode(LCertAction));
+    var LCertType = @Html.Raw(Json.Encode(LCertType));
+
+    var TargetUser;
+    var BEmail;
+    var taskStatus;
+    var taskNo = 1;
+    var taskStatusFlag = "feeSetter";
+    var taskCompleteDate = "feeSetTime"
+    var taskCompleteStr = "The fee is set by "
+
+    renderTaskShowHide();
+    renderTaskHandling();
+
+    //console.log(getTodayDate());
+
+    //$("#Task1").val("TASK");
+
+
+
+    //set up select list
+    $.each(LCertType, function (key, data) {
+        $("#selectCertType").append(new Option(data.ListItem, data.ListItem));
+    });
+
+    $.each(LCertAction, function (key, data) {
+        $("#selectCertAction").append(new Option(data.ListItem, data.ListItem));
+    });
+    $.each(LMainProdType, function (key, data) {
+        $("#selectMainProdType").append(new Option(data.ListItem, data.ListItem));
+    });
+
+    var mval = $("#selectMainProdType :selected").text();
+      $.each(LSubProdType, function (key, data) {
+        if (data.UpperLvl == mval) {
+            $("#selectSubProdType").append(new Option(data.ListItem, data.ListItem));
+        }
+    });
+
+
+    $("#selectMainProdType").on("change", function () {
+        var mval = $("#selectMainProdType :selected").text();
+        //var sval = $("#selectSubProdType :selected").text();
+        //$("#selectSubProdType :selected").val(sval);
+
+        $('#selectSubProdType option').each(function () {
+
+            if ($(this).val() != 'X') {
+                $(this).remove();
+            }
+        });
+
+        $("selectSubProdType option").remove();
+        $.each(LSubProdType, function (key, data) {
+            if (data.UpperLvl == mval) {
+                $("#selectSubProdType").append(new Option(data.ListItem, data.ListItem));
+            }
+        });
+    });
+
+
+
+    //$(function filterSubSelect() {
+
+    //});
+
+
+
+
+</script>
+
+

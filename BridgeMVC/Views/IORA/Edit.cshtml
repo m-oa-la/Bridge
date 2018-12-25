@@ -1,0 +1,643 @@
+﻿@model BridgeMVC.Models.IORA
+
+@{
+
+    ViewBag.Title = "IORA Editing";
+    var bcolor = "#03C5EA";
+    string UserSignature = (string)Session["UserSignature"];
+    string bridgeModule = (string)Session["BridgeModule"];
+    var Job = ViewBag.Job;
+    var BIORA = ViewBag.BIORA;
+    var Rules = ViewBag.Rules;
+    var FinancialSet = ViewBag.FinancialSet;
+    var LUser = ViewBag.LUser;
+
+}
+<style>
+
+    hr {
+        background-color: @bcolor;
+        height: 1px;
+  };
+
+</style>
+
+@using (Html.BeginForm())
+{
+    @Html.AntiForgeryToken()
+
+    <table style="border:hidden">
+        <colgroup>
+            <col span="1" style="width: 60%;">
+            <col span="1" style="width: 10%;">
+            <col span="1" style="width: 30%;">
+        </colgroup>
+
+        <tr>
+            <td>
+                <h2>
+                    <font face="Broader View" size="4" color=@bcolor>
+                        INTER-OFFICE RESOURCING <br>
+                        AGREEMENT (IORA)
+                    </font>
+                </h2>
+                DMSG-4-9 Price policy - Internal pricing
+            </td>
+            <td>
+                NPS J-No.: <br />
+                <div class="form-group">
+                    @Html.EditorFor(model => model.NPSJNo, new { htmlAttributes = new { @class = "form-control", id = "NPSJNo" } })
+                    @Html.ValidationMessageFor(model => model.NPSJNo, "", new { @class = "text-danger" })
+                </div>
+
+            </td>
+
+            <td>
+
+                DNV GL Doc No: <span onclick="updateDocNo()" class="btn-info">DEFAULT</span> <br />
+                <div class="form-group">
+                    @Html.EditorFor(model => model.DgDNVDocNo01, new { htmlAttributes = new { @class = "form-control", id = "DgDNVDocNo01" } })
+                    @Html.ValidationMessageFor(model => model.DgDNVDocNo01, "", new { @class = "text-danger" })
+                </div>
+            </td>
+        </tr>
+
+    </table>
+    <hr />
+
+    <h2>Parties<span onclick="updateParties2()" class="btn-info">DEFAULT</span></h2>
+    <hr />
+
+    <table>
+        <colgroup>
+            <col span="1" style="width: 20%;">
+            <col span="1" style="width: 20%;">
+            <col span="1" style="width: 10%;">
+            <col span="1" style="width: 20%;">
+            <col span="1" style="width: 20%;">
+            <col span="1" style="width: 10%;">
+        </colgroup>
+        <tr>
+            <td>Selling Contact Signature:</td>
+            <td>
+                @Html.EditorFor(model => model.SellingContactSig, new { htmlAttributes = new { @class = "form-control", id = "sellerSig" } })
+                @Html.ValidationMessageFor(model => model.SellingContactSig, "", new { @class = "text-danger" })
+            </td>
+            <td onclick="updateParties('seller')" class="btn btn-xs">Update</td>
+            <td>Buying Contact Signature:</td>
+            <td>
+                @Html.EditorFor(model => model.BuyingContactSig, new { htmlAttributes = new { @class = "form-control", id = "buyerSig" } })
+                @Html.ValidationMessageFor(model => model.BuyingContactSig, "", new { @class = "text-danger" })
+            </td>
+            <td onclick="updateParties('buyer')" class="btn btn-xs">Update</td>
+        </tr>
+    </table>
+
+
+    <table>
+        <colgroup>
+            <col span="1" style="width: 20%;">
+            <col span="1" style="width: 30%;">
+            <col span="1" style="width: 20%;">
+            <col span="1" style="width: 30%;">
+        </colgroup>
+        <tr>
+            <td> Selling Unit:  </td>
+            <td>
+                @Html.EditorFor(model => model.DnvUnitName501, new { htmlAttributes = new { @class = "form-control", id = "sellerUnitName" } })
+                @Html.ValidationMessageFor(model => model.DnvUnitName501, "", new { @class = "text-danger" })
+            </td>
+            <td>  Buying Unit:  </td>
+            <td>
+                @Html.EditorFor(model => model.DnvUnitName502, new { htmlAttributes = new { @class = "form-control", id = "buyerUnitName" } })
+                @Html.ValidationMessageFor(model => model.DnvUnitName502, "", new { @class = "text-danger" })
+            </td>
+        </tr>
+        <tr>
+            <td>  Unit no:  </td>
+            <td>
+                @Html.EditorFor(model => model.DnvUnitNo501, new { htmlAttributes = new { @class = "form-control", id = "sellerUnitNo" } })
+                @Html.ValidationMessageFor(model => model.DnvUnitNo501, "", new { @class = "text-danger" })
+            </td>
+            <td>  Unit no:  </td>
+            <td>
+                @Html.EditorFor(model => model.DnvUnitNo502, new { htmlAttributes = new { @class = "form-control", id = "buyerUnitNo" } })
+                @Html.ValidationMessageFor(model => model.DnvUnitNo502, "", new { @class = "text-danger" })
+            </td>
+        </tr>
+        <tr>
+            <td>  VAT no:  </td>
+            <td>
+                @Html.EditorFor(model => model.DgIntUnVAT501, new { htmlAttributes = new { @class = "form-control", id = "sellerVAT" } })
+                @Html.ValidationMessageFor(model => model.DgIntUnVAT501, "", new { @class = "text-danger" })
+            </td>
+            <td>  VAT no:  </td>
+            <td>
+                @Html.EditorFor(model => model.DgIntUnVAT502, new { htmlAttributes = new { @class = "form-control", id = "buyerVAT" } })
+                @Html.ValidationMessageFor(model => model.DgIntUnVAT502, "", new { @class = "text-danger" })
+            </td>
+        </tr>
+        <tr>
+            <td>  Contact person:  </td>
+            <td>
+                @Html.EditorFor(model => model.DnvContPersName502, new { htmlAttributes = new { @class = "form-control", id = "sellerName" } })
+                @Html.ValidationMessageFor(model => model.DnvContPersName502, "", new { @class = "text-danger" })
+            </td>
+            <td>  Contact person:   </td>
+            <td>
+                @Html.EditorFor(model => model.DnvContPersName501, new { htmlAttributes = new { @class = "form-control", id = "buyerName" } })
+                @Html.ValidationMessageFor(model => model.DnvContPersName501, "", new { @class = "text-danger" })
+            </td>
+        </tr>
+        <tr>
+            <td>  Inter-company acnt no:  </td>
+            <td>
+                @Html.EditorFor(model => model.DnvIntCompAccnt501, new { htmlAttributes = new { @class = "form-control", id = "sellerAcntNo" } })
+                @Html.ValidationMessageFor(model => model.DnvIntCompAccnt501, "", new { @class = "text-danger" })
+            </td>
+            <td>  Inter-company acnt no:  </td>
+            <td>
+                @Html.EditorFor(model => model.DnvIntCompAccnt502, new { htmlAttributes = new { @class = "form-control", id = "buyerAcntNo" } })
+                @Html.ValidationMessageFor(model => model.DnvIntCompAccnt502, "", new { @class = "text-danger" })
+            </td>
+        </tr>
+        <tr>
+            <td>  Profit center no:  </td>
+            <td>
+                @Html.EditorFor(model => model.DnvIntUnPrCeNo501, new { htmlAttributes = new { @class = "form-control", id = "sellerPrCeNo" } })
+                @Html.ValidationMessageFor(model => model.DnvIntUnPrCeNo501, "", new { @class = "text-danger" })
+            </td>
+            <td>  Profit center no:  </td>
+            <td>
+                @Html.EditorFor(model => model.DnvIntUnPrCeNo502, new { htmlAttributes = new { @class = "form-control", id = "buyerPrCeNo" } })
+                @Html.ValidationMessageFor(model => model.DnvIntUnPrCeNo502, "", new { @class = "text-danger" })
+            </td>
+        </tr>
+        <tr>
+            <td>  Project no:  </td>
+            <td>
+                @Html.EditorFor(model => model.DpIntUnProjNo501, new { htmlAttributes = new { @class = "form-control", id = "DpIntUnProjNo501" } })
+                @Html.ValidationMessageFor(model => model.DpIntUnProjNo501, "", new { @class = "text-danger" })
+            </td>
+            <td>  Project no:  </td>
+            <td>
+                @Html.EditorFor(model => model.DpIntUnProjNo502, new { htmlAttributes = new { @class = "form-control", id = "DpIntUnProjNo502" } })
+                @Html.ValidationMessageFor(model => model.DpIntUnProjNo502, "", new { @class = "text-danger" })
+            </td>
+        </tr>
+    </table>
+
+    <h2>Project Details <span onclick="updateProjDetail()" class="btn-info">DEFAULT</span> <br /></h2><hr />
+    <table>
+        <colgroup>
+            <col span="1" style="width: 20%;">
+            <col span="1" style="width: 80%;">
+        </colgroup>
+        <tr>
+            <td>Project Name:</td>
+            <td>
+                @Html.EditorFor(model => model.DpProjName01, new { htmlAttributes = new { @class = "form-control", id = "DpProjName01" } })
+                @Html.ValidationMessageFor(model => model.DpProjName01, "", new { @class = "text-danger" })
+            </td>
+        </tr>
+        <tr>
+            <td>Work Location:</td>
+            <td>
+                @Html.EditorFor(model => model.DpProjWorkLoc01, new { htmlAttributes = new { @class = "form-control", id = "DpProjWorkLoc01" } })
+                @Html.ValidationMessageFor(model => model.DpProjWorkLoc01, "", new { @class = "text-danger" })
+            </td>
+        </tr>
+    </table>
+    <table>
+        <colgroup>
+            <col span="1" style="width: 20%;">
+            <col span="1" style="width: 30%;">
+            <col span="1" style="width: 20%;">
+            <col span="1" style="width: 30%;">
+        </colgroup>
+        <tr>
+            <td>Service:</td>
+            <td>
+                @Html.EditorFor(model => model.DpServiceName01, new { htmlAttributes = new { @class = "form-control", id = "DpServiceName01" } })
+                @Html.ValidationMessageFor(model => model.DpServiceName01, "", new { @class = "text-danger" })
+            </td>
+            <td>
+                Service Code:
+            </td>
+            <td>
+                @Html.EditorFor(model => model.DpServiceCode01, new { htmlAttributes = new { @class = "form-control", id = "DpServiceCode01" } })
+                @Html.ValidationMessageFor(model => model.DpServiceCode01, "", new { @class = "text-danger" })
+            </td>
+        </tr>
+        <tr>
+            <td>External Customer:</td>
+            <td>
+                @Html.EditorFor(model => model.DgCustName01, new { htmlAttributes = new { @class = "form-control", id = "DgCustName01" } })
+                @Html.ValidationMessageFor(model => model.DgCustName01, "", new { @class = "text-danger" })
+            </td>
+            <td>External Customer Ref:</td>
+            <td>
+                @Html.EditorFor(model => model.DgCustomerRef01, new { htmlAttributes = new { @class = "form-control", id = "DgCustomerRef01" } })
+                @Html.ValidationMessageFor(model => model.DgCustomerRef01, "", new { @class = "text-danger" })
+            </td>
+        </tr>
+        <tr>
+            <td>Project Start Date:</td>
+            <td>
+                @Html.EditorFor(model => model.DpProjStartDate01, new { htmlAttributes = new { @class = "form-control", id = "DpProjStartDate01" } })
+                @Html.ValidationMessageFor(model => model.DpProjStartDate01, "", new { @class = "text-danger" })
+            </td>
+            <td>Project End Date:</td>
+            <td>
+                @Html.EditorFor(model => model.DpProjStartEnd01, new { htmlAttributes = new { @class = "form-control", id = "DpProjStartEnd01" } })
+                @Html.ValidationMessageFor(model => model.DpProjStartEnd01, "", new { @class = "text-danger" })
+            </td>
+        </tr>
+    </table>
+    <table>
+        <colgroup>
+            <col span="1" style="width: 20%;">
+            <col span="1" style="width: 80%;">
+        </colgroup>
+        <tr>
+            <td>Scope of Work</td>
+            <td>
+                @Html.TextAreaFor(model => model.DpSoW01, new { @style = "height:150px; width:100%;", htmlAttributes = new { @class = "form-control", id = "DpSoW01" } })
+                @Html.ValidationMessageFor(model => model.DpSoW01, "", new { @class = "text-danger" })
+            </td>
+        </tr>
+        <tr>
+            <td>Supporting Documents:</td>
+            <td>
+                @Html.EditorFor(model => model.DpSupportingDocs01, new { htmlAttributes = new { @class = "form-control", id = "DpSupportingDocs01" } })
+                @Html.ValidationMessageFor(model => model.DpSupportingDocs01, "", new { @class = "text-danger" })
+            </td>
+        </tr>
+        <tr>
+            <td>Deliverables/Reporting Requirements:</td>
+            <td>
+                @Html.EditorFor(model => model.DpDeliverables01, new { htmlAttributes = new { @class = "form-control", id = "DpDeliverables01" } })
+                @Html.ValidationMessageFor(model => model.DpDeliverables01, "", new { @class = "text-danger" })
+            </td>
+        </tr>
+    </table>
+
+    <h2>Budget details</h2>
+    <hr />
+    <table class="table table-mid-align-rows">
+        <tr style="border-top:1px double #ffffff">
+            <td>Pricing Model:</td>
+            <td colspan="2">  <input type="checkbox" name="" value=""> Hourly Rates      </td>
+            <td colspan="2">  <input type="checkbox" name="" value="" checked="checked"> or Fixed Fees    </td>
+        </tr>
+        <tr>
+            <td>
+                Calc.Cost/Fixed Fee:
+                @Html.EditorFor(model => model.IORAFee, new { htmlAttributes = new { @class = "", id = "IORAFee" } })
+            </td>
+            <td colspan="2">
+                Currency: <span style="font-weight:bold">NOK</span>
+            </td>
+            <td colspan="2">
+                Budget Hours: &nbsp;<input type="number" />
+            </td>
+        </tr>
+        <tr>
+            <td>Travel Expenses (incl. subsistence):</td>
+            <td>
+                <input type="checkbox" name="travelAtCost" value="Car" checked="checked"> Yes, at cost.<br>
+            </td>
+            <td colspan="2">  <input type="checkbox" name="" value=""> No   </td>
+        </tr>
+        <tr>
+            <td>Other Expenses</td>
+            <td>  <input type="checkbox" name="" value="">None     </td>
+            <td>  <input type="checkbox" name="" value="" checked="checked">At Cost     </td>
+            <td>  <input type="checkbox" name="" value="">Incl. in Fixed Fee  </td>
+            <td>  <input type="checkbox" name="" value="">Other (see conditions below)     </td>
+        </tr>
+        <tr>
+            <td>Invoicing Details:</td>
+            <td> <input type="checkbox" name="" value="" checked="checked">  At completion    </td>
+            <td> <input type="checkbox" name="" value="">  Monthly    </td>
+            <td>  <input type="checkbox" name="" value=""> As per PQP  </td>
+            <td>  <input type="checkbox" name="" value=""> Other (see conditions below)     </td>
+        </tr>
+
+    </table>
+
+
+
+    <h2>Special conditions w.r.t. budget details<span onclick="updateSpecialConditions()" class="btn-info">DEFAULT</span></h2>
+    <hr />
+
+    <div class="form-group">
+        <div class="col-md-12">
+            @Html.TextAreaFor(model => model.DgSpecialConditions, new { @style = "height:300px; width:100%;", htmlAttributes = new { @class = "form-control", id = "DgSpecialConditions" } })
+            @Html.ValidationMessageFor(model => model.DgSpecialConditions, "", new { @class = "text-danger" })
+        </div>
+    </div>
+
+
+    <div class="form-group">
+        <div class="col-md-12">
+            @Html.TextAreaFor(model => model.Str_SpecialC, new { @style = "height:200px; width:100%;", htmlAttributes = new { @class = "form-control", id = "Str_SpecialC" } })
+            @Html.ValidationMessageFor(model => model.Str_SpecialC, "", new { @class = "text-danger" })
+        </div>
+    </div>
+
+    <h4>&nbsp;</h4>
+
+    <h2>Signature from Selling Unit <span onclick="updateSigning()" class="btn-info">DEFAULT</span></h2>
+    <hr />
+    <table class="col-lg-12">
+        <tr>
+            <td>Place</td>
+            <td>
+                @Html.EditorFor(model => model.DnvIntUnPlace501, new { htmlAttributes = new { @class = "form-control", id = "DnvIntUnPlace501" } })
+                @Html.ValidationMessageFor(model => model.DnvIntUnPlace501, "", new { @class = "text-danger" })
+            </td>
+            <td>
+                Name
+            </td>
+            <td>
+                @Html.EditorFor(model => model.DnvIntUnSigName501, new { htmlAttributes = new { @class = "form-control", id = "DnvIntUnSigName501" } })
+                @Html.ValidationMessageFor(model => model.DnvIntUnSigName501, "", new { @class = "text-danger" })
+
+            </td>
+        </tr>
+        <tr>
+            <td>Date</td>
+            <td>
+                @Html.EditorFor(model => model.DnvIntUnDate501, new { htmlAttributes = new { @class = "form-control", id = "DnvIntUnDate501" } })
+                @Html.ValidationMessageFor(model => model.DnvIntUnDate501, "", new { @class = "text-danger" })
+
+            </td>
+            <td>Title</td>
+            <td>
+                @Html.EditorFor(model => model.DnvIntUnSigTitle501, new { htmlAttributes = new { @class = "form-control", id = "DnvIntUnSigTitle501" } })
+                @Html.ValidationMessageFor(model => model.DnvIntUnSigTitle501, "", new { @class = "text-danger" })
+
+            </td>
+        </tr>
+
+    </table>
+
+    <h2>&nbsp</h2>
+    <hr />
+
+    <div class="form-horizontal">
+
+        @Html.ValidationSummary(true, "", new { @class = "text-danger" })
+        @Html.HiddenFor(model => model.Id)
+        @Html.HiddenFor(model => model.Tag)
+        @Html.HiddenFor(model => model.BridgeModule)
+        @Html.HiddenFor(model => model.NpsJobID)
+        @Html.HiddenFor(model => model.DbJobId)
+
+        <div class="form-group" style="clear:both;">
+            <div class="col-md-12">
+                <input type="submit" value="Save" class="btn btn-default" id="saveButton" readonly />
+                <input value="Re-open" class="btn btn-info" style="float:right" id="ReOpenTask" readonly />
+                <input value="Task completed" class="btn btn-default" style="float:right" id="TaskComplete" readonly />
+            </div>
+        </div>
+
+    </div>
+}
+
+
+
+<div class="col-lg-12">
+    <div class="col-lg-5">
+        <h3>Please select the new task handler:</h3>
+        <select id="selectListHandler" class="form-control"></select>
+    </div>
+    <div class="col-lg-5">
+        <h3> and new task:</h3>
+        <select id="selectListTask" class="form-control"></select>
+    </div>
+</div>
+<h4>&nbsp;</h4>
+<div>
+
+    @using (Html.BeginForm("ExportToWordAsync", "IORA", FormMethod.Post, new { @class = "form-horizontal", role = "form" }))
+    {
+        <div class="form-group">
+            @*<input hidden name="bridgeModule" class="text-info" value=@Model.BridgeModule>*@
+            <input hidden name="ioraId" class="text-info" value=@Model.Id>
+        </div>
+        <!-- form here -->
+        <button type="submit" class="btn btn-secondary" style="float:right">Generate Word Format IORA</button>
+    }
+</div>
+<a href="#" name="emailLink" id="emailLink" class="btn btn-info" >Send job to the new task handler</a>
+
+
+
+@section Scripts {
+    @Scripts.Render("~/bundles/jqueryval")
+}
+<script>
+
+    var IORA = @Html.Raw(Json.Encode(Model));
+    var BIORA = @Html.Raw(Json.Encode(BIORA));
+    var Job = @Html.Raw(Json.Encode(Job));
+    var sig = "@UserSignature";
+    var bm = "@bridgeModule";
+    var Rules = @Html.Raw(Json.Encode(Rules));
+    var FinancialSet = @Html.Raw(Json.Encode(FinancialSet));
+        var LUser = @Html.Raw(Json.Encode(LUser));
+
+//general
+    var TargetUser;
+    var BEmail;
+    var taskStatus;
+    var taskNo = 2;
+    //var taskStatusFlag = "feeSetter";
+    //var taskCompleteDate = "feeSetTime"
+    var taskCompleteStr = "The signed IORA is received on"
+    //renderTaskShowHide();
+    renderTaskHandling();
+//end of general
+
+    console.log("IORA");
+    console.log(IORA);
+    console.log("BIORA");
+    console.log(BIORA)
+    console.log("Job")
+    console.log(Job);
+    console.log("Rules")
+    console.log(Rules)
+    console.log("FinancialSet")
+    console.log(FinancialSet)
+
+    function updateParties(role, ) {
+        var str = $("#" + role + "Sig").val();
+        //console.log("hi")
+        $.ajax({
+            url: "/IORA/reademployeeinfo",
+            type: "get",
+            //contenttype: "application/json; charset=utf-8",readclientinfo
+
+            data: { 'sig': str }, // `if you want to send some parameter as mentioned in action method parameter. the name of parameter should be same.`
+            cache: false, //cache:true only works with get and head request. if you want to cache in the browser,then you set it true.`
+            async: true, //async true means you are doing things parallel.you set async to false, when you need that ajax request to be completed before the browser passes to other codes:`
+            success: function (data) {
+
+                var obj = JSON.parse(data);
+                console.log("Seller");
+                console.log(data);
+                $("#" + role + "UnitName").val(obj.DepartmentLongName);
+                $("#" + role + "Name").val(obj.PreferredNameConcatenated);
+                $("#" + role + "AcntNo").val(obj.LegalEntityIdentifier);
+                $("#" + role + "UnitNo").val(obj.DepartmentShortName);
+
+            },
+            error: function () {
+                $("#sellerUnit").val("error");
+            }
+        });
+    }
+
+
+
+    function updateSigning() {
+        var chapter = "Signing";
+        var chBIORA = getObject(BIORA, "Chapter", chapter);
+        $.each(chBIORA, function (key, data) {
+            if (data.Formula != null) {
+                $("#" + data.BookMarkName).val(eval(data.Formula));
+            }
+        });
+    }
+
+
+    function updateDocNo() {
+        $("#DgDNVDocNo01").val($("#NpsJobID").val() + "-J-" + $("#NPSJNo").val());
+    }
+
+    function updateParties2() {
+        var chapter = "Parties";
+        var chBIORA = getObject(BIORA, "Chapter", chapter);
+        $.each(chBIORA, function (key, data) {
+            if (data.Formula != null) {
+                $("#" + data.BookMarkName).val(eval(data.Formula));
+            }
+        });
+        console.log(chBIORA);
+    }
+
+    function updateProjDetail() {
+        var chapter = "ProjectDetails";
+        var chBIORA = getObject(BIORA, "Chapter", chapter);
+        $.each(chBIORA, function (key, data) {
+            if (data.Formula != null) {
+                $("#" + data.BookMarkName).val(eval(data.Formula));
+            }
+        });
+        updateSoW()
+    }
+
+    function updateSoW() {
+        var sowStr = "";
+        sowStr += FinancialSet.Description + " for " + Job.CustomerName + " of " + Job.MainProdType + " " + Job.ProdDescription;
+
+        if (Job.SerialNo != null) {
+            sowStr += ", SN. " + Job.SerialNo;
+        };
+        if (Job.ExistingCertNo != null) {
+            sowStr += ", based on " + Job.ExistingCertNo;
+        };
+        if (Job.ExpireDate != null) {
+            sowStr += " with expire date: " + Job.ExpireDate;
+        };
+        sowStr += ". \r\n";
+
+        sowStr += "Applicable Rules: \r\n"
+        $.each(Rules, function (key, data) {
+            sowStr += "•  " + data.RuleName + "\r\n";
+        });
+
+        sowStr += "*) Estimated termination date: 2 weeks after receipt of signed Short Form Agreement, " +
+            "and all relevant documentation are received and correctly filled in. ";
+
+        $("#DpSoW01").val(sowStr);
+
+    }
+//set value to ca acc. to CA
+    var ca = "";
+    switch (Job.CertAction) {
+        case "Initial":
+            ca = "CertAction1";
+            break;
+        case "Renewal":
+            ca = "CertAction2";
+            break;
+        case "Modification":
+            ca = "CertAction3";
+            break;
+        case "Renewal with Modification":
+            ca = "CertAction4";
+            break;
+        case "Initial with Reference":
+            ca = "CertAction3";
+            break;
+        default:
+            ca = "CertAction1";
+    }
+
+    console.log(ca);
+
+    function updateSpecialConditions() {
+        var chapter = "SpecialConditions";
+        var chBIORA = getObject(BIORA, "Chapter", chapter);
+        var sc = "";
+        var cax = FinancialSet[ca];
+
+
+        $.each(chBIORA, function (key, data) {
+
+            var x = data.BookMarkName.split("_")[1];
+
+            if (data.Formula != null && cax.includes(x + ",")) {
+                sc = sc + "•  " + eval(data.Formula) + "\r\n";
+            }
+        });
+
+        $("#DgSpecialConditions").val(sc);
+        updateFeeCalc();
+    };
+
+    function updateFeeCalc() {
+        var fee = IORA.IORAFee;
+        var feeStr = "";
+        var serviceCode = FinancialSet.ServiceCode;
+        var tsa = FinancialSet.TSA;
+        var msa = FinancialSet.MSA;
+        var af = FinancialSet.AllocationFee;
+
+
+        feeStr += "Fee for the above work will be: \r\n";
+        feeStr += "- Total external fee:                   NOK " + fee + ".- (Service Code: " + serviceCode + ") \r\n";
+        if (af != 0) {
+            feeStr += "- Less allocation fee (" + af * 100 + "%):      NOK " + Math.round(fee * af) + ".- \r\n";
+        }
+        fee = Math.round(fee * (1 - af));
+
+        var xx = Math.round(fee * (tsa + msa));
+        console.log(xx);
+
+        feeStr += "- Less TSA/MSA (" + tsa * 100 + "% + " + msa * 100 + "%):   NOK " + xx + ".- \r\n";
+
+        fee = fee * (1 - tsa - msa);
+
+        feeStr += "- Total internal fee:                    NOK " + Math.round(fee) + ".- \r\n"
+        $("#Str_SpecialC").val(feeStr);
+    }
+
+
+
+
+
+</script>

@@ -1,0 +1,181 @@
+﻿@model BridgeMVC.Models.Job
+@{
+    ViewBag.Title = "Fee Verification";
+    string UserSignature = (string)Session["UserSignature"];
+    string bridgeModule = (string)Session["BridgeModule"];
+    //var LCertType = ViewBag.LCertType;
+    //var LCertAction = ViewBag.LCertAction;
+    //var LMainProdType = ViewBag.LMainProdType;
+    //var LSubProdType = ViewBag.LSubProdType;
+    var LUser = ViewBag.LUser;
+}
+
+<style>
+    .bing {
+        float: left;
+        /*width: 450px;*/
+        padding: 0.5em 1em 0.5em 1em;
+        min-width: 400px;
+        font-weight: bold;
+    }
+
+    .form-control {
+        font-weight: bold;
+    }
+</style>
+
+
+@using (Html.BeginForm())
+{
+    @Html.AntiForgeryToken()
+
+    @Html.HiddenFor(model => model.Id)
+    @Html.HiddenFor(model => model.Task1)
+    @Html.HiddenFor(model => model.Task2)
+    @Html.HiddenFor(model => model.Task3)
+    @Html.HiddenFor(model => model.Task4)
+    @Html.HiddenFor(model => model.Tag)
+    @Html.HiddenFor(model => model.BridgeModule)
+    @Html.HiddenFor(model => model.TaskHandler)
+    @Html.HiddenFor(model => model.Completed)
+    @Html.HiddenFor(model => model.ExistingCertNo)
+    @Html.HiddenFor(model => model.CertNo)
+    @Html.HiddenFor(model => model.SerialNo)
+    @Html.HiddenFor(model => model.ReceivedTime)
+    @Html.HiddenFor(model => model.FeeSetTime)
+    @Html.HiddenFor(model => model.IoraSentTime)
+    @Html.HiddenFor(model => model.IoraReturnedTime)
+    @Html.HiddenFor(model => model.JobCompletedTime)
+    @Html.HiddenFor(model => model.JobVerifier)
+    @Html.HiddenFor(model => model.RAE)
+    @Html.HiddenFor(model => model.ExpireDate)
+    @Html.HiddenFor(model => model.FeeVerifier)
+<div class="form-horizontal">
+    <h4>Fee Verification</h4>
+    <hr />
+    @Html.ValidationSummary(true, "", new { @class = "text-danger" })
+
+    <div class="col-md-5 Bing">
+        NPS job ID:
+        @Html.EditorFor(model => model.NpsJobId, new { htmlAttributes = new { @class = "form-control", @readonly = "readonly" } })
+    </div>
+    <div class="col-md-5 Bing">
+        Issuance type:
+        @Html.EditorFor(model => model.CertAction, new { htmlAttributes = new { @class = "form-control", @readonly = "readonly" } })
+    </div>
+    <div class="col-md-5 Bing">
+        Certification type:
+        @Html.EditorFor(model => model.CertType, new { htmlAttributes = new { @class = "form-control", @readonly = "readonly" } })
+    </div>
+
+    <div class="col-md-5 Bing">
+        Main product type:
+        @Html.EditorFor(model => model.MainProdType, new { htmlAttributes = new { @class = "form-control", @readonly = "readonly" } })
+    </div>
+
+    <div class="col-md-5 Bing">
+        Sub product type:
+        @Html.EditorFor(model => model.SubProdType, new { htmlAttributes = new { @class = "form-control", @readonly = "readonly" } })
+    </div>
+    <div class="col-md-5 Bing">
+        Sales order No.:
+        @Html.EditorFor(model => model.SalesOrderNo, new { htmlAttributes = new { @class = "form-control", @readonly = "readonly" } })
+    </div>
+    <div class="col-md-5 Bing">
+        Fee.:
+        @Html.EditorFor(model => model.Fee, new { htmlAttributes = new { @class = "form-control", @readonly = "readonly" } })
+    </div>
+    <div class="col-md-5 Bing">
+        Customer ID:
+        @Html.EditorFor(model => model.CustomerDbId, new { htmlAttributes = new { @class = "form-control", @readonly = "readonly" } })
+    </div>
+    <div class="col-md-5 Bing">
+        Customer Name:
+        @Html.EditorFor(model => model.CustomerName, new { htmlAttributes = new { @class = "form-control", @readonly = "readonly" } })
+    </div>
+    <div class="col-md-5 Bing">
+        Product designation:
+        @Html.EditorFor(model => model.ProdDescription, new { htmlAttributes = new { @class = "form-control", @readonly = "readonly" } })
+    </div>
+
+
+    <div class="col-md-5 Bing">
+        Product designation:
+        @Html.EditorFor(model => model.ProdDescription, new { htmlAttributes = new { @class = "form-control", @readonly = "readonly" } })
+    </div>
+    <div class="col-md-5 Bing">
+        ExistingCertNo:
+        @Html.EditorFor(model => model.ExistingCertNo, new { htmlAttributes = new { @class = "form-control", @readonly = "readonly" } })
+    </div>
+    <div class="col-md-5 Bing">
+        MWL:
+        @Html.EditorFor(model => model.MWL, new { htmlAttributes = new { @class = "form-control", @readonly = "readonly" } })
+    </div>
+
+    <div class="col-md-5 Bing">
+        Fee Setter:
+        @Html.EditorFor(model => model.FeeSetter, new { htmlAttributes = new { @class = "form-control", @readonly = "readonly" } })
+    </div>
+
+    <div class="col-md-5 Bing">
+        Approval note:
+        @Html.EditorFor(model => model.ApprNote, new { htmlAttributes = new { @class = "form-control", @readonly = "readonly" } })
+    </div>
+
+    <div class="col-md-5 Bing">
+        Budget Hour:
+        @Html.EditorFor(model => model.BudgetHour, new { htmlAttributes = new { @class = "form-control", @readonly = "readonly" } })
+    </div>
+    <div class="col-md-5 Bing">
+        Completion in _ weeks:
+        @Html.EditorFor(model => model.DueWeek, new { htmlAttributes = new { @class = "form-control", @readonly = "readonly" } })
+    </div>
+    <div style="clear:both;"></div>
+    <br />
+    <div class="form-group">
+        <div class=" col-md-10">
+            <input type="submit" value="Save" class="btn btn-default" id="saveButton" readonly />
+            <input value="Re-open" class="btn btn-info" style="float:right" id="ReOpenTask" readonly />
+            <input value="Task completed" class="btn btn-default" style="float:right" id="TaskComplete" readonly />
+        </div>
+    </div>
+</div>
+}
+
+
+@*//next task*@
+<div class="col-lg-12">
+    <div class="col-lg-5">
+        <h3>Please select the new task handler:</h3>
+        <select id="selectListHandler" class="form-control"></select>
+    </div>
+    <div class="col-lg-5">
+        <h3> and new task:</h3>
+        <select id="selectListTask" class="form-control"></select>
+    </div>
+</div>
+<h4>&nbsp;</h4>
+<a href="#" name="emailLink" id="emailLink" class="btn btn-info" style="float:left">Send job to the new task handler</a>
+
+
+
+
+<script>
+      //Define global variables
+    var TargetUser;
+    var BEmail;
+    var taskStatus;
+    //read viewbag's info.
+    var sig = "@UserSignature";
+    var bm = "@bridgeModule";
+    var Job = @Html.Raw(Json.Encode(Model));
+    @*var LCertAction = @Html.Raw(Json.Encode(LCertAction));
+    var LCertType = @Html.Raw(Json.Encode(LCertType));
+    var LMainProdType = @Html.Raw(Json.Encode(LMainProdType));
+    var LSubProdType = @Html.Raw(Json.Encode(LSubProdType));*@
+    var LUser = @Html.Raw(Json.Encode(LUser));
+
+
+
+
+</script>

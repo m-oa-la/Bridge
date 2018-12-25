@@ -1,0 +1,179 @@
+﻿@model IEnumerable<BridgeMVC.Models.Job>
+
+<style>
+    .ct1{
+        background-color:#0094ff;
+        color:aliceblue;
+    }
+    .ct2 {
+        background-color: #064579;
+        color: aliceblue;
+    }
+
+
+    .wbTab {
+        /*width: 450px;*/
+        padding: 0.5em 1em 0.5em 1em;
+        min-width: 300px;
+        font-weight: bold;
+        height: 100px;
+        border-color: green;
+        border-style: dotted;
+        float:left;
+        margin-right:1em;
+    }
+        .wbTab:hover {
+            background-color: #eee;
+            cursor:pointer;
+            color:black;
+        }
+    .sidenav {
+        width: 210px;
+        position: fixed;
+        z-index: 1;
+        top: 120px;
+        left: 30px;
+        background: #eee;
+        overflow-x: hidden;
+        padding: 8px 0;
+    }
+
+        .sidenav a {
+            padding: 6px 8px 6px 16px;
+            text-decoration: none;
+            font-size: large;
+            color: #064579;
+            display: block;
+        }
+
+            .sidenav a:hover {
+                color: #0094ff;
+            }
+
+    .dropdown {
+        position: relative;
+        display: inline-block;
+    }
+
+    .dropdown-content {
+        display: none;
+        position: absolute;
+        background-color: #f1f1f1;
+        min-width: 160px;
+        overflow: auto;
+        box-shadow: 0px 8px 16px 0px rgba(0,0,0,0.2);
+        z-index: 1;
+    }
+
+        .dropdown-content a {
+            color: black;
+            padding: 12px 16px;
+            text-decoration: none;
+            display: block;
+        }
+
+    .dropdown a:hover {
+        background-color: #ddd;
+    }
+
+    .show {
+        display: block;
+    }
+    /*.form-control {
+        font-weight: normal;
+    }*/
+</style>
+
+
+@{
+    ViewBag.Title = "M1_Task1";
+    string UserSignature = (string)Session["UserSignature"];
+    string bridgeModule = (string)Session["BridgeModule"];
+    var LCertType = ViewBag.LCertType;
+    var LCertAction = ViewBag.LCertAction;
+    var LMainProdType = ViewBag.LMainProdType;
+    var LSubProdType = ViewBag.LSubProdType;
+    var LUser = ViewBag.LUser;
+
+    ViewBag.Title = "Index";
+    string colorY, colorN, colorTask;
+    colorY = "background-color:#009fda; color:transparent;";
+    colorN = "background-color:grey; color:transparent;";
+    colorTask = "background-color:#36842d; color:transparent;";
+
+
+    var users = ViewBag.users;
+    var i = 0;
+    var classNv = "";
+
+}
+
+<div class="sidenav">
+    <a href="">To Be Distributed</a>
+    <a href="">On Hold</a>
+    <a href="">On Going</a>
+    <a href="">Under Verification</a>
+    <a href="">Completed Last Week</a>
+</div>
+
+
+<h3>Due in 5 days</h3>
+
+<table class="table table-mid-align-rows">
+
+    @foreach (var item in Model)
+    {
+        i += 1;
+        var nv = "myDropdown" + i;
+        classNv = "wbTab  ct"+i;
+    <div class="@classNv" onclick="myFunction(@i)">
+        @Html.DisplayFor(modelItem => item.NpsJobId)
+        <br />
+        @Html.DisplayFor(modelItem => item.ProdDescription)
+        <br /> Budget:
+        @Html.DisplayFor(modelItem => item.BudgetHour) hours
+        
+        <div id=@nv class="dropdown-content">
+            <a href=""><u>SEND JOB TO</u></a>
+            <a href="#home">SXL</a>
+            <a href="#about">SADEL</a>
+            <a href="#contact">NECA</a>
+        </div>
+    </div>
+
+    }
+</table>
+
+
+
+
+
+<script>
+    var users = @Html.Raw(Json.Encode(users));
+
+    var xx = "@classNv";
+    console.log(xx);
+</script>
+
+<script>
+    
+    function myFunction(x) {
+        i = x;
+        document.getElementById("myDropdown" + x).classList.toggle("show");
+    }
+
+    // Close the dropdown if the user clicks outside of it
+    window.onclick = function (event) {
+        if (!event.target.matches('.wbTab')) {
+
+            var dropdowns = document.getElementsByClassName("dropdown-content");
+            var i;
+            for (i = 0; i < dropdowns.length; i++) {
+                var openDropdown = dropdowns[i];
+                if (openDropdown.classList.contains('show')) {
+                    openDropdown.classList.remove('show');
+                }
+            }
+        }
+    }
+</script>

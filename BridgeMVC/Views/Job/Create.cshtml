@@ -1,0 +1,246 @@
+﻿@model BridgeMVC.Models.Job
+
+@{
+    ViewBag.Title = "M1_Task1";
+    string UserSignature = (string)Session["UserSignature"];
+    string bridgeModule = (string)Session["BridgeModule"];
+    var LCertType = ViewBag.LCertType;
+    var LCertAction = ViewBag.LCertAction;
+    var LMainProdType = ViewBag.LMainProdType;
+    var LSubProdType = ViewBag.LSubProdType;
+    var LUser = ViewBag.LUser;
+
+}
+<h2>Create New Bridge Job</h2>
+
+
+@using (Html.BeginForm())
+{
+    @Html.AntiForgeryToken()
+
+<div class="form-horizontal">
+    <h4>Job</h4>
+    <hr />
+    @Html.ValidationSummary(true, "", new { @class = "text-danger" })
+    @Html.HiddenFor(model => model.Id)
+    @Html.HiddenFor(model => model.Tag)
+    @Html.HiddenFor(model => model.BridgeModule)
+    @Html.HiddenFor(model => model.Task1)
+    @Html.HiddenFor(model => model.Task2)
+    @Html.HiddenFor(model => model.Task3)
+    @Html.HiddenFor(model => model.Task4)
+    @Html.HiddenFor(model => model.Completed)
+
+
+
+
+    <div class="bing col-lg-6">
+        NPS Job ID:
+        @Html.EditorFor(model => model.NpsJobId, new { htmlAttributes = new { @class = "form-control", id = "NpsJobId" } })
+        @Html.ValidationMessageFor(model => model.NpsJobId, "", new { @class = "text-danger" })
+    </div>
+
+
+
+    <div class="bing col-lg-6">
+        Customer:
+        @Html.EditorFor(model => model.CustomerName, new { htmlAttributes = new { @class = "form-control" } })
+        @Html.ValidationMessageFor(model => model.CustomerName, "", new { @class = "text-danger" })
+    </div>
+
+    <div class="bing col-lg-6">
+        Sales Order:
+        @Html.EditorFor(model => model.SalesOrderNo, new { htmlAttributes = new { @class = "form-control" } })
+        @Html.ValidationMessageFor(model => model.SalesOrderNo, "", new { @class = "text-danger" })
+    </div>
+
+
+
+    <div class="bing col-lg-6">
+        Certificate type:
+        @Html.DropDownListFor(model => model.CertType, new List<SelectListItem> { new SelectListItem { Text = Model.CertType, Value = Model.CertType } }, new { @class = "form-control", id = "selectCertType" })
+    </div>
+
+    <div class="bing col-lg-6">
+        Job Received Time:
+        @Html.EditorFor(model => model.ReceivedTime, new { htmlAttributes = new { @class = "form-control", @Value = Model.ReceivedTime?.ToString("yyyy.MM.dd hh:mm:ss") } })
+
+    </div>
+
+    <div class="bing col-lg-6">
+        Engineer to set fee:
+        @Html.EditorFor(model => model.TaskHandler, new { htmlAttributes = new { @class = "form-control"} })
+        @Html.ValidationMessageFor(model => model.TaskHandler, "", new { @class = "text-danger" })
+    </div>
+
+    <div class="bing col-lg-6" hidden>
+        
+        @Html.EditorFor(model => model.FeeSetter, new { htmlAttributes = new { @class = "form-control", id = "feeSetter" } })
+        @Html.ValidationMessageFor(model => model.FeeSetter, "", new { @class = "text-danger" })
+    </div>
+
+
+
+    <div class="form-group">
+        <div class="col-md-offset-2 col-md-10">
+            <input type="submit" value="Create" class="btn btn-default" />
+        </div>
+    </div>
+</div>
+}
+
+<div>
+    @Html.ActionLink("Back to List", "_Index")
+</div>
+
+@section Scripts {
+    @Scripts.Render("~/bundles/jqueryval")
+}
+
+
+<script>
+
+    $("#Task1").val("TASK");
+    $("#Task2").val("N");
+    $("#Task3").val("N");
+
+    //Define global variables
+    var TargetUser;
+    var BEmail;
+    var taskStatus;
+    //read viewbag's info.
+    var sig = "@UserSignature";
+    var bm = "@bridgeModule";
+    var Job = @Html.Raw(Json.Encode(Model));
+    var LCertAction = @Html.Raw(Json.Encode(LCertAction));
+    var LCertType = @Html.Raw(Json.Encode(LCertType));
+    var LMainProdType = @Html.Raw(Json.Encode(LMainProdType));
+    var LSubProdType = @Html.Raw(Json.Encode(LSubProdType));
+    var LUser = @Html.Raw(Json.Encode(LUser));
+
+
+    $.each(LCertType, function (key, data) {
+        $("#selectCertType").append(new Option(data.ListItem, data.ListItem));
+    });
+
+    //$.each(LCertAction, function (key, data) {
+    //    $("#selectCertAction").append(new Option(data.ListItem, data.ListItem));
+    //});
+    //$.each(LMainProdType, function (key, data) {
+    //    $("#selectMainProdType").append(new Option(data.ListItem, data.ListItem));
+    //});
+
+    $("#selectListHandler").append(new Option("-- Please select --", null));
+    $.each(LUser, function (key, data) {
+        $("#selectListHandler").append(new Option(data.Signature, data.Signature));
+    });
+
+    // Set up selectList for variable items
+    $.each(["-- Please select --", "FEE", "VRIFY", "AGR"], function (index, value) {
+        $("#selectListTask").append(new Option(value, value));
+    });
+
+    var mval = $("#selectMainProdType :selected").text();
+      $.each(LSubProdType, function (key, data) {
+        if (data.UpperLvl == mval) {
+            $("#selectSubProdType").append(new Option(data.ListItem, data.ListItem));
+        }
+    });
+
+
+    $("#selectMainProdType").on("change", function () {
+        var mval = $("#selectMainProdType :selected").text();
+        //var sval = $("#selectSubProdType :selected").text();
+        //$("#selectSubProdType :selected").val(sval);
+
+        $('#selectSubProdType option').each(function () {
+
+            if ($(this).val() != 'X') {
+                $(this).remove();
+            }
+        });
+
+        $("selectSubProdType option").remove();
+        $.each(LSubProdType, function (key, data) {
+            if (data.UpperLvl == mval) {
+                $("#selectSubProdType").append(new Option(data.ListItem, data.ListItem));
+            }
+        });
+    });
+
+
+
+    $(function filterSubSelect() {
+
+    });
+
+
+
+
+    if ($("#feeSetter").val().length != 0) {
+        taskStatus = "The Fee is set by " + $("#feeSetter").val() + " on " + $("#feeSetTime").val();
+        $("#TaskStatus").html(taskStatus);
+        $("#saveButton").hide();
+        $("#ReOpenTask").show();
+        $("#TaskComplete").hide();
+    } else {
+        $("#saveButton").show();
+        $("#ReOpenTask").hide();
+        $("#TaskComplete").show();
+    }
+
+    // actions when taskcomplete button is clicked
+    $("#TaskComplete").click(function () {
+
+        var currentdate = new Date();
+        var m = currentdate.getMonth() + 1;
+        var dt = currentdate.getFullYear() + "." + m + "."
+            + (currentdate.getDate() ) + " "
+            + currentdate.getHours() + ":"
+            + currentdate.getMinutes() + ":"
+            + currentdate.getSeconds();
+        $("#feeSetTime").val(dt)
+        //console.log(sig)
+        taskStatus = "The Fee is set by " + sig + " on " + dt;
+        $("#feeSetter").val(sig);
+        $("#TaskStatus").html(taskStatus);
+        $("#saveButton").hide();
+        $("#ReOpenTask").show();
+        $("#TaskComplete").hide();
+        $("#saveButton").click();
+
+    });
+    // actions when reopen the job
+    $("#ReOpenTask").click(function () {
+        $("#feeSetTime").val(null)
+        taskStatus = null;
+        $("#feeSetter").val(null);
+        $("#TaskStatus").html(taskStatus);
+        $("#saveButton").show();
+        $("#ReOpenTask").hide();
+        $("#TaskComplete").show();
+    });
+
+    //read the info. of new task handler
+    $("#selectListHandler").on("change", function () {
+        var usig = $(this).val();
+        readBUser(usig).done(returnTargetUser);
+    });
+    //read the email template
+    $("#selectListTask").on("change", function () {
+        var tn = "for" + $(this).val();
+        readBEmail(tn, bm).done(returnBEmail);
+    });
+    //Send email
+    $(function () {
+        $('#emailLink').on('click', function (event) {
+            $("#taskHandler").html(TargetUser.uniqueKey);
+            event.preventDefault();
+            var email = eval(BEmail.mailTo);
+            var subject = eval(BEmail.mailTitle);
+            var emailBody = eval(BEmail.mailBody);
+            window.location = 'mailto:' + email + '?subject=' + subject + '&body=' + emailBody;
+        });
+    });
+
+</script>
