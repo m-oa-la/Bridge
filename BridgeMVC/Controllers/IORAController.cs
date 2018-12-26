@@ -14,12 +14,9 @@ using System.Reflection;
 
 namespace BridgeMVC.Controllers
 {
-
+    [Authorize]
     public class IORAController : Controller
     {
-
-
-
         [ActionName("Index")]
         public async Task<ActionResult> IndexAsync()
         {

@@ -8,6 +8,7 @@ using System.Web;
 using System.Web.Mvc;
 namespace BridgeMVC.Controllers
 {
+    [Authorize]
     public class BLSACertController : Controller
     {
 

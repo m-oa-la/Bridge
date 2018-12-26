@@ -6,6 +6,7 @@ using System.Web.Mvc;
 
 namespace BridgeMVC.Controllers
 {
+    [Authorize]
     public class CustomerController : Controller
     {
         // GET: Customer

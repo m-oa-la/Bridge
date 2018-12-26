@@ -15,17 +15,26 @@ namespace BridgeMVC.Controllers
         // configured to return to the home page upon successful authentication
         public void SignIn()
         {
+            // Use the default policy to process the sign up / sign in flow
             if (!Request.IsAuthenticated)
             {
-                HttpContext.GetOwinContext().Authentication.Challenge(new AuthenticationProperties { RedirectUri = "/" }, OpenIdConnectAuthenticationDefaults.AuthenticationType);
+                HttpContext.GetOwinContext().Authentication.Challenge();
+                return;
             }
+
+            Response.Redirect("/");
         }
         // sign out triggered from the Sign Out gesture in the UI
         // after sign out, it redirects to Post_Logout_Redirect_Uri (as set in Startup.Auth.cs)
         public void SignOut()
         {
-            HttpContext.GetOwinContext().Authentication.SignOut(
-                OpenIdConnectAuthenticationDefaults.AuthenticationType, CookieAuthenticationDefaults.AuthenticationType);
+            // To sign out the user, you should issue an OpenIDConnect sign out request.
+            if (Request.IsAuthenticated)
+            {
+                IEnumerable<AuthenticationDescription> authTypes = HttpContext.GetOwinContext().Authentication.GetAuthenticationTypes();
+                HttpContext.GetOwinContext().Authentication.SignOut(authTypes.Select(t => t.AuthenticationType).ToArray());
+                Request.GetOwinContext().Authentication.GetAuthenticationTypes();
+            }
         }
         public void EndSession()
         {

@@ -9,6 +9,7 @@ using System.Web.Mvc;
 
 namespace BridgeMVC.Controllers
 {
+    [Authorize]
     public class BListController : Controller
     {
         // GET: BList

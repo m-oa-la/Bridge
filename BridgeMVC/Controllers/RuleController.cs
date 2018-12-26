@@ -11,6 +11,7 @@ using Newtonsoft.Json;
 
 namespace BridgeMVC.Controllers
 {
+    [Authorize]
     public class RuleController : Controller
     {
         // GET: Rule

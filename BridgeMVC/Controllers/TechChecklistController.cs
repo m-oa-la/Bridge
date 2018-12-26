@@ -13,6 +13,7 @@ using System;
 
 namespace BridgeMVC.Controllers
 {
+    [Authorize]
     public class TechChecklistController : Controller
     {
         [ActionName("Index")]

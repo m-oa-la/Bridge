@@ -9,6 +9,7 @@ using System.Web.Mvc;
 
 namespace BridgeMVC.Controllers
 {
+    [Authorize]
     public class BFinancialController : Controller
     {
         // GET: BFinancial
