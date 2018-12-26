@@ -15,7 +15,7 @@ namespace BridgeMVC.Controllers
         [HttpGet]
         public async Task<string> ReadBEmail(string templateName, string bridgeModule)
         {
-            var be = await DocumentDBRepository<BEmail>.GetItemsAsync(d =>
+            var be = await DocumentDBRepository.GetItemsAsync<BEmail>(d =>
             d.TemplateName.ToLower() == templateName.ToLower() &&
             d.BridgeModule == bridgeModule && d.Tag == "BEmail");
 
@@ -33,7 +33,7 @@ namespace BridgeMVC.Controllers
         [HttpGet]
         public async Task<string> ReadBUser(string sig)
         {
-            var users = await DocumentDBRepository<BUser>.GetItemsAsync(d => d.Signature.ToLower() == sig.ToLower());
+            var users = await DocumentDBRepository.GetItemsAsync<BUser>(d => d.Signature.ToLower() == sig.ToLower());
             if (users == null)
             {
                 //throw a meaningful exception or give some useful feedback to the user!

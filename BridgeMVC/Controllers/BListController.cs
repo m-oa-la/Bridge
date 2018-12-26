@@ -15,7 +15,7 @@ namespace BridgeMVC.Controllers
         [ActionName("Index")]
         public async Task<ActionResult> IndexAsync()
         {
-            var s = await DocumentDBRepository<BList>.GetItemsAsync(d => d.Tag == "BList");
+            var s = await DocumentDBRepository.GetItemsAsync<BList>(d => d.Tag == "BList");
             return View(s);
         }
 
@@ -38,7 +38,7 @@ namespace BridgeMVC.Controllers
         {
             if (ModelState.IsValid)
             {
-                await DocumentDBRepository<BList>.CreateItemAsync(item);
+                await DocumentDBRepository.CreateItemAsync<BList>(item);
                 return RedirectToAction("Index");
             }
 
@@ -52,7 +52,7 @@ namespace BridgeMVC.Controllers
         {
             if (ModelState.IsValid)
             {
-                await DocumentDBRepository<BList>.UpdateItemAsync(item.Id, item);
+                await DocumentDBRepository.UpdateItemAsync<BList>(item.Id, item);
                 return RedirectToAction("Index");
             }
 
@@ -67,7 +67,7 @@ namespace BridgeMVC.Controllers
                 return new HttpStatusCodeResult(HttpStatusCode.BadRequest);
             }
 
-            BList item = await DocumentDBRepository<BList>.GetItemAsync(id);
+            BList item = await DocumentDBRepository.GetItemAsync<BList>(id);
             if (item == null)
             {
                 return HttpNotFound();
@@ -83,7 +83,7 @@ namespace BridgeMVC.Controllers
                 return new HttpStatusCodeResult(HttpStatusCode.BadRequest);
             }
 
-            BList r = await DocumentDBRepository<BList>.GetItemAsync(id);
+            BList r = await DocumentDBRepository.GetItemAsync<BList>(id);
 
             if (r == null)
             {
@@ -97,8 +97,8 @@ namespace BridgeMVC.Controllers
         [ValidateAntiForgeryToken]
         public async Task<ActionResult> DeleteConfirmed(string id)
         {
-            BList r = await DocumentDBRepository<BList>.GetItemAsync(id);
-            await DocumentDBRepository<BList>.DeleteItemAsync(r.Id);
+            BList r = await DocumentDBRepository.GetItemAsync<BList>(id);
+            await DocumentDBRepository.DeleteItemAsync(r.Id);
 
             return RedirectToAction("Index");
         }

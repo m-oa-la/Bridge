@@ -24,7 +24,7 @@ namespace BridgeMVC.Controllers
         public async Task<ActionResult> IndexAsync()
         {
 
-            var items = await DocumentDBRepository<IORA>.GetItemsAsync(d => d.Tag=="IORA");
+            var items = await DocumentDBRepository.GetItemsAsync<IORA>(d => d.Tag=="IORA");
             return View(items);
         }
 
@@ -58,7 +58,7 @@ namespace BridgeMVC.Controllers
         {
             if (ModelState.IsValid)
             {
-                await DocumentDBRepository<IORA>.CreateItemAsync(item);
+                await DocumentDBRepository.CreateItemAsync<IORA>(item);
                 return RedirectToAction("Index");
             }
 
@@ -79,15 +79,15 @@ namespace BridgeMVC.Controllers
         {
             if (ModelState.IsValid)
             {
-                await DocumentDBRepository<IORA>.UpdateItemAsync(item.Id, item);
+                await DocumentDBRepository.UpdateItemAsync<IORA>(item.Id, item);
                 IORA ii = item;
-                Job j = await DocumentDBRepository<Job>.GetItemAsync(ii.DbJobId);
+                Job j = await DocumentDBRepository.GetItemAsync<Job>(ii.DbJobId);
                 ViewBag.Job = j;
-                ViewBag.BIORA = await DocumentDBRepository<BIORA>.GetItemsAsync(d => d.Tag == "BIORA" && d.BridgeModule == ii.BridgeModule);
-                ViewBag.Rules = await DocumentDBRepository<Rule>.GetItemsAsync(d => d.Tag == "Rule" && d.DbJobId == ii.DbJobId);
-                var f = await DocumentDBRepository<BFinancial>.GetItemsAsync(d => d.Tag == "BFinancial" && d.BridgeModule == ii.BridgeModule && d.CertType == j.CertType);
+                ViewBag.BIORA = await DocumentDBRepository.GetItemsAsync<BIORA>(d => d.Tag == "BIORA" && d.BridgeModule == ii.BridgeModule);
+                ViewBag.Rules = await DocumentDBRepository.GetItemsAsync<Rule>(d => d.Tag == "Rule" && d.DbJobId == ii.DbJobId);
+                var f = await DocumentDBRepository.GetItemsAsync<BFinancial>(d => d.Tag == "BFinancial" && d.BridgeModule == ii.BridgeModule && d.CertType == j.CertType);
                 ViewBag.FinancialSet = f.FirstOrDefault();
-                ViewBag.LUser = await DocumentDBRepository<BUser>.GetItemsAsync(d => d.Tag == "BUser" && (d.BridgesGranted).Contains(j.BridgeModule));
+                ViewBag.LUser = await DocumentDBRepository.GetItemsAsync<BUser>(d => d.Tag == "BUser" && (d.BridgesGranted).Contains(j.BridgeModule));
 
                 //return RedirectToAction("Index");
                 return View(item);
@@ -102,14 +102,14 @@ namespace BridgeMVC.Controllers
             {
                 return new HttpStatusCodeResult(HttpStatusCode.BadRequest);
             }
-            IORA ii = await DocumentDBRepository<IORA>.GetItemAsync(id);
-            Job j = await DocumentDBRepository<Job>.GetItemAsync(ii.DbJobId);
+            IORA ii = await DocumentDBRepository.GetItemAsync<IORA>(id);
+            Job j = await DocumentDBRepository.GetItemAsync<Job>(ii.DbJobId);
             ViewBag.Job = j;
-            ViewBag.BIORA = await DocumentDBRepository<BIORA>.GetItemsAsync(d => d.Tag == "BIORA" && d.BridgeModule==ii.BridgeModule);
-            ViewBag.Rules = await DocumentDBRepository<Rule>.GetItemsAsync(d => d.Tag == "Rule" && d.DbJobId == ii.DbJobId);
-            var f = await DocumentDBRepository<BFinancial>.GetItemsAsync(d => d.Tag == "BFinancial" && d.BridgeModule == ii.BridgeModule && d.CertType == j.CertType );
+            ViewBag.BIORA = await DocumentDBRepository.GetItemsAsync<BIORA>(d => d.Tag == "BIORA" && d.BridgeModule==ii.BridgeModule);
+            ViewBag.Rules = await DocumentDBRepository.GetItemsAsync<Rule>(d => d.Tag == "Rule" && d.DbJobId == ii.DbJobId);
+            var f = await DocumentDBRepository.GetItemsAsync<BFinancial>(d => d.Tag == "BFinancial" && d.BridgeModule == ii.BridgeModule && d.CertType == j.CertType );
             ViewBag.FinancialSet = f.FirstOrDefault();
-            ViewBag.LUser = await DocumentDBRepository<BUser>.GetItemsAsync(d => d.Tag == "BUser" && (d.BridgesGranted).Contains(j.BridgeModule));
+            ViewBag.LUser = await DocumentDBRepository.GetItemsAsync<BUser>(d => d.Tag == "BUser" && (d.BridgesGranted).Contains(j.BridgeModule));
 
 
             if (ii == null)
@@ -124,7 +124,7 @@ namespace BridgeMVC.Controllers
         {
             ;
             //var BIORAs = await DocumentDBRepository<BIORA>.GetItemsAsync(d => (d.Tag == "BIORA") && (d.BridgeModule == blu));
-            IORA ii = await DocumentDBRepository<IORA>.GetItemAsync(ioraId);
+            IORA ii = await DocumentDBRepository.GetItemAsync<IORA>(ioraId);
             var blu = ii.BridgeModule;
             var npsjobid = ii.NpsJobID;
             string savePath = Server.MapPath("~/App_Data/" + blu + "/Projects/" + ii.NpsJobID + " IORA.docx");

@@ -26,7 +26,7 @@ namespace BridgeMVC.Controllers
             string userName = User.Identity.Name.ToLower();
             if (userName.Contains("dnvgl.com"))
             {
-                var users = await DocumentDBRepository<BUser>.GetItemsAsync(d => d.Tag == "BUser" && d.Email.ToLower() == userName);
+                var users = await DocumentDBRepository.GetItemsAsync<BUser>(d => d.Tag == "BUser" && d.Email.ToLower() == userName);
 
                 if (users != null)
                 {
@@ -51,7 +51,7 @@ namespace BridgeMVC.Controllers
             string userSig = (string)Session["UserSignature"];
             string bm = (string)Session["BridgeModule"];
 
-            var myModel = await DocumentDBRepository<Job>.GetItemsAsync(d => d.Tag == "Job" && d.BridgeModule.ToUpper()==bm && d.TaskHandler.ToUpper() == userSig);
+            var myModel = await DocumentDBRepository.GetItemsAsync<Job>(d => d.Tag == "Job" && d.BridgeModule.ToUpper()==bm && d.TaskHandler.ToUpper() == userSig);
             return View(myModel);
         }
 
@@ -62,14 +62,14 @@ namespace BridgeMVC.Controllers
             string userSig = (string)Session["UserSignature"];
             string bm = (string)Session["BridgeModule"];
 
-            var myModel = await DocumentDBRepository<Job>.GetItemsAsync(d => d.Tag == "Job" && d.BridgeModule.ToUpper() == bm && d.TaskHandler.ToUpper() == userSig);
+            var myModel = await DocumentDBRepository.GetItemsAsync<Job>(d => d.Tag == "Job" && d.BridgeModule.ToUpper() == bm && d.TaskHandler.ToUpper() == userSig);
             return View(myModel);
         }
 
         [ActionName("ProjFolder")]
         public async Task<ActionResult> ProjFolderAsync()
         {
-            var myModel = await DocumentDBRepository<Job>.GetItemAsync((string)Session["dbJobId"]);
+            var myModel = await DocumentDBRepository.GetItemAsync<Job>((string)Session["dbJobId"]);
           
             return View(myModel);
         }
@@ -78,11 +78,11 @@ namespace BridgeMVC.Controllers
         public async Task<string> SetViewBags()
         {
             var bm = (string)Session["BridgeModule"];
-            ViewBag.LCertType = await DocumentDBRepository<BList>.GetItemsAsync(d => d.Tag == "BList" && d.BridgeModule == bm && d.ListType == "CertType");
-            ViewBag.LCertAction = await DocumentDBRepository<BList>.GetItemsAsync(d => d.Tag == "BList" && d.BridgeModule == bm && d.ListType == "CertAction");
-            ViewBag.LMainProdType = await DocumentDBRepository<BList>.GetItemsAsync(d => d.Tag == "BList" && d.BridgeModule == bm && d.ListType == "MainProdType");
-            ViewBag.LSubProdType = await DocumentDBRepository<BList>.GetItemsAsync(d => d.Tag == "BList" && d.BridgeModule == bm && d.ListType == "SubProdType");
-            ViewBag.LUser = await DocumentDBRepository<BUser>.GetItemsAsync(d => d.Tag == "BUser" && (d.BridgesGranted).Contains(bm));
+            ViewBag.LCertType = await DocumentDBRepository.GetItemsAsync<BList>(d => d.Tag == "BList" && d.BridgeModule == bm && d.ListType == "CertType");
+            ViewBag.LCertAction = await DocumentDBRepository.GetItemsAsync<BList>(d => d.Tag == "BList" && d.BridgeModule == bm && d.ListType == "CertAction");
+            ViewBag.LMainProdType = await DocumentDBRepository.GetItemsAsync<BList>(d => d.Tag == "BList" && d.BridgeModule == bm && d.ListType == "MainProdType");
+            ViewBag.LSubProdType = await DocumentDBRepository.GetItemsAsync<BList>(d => d.Tag == "BList" && d.BridgeModule == bm && d.ListType == "SubProdType");
+            ViewBag.LUser = await DocumentDBRepository.GetItemsAsync<BUser>(d => d.Tag == "BUser" && (d.BridgesGranted).Contains(bm));
             return ("");
         }
 
@@ -95,7 +95,7 @@ namespace BridgeMVC.Controllers
         {
             if (ModelState.IsValid)
             {
-                await DocumentDBRepository<Job>.UpdateItemAsync(item.Id, item);
+                await DocumentDBRepository.UpdateItemAsync<Job>(item.Id, item);
             }
             await SetViewBags();
             return ("");
@@ -110,7 +110,7 @@ namespace BridgeMVC.Controllers
         {
             if (ModelState.IsValid)
             {
-                await DocumentDBRepository<Job>.CreateItemAsync(item);
+                await DocumentDBRepository.CreateItemAsync<Job>(item);
             }
             await SetViewBags();
             return ("");
@@ -135,7 +135,7 @@ namespace BridgeMVC.Controllers
                 return new HttpStatusCodeResult(HttpStatusCode.BadRequest);
             }
 
-            Job item = await DocumentDBRepository<Job>.GetItemAsync(id);
+            Job item = await DocumentDBRepository.GetItemAsync<Job>(id);
             if (item == null)
             {
                 return HttpNotFound();
@@ -157,7 +157,7 @@ namespace BridgeMVC.Controllers
                 return new HttpStatusCodeResult(HttpStatusCode.BadRequest);
             }
 
-            Job item = await DocumentDBRepository<Job>.GetItemAsync(id);
+            Job item = await DocumentDBRepository.GetItemAsync<Job>(id);
             if (item == null)
             {
                 return HttpNotFound();
@@ -165,7 +165,7 @@ namespace BridgeMVC.Controllers
             //ViewBag.SelectList = await DocumentDBRepository<BRule>.GetItemsAsync(d => d.Tag == "BRule" && d.BridgeModule == item.BridgeModule);
             Session["NpsJobId"] = item.NpsJobId;
             Session["DbJobId"] = item.Id;
-            ViewBag.BLSACert = await DocumentDBRepository<BLSACert>.GetItemsAsync(d => d.Tag == "BLSACert");
+            ViewBag.BLSACert = await DocumentDBRepository.GetItemsAsync<BLSACert>(d => d.Tag == "BLSACert");
             return View(item);
         }
 
@@ -177,7 +177,7 @@ namespace BridgeMVC.Controllers
             {
                 return new HttpStatusCodeResult(HttpStatusCode.BadRequest);
             }
-            var ioras = await DocumentDBRepository<IORA>.GetItemsAsync(d => (d.NpsJobID==npsid) && (d.Tag=="IORA"));
+            var ioras = await DocumentDBRepository.GetItemsAsync<IORA>(d => (d.NpsJobID==npsid) && (d.Tag=="IORA"));
              if (ioras.Count()==0 )
             {
                 Session["NpsJobId"] = npsid;
@@ -200,7 +200,7 @@ namespace BridgeMVC.Controllers
             {
                 return new HttpStatusCodeResult(HttpStatusCode.BadRequest);
             }
-            var tc = await DocumentDBRepository<TechCheckLSA>.GetItemsAsync(d => (d.DbJobId == id) && (d.Tag == "TechCheckLSA"));
+            var tc = await DocumentDBRepository.GetItemsAsync<TechCheckLSA>(d => (d.DbJobId == id) && (d.Tag == "TechCheckLSA"));
             if (tc.Count() == 0)
             {
                 Session["DbJobId"] = id;
@@ -219,7 +219,7 @@ namespace BridgeMVC.Controllers
         {
             var bm = (string)Session["BridgeModule"];
             await SetViewBags();
-            var myModel = await DocumentDBRepository<Job>.GetItemsAsync(d => d.Tag == "Job" && d.BridgeModule == bm);
+            var myModel = await DocumentDBRepository.GetItemsAsync<Job>(d => d.Tag == "Job" && d.BridgeModule == bm);
             return View(myModel);
         }
 
@@ -228,7 +228,7 @@ namespace BridgeMVC.Controllers
         {
             Session["BridgeModule"] = "M2";
             var bm = (string)Session["BridgeModule"];
-            var myModel = await DocumentDBRepository<Job>.GetItemsAsync(d => d.Tag == "Job" && d.BridgeModule == bm);
+            var myModel = await DocumentDBRepository.GetItemsAsync<Job>(d => d.Tag == "Job" && d.BridgeModule == bm);
 
             return View(myModel);
         }
@@ -263,7 +263,7 @@ namespace BridgeMVC.Controllers
         {
             if (ModelState.IsValid)
             {
-                await DocumentDBRepository<Job>.UpdateItemAsync(item.Id, item);
+                await DocumentDBRepository.UpdateItemAsync<Job>(item.Id, item);
 
                 return View(item);
             }
@@ -280,7 +280,7 @@ namespace BridgeMVC.Controllers
         {
             if (ModelState.IsValid)
             {
-                await DocumentDBRepository<Job>.UpdateItemAsync(item.Id, item);
+                await DocumentDBRepository.UpdateItemAsync<Job>(item.Id, item);
 
                 return View(item);
             }
@@ -295,7 +295,7 @@ namespace BridgeMVC.Controllers
                 return new HttpStatusCodeResult(HttpStatusCode.BadRequest);
             }
 
-            Job item = await DocumentDBRepository<Job>.GetItemAsync(id);
+            Job item = await DocumentDBRepository.GetItemAsync<Job>(id);
             if (item == null)
             {
                 return HttpNotFound();
@@ -316,7 +316,7 @@ namespace BridgeMVC.Controllers
             {
                 return new HttpStatusCodeResult(HttpStatusCode.BadRequest);
             }
-            Job item = await DocumentDBRepository<Job>.GetItemAsync(id);
+            Job item = await DocumentDBRepository.GetItemAsync<Job>(id);
             if (item == null)
             {
                 return HttpNotFound();
@@ -325,7 +325,7 @@ namespace BridgeMVC.Controllers
             Session["NpsJobId"] = item.NpsJobId;
             Session["BridgeModule"] = item.BridgeModule;
             Session["DbJobId"] = item.Id;
-            ViewBag.LUser = await DocumentDBRepository<BUser>.GetItemsAsync(d => d.Tag == "BUser" && (d.BridgesGranted).Contains(item.BridgeModule));
+            ViewBag.LUser = await DocumentDBRepository.GetItemsAsync<BUser>(d => d.Tag == "BUser" && (d.BridgesGranted).Contains(item.BridgeModule));
             return View(item);
         }
 
@@ -337,7 +337,7 @@ namespace BridgeMVC.Controllers
                 return new HttpStatusCodeResult(HttpStatusCode.BadRequest);
             }
 
-            var ioras = await DocumentDBRepository<IORA>.GetItemsAsync(d => (d.NpsJobID == npsid) && (d.Tag == "IORA"));
+            var ioras = await DocumentDBRepository.GetItemsAsync<IORA>(d => (d.NpsJobID == npsid) && (d.Tag == "IORA"));
 
             if (ioras.Count() == 0)
             {

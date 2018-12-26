@@ -18,14 +18,14 @@ namespace BridgeMVC.Controllers
         [ActionName("Index")]
         public async Task<ActionResult> IndexAsync()
         {
-            var items = await DocumentDBRepository<TechCheckLSA>.GetItemsAsync(d => d.Tag == "TechCheckLSA");
+            var items = await DocumentDBRepository.GetItemsAsync<TechCheckLSA>(d => d.Tag == "TechCheckLSA");
             return View(items);
         }
 
         [ActionName("Create")]
         public async Task<ActionResult> CreateAsync()
         {
-            var j = await DocumentDBRepository<Job>.GetItemAsync((string)Session["DbJobId"]);
+            var j = await DocumentDBRepository.GetItemAsync<Job>((string)Session["DbJobId"]);
             ViewBag.Job = j;
 
             var i = new TechCheckLSA
@@ -58,7 +58,7 @@ namespace BridgeMVC.Controllers
         {
             if (ModelState.IsValid)
             {
-                await DocumentDBRepository<TechCheckLSA>.CreateItemAsync(item);
+                await DocumentDBRepository.CreateItemAsync<TechCheckLSA>(item);
                 return RedirectToAction("Index");
             }
             return View(item);
@@ -75,13 +75,13 @@ namespace BridgeMVC.Controllers
         {
             if (ModelState.IsValid)
             {
-                await DocumentDBRepository<TechCheckLSA>.UpdateItemAsync(item.Id, item);
+                await DocumentDBRepository.UpdateItemAsync<TechCheckLSA>(item.Id, item);
                 TechCheckLSA ii = item;
-                Job j = await DocumentDBRepository<Job>.GetItemAsync(ii.DbJobId);
+                Job j = await DocumentDBRepository.GetItemAsync<Job>(ii.DbJobId);
                 ViewBag.Job = j;
-                ViewBag.BTechCheckLSA = await DocumentDBRepository<BTechChecklist>.GetItemsAsync(d => d.Tag == "BTechChecklist" && d.BridgeModule == ii.BridgeModule && d.TemplateName == "TechCheckLSA");
+                ViewBag.BTechCheckLSA = await DocumentDBRepository.GetItemsAsync<BTechChecklist>(d => d.Tag == "BTechChecklist" && d.BridgeModule == ii.BridgeModule && d.TemplateName == "TechCheckLSA");
 
-                ViewBag.LUser = await DocumentDBRepository<BUser>.GetItemsAsync(d => d.Tag == "BUser" && (d.BridgesGranted).Contains(ii.BridgeModule));
+                ViewBag.LUser = await DocumentDBRepository.GetItemsAsync<BUser>(d => d.Tag == "BUser" && (d.BridgesGranted).Contains(ii.BridgeModule));
 
                 return View(item);
             }
@@ -95,11 +95,11 @@ namespace BridgeMVC.Controllers
             {
                 return new HttpStatusCodeResult(HttpStatusCode.BadRequest);
             }
-            TechCheckLSA ii = await DocumentDBRepository<TechCheckLSA>.GetItemAsync(id);
-            Job j = await DocumentDBRepository<Job>.GetItemAsync(ii.DbJobId);
+            TechCheckLSA ii = await DocumentDBRepository.GetItemAsync<TechCheckLSA>(id);
+            Job j = await DocumentDBRepository.GetItemAsync<Job>(ii.DbJobId);
             ViewBag.Job = j;
-            ViewBag.BTechCheckLSA = await DocumentDBRepository<BTechChecklist>.GetItemsAsync(d => d.Tag == "BTechChecklist" && d.BridgeModule == ii.BridgeModule && d.TemplateName == "TechCheckLSA");
-            ViewBag.LUser = await DocumentDBRepository<BUser>.GetItemsAsync(d => d.Tag == "BUser" && (d.BridgesGranted).Contains(ii.BridgeModule));
+            ViewBag.BTechCheckLSA = await DocumentDBRepository.GetItemsAsync<BTechChecklist>(d => d.Tag == "BTechChecklist" && d.BridgeModule == ii.BridgeModule && d.TemplateName == "TechCheckLSA");
+            ViewBag.LUser = await DocumentDBRepository.GetItemsAsync<BUser>(d => d.Tag == "BUser" && (d.BridgesGranted).Contains(ii.BridgeModule));
 
 
             if (ii == null)
@@ -161,7 +161,7 @@ namespace BridgeMVC.Controllers
                 return new HttpStatusCodeResult(HttpStatusCode.BadRequest);
             }
 
-            TechCheckLSA r = await DocumentDBRepository<TechCheckLSA>.GetItemAsync(id);
+            TechCheckLSA r = await DocumentDBRepository.GetItemAsync<TechCheckLSA>(id);
 
             if (r == null)
             {
@@ -175,8 +175,8 @@ namespace BridgeMVC.Controllers
         [ValidateAntiForgeryToken]
         public async Task<ActionResult> DeleteConfirmed(string id)
         {
-            TechCheckLSA r = await DocumentDBRepository<TechCheckLSA>.GetItemAsync(id);
-            await DocumentDBRepository<TechCheckLSA>.DeleteItemAsync(r.Id);
+            TechCheckLSA r = await DocumentDBRepository.GetItemAsync<TechCheckLSA>(id);
+            await DocumentDBRepository.DeleteItemAsync(r.Id);
 
             return RedirectToAction("Index");
         }

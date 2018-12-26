@@ -15,7 +15,7 @@ namespace BridgeMVC.Controllers
         [ActionName("Index")]
         public async Task<ActionResult> IndexAsync()
         {
-            var s = await DocumentDBRepository<BFinancial>.GetItemsAsync(d => d.Tag == "BFinancial");
+            var s = await DocumentDBRepository.GetItemsAsync<BFinancial>(d => d.Tag == "BFinancial");
             return View(s);
         }
 
@@ -35,7 +35,7 @@ namespace BridgeMVC.Controllers
         {
             if (ModelState.IsValid)
             {
-                await DocumentDBRepository<BFinancial>.CreateItemAsync(item);
+                await DocumentDBRepository.CreateItemAsync<BFinancial>(item);
                 return RedirectToAction("Index");
             }
 
@@ -50,7 +50,7 @@ namespace BridgeMVC.Controllers
         {
             if (ModelState.IsValid)
             {
-                await DocumentDBRepository<BFinancial>.UpdateItemAsync(item.Id, item);
+                await DocumentDBRepository.UpdateItemAsync<BFinancial>(item.Id, item);
                 return RedirectToAction("Index");
             }
 
@@ -65,7 +65,7 @@ namespace BridgeMVC.Controllers
                 return new HttpStatusCodeResult(HttpStatusCode.BadRequest);
             }
 
-            BFinancial item = await DocumentDBRepository<BFinancial>.GetItemAsync(id);
+            BFinancial item = await DocumentDBRepository.GetItemAsync<BFinancial>(id);
             if (item == null)
             {
                 return HttpNotFound();
@@ -81,7 +81,7 @@ namespace BridgeMVC.Controllers
                 return new HttpStatusCodeResult(HttpStatusCode.BadRequest);
             }
 
-            BFinancial r = await DocumentDBRepository<BFinancial>.GetItemAsync(id);
+            BFinancial r = await DocumentDBRepository.GetItemAsync<BFinancial>(id);
 
             if (r == null)
             {
@@ -95,8 +95,8 @@ namespace BridgeMVC.Controllers
         [ValidateAntiForgeryToken]
         public async Task<ActionResult> DeleteConfirmed(string id)
         {
-            BFinancial r = await DocumentDBRepository<BFinancial>.GetItemAsync(id);
-            await DocumentDBRepository<BFinancial>.DeleteItemAsync(r.Id);
+            BFinancial r = await DocumentDBRepository.GetItemAsync<BFinancial>(id);
+            await DocumentDBRepository.DeleteItemAsync(r.Id);
 
             return RedirectToAction("Index");
         }

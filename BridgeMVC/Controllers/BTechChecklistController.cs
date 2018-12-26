@@ -15,7 +15,7 @@ namespace BridgeMVC.Controllers
         [ActionName("Index")]
         public async Task<ActionResult> IndexAsync()
         {
-            var s = await DocumentDBRepository<BTechChecklist>.GetItemsAsync(d => d.Tag == "BTechChecklist");
+            var s = await DocumentDBRepository.GetItemsAsync<BTechChecklist>(d => d.Tag == "BTechChecklist");
             return View(s);
         }
 
@@ -36,7 +36,7 @@ namespace BridgeMVC.Controllers
         {
             if (ModelState.IsValid)
             {
-                await DocumentDBRepository<BTechChecklist>.CreateItemAsync(item);
+                await DocumentDBRepository.CreateItemAsync<BTechChecklist>(item);
                 return RedirectToAction("Index");
             }
 
@@ -51,7 +51,7 @@ namespace BridgeMVC.Controllers
         { 
             if (ModelState.IsValid)
             {
-                await DocumentDBRepository<BTechChecklist>.UpdateItemAsync(item.Id, item);
+                await DocumentDBRepository.UpdateItemAsync<BTechChecklist>(item.Id, item);
                 return RedirectToAction("Index");
             }
 
@@ -66,12 +66,12 @@ namespace BridgeMVC.Controllers
                 return new HttpStatusCodeResult(HttpStatusCode.BadRequest);
             }
 
-            BTechChecklist item = await DocumentDBRepository<BTechChecklist>.GetItemAsync(id);
-            var j = await DocumentDBRepository<Job>.GetItemAsync("a74571b7-2758-48ae-bd1a-d88efc437f26");
+            BTechChecklist item = await DocumentDBRepository.GetItemAsync<BTechChecklist>(id);
+            var j = await DocumentDBRepository.GetItemAsync<Job>("a74571b7-2758-48ae-bd1a-d88efc437f26");
             ViewBag.Job = j;
-            var i = await DocumentDBRepository<Job>.GetItemAsync("290c5999-2076-46f1-b40f-443f42cea4f8");
+            var i = await DocumentDBRepository.GetItemAsync<Job>("290c5999-2076-46f1-b40f-443f42cea4f8");
             ViewBag.IORA = i;
-            var f = await DocumentDBRepository<BFinancial>.GetItemsAsync(d => d.Tag == "BFinancial" && d.BridgeModule == i.BridgeModule && d.CertType == j.CertType);
+            var f = await DocumentDBRepository.GetItemsAsync<BFinancial>(d => d.Tag == "BFinancial" && d.BridgeModule == i.BridgeModule && d.CertType == j.CertType);
             ViewBag.FinancialSet = f.FirstOrDefault();
 
             if (item == null)

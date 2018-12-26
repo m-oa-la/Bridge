@@ -14,7 +14,7 @@ namespace BridgeMVC.Controllers
         [ActionName("Index")]
         public async Task<ActionResult> IndexAsync()
         {
-            var s = await DocumentDBRepository<BLSACert>.GetItemsAsync(d => d.Tag == "BLSACert");
+            var s = await DocumentDBRepository.GetItemsAsync<BLSACert>(d => d.Tag == "BLSACert");
             return View(s);
         }
 
@@ -22,7 +22,7 @@ namespace BridgeMVC.Controllers
         public async Task<ActionResult> CreateAsync()
         {
 
-            var j = await DocumentDBRepository<Job>.GetItemAsync("a74571b7-2758-48ae-bd1a-d88efc437f26");
+            var j = await DocumentDBRepository.GetItemAsync<Job>("a74571b7-2758-48ae-bd1a-d88efc437f26");
             ViewBag.Job = j;
    
             //var f = await DocumentDBRepository<BFinancial>.GetItemsAsync(d => d.Tag == "BFinancial" && d.BridgeModule == j.BridgeModule && d.CertType == j.CertType);
@@ -40,7 +40,7 @@ namespace BridgeMVC.Controllers
         {
             if (ModelState.IsValid)
             {
-                await DocumentDBRepository<BLSACert>.CreateItemAsync(item);
+                await DocumentDBRepository.CreateItemAsync<BLSACert>(item);
                 return RedirectToAction("Index");
             }
 
@@ -55,7 +55,7 @@ namespace BridgeMVC.Controllers
         {
             if (ModelState.IsValid)
             {
-                await DocumentDBRepository<BLSACert>.UpdateItemAsync(item.Id, item);
+                await DocumentDBRepository.UpdateItemAsync<BLSACert>(item.Id, item);
                 return RedirectToAction("Index");
             }
 
@@ -70,8 +70,8 @@ namespace BridgeMVC.Controllers
                 return new HttpStatusCodeResult(HttpStatusCode.BadRequest);
             }
 
-            BLSACert item = await DocumentDBRepository<BLSACert>.GetItemAsync(id);
-            var j = await DocumentDBRepository<Job>.GetItemAsync("a74571b7-2758-48ae-bd1a-d88efc437f26");
+            BLSACert item = await DocumentDBRepository.GetItemAsync<BLSACert>(id);
+            var j = await DocumentDBRepository.GetItemAsync<Job>("a74571b7-2758-48ae-bd1a-d88efc437f26");
             ViewBag.Job = j;
 
 

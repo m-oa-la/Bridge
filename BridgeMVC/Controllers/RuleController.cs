@@ -18,7 +18,7 @@ namespace BridgeMVC.Controllers
         public async Task<ActionResult> IndexAsync()
         {
 
-            var items = await DocumentDBRepository<Rule>.GetItemsAsync(d => d.Tag=="Rule" && d.DbJobId== (string)Session["DbJobId"]);
+            var items = await DocumentDBRepository.GetItemsAsync<Rule>(d => d.Tag=="Rule" && d.DbJobId== (string)Session["DbJobId"]);
             //Session["BridgeModule"] = items.FirstOrDefault().BridgeModule;
             return View(items);
         }
@@ -27,7 +27,7 @@ namespace BridgeMVC.Controllers
         public async Task<ActionResult> FullListAsync()
         {
 
-            var items = await DocumentDBRepository<Rule>.GetItemsAsync(d => d.Tag == "Rule");
+            var items = await DocumentDBRepository.GetItemsAsync<Rule>(d => d.Tag == "Rule");
             //Session["BridgeModule"] = items.FirstOrDefault().BridgeModule;
             return View(items);
         }
@@ -39,7 +39,7 @@ namespace BridgeMVC.Controllers
                 return new HttpStatusCodeResult(HttpStatusCode.BadRequest);
             }
 
-            Rule r = await DocumentDBRepository<Rule>.GetItemAsync(id);
+            Rule r = await DocumentDBRepository.GetItemAsync<Rule>(id);
 
             if (r == null)
             {
@@ -53,8 +53,8 @@ namespace BridgeMVC.Controllers
         [ValidateAntiForgeryToken]
         public async Task<ActionResult> DeleteConfirmed(string id)
         {
-            Rule r = await DocumentDBRepository<Rule>.GetItemAsync(id);
-            await DocumentDBRepository<Rule>.DeleteItemAsync(r.Id);
+            Rule r = await DocumentDBRepository.GetItemAsync<Rule>(id);
+            await DocumentDBRepository.DeleteItemAsync(r.Id);
 
             return RedirectToAction("Index");
         }
@@ -79,7 +79,7 @@ namespace BridgeMVC.Controllers
                
             };
 
-            ViewBag.RuleSelectList = await DocumentDBRepository<BList>.GetItemsAsync(d => d.Tag == "BList" && d.BridgeModule == r.BridgeModule && d.ListType=="Rule");
+            ViewBag.RuleSelectList = await DocumentDBRepository.GetItemsAsync<BList>(d => d.Tag == "BList" && d.BridgeModule == r.BridgeModule && d.ListType=="Rule");
 
            
             return View(r);
@@ -93,7 +93,7 @@ namespace BridgeMVC.Controllers
         {
             if (ModelState.IsValid)
             {
-                await DocumentDBRepository<Rule>.CreateItemAsync(item);
+                await DocumentDBRepository.CreateItemAsync<Rule>(item);
                 return RedirectToAction("Index");
             }
 
@@ -107,7 +107,7 @@ namespace BridgeMVC.Controllers
         {
             if (ModelState.IsValid)
             {
-                await DocumentDBRepository<Rule>.UpdateItemAsync(item.Id, item);
+                await DocumentDBRepository.UpdateItemAsync<Rule>(item.Id, item);
                 return RedirectToAction("Index");
             }
 
@@ -122,7 +122,7 @@ namespace BridgeMVC.Controllers
                 return new HttpStatusCodeResult(HttpStatusCode.BadRequest);
             }
 
-            Rule item = await DocumentDBRepository<Rule>.GetItemAsync(id);
+            Rule item = await DocumentDBRepository.GetItemAsync<Rule>(id);
             if (item == null)
             {
                 return HttpNotFound();

@@ -20,7 +20,7 @@ namespace BridgeMVC.Controllers
             string userName = User.Identity.Name.ToLower();
             if (userName.Contains("dnvgl.com"))
             {
-                var users = await DocumentDBRepository<BUser>.GetItemsAsync(d => d.Tag == "BUser" && d.Email.ToLower() == userName);
+                var users = await DocumentDBRepository.GetItemsAsync<BUser>(d => d.Tag == "BUser" && d.Email.ToLower() == userName);
 
                 if (users != null)
                 {
@@ -41,7 +41,7 @@ namespace BridgeMVC.Controllers
                 return View();
             }
 
-            BUser item = await DocumentDBRepository<BUser>.GetItemAsync(id);
+            BUser item = await DocumentDBRepository.GetItemAsync<BUser>(id);
             if (item == null)
             {
                 return HttpNotFound();
@@ -58,7 +58,7 @@ namespace BridgeMVC.Controllers
         {
             if (ModelState.IsValid)
             {
-                await DocumentDBRepository<BUser>.UpdateItemAsync(item.Id, item);
+                await DocumentDBRepository.UpdateItemAsync<BUser>(item.Id, item);
                 
             }
              Session["BridgeModule"] = item.BridgeLastUsed;

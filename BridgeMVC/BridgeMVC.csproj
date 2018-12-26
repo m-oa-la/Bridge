@@ -250,6 +250,7 @@
     <Compile Include="BlobHandling\BlobManager.cs" />
     <Compile Include="Controllers\RuleController.cs" />
     <Compile Include="Controllers\TechChecklistController.cs" />
+    <Compile Include="DocumentDBInitializer.cs" />
     <Compile Include="DocumentDBRepository.cs" />
     <Compile Include="Global.asax.cs">
       <DependentUpon>Global.asax</DependentUpon>

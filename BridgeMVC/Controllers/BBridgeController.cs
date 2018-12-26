@@ -14,7 +14,7 @@ namespace BridgeMVC.Controllers
         [ActionName("Index")]
         public async Task<ActionResult> IndexAsync()
         {
-            var s = await DocumentDBRepository<BBridge>.GetItemsAsync(d => d.Tag == "BBridge");
+            var s = await DocumentDBRepository.GetItemsAsync<BBridge>(d => d.Tag == "BBridge");
             return View(s);
         }
 
@@ -33,7 +33,7 @@ namespace BridgeMVC.Controllers
         {
             if (ModelState.IsValid)
             {
-                await DocumentDBRepository<BBridge>.CreateItemAsync(item);
+                await DocumentDBRepository.CreateItemAsync<BBridge>(item);
                 return RedirectToAction("Index");
             }
 
@@ -47,7 +47,7 @@ namespace BridgeMVC.Controllers
         {
             if (ModelState.IsValid)
             {
-                await DocumentDBRepository<BBridge>.UpdateItemAsync(item.Id, item);
+                await DocumentDBRepository.UpdateItemAsync<BBridge>(item.Id, item);
                 return RedirectToAction("Index");
             }
 
@@ -62,7 +62,7 @@ namespace BridgeMVC.Controllers
                 return new HttpStatusCodeResult(HttpStatusCode.BadRequest);
             }
 
-            BBridge item = await DocumentDBRepository<BBridge>.GetItemAsync(id);
+            BBridge item = await DocumentDBRepository.GetItemAsync<BBridge>(id);
             if (item == null)
             {
                 return HttpNotFound();

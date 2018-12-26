@@ -15,7 +15,7 @@ namespace BridgeMVC.Controllers
         [ActionName("Index")]
         public async Task<ActionResult> IndexAsync()
         {
-            var s = await DocumentDBRepository<BEmail>.GetItemsAsync(d => d.Tag == "BEmail");
+            var s = await DocumentDBRepository.GetItemsAsync<BEmail>(d => d.Tag == "BEmail");
             return View(s);
         }
 
@@ -34,7 +34,7 @@ namespace BridgeMVC.Controllers
         {
             if (ModelState.IsValid)
             {
-                await DocumentDBRepository<BEmail>.CreateItemAsync(item);
+                await DocumentDBRepository.CreateItemAsync<BEmail>(item);
                 return RedirectToAction("Index");
             }
 
@@ -48,7 +48,7 @@ namespace BridgeMVC.Controllers
         {
             if (ModelState.IsValid)
             {
-                await DocumentDBRepository<BEmail>.UpdateItemAsync(item.Id, item);
+                await DocumentDBRepository.UpdateItemAsync<BEmail>(item.Id, item);
                 return RedirectToAction("Index");
             }
 
@@ -63,7 +63,7 @@ namespace BridgeMVC.Controllers
                 return new HttpStatusCodeResult(HttpStatusCode.BadRequest);
             }
 
-            BEmail item = await DocumentDBRepository<BEmail>.GetItemAsync(id);
+            BEmail item = await DocumentDBRepository.GetItemAsync<BEmail>(id);
             if (item == null)
             {
                 return HttpNotFound();
@@ -79,7 +79,7 @@ namespace BridgeMVC.Controllers
                 return new HttpStatusCodeResult(HttpStatusCode.BadRequest);
             }
 
-            BEmail r = await DocumentDBRepository<BEmail>.GetItemAsync(id);
+            BEmail r = await DocumentDBRepository.GetItemAsync<BEmail>(id);
 
             if (r == null)
             {
@@ -93,8 +93,8 @@ namespace BridgeMVC.Controllers
         [ValidateAntiForgeryToken]
         public async Task<ActionResult> DeleteConfirmed(string id)
         {
-            BEmail r = await DocumentDBRepository<BEmail>.GetItemAsync(id);
-            await DocumentDBRepository<BEmail>.DeleteItemAsync(r.Id);
+            BEmail r = await DocumentDBRepository.GetItemAsync<BEmail>(id);
+            await DocumentDBRepository.DeleteItemAsync(r.Id);
 
             return RedirectToAction("Index");
         }

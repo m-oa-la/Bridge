@@ -10,7 +10,7 @@ using System.Web.Routing;
 
 namespace BridgeMVC
 {
-    public class MvcApplication : System.Web.HttpApplication
+    public class MvcApplication : HttpApplication
     {
         protected void Application_Start()
         {
@@ -19,26 +19,7 @@ namespace BridgeMVC
             RouteConfig.RegisterRoutes(RouteTable.Routes);
             BundleConfig.RegisterBundles(BundleTable.Bundles);
             AntiForgeryConfig.UniqueClaimTypeIdentifier = ClaimTypes.NameIdentifier;
-            DocumentDBRepository<BridgeMVC.Models.BFinancial>.Initialize();
-            DocumentDBRepository<BridgeMVC.Models.BIORA>.Initialize();
-            DocumentDBRepository<BridgeMVC.Models.BProduct>.Initialize();
-            DocumentDBRepository<BridgeMVC.Models.BUser>.Initialize();
-            DocumentDBRepository<BridgeMVC.Models.BRule>.Initialize();
-            DocumentDBRepository<BridgeMVC.Models.BBridge>.Initialize();
-            DocumentDBRepository<BridgeMVC.Models.BFinancial>.Initialize();
-            DocumentDBRepository<BridgeMVC.Models.Item>.Initialize();
-            DocumentDBRepository<BridgeMVC.Models.Job>.Initialize();
-            DocumentDBRepository<BridgeMVC.Models.IORA>.Initialize();
-            DocumentDBRepository<BridgeMVC.Models.Customer>.Initialize();
-            DocumentDBRepository<BridgeMVC.Models.Employee>.Initialize();
-            DocumentDBRepository<BridgeMVC.Models.Order>.Initialize();
-            DocumentDBRepository<BridgeMVC.Models.Product>.Initialize();
-            DocumentDBRepository<BridgeMVC.Models.Rule>.Initialize();
-            DocumentDBRepository<BridgeMVC.Models.TechCheckLSA>.Initialize();
-            DocumentDBRepository<BridgeMVC.Models.BTechChecklist>.Initialize();
-            DocumentDBRepository<BridgeMVC.Models.BList>.Initialize();
-            DocumentDBRepository<BridgeMVC.Models.BEmail>.Initialize();
-            DocumentDBRepository<BridgeMVC.Models.BLSACert>.Initialize();
+            DocumentDBInitializer.Initialize();
         }
     }
 }
