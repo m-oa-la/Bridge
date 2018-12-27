@@ -17,8 +17,6 @@
         min-width: 300px;
         font-weight: bold;
         height: 100px;
-        border-color: green;
-        border-style: dotted;
         float:left;
         margin-right:1em;
     }
@@ -27,28 +25,34 @@
             cursor:pointer;
             color:black;
         }
-    .sidenav {
-        width: 210px;
-        position: fixed;
-        z-index: 1;
-        top: 120px;
-        left: 30px;
-        background: #eee;
-        overflow-x: hidden;
-        padding: 8px 0;
+    .wbnav {
+        overflow: hidden;
+        background-color: white;
     }
 
-        .sidenav a {
-            padding: 6px 8px 6px 16px;
-            text-decoration: none;
-            font-size: large;
-            color: #064579;
+        .wbnav a {
+            float: left;
             display: block;
+            color: black;
+            text-align: center;
+            padding: 14px 36px;
+            text-decoration: none;
+            font-size: 17px;
         }
 
-            .sidenav a:hover {
-                color: #0094ff;
+            .wbnav a:hover {
+                background-color: #ddd;
+                color: black;
             }
+
+    .active {
+        background-color: #4CAF50;
+        color: white;
+    }
+
+    .wbnav .icon {
+        display: none;
+    }
 
     .dropdown {
         position: relative;
@@ -82,6 +86,22 @@
     /*.form-control {
         font-weight: normal;
     }*/
+    div.card {
+        width: 250px;
+        box-shadow: 0 4px 8px 0 rgba(0, 0, 0, 0.2), 0 6px 20px 0 rgba(0, 0, 0, 0.19);
+        text-align: center;
+    }
+
+    div.header {
+        background-color: #4CAF50;
+        color: white;
+        padding: 10px;
+        font-size: 40px;
+    }
+
+    div.container {
+        padding: 10px;
+    }
 </style>
 
 
@@ -96,24 +116,18 @@
     var LUser = ViewBag.LUser;
 
     ViewBag.Title = "Index";
-    string colorY, colorN, colorTask;
-    colorY = "background-color:#009fda; color:transparent;";
-    colorN = "background-color:grey; color:transparent;";
-    colorTask = "background-color:#36842d; color:transparent;";
-
-
     var users = ViewBag.users;
     var i = 0;
     var classNv = "";
 
 }
 
-<div class="sidenav">
-    <a href="">To Be Distributed</a>
-    <a href="">On Hold</a>
-    <a href="">On Going</a>
-    <a href="">Under Verification</a>
-    <a href="">Completed Last Week</a>
+<div class="wbnav">
+    <a href="">TO Be DISTRIBUTED</a>
+    <a href="">ON HOLD</a>
+    <a href="">ON GOING</a>
+    <a href="">UNDER VERIFICATION</a>
+    <a href="">COMPLETED LAST WEEK</a>
 </div>
 
 
@@ -126,19 +140,23 @@
         i += 1;
         var nv = "myDropdown" + i;
         classNv = "wbTab  ct"+i;
-    <div class="@classNv" onclick="myFunction(@i)">
+
+    <div class="card @classNv" onclick="myFunction(@i)">
         @Html.DisplayFor(modelItem => item.NpsJobId)
         <br />
         @Html.DisplayFor(modelItem => item.ProdDescription)
         <br /> Budget:
         @Html.DisplayFor(modelItem => item.BudgetHour) hours
         
+
         <div id=@nv class="dropdown-content">
             <a href=""><u>SEND JOB TO</u></a>
             <a href="#home">SXL</a>
             <a href="#about">SADEL</a>
             <a href="#contact">NECA</a>
         </div>
+
+
     </div>
 
     }
