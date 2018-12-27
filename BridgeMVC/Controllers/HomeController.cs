@@ -7,17 +7,21 @@ using System.Web;
 using System.Web.Mvc;
 using System.Diagnostics;
 using System.Net;
+using System.Security.Claims;
+using BridgeMVC.Extensions;
 
 namespace BridgeMVC.Controllers
 {
     public class HomeController : Controller
 
     {
+        [Authorize]
         [ActionName("Index")]
         public async Task<ActionResult> IndexAsync()
         {
+            var user = User as ClaimsPrincipal;
             string id = "";
-            string userName = User.Identity.Name.ToLower();
+            string userName = user.Email().ToLower();
             if (userName.Contains("dnvgl.com"))
             {
                 var users = await DocumentDBRepository.GetItemsAsync<BUser>(d => d.Tag == "BUser" && d.Email.ToLower() == userName);
@@ -33,6 +37,7 @@ namespace BridgeMVC.Controllers
             }
             else
             {
+                
                 return RedirectToAction("SignUp", "Onboarding");
             }
 
@@ -62,7 +67,7 @@ namespace BridgeMVC.Controllers
                 
             }
              Session["BridgeModule"] = item.BridgeLastUsed;
-            return View(item);
+            return RedirectToAction("_Index", "Job");
         }
 
         public ActionResult About()

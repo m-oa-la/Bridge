@@ -1,6 +1,10 @@
 ﻿@model BridgeMVC.Models.BUser
 
+
+
+
 @{
+
     ViewBag.Title = "Index";
     Layout = "~/Views/Shared/_Layout.cshtml";
     string LastUsedBridge = Model.BridgeLastUsed;
@@ -21,6 +25,7 @@
         });
     }
 }
+
 
 
 @using (Html.BeginForm())
@@ -54,7 +59,7 @@
         </div>
 
 
-        <h3> Please select the one you are going to use: </h3>
+        <h3> Please select the bridge module to use: </h3>
 
 
         <div class="form-group">
@@ -67,7 +72,9 @@
     </div>
 
 }
-    //BlobManager
+
+
+
 @*<div>
         <a href="@Url.Action("Get", "Blob")" style="color:green; font-size:14pt;">View Data</a>
     </div>
