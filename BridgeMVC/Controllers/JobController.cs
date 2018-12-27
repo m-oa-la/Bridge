@@ -6,13 +6,6 @@ using System.Web.Mvc;
 using System.Net;
 using System.Threading.Tasks;
 using BridgeMVC.Models;
-using System.Dynamic;
-using System.Net.Http;
-using System.IdentityModel.Tokens;
-using System.Net.Http.Headers;
-
-using Microsoft.IdentityModel.Clients.ActiveDirectory;
-using Newtonsoft.Json;
 using System.Security.Claims;
 using BridgeMVC.Extensions;
 

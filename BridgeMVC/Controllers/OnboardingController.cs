@@ -7,9 +7,7 @@ using System.Net;
 using System.Web;
 using System.Web.Mvc;
 using BridgeMVC.Models;
-//using TodoListWebApp.DAL;
 using System.Configuration;
-using Microsoft.IdentityModel.Clients.ActiveDirectory;
 using static BridgeMVC.Models.AppModels;
 
 namespace BridgeMVC.Controllers
