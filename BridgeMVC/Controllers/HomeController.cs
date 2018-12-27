@@ -50,7 +50,7 @@ namespace BridgeMVC.Controllers
         }
 
 
-
+        [Authorize]
         [HttpPost]
         [ActionName("Index")]
         [ValidateAntiForgeryToken]

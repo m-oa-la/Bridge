@@ -8,18 +8,14 @@ using System.Threading.Tasks;
 using BridgeMVC.Models;
 using System.Diagnostics;
 using System.Net.Http;
-using Microsoft.IdentityModel.Clients.ActiveDirectory;
 using System.Dynamic;
 using System.Reflection;
 
 namespace BridgeMVC.Controllers
 {
-
+    [Authorize]
     public class IORAController : Controller
     {
-
-
-
         [ActionName("Index")]
         public async Task<ActionResult> IndexAsync()
         {
@@ -122,15 +118,15 @@ namespace BridgeMVC.Controllers
 
         public async Task<ActionResult> ExportToWordAsync(string ioraId)
         {
-            ;
-            //var BIORAs = await DocumentDBRepository<BIORA>.GetItemsAsync(d => (d.Tag == "BIORA") && (d.BridgeModule == blu));
+            throw new NotImplementedException("ExportToWordAsync not implemented");
+            /*
             IORA ii = await DocumentDBRepository.GetItemAsync<IORA>(ioraId);
             var blu = ii.BridgeModule;
             var npsjobid = ii.NpsJobID;
             string savePath = Server.MapPath("~/App_Data/" + blu + "/Projects/" + ii.NpsJobID + " IORA.docx");
             string templatePath = Server.MapPath("~/App_Data/" + blu + "/Templates/IORA Template.docx");
 
-             Microsoft.Office.Interop.Word.Application app = new Microsoft.Office.Interop.Word.Application();
+            Microsoft.Office.Interop.Word.Application app = new Microsoft.Office.Interop.Word.Application();
             Microsoft.Office.Interop.Word.Document doc = new Microsoft.Office.Interop.Word.Document();
             doc = app.Documents.Open(templatePath);
             doc.Activate();
@@ -160,7 +156,7 @@ namespace BridgeMVC.Controllers
             app.Application.Quit();
             Session["dbJobId"] = ii.DbJobId;
             return RedirectToAction("ProjFolder", "Job");
-            //Response.Write("Success");
+            */
         }
 
         [HttpGet]
@@ -183,21 +179,19 @@ namespace BridgeMVC.Controllers
 
         private async Task<string> GetAccessTokenAsync()
         {
-            string authority = "https://login.microsoftonline.com/adf10e2b-b6e9-41d6-be2f-c12bb566019c/";
-            //var cache = _tokenCacheFactory.CreateForUser(User);
+            throw new NotImplementedException("GetAccessTokenAsync not implemented");
+            //string authority = "https://login.microsoftonline.com/adf10e2b-b6e9-41d6-be2f-c12bb566019c/";
+            
+            //var authContext = new Microsoft.IdentityModel.Clients.ActiveDirectory.AuthenticationContext(authority);
+            ////App's credentials may be needed if access tokens need to be refreshed with a refresh token
+            //string clientId = "a0dccf3c-4333-49dd-b89d-00ee25ee1896";
+            //string clientSecret = "OCt9sJPOehC74smyUcWo7VyMDnyewszsu3V2zV3dMXg=";
+            //var credential = new ClientCredential(clientId, clientSecret);
 
-
-            var authContext = new Microsoft.IdentityModel.Clients.ActiveDirectory.AuthenticationContext(authority);
-            //App's credentials may be needed if access tokens need to be refreshed with a refresh token
-            string clientId = "a0dccf3c-4333-49dd-b89d-00ee25ee1896";
-            string clientSecret = "OCt9sJPOehC74smyUcWo7VyMDnyewszsu3V2zV3dMXg=";
-            var credential = new ClientCredential(clientId, clientSecret);
-            //var userId = User.GetObjectId();
-
-            var result = await authContext.AcquireTokenAsync(
-                "https://dnv.onmicrosoft.com/2da7430f-1437-4786-8f8b-0668159e9016", credential
-                );
-            return result.AccessToken;
+            //var result = await authContext.AcquireTokenAsync(
+            //    "https://dnv.onmicrosoft.com/2da7430f-1437-4786-8f8b-0668159e9016", credential
+            //    );
+            //return result.AccessToken;
         }
 
         [HttpPost]

@@ -6,24 +6,21 @@ using System.Web.Mvc;
 using System.Net;
 using System.Threading.Tasks;
 using BridgeMVC.Models;
-using System.Dynamic;
-using System.Net.Http;
-using System.IdentityModel.Tokens;
-using System.Net.Http.Headers;
-
-using Microsoft.IdentityModel.Clients.ActiveDirectory;
-using Newtonsoft.Json;
+using System.Security.Claims;
+using BridgeMVC.Extensions;
 
 namespace BridgeMVC.Controllers
 {
-
+    [Authorize]
     public class JobController : Controller
     {
         [ActionName("_Index")]
         public async Task<ActionResult> _Index()
         {
             string id = "";
-            string userName = User.Identity.Name.ToLower();
+            var user = User as ClaimsPrincipal;
+            string userName =  user.Email().ToLower();
+
             if (userName.Contains("dnvgl.com"))
             {
                 var users = await DocumentDBRepository.GetItemsAsync<BUser>(d => d.Tag == "BUser" && d.Email.ToLower() == userName);

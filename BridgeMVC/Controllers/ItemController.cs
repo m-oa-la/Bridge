@@ -10,6 +10,7 @@ using System.Diagnostics;
 
 namespace BridgeMVC.Controllers
 {
+    [Authorize]
     public class ItemController : Controller
     {
         [ActionName("Index")]
