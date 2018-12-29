@@ -314,7 +314,6 @@
     <Content Include="Content\fonts\avenir\3a42a252-67ff-4186-88cf-762f56719ca1.woff" />
     <Content Include="Content\fonts\avenir\7a1b7ae7-5c29-481f-83ac-652e932c5509.eot" />
     <Content Include="Content\fonts\avenir\dbc39ae3-2636-4653-a23e-8938bce2cf51.ttf" />
-    <Content Include="App_Data\M1\Projects\344.1-001234-11 IORA.docx" />
     <Content Include="App_Data\M1\Templates\IORA Template.docx" />
     <Content Include="App_Data\M2\Projects\IORA.docx" />
     <Content Include="App_Data\M2\Templates\IORA Template.docx" />
@@ -423,6 +422,7 @@
     <Content Include="Views\Job\M2_Task2.cshtml" />
   </ItemGroup>
   <ItemGroup>
+    <Folder Include="App_Data\M1\Projects\" />
     <Folder Include="Views\Account\" />
     <Folder Include="Views\API\" />
     <Folder Include="Views\Customer\" />
