@@ -10,6 +10,8 @@ using System.Diagnostics;
 using System.Net.Http;
 using System.Dynamic;
 using System.Reflection;
+using MABridge.OpenXml;
+using System.IO;
 
 namespace BridgeMVC.Controllers
 {
@@ -118,45 +120,35 @@ namespace BridgeMVC.Controllers
 
         public async Task<ActionResult> ExportToWordAsync(string ioraId)
         {
-            throw new NotImplementedException("ExportToWordAsync not implemented");
-            /*
+            
             IORA ii = await DocumentDBRepository.GetItemAsync<IORA>(ioraId);
             var blu = ii.BridgeModule;
             var npsjobid = ii.NpsJobID;
             string savePath = Server.MapPath("~/App_Data/" + blu + "/Projects/" + ii.NpsJobID + " IORA.docx");
             string templatePath = Server.MapPath("~/App_Data/" + blu + "/Templates/IORA Template.docx");
 
-            Microsoft.Office.Interop.Word.Application app = new Microsoft.Office.Interop.Word.Application();
-            Microsoft.Office.Interop.Word.Document doc = new Microsoft.Office.Interop.Word.Document();
-            doc = app.Documents.Open(templatePath);
-            doc.Activate();
-
-
             Type t = ii.GetType();
             PropertyInfo[] props = t.GetProperties();
-            foreach (var prop in props)
-            {
-                string pname = prop.Name;
-                if (doc.Bookmarks.Exists(pname))
-                {
-                    string val = prop.GetValue(ii, null) as string;
-                    doc.Bookmarks[pname].Select();
-                    app.Selection.TypeText(val);
 
-                    string s = pname + "_1";
-                    if (doc.Bookmarks.Exists(s))
-                    {
-                        doc.Bookmarks[s].Select();
-                        app.Selection.TypeText(val);
-                    }
-                }
+            var fieldValues = t.GetProperties()
+                .ToDictionary(prop => prop.Name, prop => prop.GetValue(ii, null) as string);
+
+            if (System.IO.File.Exists(savePath))
+            {
+                System.IO.File.Delete(savePath);
             }
 
-            doc.SaveAs2(savePath);
-            app.Application.Quit();
+            var bytes = System.IO.File.ReadAllBytes(templatePath);
+            using (var mem = new MemoryStream(bytes)) {
+                OpenXmlWordHelper.FillForm(fieldValues, mem);
+                using (var target = new FileStream(savePath, FileMode.CreateNew))
+                {
+                    mem.WriteTo(target);
+                }
+            }
+            
             Session["dbJobId"] = ii.DbJobId;
             return RedirectToAction("ProjFolder", "Job");
-            */
         }
 
         [HttpGet]
