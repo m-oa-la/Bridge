@@ -3,6 +3,24 @@
 }
 
 <div>
+    @Html.ActionLink("Create blob container", "CreateBlobContainer", "Blob")
+</div>
+
+<div>
+    @Html.ActionLink("Upload blob", "UploadBlob", "Blob")
+</div>
+
+<div>
+    @Html.ActionLink("List blobs", "ListBlobs", "Blob")
+</div>
+<div>
+    @Html.ActionLink("Download blob", "DownloadBlob", "Blob")
+</div>
+<div>
+    @Html.ActionLink("Delete blob", "DeleteBlob", "Blob")
+</div>
+
+<div>
     <a href="@Url.Action("Get", "Blob")" style="color:green; font-size:14pt;">View Data</a>
 </div>
 <div>
