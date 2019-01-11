@@ -12,6 +12,8 @@ using System.Dynamic;
 using System.Reflection;
 using MABridge.OpenXml;
 using System.IO;
+using System.Configuration;
+using Microsoft.IdentityModel.Clients.ActiveDirectory;
 
 namespace BridgeMVC.Controllers
 {
@@ -157,33 +159,41 @@ namespace BridgeMVC.Controllers
             var client = new HttpClient();
             var queryString = HttpUtility.ParseQueryString(string.Empty);
             string atoken = await GetAccessTokenAsync();
-
+            string partnerIISubKey = ConfigurationManager.AppSettings["iAPI:PartnerIISubKey"];
             // Request headers
-            client.DefaultRequestHeaders.Add("Ocp-Apim-Subscription-Key", "057e18c4802a4534bf32977f3e4af5ba");
+            client.DefaultRequestHeaders.Add("Ocp-Apim-Subscription-Key", partnerIISubKey);
             client.DefaultRequestHeaders.Add("Authorization", "Bearer " + atoken);
 
-            var uri = "https://testapi-internal.dnvgl.com/PartnerII_Test/api/EmployeesExtendedBySignature?PersonSignature=" + sig;
+            var uri = "https://testapi-internal.dnvgl.com/partner2_dev/api/EmployeesExtendedBySignature?PersonSignature=" + sig;
 
             var response = await client.GetAsync(uri);
             return await response.Content.ReadAsStringAsync();
             //return atoken;
         }
 
+
+
+
         private async Task<string> GetAccessTokenAsync()
         {
-            throw new NotImplementedException("GetAccessTokenAsync not implemented");
-            //string authority = "https://login.microsoftonline.com/adf10e2b-b6e9-41d6-be2f-c12bb566019c/";
-            
-            //var authContext = new Microsoft.IdentityModel.Clients.ActiveDirectory.AuthenticationContext(authority);
-            ////App's credentials may be needed if access tokens need to be refreshed with a refresh token
-            //string clientId = "a0dccf3c-4333-49dd-b89d-00ee25ee1896";
-            //string clientSecret = "OCt9sJPOehC74smyUcWo7VyMDnyewszsu3V2zV3dMXg=";
-            //var credential = new ClientCredential(clientId, clientSecret);
+            //throw new NotImplementedException("GetAccessTokenAsync not implemented");
+            string clientId = ConfigurationManager.AppSettings["iAPI:ClientID"];
+            string clientSecret = ConfigurationManager.AppSettings["iAPI:Password"];
+            string aadAuthority = ConfigurationManager.AppSettings["iAPI:AADAuthority"];
+            string partnerIIAPISIT = ConfigurationManager.AppSettings["iAPI:PartnerIIAPISIT"];
 
-            //var result = await authContext.AcquireTokenAsync(
-            //    "https://dnv.onmicrosoft.com/2da7430f-1437-4786-8f8b-0668159e9016", credential
-            //    );
-            //return result.AccessToken;
+            //clientId = "a0dccf3c-4333-49dd-b89d-00ee25ee1896";
+            //clientSecret = "OCt9sJPOehC74smyUcWo7VyMDnyewszsu3V2zV3dMXg=";
+
+            var authContext = new Microsoft.IdentityModel.Clients.ActiveDirectory.AuthenticationContext(aadAuthority);
+            //App's credentials may be needed if access tokens need to be refreshed with a refresh token
+            var credential = new ClientCredential(clientId, clientSecret);
+
+            var result = await authContext.AcquireTokenAsync(
+                partnerIIAPISIT, credential
+                );
+
+            return result.AccessToken;
         }
 
         [HttpPost]
