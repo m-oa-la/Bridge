@@ -88,8 +88,9 @@ namespace BridgeMVC.Controllers
                 var f = await DocumentDBRepository.GetItemsAsync<BFinancial>(d => d.Tag == "BFinancial" && d.BridgeModule == ii.BridgeModule && d.CertType == j.CertType);
                 ViewBag.FinancialSet = f.FirstOrDefault();
                 ViewBag.LUser = await DocumentDBRepository.GetItemsAsync<BUser>(d => d.Tag == "BUser" && (d.BridgesGranted).Contains(j.BridgeModule));
-
+                 
                 //return RedirectToAction("Index");
+
                 return View(item);
             }
             return View(item);
@@ -110,6 +111,23 @@ namespace BridgeMVC.Controllers
             var f = await DocumentDBRepository.GetItemsAsync<BFinancial>(d => d.Tag == "BFinancial" && d.BridgeModule == ii.BridgeModule && d.CertType == j.CertType );
             ViewBag.FinancialSet = f.FirstOrDefault();
             ViewBag.LUser = await DocumentDBRepository.GetItemsAsync<BUser>(d => d.Tag == "BUser" && (d.BridgesGranted).Contains(j.BridgeModule));
+
+            string clientId = ConfigurationManager.AppSettings["iAPI:ClientID"];
+            string clientSecret = ConfigurationManager.AppSettings["iAPI:Password"];
+            string aadAuthority = ConfigurationManager.AppSettings["iAPI:AADAuthority"];
+            string partnerIIAPISIT = ConfigurationManager.AppSettings["iAPI:PartnerIIAPISIT"];
+
+            var authContext = new AuthenticationContext(aadAuthority);
+            //App's credentials may be needed if access tokens need to be refreshed with a refresh token
+            var credential = new ClientCredential(clientId, clientSecret);
+
+            ViewBag.AADToken = credential;
+
+            var result = await authContext.AcquireTokenAsync(partnerIIAPISIT, credential);
+            ViewBag.PartnerToken = result.AccessToken;
+
+
+
 
 
             if (ii == null)
@@ -182,17 +200,10 @@ namespace BridgeMVC.Controllers
             string aadAuthority = ConfigurationManager.AppSettings["iAPI:AADAuthority"];
             string partnerIIAPISIT = ConfigurationManager.AppSettings["iAPI:PartnerIIAPISIT"];
 
-            //clientId = "a0dccf3c-4333-49dd-b89d-00ee25ee1896";
-            //clientSecret = "OCt9sJPOehC74smyUcWo7VyMDnyewszsu3V2zV3dMXg=";
-
             var authContext = new Microsoft.IdentityModel.Clients.ActiveDirectory.AuthenticationContext(aadAuthority);
             //App's credentials may be needed if access tokens need to be refreshed with a refresh token
             var credential = new ClientCredential(clientId, clientSecret);
-
-            var result = await authContext.AcquireTokenAsync(
-                partnerIIAPISIT, credential
-                );
-
+            var result = await authContext.AcquireTokenAsync(partnerIIAPISIT, credential);
             return result.AccessToken;
         }
 

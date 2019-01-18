@@ -11,6 +11,8 @@
     var Rules = ViewBag.Rules;
     var FinancialSet = ViewBag.FinancialSet;
     var LUser = ViewBag.LUser;
+    var AADToken = ViewBag.AADToken; 
+    var PartnerToken = ViewBag.PartnerToken; 
 
 }
 <style>
@@ -26,7 +28,7 @@
 {
     @Html.AntiForgeryToken()
 
-    <table style="border:hidden">
+        <table style="border:hidden">
         <colgroup>
             <col span="1" style="width: 60%;">
             <col span="1" style="width: 10%;">
@@ -440,6 +442,8 @@
 }
 <script>
 
+
+
     var IORA = @Html.Raw(Json.Encode(Model));
     var BIORA = @Html.Raw(Json.Encode(BIORA));
     var Job = @Html.Raw(Json.Encode(Job));
@@ -447,7 +451,13 @@
     var bm = "@bridgeModule";
     var Rules = @Html.Raw(Json.Encode(Rules));
     var FinancialSet = @Html.Raw(Json.Encode(FinancialSet));
-        var LUser = @Html.Raw(Json.Encode(LUser));
+    var LUser = @Html.Raw(Json.Encode(LUser));
+
+    var aadToken = @Html.Raw(Json.Encode(AADToken));
+    var partnerToken = "@PartnerToken";
+
+    console.log("AADToken: " + aadToken)
+    console.log("PartnerToken: " + partnerToken)
 
 //general
     var TargetUser;
