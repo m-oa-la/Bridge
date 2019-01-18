@@ -164,7 +164,7 @@ namespace BridgeMVC.Controllers
             client.DefaultRequestHeaders.Add("Ocp-Apim-Subscription-Key", partnerIISubKey);
             client.DefaultRequestHeaders.Add("Authorization", "Bearer " + atoken);
 
-            var uri = "https://testapi-internal.dnvgl.com/partner2_dev/api/EmployeesExtendedBySignature?PersonSignature=" + sig;
+            var uri = "https://api-internal.dnvgl.com/PartnerII/api/EmployeesExtendedBySignature?PersonSignature=" + sig;
 
             var response = await client.GetAsync(uri);
             return await response.Content.ReadAsStringAsync();
