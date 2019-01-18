@@ -324,6 +324,7 @@
     <Content Include="App_Data\M2\Templates\IORA Template.docx" />
     <Content Include="Connected Services\AzureStorage1\ConnectedService.json" />
     <None Include="Properties\PublishProfiles\dnvglbridge - Web Deploy.pubxml" />
+    <None Include="Properties\PublishProfiles\FolderProfile.pubxml" />
     <None Include="Properties\PublishProfiles\MABridgeDev - Web Deploy.pubxml" />
     <None Include="Scripts\jquery-3.3.1.intellisense.js" />
     <Content Include="Scripts\bridgeScript.js" />
