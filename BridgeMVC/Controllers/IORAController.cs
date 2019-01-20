@@ -112,19 +112,19 @@ namespace BridgeMVC.Controllers
             ViewBag.FinancialSet = f.FirstOrDefault();
             ViewBag.LUser = await DocumentDBRepository.GetItemsAsync<BUser>(d => d.Tag == "BUser" && (d.BridgesGranted).Contains(j.BridgeModule));
 
-            string clientId = ConfigurationManager.AppSettings["iAPI:ClientID"];
-            string clientSecret = ConfigurationManager.AppSettings["iAPI:Password"];
-            string aadAuthority = ConfigurationManager.AppSettings["iAPI:AADAuthority"];
-            string partnerIIAPISIT = ConfigurationManager.AppSettings["iAPI:PartnerIIAPISIT"];
+            //string clientId = ConfigurationManager.AppSettings["iAPI:ClientID"];
+            //string clientSecret = ConfigurationManager.AppSettings["iAPI:Password"];
+            //string aadAuthority = ConfigurationManager.AppSettings["iAPI:AADAuthority"];
+            //string partnerIIAPISIT = ConfigurationManager.AppSettings["iAPI:PartnerIIAPISIT"];
 
-            var authContext = new AuthenticationContext(aadAuthority);
-            //App's credentials may be needed if access tokens need to be refreshed with a refresh token
-            var credential = new ClientCredential(clientId, clientSecret);
+            //var authContext = new AuthenticationContext(aadAuthority);
+            ////App's credentials may be needed if access tokens need to be refreshed with a refresh token
+            //var credential = new ClientCredential(clientId, clientSecret);
 
-            ViewBag.AADToken = credential;
+            //ViewBag.AADToken = credential;
 
-            var result = await authContext.AcquireTokenAsync(partnerIIAPISIT, credential);
-            ViewBag.PartnerToken = result.AccessToken;
+            //var result = await authContext.AcquireTokenAsync(partnerIIAPISIT, credential);
+            //ViewBag.PartnerToken = result.AccessToken;
 
 
 
@@ -174,19 +174,20 @@ namespace BridgeMVC.Controllers
         [HttpGet]
         public async Task<string> ReadEmployeeInfo(string sig)
         {
-            var client = new HttpClient();
-            var queryString = HttpUtility.ParseQueryString(string.Empty);
+            WebClient client = new WebClient
+            {
+                UseDefaultCredentials = true
+            };
+
             string atoken = await GetAccessTokenAsync();
             string partnerIISubKey = ConfigurationManager.AppSettings["iAPI:PartnerIISubKey"];
-            // Request headers
-            client.DefaultRequestHeaders.Add("Ocp-Apim-Subscription-Key", partnerIISubKey);
-            client.DefaultRequestHeaders.Add("Authorization", "Bearer " + atoken);
+            client.Headers.Add("Ocp-Apim-Subscription-Key", partnerIISubKey);
+            client.Headers.Add("Authorization", "Bearer " + atoken);
 
             var uri = "https://api-internal.dnvgl.com/PartnerII/api/EmployeesExtendedBySignature?PersonSignature=" + sig;
 
-            var response = await client.GetAsync(uri);
-            return await response.Content.ReadAsStringAsync();
-            //return atoken;
+            var response = client.DownloadString(uri);
+            return response;
         }
 
 
