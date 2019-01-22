@@ -482,33 +482,33 @@
     console.log("FinancialSet")
     console.log(FinancialSet)
 
-    function updateParties(role, ) {
-        var str = $("#" + role + "Sig").val();
-        //console.log("hi")
-        $.ajax({
-            url: "/IORA/reademployeeinfo",
-            type: "get",
-            //contenttype: "application/json; charset=utf-8",readclientinfo
+    //function updateParties(role, ) {
+    //    var str = $("#" + role + "Sig").val();
+    //    //console.log("hi")
+    //    $.ajax({
+    //        url: "/IORA/reademployeeinfo",
+    //        type: "get",
+    //        //contenttype: "application/json; charset=utf-8",readclientinfo
 
-            data: { 'sig': str }, // `if you want to send some parameter as mentioned in action method parameter. the name of parameter should be same.`
-            cache: false, //cache:true only works with get and head request. if you want to cache in the browser,then you set it true.`
-            async: true, //async true means you are doing things parallel.you set async to false, when you need that ajax request to be completed before the browser passes to other codes:`
-            success: function (data) {
+    //        data: { 'sig': str }, // `if you want to send some parameter as mentioned in action method parameter. the name of parameter should be same.`
+    //        cache: false, //cache:true only works with get and head request. if you want to cache in the browser,then you set it true.`
+    //        async: true, //async true means you are doing things parallel.you set async to false, when you need that ajax request to be completed before the browser passes to other codes:`
+    //        success: function (data) {
 
-                var obj = JSON.parse(data);
-                console.log("Seller");
-                console.log(data);
-                $("#" + role + "UnitName").val(obj.DepartmentLongName);
-                $("#" + role + "Name").val(obj.PreferredNameConcatenated);
-                $("#" + role + "AcntNo").val(obj.LegalEntityIdentifier);
-                $("#" + role + "UnitNo").val(obj.DepartmentShortName);
+    //            var obj = JSON.parse(data);
+    //            console.log("Seller");
+    //            console.log(data);
+    //            $("#" + role + "UnitName").val(obj.DepartmentLongName);
+    //            $("#" + role + "Name").val(obj.PreferredNameConcatenated);
+    //            $("#" + role + "AcntNo").val(obj.LegalEntityIdentifier);
+    //            $("#" + role + "UnitNo").val(obj.DepartmentShortName);
 
-            },
-            error: function () {
-                $("#sellerUnit").val("error");
-            }
-        });
-    }
+    //        },
+    //        error: function () {
+    //            $("#sellerUnit").val("error");
+    //        }
+    //    });
+    //}
 
 
 
@@ -617,7 +617,7 @@
 
         $("#DgSpecialConditions").val(sc);
         updateFeeCalc();
-    };
+    }
 
     function updateFeeCalc() {
         var fee = IORA.IORAFee;
