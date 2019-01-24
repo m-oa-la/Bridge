@@ -608,15 +608,16 @@ input, select, textarea {
 }
 
 table {
-    border: 0;
+  
     width: 100%
 }
 
     table td {
-        border: 0;
+      
         padding-left: 1em;
         padding-right: 1em;
         padding-bottom: 3px;
+        border-top: none
     }
 
         table td.shrink {
@@ -624,16 +625,18 @@ table {
         }
 
         table td.expand {
-            width: 99%
+            width: 99%;
+
         }
 
     table th {
-        background-color: #d5d5d5
+        background-color: white;
+        border-top: none
     }
 
     table tr {
-        border: 0;
-
+        
+        border-top: none
     }
 
         table tr:hover {

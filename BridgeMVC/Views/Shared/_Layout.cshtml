@@ -85,12 +85,8 @@
 </head>
 
 <body>
-
-
-        <header class="header" style="margin-left:180px">
-            <a class="branding" href="#">
-                <img class="branding__brand-image" src="https://mydnvglcdn.azureedge.net/cdn/common/images/logo/dnvgl-logo-wide.svg" alt="Back to DNV GL">
-            </a>
+    
+        <header class="header" hidden >
 
             <div class="navbar ">
                 <div style="font-weight:bold; float:left" class="dropbtn">@Html.ActionLink("Bridge Job List", BridgeLastUsed + "_Index", "Job")</div>
@@ -122,17 +118,9 @@
 
 
 
-    <hr style="height:3px;border:none;color:#f5f5f5;background-color:#f5f5f5;" />
-
-
-    <div class="container body-content">
+ <div class="container body-content">
         @RenderBody()
-        <h1>&nbsp;</h1>
-        <hr />
-        <footer>
-            <p>&copy; @DateTime.Now.Year - BRIDGE</p>
-        </footer>
-    </div>
+</div>
 
     @Scripts.Render("~/bundles/jquery")
     @Scripts.Render("~/bundles/bootstrap")
@@ -140,20 +128,4 @@
 </body>
 </html>
 
-@*<script type="text/javascript">
-    var bridgeTitle;
-    console.log("Succeed logging in")
-   
-    $("#Bridge_M1").click(function () {
-        $("#bridgeSelectionButton").html("Bridge_M1");
-        bridgeTitle = "Bridge_M1";
-        console.log( "asdf111");
-    });
-    $("#Bridge_M2").click(function () {
-        $("#bridgeSelectionButton").html("Bridge_M2");
-        bridgeTitle = "Bridge_M2";
-        console.log("asdfPE")
-    });
 
-    $("#bridgeSelectionButton").html(bridgeTitle);
-</script>*@
