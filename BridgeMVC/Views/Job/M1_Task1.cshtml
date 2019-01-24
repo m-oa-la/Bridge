@@ -26,7 +26,7 @@
     }
 </style>
 
-<h2>Fee Setting</h2>
+<h2>FEE SETTING</h2>
 
 
 @using (Html.BeginForm())
@@ -88,8 +88,8 @@
     </div>
 
     <div class="bing col-lg-6">
-        Job Received Time:
-        @Html.EditorFor(model => model.ReceivedTime, new { htmlAttributes = new { @class = "form-control", @Value = Model.ReceivedTime?.ToString("yyyy.MM.dd HH:mm:ss") } })
+        Job Received Time (DD-MM-YYYY hh:mm:ss):
+        @Html.EditorFor(model => model.ReceivedTime, new { htmlAttributes = new { @class = "form-control", @Value = Model.ReceivedTime?.ToString("dd-MM-yyyy HH:mm:ss") } })
 
     </div>
     <div class="bing col-lg-6">
