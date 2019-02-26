@@ -409,7 +409,6 @@
     <Content Include="Views\BFinancial\Edit.cshtml" />
     <Content Include="Views\BFinancial\Delete.cshtml" />
     <Content Include="Views\BFinancial\Create.cshtml" />
-    <Content Include="Views\Job\ProjFolder.cshtml" />
     <Content Include="Views\BTechChecklist\Create.cshtml" />
     <Content Include="Views\BTechChecklist\Index.cshtml" />
     <Content Include="Views\BTechChecklist\Delete.cshtml" />
@@ -433,6 +432,8 @@
     <Content Include="Views\Blobs\CreateBlobContainer.cshtml" />
     <Content Include="Views\Blobs\ListBlobs.cshtml" />
     <Content Include="SXL.pfx" />
+    <Content Include="Views\Job\EditNew.cshtml" />
+    <Content Include="Views\Job\SendJob.cshtml" />
   </ItemGroup>
   <ItemGroup>
     <Folder Include="App_Data\M1\Projects\" />

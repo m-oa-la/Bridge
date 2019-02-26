@@ -63,15 +63,6 @@ namespace BridgeMVC.Controllers
             return View(myModel);
         }
 
-        [ActionName("ProjFolder")]
-        public async Task<ActionResult> ProjFolderAsync()
-        {
-            var myModel = await DocumentDBRepository.GetItemAsync<Job>((string)Session["dbJobId"]);
-          
-            return View(myModel);
-        }
-
-
         public async Task<string> SetViewBags()
         {
             var bm = (string)Session["BridgeModule"];
@@ -88,7 +79,7 @@ namespace BridgeMVC.Controllers
         [ValidateAntiForgeryToken]
         public async Task<string> SaveJobChanges([Bind(Include = "Tag,BridgeModule,Id,NpsJobId,TaskHandler,Task1,Task2,Task3,CustomerName,ProdDescription,ApprNote," +
             "Completed,SalesOrderNo,SubOrderNo,CertType,CertAction,MainProdType, SubProdType,ReceivedTime,FeeSetTime,IoraSentTime,IoraReturnedTime,JobCompletedTime,CustomerName," +
-            "CustomerDbId,Fee,FeeSetter,FeeVerifier,JobVerifier,RAE,MWL,ExistingCertNo,CertNo,SerialNo,MEDItemNo,ExpireDate,DeliveryWeek,LocalUnit")] Job item)
+            "CustomerDbId,Fee,FeeSetter,FeeVerifier,JobVerifier,RAE,MWL,ExistingCertNo,CertNo,SerialNo,MEDItemNo,ExpireDate,DeliveryWeek,LocalUnit, ArchiveFolder")] Job item)
         {
             if (ModelState.IsValid)
             {
@@ -103,7 +94,7 @@ namespace BridgeMVC.Controllers
         [ValidateAntiForgeryToken]
         public async Task<string> CreateNewJob([Bind(Include = "Tag,BridgeModule,Id,NpsJobId,TaskHandler,Task1,Task2,Task3,CustomerName,ProdDescription,ApprNote," +
             "Completed,SalesOrderNo,SubOrderNo,CertType,CertAction,MainProdType, SubProdType,ReceivedTime,FeeSetTime,IoraSentTime,IoraReturnedTime,JobCompletedTime,CustomerName," +
-            "CustomerDbId,Fee,FeeSetter,FeeVerifier,JobVerifier,RAE,MWL,ExistingCertNo,CertNo,SerialNo,MEDItemNo,ExpireDate,DeliveryWeek,LocalUnit")] Job item)
+            "CustomerDbId,Fee,FeeSetter,FeeVerifier,JobVerifier,RAE,MWL,ExistingCertNo,CertNo,SerialNo,MEDItemNo,ExpireDate,DeliveryWeek,LocalUnit, ArchiveFolder")] Job item)
         {
             if (ModelState.IsValid)
             {
@@ -121,11 +112,76 @@ namespace BridgeMVC.Controllers
         public async Task<ActionResult> M1_Task1Async( Job item)
         {
             await SaveJobChanges(item);
-            return View(item);
+
+            string s = "12345";
+
+            if (s.Contains(item.SendingFlag))
+            {
+               return Redirect(Url.Content("~/Job/SendJob/" + item.Id));
+            }
+            else
+            {
+                return View(item);
+            }
         }
 
         [ActionName("M1_Task1")]
         public async Task<ActionResult> M1_Task1Async(string id)
+        {
+            if (id == null)
+            {
+                return new HttpStatusCodeResult(HttpStatusCode.BadRequest);
+            }
+
+            Job item = await DocumentDBRepository.GetItemAsync<Job>(id);
+            if (item == null)
+            {
+                return HttpNotFound();
+            }
+            //ViewBag.SelectList = await DocumentDBRepository<BRule>.GetItemsAsync(d => d.Tag == "BRule" && d.BridgeModule == item.BridgeModule);
+            Session["DbJobId"] = item.Id;
+            Session["NpsJobId"] = item.NpsJobId;
+
+            await SetViewBags();
+            return View(item);
+        }
+
+        [ActionName("SendJob")]
+        public async Task<ActionResult> SendJobAsync(string id)
+        {
+            if (id == null)
+            {
+                return new HttpStatusCodeResult(HttpStatusCode.BadRequest);
+            }
+
+            Job item = await DocumentDBRepository.GetItemAsync<Job>(id);
+            if (item == null)
+            {
+                return HttpNotFound();
+            }
+            Session["DbJobId"] = item.Id;
+            Session["NpsJobId"] = item.NpsJobId;
+
+            await SetViewBags();
+            ViewBag.bEmail = await DocumentDBRepository.GetItemsAsync<BEmail>(d => d.Tag == "BEmail" && d.BridgeModule == item.BridgeModule && d.TemplateName == ("TASK" + item.SendingFlag));
+             //&& d.BridgeModule == item.BridgeModule && d.TemplateName == ("TASK" + item.SendingFlag)
+            ViewBag.bUser = await DocumentDBRepository.GetItemsAsync<BUser>(d => d.Tag == "BUser" && d.Signature == item.TaskHandler);
+
+            return View(item);
+        }
+
+
+        [HttpPost]
+        [ActionName("EditNew")]
+        [ValidateAntiForgeryToken]
+        public async Task<ActionResult> EditNewAsync(Job item)
+        {
+            await SaveJobChanges(item);
+            return View(item);
+        }
+
+        [ActionName("EditNew")]
+        public async Task<ActionResult> EditNewAsync(string id)
         {
             if (id == null)
             {
@@ -254,36 +310,21 @@ namespace BridgeMVC.Controllers
         [HttpPost]
         [ActionName("M2_Task1")]
         [ValidateAntiForgeryToken]
-        public async Task<ActionResult> M2_Task1Async([Bind(Include = "Tag,BridgeModule,Id,NpsJobId,TaskHandler,Task1,Task2,Task3,CustomerName,ProdDescription,ApprNote," +
-            "Completed,OrderNo,CertType,CertAction,MainProdType, SubProdType,ReceivedTime,FeeSetTime,IoraSentTime,IoraReturnedTime,JobCompletedTime,CustomerName," +
-            "CustomerDbId,Fee,FeeSetter,FeeVerifier,JobVerifier,RAE,MWL,ExistingCertNo,CertNo,SerialNo,MEDItemNo,ExpireDate,BudgetHour,DueWeek")] Job item)
+        public async Task<ActionResult> M2_Task1Async(Job item)
         {
-            if (ModelState.IsValid)
-            {
-                await DocumentDBRepository.UpdateItemAsync<Job>(item.Id, item);
-
-                return View(item);
-            }
-
+            await SaveJobChanges(item);
             return View(item);
         }
 
         [HttpPost]
         [ActionName("M2_Task2")]
         [ValidateAntiForgeryToken]
-        public async Task<ActionResult> M2_Task2Async([Bind(Include = "Tag,BridgeModule,Id,NpsJobId,TaskHandler,Task1,Task2,Task3,CustomerName,ProdDescription,ApprNote," +
-            "Completed,OrderNo,CertType,CertAction,MainProdType, SubProdType,ReceivedTime,FeeSetTime,IoraSentTime,IoraReturnedTime,JobCompletedTime,CustomerName," +
-            "CustomerDbId,Fee,FeeSetter,FeeVerifier,JobVerifier,RAE,MWL,ExistingCertNo,CertNo,SerialNo,MEDItemNo,ExpireDate,BudgetHour,DueWeek")] Job item)
+        public async Task<ActionResult> M2_Task2Async(Job item)
         {
-            if (ModelState.IsValid)
-            {
-                await DocumentDBRepository.UpdateItemAsync<Job>(item.Id, item);
-
-                return View(item);
-            }
-
+            await SaveJobChanges(item);
             return View(item);
         }
+
         [ActionName("M2_Task1")]
         public async Task<ActionResult> M2_Task1Async(string id)
         {

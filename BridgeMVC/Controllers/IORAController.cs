@@ -37,7 +37,7 @@ namespace BridgeMVC.Controllers
                 BridgeModule = (string)Session["BridgeModule"],
                 NpsJobID = (string)Session["NpsJobId"],
                 DbJobId = (string)Session["DbJobId"],
-                IORAFee = (string)Session["IORAFee"],
+                IORAFee = (int)Session["IORAFee"],
             };
 
             return View(i);
@@ -59,7 +59,10 @@ namespace BridgeMVC.Controllers
             if (ModelState.IsValid)
             {
                 await DocumentDBRepository.CreateItemAsync<IORA>(item);
-                return RedirectToAction("Index");
+                var ioras = await  DocumentDBRepository.GetItemsAsync<IORA>(d => d.Tag == "IORA" && d.NpsJobID == item.NpsJobID);
+                IORA iora1 = ioras.FirstOrDefault();
+
+                return RedirectToAction("Edit/" + iora1.Id, "IORA");
             }
 
             return View(item);
@@ -112,24 +115,6 @@ namespace BridgeMVC.Controllers
             ViewBag.FinancialSet = f.FirstOrDefault();
             ViewBag.LUser = await DocumentDBRepository.GetItemsAsync<BUser>(d => d.Tag == "BUser" && (d.BridgesGranted).Contains(j.BridgeModule));
 
-            //string clientId = ConfigurationManager.AppSettings["iAPI:ClientID"];
-            //string clientSecret = ConfigurationManager.AppSettings["iAPI:Password"];
-            //string aadAuthority = ConfigurationManager.AppSettings["iAPI:AADAuthority"];
-            //string partnerIIAPISIT = ConfigurationManager.AppSettings["iAPI:PartnerIIAPISIT"];
-
-            //var authContext = new AuthenticationContext(aadAuthority);
-            ////App's credentials may be needed if access tokens need to be refreshed with a refresh token
-            //var credential = new ClientCredential(clientId, clientSecret);
-
-            //ViewBag.AADToken = credential;
-
-            //var result = await authContext.AcquireTokenAsync(partnerIIAPISIT, credential);
-            //ViewBag.PartnerToken = result.AccessToken;
-
-
-
-
-
             if (ii == null)
             {
                 return HttpNotFound();
@@ -138,86 +123,86 @@ namespace BridgeMVC.Controllers
             return View(ii);
         }
 
-        public async Task<ActionResult> ExportToWordAsync(string ioraId)
-        {
+        //public async Task<ActionResult> ExportToWordAsync(string ioraId)
+        //{
             
-            IORA ii = await DocumentDBRepository.GetItemAsync<IORA>(ioraId);
-            var blu = ii.BridgeModule;
-            var npsjobid = ii.NpsJobID;
-            string savePath = Server.MapPath("~/App_Data/" + blu + "/Projects/" + ii.NpsJobID + " IORA.docx");
-            string templatePath = Server.MapPath("~/App_Data/" + blu + "/Templates/IORA Template.docx");
+        //    IORA ii = await DocumentDBRepository.GetItemAsync<IORA>(ioraId);
+        //    var blu = ii.BridgeModule;
+        //    var npsjobid = ii.NpsJobID;
+        //    string savePath = Server.MapPath("~/App_Data/" + blu + "/Projects/" + ii.NpsJobID + " IORA.docx");
+        //    string templatePath = Server.MapPath("~/App_Data/" + blu + "/Templates/IORA Template.docx");
 
-            Type t = ii.GetType();
-            PropertyInfo[] props = t.GetProperties();
+        //    Type t = ii.GetType();
+        //    PropertyInfo[] props = t.GetProperties();
 
-            var fieldValues = t.GetProperties()
-                .ToDictionary(prop => prop.Name, prop => prop.GetValue(ii, null) as string);
+        //    var fieldValues = t.GetProperties()
+        //        .ToDictionary(prop => prop.Name, prop => prop.GetValue(ii, null) as string);
 
-            if (System.IO.File.Exists(savePath))
-            {
-                System.IO.File.Delete(savePath);
-            }
+        //    if (System.IO.File.Exists(savePath))
+        //    {
+        //        System.IO.File.Delete(savePath);
+        //    }
 
-            var bytes = System.IO.File.ReadAllBytes(templatePath);
-            using (var mem = new MemoryStream(bytes)) {
-                OpenXmlWordHelper.FillForm(fieldValues, mem);
-                using (var target = new FileStream(savePath, FileMode.CreateNew))
-                {
-                    mem.WriteTo(target);
-                }
-            }
+        //    var bytes = System.IO.File.ReadAllBytes(templatePath);
+        //    using (var mem = new MemoryStream(bytes)) {
+        //        OpenXmlWordHelper.FillForm(fieldValues, mem);
+        //        using (var target = new FileStream(savePath, FileMode.CreateNew))
+        //        {
+        //            mem.WriteTo(target);
+        //        }
+        //    }
             
-            Session["dbJobId"] = ii.DbJobId;
-            return RedirectToAction("ProjFolder", "Job");
-        }
+        //    Session["dbJobId"] = ii.DbJobId;
+        //    return RedirectToAction("ProjFolder", "Job");
+        //}
 
-        [HttpGet]
-        public async Task<string> ReadEmployeeInfo(string sig)
-        {
-            WebClient client = new WebClient
-            {
-                UseDefaultCredentials = true
-            };
+        //[HttpGet]
+        //public async Task<string> ReadEmployeeInfo(string sig)
+        //{
+        //    WebClient client = new WebClient
+        //    {
+        //        UseDefaultCredentials = true
+        //    };
 
-            string atoken = await GetAccessTokenAsync();
-            string partnerIISubKey = ConfigurationManager.AppSettings["iAPI:PartnerIISubKey"];
-            client.Headers.Add("Ocp-Apim-Subscription-Key", partnerIISubKey);
-            client.Headers.Add("Authorization", "Bearer " + atoken);
+        //    string atoken = await GetAccessTokenAsync();
+        //    string partnerIISubKey = ConfigurationManager.AppSettings["iAPI:PartnerIISubKey"];
+        //    client.Headers.Add("Ocp-Apim-Subscription-Key", partnerIISubKey);
+        //    client.Headers.Add("Authorization", "Bearer " + atoken);
 
-            var uri = "https://api-internal.dnvgl.com/PartnerII/api/EmployeesExtendedBySignature?PersonSignature=" + sig;
+        //    var uri = "https://api-internal.dnvgl.com/PartnerII/api/EmployeesExtendedBySignature?PersonSignature=" + sig;
 
-            var response = client.DownloadString(uri);
-            return response;
-        }
-
-
+        //    var response = client.DownloadString(uri);
+        //    return response;
+        //}
 
 
-        private async Task<string> GetAccessTokenAsync()
-        {
-            //throw new NotImplementedException("GetAccessTokenAsync not implemented");
-            string clientId = ConfigurationManager.AppSettings["iAPI:ClientID"];
-            string clientSecret = ConfigurationManager.AppSettings["iAPI:Password"];
-            string aadAuthority = ConfigurationManager.AppSettings["iAPI:AADAuthority"];
-            string partnerIIAPISIT = ConfigurationManager.AppSettings["iAPI:PartnerIIAPISIT"];
 
-            var authContext = new Microsoft.IdentityModel.Clients.ActiveDirectory.AuthenticationContext(aadAuthority);
-            //App's credentials may be needed if access tokens need to be refreshed with a refresh token
-            var credential = new ClientCredential(clientId, clientSecret);
-            var result = await authContext.AcquireTokenAsync(partnerIIAPISIT, credential);
-            return result.AccessToken;
-        }
 
-        [HttpPost]
-        public async Task<string> ReadClientInfo(string sig)
-        {
-            var client = new HttpClient();
-            string atoken = await GetAccessTokenAsync();
-            client.DefaultRequestHeaders.Add("Ocp-Apim-Subscription-Key", "4399b860b63d4f4689a06627fa2ab1ff");
-            var uri = "https://testapi-internal.dnvgl.com/customersearch/CustomerSearch?" + sig;
-            var response = await client.GetAsync(uri);
-            return await response.Content.ReadAsStringAsync();
-        }
+        //private async Task<string> GetAccessTokenAsync()
+        //{
+        //    //throw new NotImplementedException("GetAccessTokenAsync not implemented");
+        //    string clientId = ConfigurationManager.AppSettings["iAPI:ClientID"];
+        //    string clientSecret = ConfigurationManager.AppSettings["iAPI:Password"];
+        //    string aadAuthority = ConfigurationManager.AppSettings["iAPI:AADAuthority"];
+        //    string partnerIIAPISIT = ConfigurationManager.AppSettings["iAPI:PartnerIIAPISIT"];
+
+        //    var authContext = new Microsoft.IdentityModel.Clients.ActiveDirectory.AuthenticationContext(aadAuthority);
+        //    //App's credentials may be needed if access tokens need to be refreshed with a refresh token
+        //    var credential = new ClientCredential(clientId, clientSecret);
+        //    var result = await authContext.AcquireTokenAsync(partnerIIAPISIT, credential);
+        //    return result.AccessToken;
+        //}
+
+        //[HttpPost]
+        //public async Task<string> ReadClientInfo(string sig)
+        //{
+        //    var client = new HttpClient();
+        //    string atoken = await GetAccessTokenAsync();
+        //    client.DefaultRequestHeaders.Add("Ocp-Apim-Subscription-Key", "4399b860b63d4f4689a06627fa2ab1ff");
+        //    var uri = "https://testapi-internal.dnvgl.com/customersearch/CustomerSearch?" + sig;
+        //    var response = await client.GetAsync(uri);
+        //    return await response.Content.ReadAsStringAsync();
+        //}
 
     }
 }

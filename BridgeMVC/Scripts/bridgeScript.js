@@ -78,8 +78,6 @@ function renderTaskShowHide() {
     // actions when reopen the job
     $("#ReOpenTask").click(function () {
         $("#Task" + taskNo).val("TASK");
-        console.log("#Task" + taskNo);
-
         $("#" + taskCompleteDate).val(null);
         taskStatus = null;
         $("#" + taskStatusFlag).val(null);
@@ -88,8 +86,6 @@ function renderTaskShowHide() {
         $("#ReOpenTask").hide();
         $("#TaskComplete").show();
     });
-
-
 }
 function readBUser(sig) {
     return $.ajax({
@@ -113,50 +109,28 @@ function renderTaskHandling() {
     });
 
     // Set up selectList for variable items
-    $.each(["-- Please select --", "FEE", "AGR", "EXE"], function (index, value) {
+    $.each(["-- Please select --", "1.FEE", "2.AGR", "3.EXE"], function (index, value) {
         $("#selectListTask").append(new Option(value, value));
     });
-    //read the info. of new task handler
-    $("#selectListHandler").on("change", function () {
-        var usig = $(this).val();
-        readBUser(usig).done(returnTargetUser);
+
+    $('#sendJobEmail').on('click', function (event) {
+        
+        
+        var v = $("#selectListTask").val();
+        var newTaskNo = v.slice(0, 1);
+
+        $("#Task" + newTaskNo).val("TASK");
+        //$("#Task" + newTaskNo).change();
+
+        $("#TaskHandler").val($("#selectListHandler").val());
+        //$("#TaskHandler").change();
+
+        $("#SendingFlag").val(newTaskNo);
+        //$("#SendingFlag").change();
+
+        $('#jobForm').submit();
     });
-    //read the email template
-    $("#selectListTask").on("change", function () {
-        var tn = "for" + $(this).val();
-        readBEmail(tn, bm).done(returnBEmail);
-    });
-    //Send email
 
-    $('#emailLink').on('click', function (event) {
 
-        $("#taskHandler").html(TargetUser.uniqueKey);
-
-        var newTask = 0;
-        switch (BEmial.TemplateName + BEmail.BridgeModule) {
-            case "forFeeM1":
-                newTask = 1;
-                break;
-            case "forEXEM1":
-                newTask = 2;
-                break;
-            case "forAGRM1":
-                newTask = 3;
-                break;
-            case "forFNLM1":
-                newTask = 4;
-                break;
-            default:
-                newTask = 1;
-        }
-
-        $("Task" + newTask).val("TASK");
-
-        event.preventDefault();
-        var email = eval(BEmail.mailTo);
-        var subject = eval(BEmail.mailTitle);
-        var emailBody = eval(BEmail.mailBody);
-        window.location = 'mailto:' + email + '?subject=' + subject + '&body=' + emailBody;
-    });
 
 }

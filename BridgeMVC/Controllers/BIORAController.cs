@@ -75,7 +75,7 @@ namespace BridgeMVC.Controllers
             BIORA item = await DocumentDBRepository.GetItemAsync<BIORA>(id);
             var j = await DocumentDBRepository.GetItemAsync<Job>("a74571b7-2758-48ae-bd1a-d88efc437f26");
             ViewBag.Job = j;
-            var i = await DocumentDBRepository.GetItemAsync<IORA>("290c5999-2076-46f1-b40f-443f42cea4f8");
+            var i = await DocumentDBRepository.GetItemAsync<IORA>("db2da043-82da-488f-a5b5-12116323f3a4");
             ViewBag.IORA = i;
             var f = await DocumentDBRepository.GetItemsAsync<BFinancial>(d => d.Tag == "BFinancial" && d.BridgeModule == i.BridgeModule && d.CertType == j.CertType);
             ViewBag.FinancialSet = f.FirstOrDefault();
