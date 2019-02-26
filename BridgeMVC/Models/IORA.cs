@@ -22,6 +22,7 @@ namespace BridgeMVC.Models
         public string BridgeModule { get; set; }
 
         [Required]
+        [Display(Name = "NPS Job ID")]
         [JsonProperty(PropertyName = "uniqueKey")]
         public string NpsJobID { get; set; }
 
@@ -32,8 +33,11 @@ namespace BridgeMVC.Models
         [JsonProperty(PropertyName = "NPSJNo")]
         public string NPSJNo { get; set; }
 
+        [Display(Name = "Selling Unit Contact Signature")]
         [JsonProperty(PropertyName = "SellingContactSig")]
         public string SellingContactSig { get; set; }
+
+        [Display(Name = "Buying Unit Contact Signature")]
         [JsonProperty(PropertyName = "BuyingContactSig")]
         public string BuyingContactSig { get; set; }
         //Selling Unit
@@ -89,7 +93,7 @@ namespace BridgeMVC.Models
         [JsonProperty(PropertyName = "DpSupportingDocs01")]
         public string DpSupportingDocs01 { get; set; }
         [JsonProperty(PropertyName = "IORAFee")]
-        public string IORAFee { get; set; }
+        public int? IORAFee { get; set; }
 
         [DataType(DataType.MultilineText)]
         [JsonProperty(PropertyName = "DgSpecialConditions")]

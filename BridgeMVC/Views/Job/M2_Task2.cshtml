@@ -50,96 +50,97 @@
     @Html.HiddenFor(model => model.RAE)
     @Html.HiddenFor(model => model.ExpireDate)
     @Html.HiddenFor(model => model.FeeVerifier)
-<div class="form-horizontal">
-    <h4>Fee Verification</h4>
-    <hr />
-    @Html.ValidationSummary(true, "", new { @class = "text-danger" })
+    @Html.HiddenFor(model => model.ArchiveFolder)
+    <div class="form-horizontal">
+        <h4>Fee Verification</h4>
+        <hr />
+        @Html.ValidationSummary(true, "", new { @class = "text-danger" })
 
-    <div class="col-md-5 Bing">
-        NPS job ID:
-        @Html.EditorFor(model => model.NpsJobId, new { htmlAttributes = new { @class = "form-control", @readonly = "readonly" } })
-    </div>
-    <div class="col-md-5 Bing">
-        Issuance type:
-        @Html.EditorFor(model => model.CertAction, new { htmlAttributes = new { @class = "form-control", @readonly = "readonly" } })
-    </div>
-    <div class="col-md-5 Bing">
-        Certification type:
-        @Html.EditorFor(model => model.CertType, new { htmlAttributes = new { @class = "form-control", @readonly = "readonly" } })
-    </div>
+        <div class="col-md-5 Bing">
+            NPS job ID:
+            @Html.EditorFor(model => model.NpsJobId, new { htmlAttributes = new { @class = "form-control", @readonly = "readonly" } })
+        </div>
+        <div class="col-md-5 Bing">
+            Issuance type:
+            @Html.EditorFor(model => model.CertAction, new { htmlAttributes = new { @class = "form-control", @readonly = "readonly" } })
+        </div>
+        <div class="col-md-5 Bing">
+            Certification type:
+            @Html.EditorFor(model => model.CertType, new { htmlAttributes = new { @class = "form-control", @readonly = "readonly" } })
+        </div>
 
-    <div class="col-md-5 Bing">
-        Main product type:
-        @Html.EditorFor(model => model.MainProdType, new { htmlAttributes = new { @class = "form-control", @readonly = "readonly" } })
-    </div>
+        <div class="col-md-5 Bing">
+            Main product type:
+            @Html.EditorFor(model => model.MainProdType, new { htmlAttributes = new { @class = "form-control", @readonly = "readonly" } })
+        </div>
 
-    <div class="col-md-5 Bing">
-        Sub product type:
-        @Html.EditorFor(model => model.SubProdType, new { htmlAttributes = new { @class = "form-control", @readonly = "readonly" } })
-    </div>
-    <div class="col-md-5 Bing">
-        Sales order No.:
-        @Html.EditorFor(model => model.SalesOrderNo, new { htmlAttributes = new { @class = "form-control", @readonly = "readonly" } })
-    </div>
-    <div class="col-md-5 Bing">
-        Fee.:
-        @Html.EditorFor(model => model.Fee, new { htmlAttributes = new { @class = "form-control", @readonly = "readonly" } })
-    </div>
-    <div class="col-md-5 Bing">
-        Customer ID:
-        @Html.EditorFor(model => model.CustomerDbId, new { htmlAttributes = new { @class = "form-control", @readonly = "readonly" } })
-    </div>
-    <div class="col-md-5 Bing">
-        Customer Name:
-        @Html.EditorFor(model => model.CustomerName, new { htmlAttributes = new { @class = "form-control", @readonly = "readonly" } })
-    </div>
-    <div class="col-md-5 Bing">
-        Product designation:
-        @Html.EditorFor(model => model.ProdDescription, new { htmlAttributes = new { @class = "form-control", @readonly = "readonly" } })
-    </div>
+        <div class="col-md-5 Bing">
+            Sub product type:
+            @Html.EditorFor(model => model.SubProdType, new { htmlAttributes = new { @class = "form-control", @readonly = "readonly" } })
+        </div>
+        <div class="col-md-5 Bing">
+            Sales order No.:
+            @Html.EditorFor(model => model.SalesOrderNo, new { htmlAttributes = new { @class = "form-control", @readonly = "readonly" } })
+        </div>
+        <div class="col-md-5 Bing">
+            Fee.:
+            @Html.EditorFor(model => model.Fee, new { htmlAttributes = new { @class = "form-control", @readonly = "readonly" } })
+        </div>
+        <div class="col-md-5 Bing">
+            Customer ID:
+            @Html.EditorFor(model => model.CustomerDbId, new { htmlAttributes = new { @class = "form-control", @readonly = "readonly" } })
+        </div>
+        <div class="col-md-5 Bing">
+            Customer Name:
+            @Html.EditorFor(model => model.CustomerName, new { htmlAttributes = new { @class = "form-control", @readonly = "readonly" } })
+        </div>
+        <div class="col-md-5 Bing">
+            Product designation:
+            @Html.EditorFor(model => model.ProdDescription, new { htmlAttributes = new { @class = "form-control", @readonly = "readonly" } })
+        </div>
 
 
-    <div class="col-md-5 Bing">
-        Product designation:
-        @Html.EditorFor(model => model.ProdDescription, new { htmlAttributes = new { @class = "form-control", @readonly = "readonly" } })
-    </div>
-    <div class="col-md-5 Bing">
-        ExistingCertNo:
-        @Html.EditorFor(model => model.ExistingCertNo, new { htmlAttributes = new { @class = "form-control", @readonly = "readonly" } })
-    </div>
-    <div class="col-md-5 Bing">
-        MWL:
-        @Html.EditorFor(model => model.MWL, new { htmlAttributes = new { @class = "form-control", @readonly = "readonly" } })
-    </div>
+        <div class="col-md-5 Bing">
+            Product designation:
+            @Html.EditorFor(model => model.ProdDescription, new { htmlAttributes = new { @class = "form-control", @readonly = "readonly" } })
+        </div>
+        <div class="col-md-5 Bing">
+            ExistingCertNo:
+            @Html.EditorFor(model => model.ExistingCertNo, new { htmlAttributes = new { @class = "form-control", @readonly = "readonly" } })
+        </div>
+        <div class="col-md-5 Bing">
+            MWL:
+            @Html.EditorFor(model => model.MWL, new { htmlAttributes = new { @class = "form-control", @readonly = "readonly" } })
+        </div>
 
-    <div class="col-md-5 Bing">
-        Fee Setter:
-        @Html.EditorFor(model => model.FeeSetter, new { htmlAttributes = new { @class = "form-control", @readonly = "readonly" } })
-    </div>
+        <div class="col-md-5 Bing">
+            Fee Setter:
+            @Html.EditorFor(model => model.FeeSetter, new { htmlAttributes = new { @class = "form-control", @readonly = "readonly" } })
+        </div>
 
-    <div class="col-md-5 Bing">
-        Approval note:
-        @Html.EditorFor(model => model.ApprNote, new { htmlAttributes = new { @class = "form-control", @readonly = "readonly" } })
-    </div>
+        <div class="col-md-5 Bing">
+            Approval note:
+            @Html.EditorFor(model => model.ApprNote, new { htmlAttributes = new { @class = "form-control", @readonly = "readonly" } })
+        </div>
 
-    <div class="col-md-5 Bing">
-        Budget Hour:
-        @Html.EditorFor(model => model.BudgetHour, new { htmlAttributes = new { @class = "form-control", @readonly = "readonly" } })
-    </div>
-    <div class="col-md-5 Bing">
-        Completion in _ weeks:
-        @Html.EditorFor(model => model.DueWeek, new { htmlAttributes = new { @class = "form-control", @readonly = "readonly" } })
-    </div>
-    <div style="clear:both;"></div>
-    <br />
-    <div class="form-group">
-        <div class=" col-md-10">
-            <input type="submit" value="Save" class="btn btn-default" id="saveButton" readonly />
-            <input value="Re-open" class="btn btn-info" style="float:right" id="ReOpenTask" readonly />
-            <input value="Task completed" class="btn btn-default" style="float:right" id="TaskComplete" readonly />
+        <div class="col-md-5 Bing">
+            Budget Hour:
+            @Html.EditorFor(model => model.BudgetHour, new { htmlAttributes = new { @class = "form-control", @readonly = "readonly" } })
+        </div>
+        <div class="col-md-5 Bing">
+            Completion in _ weeks:
+            @Html.EditorFor(model => model.DueWeek, new { htmlAttributes = new { @class = "form-control", @readonly = "readonly" } })
+        </div>
+        <div style="clear:both;"></div>
+        <br />
+        <div class="form-group">
+            <div class=" col-md-10">
+                <input type="submit" value="Save" class="btn btn-default" id="saveButton" readonly />
+                <input value="Re-open" class="btn btn-info" style="float:right" id="ReOpenTask" readonly />
+                <input value="Task completed" class="btn btn-default" style="float:right" id="TaskComplete" readonly />
+            </div>
         </div>
     </div>
-</div>
 }
 
 
@@ -176,6 +177,6 @@
     var LUser = @Html.Raw(Json.Encode(LUser));
 
 
-
+    renderTaskHanler();
 
 </script>

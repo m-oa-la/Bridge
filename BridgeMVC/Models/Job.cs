@@ -23,6 +23,9 @@ namespace BridgeMVC.Models
         [JsonProperty(PropertyName = "uniqueKey")]
         public string NpsJobId { get; set; }
 
+        [JsonProperty(PropertyName = "archiveFolder")]
+        public string ArchiveFolder { get; set; }
+
         [JsonProperty(PropertyName = "task1")]
         public string Task1 { get; set; }
 
@@ -135,6 +138,8 @@ namespace BridgeMVC.Models
         [JsonProperty(PropertyName = "dueWeek")]
         public int DueWeek { get; set; }
 
+        [JsonProperty(PropertyName = "sendingFlag")]
+        public string SendingFlag { get; set; }
 
     }
 }
