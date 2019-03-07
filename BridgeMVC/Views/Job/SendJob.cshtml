@@ -28,11 +28,8 @@
     }
 </style>
 
-<div id="statement"></div>
-<div>
-    @Model.SendingFlag
-    @Model.BridgeModule
-</div>
+<h2 id="statement"></h2>
+@Model.SendingFlag
 <script>
     
 
@@ -52,25 +49,21 @@
     var BUser = @Html.Raw(Json.Encode(bUser));
     var BEmail = @Html.Raw(Json.Encode(bEmail));
 
-
-
     var bUser = BUser[0];
     var bEmail = BEmail[0];
 
+
     console.log(bUser);
-
-
     console.log(bEmail);
 
     var TargetUser = bUser;
-
     var emailReceiver = TargetUser.Email;
     var emailSubject = eval(bEmail.MailTitle);
     var emailBody = eval(bEmail.MailBody);
 
     window.location = 'mailto:' + emailReceiver + '?subject=' + emailSubject + '&body=' + emailBody;
    
-    $('#statement').html("The job is sent to " + Job.TaskHandler);
+    $('#statement').html("The job is sent to " + Job.TaskHandler + " for further handling.");
     
 </script>
 

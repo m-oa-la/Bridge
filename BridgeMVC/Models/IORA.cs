@@ -125,5 +125,8 @@ namespace BridgeMVC.Models
 
         [JsonProperty(PropertyName = "signedIoraRcTime")]
         public DateTime SignedIoraRcTime { get; set; }
+
+        [JsonProperty(PropertyName = "sendingFlag")]
+        public string SendingFlag { get; set; }
     }
 }

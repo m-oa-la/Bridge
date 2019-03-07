@@ -1,13 +1,21 @@
 ﻿@model IEnumerable<BridgeMVC.Models.BList>
 
-<h2>Bing List</h2>
+<h2>Briging List</h2>
 <p>
-    @Html.ActionLink("Add New", "Create")
+    @Html.ActionLink("Add New", "Create", new { target = "_blank" })
 </p>
+
+@using (Html.BeginForm())
+{
+    <p>
+        Filter: @Html.TextBox("SearchString")
+        <input type="submit" value="Search" />
+    </p>
+}
 <table class="table">
     <tr>
 
-        <th>
+        <th hidden>
             @Html.DisplayNameFor(model => model.BridgeModule)
         </th>
         <th>
@@ -17,15 +25,19 @@
             @Html.DisplayNameFor(model => model.ListItem)
         </th>
         <th>
+            @Html.DisplayNameFor(model => model.Note)
+        </th>
+        <th>
             @Html.DisplayNameFor(model => model.UpperLvl)
         </th>
         <th></th>
     </tr>
 
-@foreach (var item in Model) {
+    @foreach (var item in Model)
+    {
     <tr>
 
-        <td>
+        <td hidden>
             @Html.DisplayFor(modelItem => item.BridgeModule)
         </td>
         <td>
@@ -35,14 +47,16 @@
             @Html.DisplayFor(modelItem => item.ListItem)
         </td>
         <td>
+            @Html.DisplayFor(modelItem => item.Note)
+        </td>
+        <td>
             @Html.DisplayFor(modelItem => item.UpperLvl)
         </td>
         <td>
             @Html.ActionLink("Edit", "Edit", new { id = item.Id }) |
-            @Html.ActionLink("Details", "Details", new { id = item.Id }) |
-            @Html.ActionLink("Delete", "Delete", new { id = item.Id })
+            @Html.ActionLink("Details", "Details", new { id = item.Id }) 
         </td>
     </tr>
-}
+    }
 
 </table>

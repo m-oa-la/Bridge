@@ -57,7 +57,7 @@ namespace BridgeMVC.Models
         public string TaskHandler { get; set; }
         
         [JsonProperty(PropertyName = "isComplete")]
-        public bool Completed { get; set; }
+        public Boolean IsComplete { get; set; }
 
         [JsonProperty(PropertyName = "salesOrderNo")]
         public string SalesOrderNo { get; set; }
@@ -86,8 +86,8 @@ namespace BridgeMVC.Models
         [JsonProperty(PropertyName = "customerName")]
         public string CustomerName { get; set; }
 
-        [JsonProperty(PropertyName = "customerDbId")]
-        public string CustomerDbId { get; set; }
+        [JsonProperty(PropertyName = "customerId")]
+        public string CustomerId { get; set; }
 
         [JsonProperty(PropertyName = "prodDescription")]
         public string ProdDescription { get; set; }
@@ -117,20 +117,20 @@ namespace BridgeMVC.Models
         [JsonProperty(PropertyName = "certNo")]
         public string CertNo { get; set; }
 
-        [JsonProperty(PropertyName = "techPara1")]
+        [JsonProperty(PropertyName = "serialNo")]
         public string SerialNo { get; set; }
 
-        [JsonProperty(PropertyName = "techPara2")]
+        [JsonProperty(PropertyName = "medItemNo")]
         public string MEDItemNo { get; set; }
-
-        [JsonProperty(PropertyName = "techPara3")]
-        public string ExpireDate { get; set; }
 
         [JsonProperty(PropertyName = "deliveryWeek")]
         public string DeliveryWeek { get; set; }
 
         [JsonProperty(PropertyName = "localUnit")]
         public string LocalUnit { get; set; }
+
+        [JsonProperty(PropertyName = "isFinalized")]
+        public Boolean IsFinalized { get; set; }
 
         [JsonProperty(PropertyName = "budgetHour")]
         public int BudgetHour { get; set; }
@@ -141,5 +141,95 @@ namespace BridgeMVC.Models
         [JsonProperty(PropertyName = "sendingFlag")]
         public string SendingFlag { get; set; }
 
+        [JsonProperty(PropertyName = "isHold")]
+        public Boolean IsHold { get; set; }
+
+        [DataType(DataType.MultilineText)]
+        [JsonProperty(PropertyName = "statusNote")]
+        public string StatusNote { get; set; }
+
+        [JsonProperty(PropertyName = "verifyLvl")]
+        public string VerifyLvl { get; set; }
+
+        [JsonProperty(PropertyName = "surveyDate")]
+        public DateTime? SurveyDate { get; set; }
+
+        [JsonProperty(PropertyName = "surveyStation")]
+        public string SurveyStation { get; set; }
+
+        [JsonProperty(PropertyName = "techPara1")]
+        public string TechPara1 { get; set; }
+
+        [JsonProperty(PropertyName = "techPara2")]
+        public string TechPara2 { get; set; }
+
+        [JsonProperty(PropertyName = "techPara3")]
+        public string TechPara3 { get; set; }
+
+        [JsonProperty(PropertyName = "techPara4")]
+        public string TechPara4 { get; set; }
+
+        [JsonProperty(PropertyName = "medFactory")]
+        public string MEDFactory { get; set; }
+
+        [JsonProperty(PropertyName = "medFBNo")]
+        public string MEDFBNo { get; set; }
+
+        [JsonProperty(PropertyName = "medFBDue")]
+        public string MEDFBDue { get; set; }
+
+        [JsonProperty(PropertyName = "anyDesignChange")]
+        public Boolean AnyDesignChange { get; set; }
+
+        [JsonProperty(PropertyName = "checklistUsed")]
+        public Boolean ChecklistUsed { get; set; }
+
+        [JsonProperty(PropertyName = "designFolder")]
+        public string DesignFolder { get; set; }
+
+
+        [JsonProperty(PropertyName = "isDocQualityGood")]
+        public Boolean IsDocQualityGood { get; set; }
+
+
+        [JsonProperty(PropertyName = "isDocSufficient")]
+        public Boolean IsDocSufficient { get; set; }
+
+        [JsonProperty(PropertyName = "setHoldTime")]
+        public DateTime? SetHoldTime { get; set; }
+
+        [JsonProperty(PropertyName = "ioraSpentTime")]
+        public int? IORASpentTime { get; set; }
+
+        [JsonProperty(PropertyName = "modificationDesc")]
+        public string ModificationDesc { get; set; }
+
+        [JsonProperty(PropertyName = "onHoldNote")]
+        public string OnHoldNote { get; set; }
+
+        [JsonProperty(PropertyName = "feeVerifyTime")]
+        public DateTime? FeeVerifyTime { get; set; }
+
+        [JsonProperty(PropertyName = "registerTime")]
+        public DateTime? RegisterTime { get; set; }
+
+        [DataType(DataType.MultilineText)]
+        [JsonProperty(PropertyName = "docReq")]
+        public string DocReq { get; set; }
+
+        [JsonProperty(PropertyName = "noOfCert")]
+        public int? NoOfCert { get; set; }
+
+        [JsonProperty(PropertyName = "feeSet")]
+        public Boolean FeeSet { get; set; }
+
+        [DataType(DataType.MultilineText)]
+        [JsonProperty(PropertyName = "vesselID")]
+        public string VesselID { get; set; }
+
+        [DataType(DataType.MultilineText)]
+        [JsonProperty(PropertyName = "docReqNote")]
+        public string DocReqNote { get; set; }
     }
 }
+//ModificationDesc,OnHoldNote,FeeVerifyTime,RegisterTime,DocReq,NoOfCert,FeeSet,VesselID,DocReqNote

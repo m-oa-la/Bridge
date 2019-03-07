@@ -1,0 +1,49 @@
+﻿
+@{
+    ViewBag.Title = "Settings";
+    Layout = "~/Views/Shared/_Layout.cshtml";
+    string BridgeLastUsed = (string)Session["BridgeModule"];
+}
+
+<h2>Settings</h2>
+
+
+
+<li>    @Html.ActionLink("SelectBridgeModule", "Index", "Home")  </li>
+
+<li>
+    @Html.ActionLink("BIORA", "Index", "BIORA")
+</li>
+<li>
+    @Html.ActionLink("BUser", "Index", "BUser")
+</li>
+<li>
+    @Html.ActionLink("BFinancial", "Index", "BFinancial")
+</li>
+<li>
+    @Html.ActionLink("BList", "Index", "BList")
+</li>
+<li>
+    @Html.ActionLink("BTechChecklist", "Index", "BTechChecklist")
+</li>
+<li>
+    @Html.ActionLink("BLSACert", "Index", "BLSACert")
+</li>
+<li>
+    @Html.ActionLink("BBridge", "Index", "BBridge")
+</li>
+<li>
+    @Html.ActionLink("LSATechCheckList", "Index", "TechCheckList")
+</li>
+
+<li>
+    @Html.ActionLink("BEmail", "Index", "BEmail")
+</li>
+
+<div style="font-weight:bold;">
+    <br />
+    @Html.ActionLink("Select Bridge Module", "Index", "Home")
+    <br />
+    @Html.ActionLink("Back to joblist", BridgeLastUsed + "_Index", "Job")
+
+</div>

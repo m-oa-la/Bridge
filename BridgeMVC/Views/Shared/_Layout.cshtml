@@ -86,24 +86,7 @@
         <header class="header"  >
 
             <div class="navbar ">
-                <div style="font-weight:bold; float:left" class="dropbtn">@Html.ActionLink("Bridge Job List", BridgeLastUsed + "_Index", "Job")</div>
-
-                <div class="dropdown" style="float:left">
-                    <button class="dropbtn">Settings</button>
-                    <div class="dropdown-content">
-                        @Html.ActionLink("SelectBridgeModule", "Index", "Home")
-                        @Html.ActionLink("BEmail", "Index", "BEmail")
-                        @Html.ActionLink("BIORA", "Index", "BIORA")
-                        @Html.ActionLink("BUser", "Index", "BUser")
-                        @Html.ActionLink("BFinancial", "Index", "BFinancial")
-                        @Html.ActionLink("BList", "Index", "BList")
-                        @Html.ActionLink("BTechChecklist", "Index", "BTechChecklist")
-                        @Html.ActionLink("BLSACert", "Index", "BLSACert")
-                        @Html.ActionLink("BBridge", "Index", "BBridge")
-                        @Html.ActionLink("LSATechCheckList", "Index", "TechCheckList")
-                        @*@Html.ActionLink("CSS Examples", "CSSDemo", "Home")*@
-                    </div>
-                </div>
+  
                 <div style="float:right">
                     @Html.Partial("_LoginPartial")
                 </div>

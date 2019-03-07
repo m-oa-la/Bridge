@@ -14,10 +14,21 @@ namespace BridgeMVC.Controllers
     {
         // GET: BList
         [ActionName("Index")]
-        public async Task<ActionResult> IndexAsync()
+        public async Task<ActionResult> IndexAsync(string searchString)
         {
-            var s = await DocumentDBRepository.GetItemsAsync<BList>(d => d.Tag == "BList");
-            return View(s);
+            string bm = (string)Session["BridgeModule"];
+            var BLs = await DocumentDBRepository.GetItemsAsync<BList>(d => d.Tag == "BList" && d.BridgeModule == bm);
+            BLs.OrderBy(s => s.BridgeModule);
+
+            if (!String.IsNullOrEmpty(searchString))
+            {
+                searchString = searchString.ToLower();
+
+                BLs = BLs.Where(s => s.ListType.ToLower().Contains(searchString) || s.ListItem.ToLower().Contains(searchString));
+            }
+
+
+            return View(BLs.OrderBy(s => s.ListType));
         }
 
         [ActionName("Create")]
@@ -35,7 +46,7 @@ namespace BridgeMVC.Controllers
         [HttpPost]
         [ActionName("Create")]
         [ValidateAntiForgeryToken]
-        public async Task<ActionResult> CreateAsync([Bind(Include = "Id,Tag,BridgeModule,ListType,ListItem,UpperLvl")] BList item)
+        public async Task<ActionResult> CreateAsync([Bind(Include = "Id,Tag,BridgeModule,ListType,ListItem,UpperLvl,Note")] BList item)
         {
             if (ModelState.IsValid)
             {
@@ -49,7 +60,7 @@ namespace BridgeMVC.Controllers
         [HttpPost]
         [ActionName("Edit")]
         [ValidateAntiForgeryToken]
-        public async Task<ActionResult> EditAsync([Bind(Include = "Id,Tag,BridgeModule,ListType,ListItem,UpperLvl")] BList item)
+        public async Task<ActionResult> EditAsync([Bind(Include = "Id,Tag,BridgeModule,ListType,ListItem,UpperLvl,Note")] BList item)
         {
             if (ModelState.IsValid)
             {

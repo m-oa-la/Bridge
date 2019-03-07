@@ -4,6 +4,8 @@
     ViewBag.Title = "M1_Task1";
     string UserSignature = (string)Session["UserSignature"];
     string bridgeModule = (string)Session["BridgeModule"];
+    string SF = (string)Session["SendingFlag"];
+
     var LCertType = ViewBag.LCertType;
     var LCertAction = ViewBag.LCertAction;
     var LMainProdType = ViewBag.LMainProdType;
@@ -28,7 +30,6 @@
 
 <h2>FEE SETTING</h2>
 
-
 @using (Html.BeginForm(null, null, FormMethod.Post, new { id = "jobForm" }))
 {
     @Html.AntiForgeryToken()
@@ -42,7 +43,7 @@
     @Html.HiddenFor(model => model.ArchiveFolder)
 
 
-    @Html.HiddenFor(model => model.Completed)
+    @Html.HiddenFor(model => model.IsComplete)
     @Html.HiddenFor(model => model.SubOrderNo)
     @Html.HiddenFor(model => model.ReceivedTime)
     @Html.HiddenFor(model => model.TaskHandler)
@@ -117,7 +118,7 @@
         @Html.EditorFor(model => model.Fee, new { htmlAttributes = new { @class = "form-control" } })
         @Html.ValidationMessageFor(model => model.Fee, "", new { @class = "text-danger" })
     </div>
-    <div class="bing col-lg-6">
+    <div class="bing col-lg-6" hidden>
         Fee setter
         @Html.EditorFor(model => model.FeeSetter, new { htmlAttributes = new { @class = "form-control", id = "feeSetter" } })
         @Html.ValidationMessageFor(model => model.FeeSetter, "", new { @class = "text-danger" })

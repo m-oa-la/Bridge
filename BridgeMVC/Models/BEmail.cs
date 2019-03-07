@@ -1,6 +1,7 @@
 ﻿using Newtonsoft.Json;
 using System;
 using System.Collections.Generic;
+using System.ComponentModel;
 using System.ComponentModel.DataAnnotations;
 using System.Linq;
 using System.Web;
@@ -19,6 +20,7 @@ namespace BridgeMVC.Models
         public string BridgeModule { get; set; }
         [Required]
         [StringLength(50)]
+        [DisplayName("for TASK(?), eg. TASK1")]
         [JsonProperty(PropertyName = "uniqueKey")]
         public string TemplateName { get; set; }
 
