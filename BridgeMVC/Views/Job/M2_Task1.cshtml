@@ -1,9 +1,11 @@
 ﻿@model BridgeMVC.Models.Job
 
 @{
-    ViewBag.Title = "M2_Task1";
+    ViewBag.Title = "M1_Task1";
     string UserSignature = (string)Session["UserSignature"];
     string bridgeModule = (string)Session["BridgeModule"];
+    string SF = (string)Session["SendingFlag"];
+
     var LCertType = ViewBag.LCertType;
     var LCertAction = ViewBag.LCertAction;
     var LMainProdType = ViewBag.LMainProdType;
@@ -26,12 +28,9 @@
     }
 </style>
 
+<h2>FEE SETTING</h2>
 
-
-<h2>Fee Setting</h2>
-
-
-@using (Html.BeginForm())
+@using (Html.BeginForm(null, null, FormMethod.Post, new { id = "jobForm" }))
 {
     @Html.AntiForgeryToken()
 
@@ -42,17 +41,22 @@
     @Html.HiddenFor(model => model.Tag)
     @Html.HiddenFor(model => model.BridgeModule)
     @Html.HiddenFor(model => model.ArchiveFolder)
-    @Html.HiddenFor(model => model.Task1)
 
-    @*@Html.EditorFor(model => model.Task1, new { htmlAttributes = new { @class = "form-control" } })*@
-    @Html.HiddenFor(model => model.Task2, new { htmlAttributes = new { @class = "form-control" } })
-    @Html.HiddenFor(model => model.Task3, new { htmlAttributes = new { @class = "form-control" } })
-    @Html.HiddenFor(model => model.Task4, new { htmlAttributes = new { @class = "form-control" } })
 
-    @Html.HiddenFor(model => model.Completed)
+    @Html.HiddenFor(model => model.IsComplete)
     @Html.HiddenFor(model => model.SubOrderNo)
+    @Html.HiddenFor(model => model.ReceivedTime)
+    @Html.HiddenFor(model => model.TaskHandler)
 
+    <div class="bing col-lg-6" hidden>
+        @Html.EditorFor(model => model.Task1, new { htmlAttributes = new { @class = "form-control" } })
+        @Html.EditorFor(model => model.Task2, new { htmlAttributes = new { @class = "form-control" } })
+        @Html.EditorFor(model => model.Task3, new { htmlAttributes = new { @class = "form-control" } })
+        @Html.EditorFor(model => model.Task4, new { htmlAttributes = new { @class = "form-control" } })
+        @Html.EditorFor(model => model.Task5, new { htmlAttributes = new { @class = "form-control" } })
+        @Html.EditorFor(model => model.SendingFlag, new { htmlAttributes = new { @class = "form-control" } })
 
+    </div>
 
     <div class="bing col-lg-6">
         NPS Job ID:
@@ -89,11 +93,11 @@
         @Html.DropDownListFor(model => model.CertAction, new List<SelectListItem> { new SelectListItem { Text = Model.CertAction, Value = Model.CertAction } }, new { @class = "form-control", id = "selectCertAction" })
     </div>
 
-    <div class="bing col-lg-6">
-        Job Received Time:
-        @Html.EditorFor(model => model.ReceivedTime, new { htmlAttributes = new { @class = "form-control", @Value = Model.ReceivedTime?.ToString("yyyy.MM.dd HH:mm:ss") } })
+    @*<div class="bing col-lg-6">
+            Job Received Time (DD-MM-YYYY hh:mm:ss):
+            @Html.EditorFor(model => model.ReceivedTime, new { htmlAttributes = new { @class = "form-control", @Value = Model.ReceivedTime?.ToString("dd-MM-yyyy HH:mm:ss") } })
 
-    </div>
+        </div>*@
     <div class="bing col-lg-6">
         Main Equipment category:
         @Html.DropDownListFor(model => model.MainProdType, new List<SelectListItem> { new SelectListItem { Text = Model.MainProdType, Value = Model.MainProdType } }, new { @class = "form-control", id = "selectMainProdType" })
@@ -114,16 +118,16 @@
         @Html.EditorFor(model => model.Fee, new { htmlAttributes = new { @class = "form-control" } })
         @Html.ValidationMessageFor(model => model.Fee, "", new { @class = "text-danger" })
     </div>
-    <div class="bing col-lg-6">
+    <div class="bing col-lg-6" hidden>
         Fee setter
         @Html.EditorFor(model => model.FeeSetter, new { htmlAttributes = new { @class = "form-control", id = "feeSetter" } })
         @Html.ValidationMessageFor(model => model.FeeSetter, "", new { @class = "text-danger" })
     </div>
 
-    <div class="bing col-lg-6">
+    <div class="bing col-lg-6" hidden>
         Fee set time
 
-        @Html.EditorFor(model => model.FeeSetTime, new { htmlAttributes = new { @class = "form-control", id = "feeSetTime", @Value = Model.FeeSetTime?.ToString("yyyy.MM.dd HH:mm:ss") } })
+        @Html.EditorFor(model => model.FeeSetTime, new { htmlAttributes = new { @class = "form-control", id = "feeSetTime", @Value = Model.FeeSetTime?.ToString("yyyyMMdd HH:mm:ss") } })
         @Html.ValidationMessageFor(model => model.FeeSetTime, "", new { @class = "text-danger" })
     </div>
     <div class="bing col-lg-6" hidden>
@@ -140,7 +144,7 @@
     </div>
 
 
-
+    @*Common controls for all job views*@
     <h2 id="TaskStatus" class="col-lg-12" style="background-color:lightgray"></h2>
 
     <h2>&nbsp;</h2>
@@ -150,39 +154,43 @@
             <input type="submit" value="Save" class="btn btn-default" id="saveButton" readonly />
             <input value="Re-open" class="btn btn-info" style="float:right" id="ReOpenTask" readonly />
             <input value="Task completed" class="btn btn-default" style="float:right" id="TaskComplete" readonly />
+
         </div>
     </div>
+
+
+    @*//next task, send job and return to work list*@
+    <div class="col-lg-12">
+        <div class="col-lg-5">
+            <h3>Please select the new task handler:</h3>
+            <select id="selectListHandler" class="form-control"></select>
+        </div>
+        <div class="col-lg-5">
+            <h3> and new task:</h3>
+            <select id="selectListTask" class="form-control"></select>
+        </div>
+    </div>
+    <h4>&nbsp;</h4>
+    <input value="Send job" class="btn btn-default" id="sendJobEmail" readonly />
+    <input value="Return to worklist" class="btn btn-default" id="returnToWorklist" style="float:right" readonly />
 </div>
+
+
+
 }
 <hr />
-
-@*//next task*@
-<div class="col-lg-12">
-    <div class="col-lg-5">
-        <h3>Please select the new task handler:</h3>
-        <select id="selectListHandler" class="form-control"></select>
-    </div>
-    <div class="col-lg-5">
-        <h3> and new task:</h3>
-        <select id="selectListTask" class="form-control"></select>
-    </div>
-</div>
-<h4>&nbsp;</h4>
-<a href="#" name="emailLink" id="emailLink" class="btn btn-info" style="float:right">Send job to the new task handler</a>
 
 @section Scripts {
     @Scripts.Render("~/bundles/jqueryval")
 }
 
 <script>
-    //Define global variables
 
     //read viewbag's info.
     var userSignature = "@UserSignature";
     var bm = "@bridgeModule";
     var Job = @Html.Raw(Json.Encode(Model));
-
-
+    
     var LMainProdType = @Html.Raw(Json.Encode(LMainProdType));
     var LSubProdType = @Html.Raw(Json.Encode(LSubProdType));
     var LUser = @Html.Raw(Json.Encode(LUser));
@@ -192,20 +200,19 @@
     var TargetUser;
     var BEmail;
     var taskStatus;
+
+    //Set task parameter
     var taskNo = 1;
     var taskStatusFlag = "feeSetter";
-    var taskCompleteDate = "feeSetTime"
-    var taskCompleteStr = "The fee is set by "
+    var taskCompleteDate = "feeSetTime";
+    var taskCompleteStr = "The fee is set by ";
 
     renderTaskShowHide();
     renderTaskHandling();
 
     //console.log(getTodayDate());
 
-    //$("#Task1").val("TASK");
-
-
-
+   
     //set up select list
     $.each(LCertType, function (key, data) {
         $("#selectCertType").append(new Option(data.ListItem, data.ListItem));
@@ -214,6 +221,7 @@
     $.each(LCertAction, function (key, data) {
         $("#selectCertAction").append(new Option(data.ListItem, data.ListItem));
     });
+
     $.each(LMainProdType, function (key, data) {
         $("#selectMainProdType").append(new Option(data.ListItem, data.ListItem));
     });
@@ -225,14 +233,11 @@
         }
     });
 
-
+//When main prodtype changes, refesh the sub prod type.
     $("#selectMainProdType").on("change", function () {
         var mval = $("#selectMainProdType :selected").text();
-        //var sval = $("#selectSubProdType :selected").text();
-        //$("#selectSubProdType :selected").val(sval);
 
         $('#selectSubProdType option').each(function () {
-
             if ($(this).val() != 'X') {
                 $(this).remove();
             }
@@ -245,14 +250,6 @@
             }
         });
     });
-
-
-
-    //$(function filterSubSelect() {
-
-    //});
-
-
 
 
 </script>

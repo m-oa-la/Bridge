@@ -114,23 +114,23 @@ function renderTaskHandling() {
     });
 
     $('#sendJobEmail').on('click', function (event) {
-        
-        
-        var v = $("#selectListTask").val();
-        var newTaskNo = v.slice(0, 1);
+ 
+        var vtask = $("#selectListTask").val();
+        var vhandler = $("#selectListHandler").val(); 
 
-        $("#Task" + newTaskNo).val("TASK");
-        //$("#Task" + newTaskNo).change();
+        var newTaskNo = vtask.slice(0, 1);
+        if (vtask.search("-") + vhandler.search("-") === -2)
+        {
+            
+            $("#Task" + newTaskNo).val("TASK");
+            //$("#Task" + newTaskNo).change();
+            $("#TaskHandler").val(vhandler);
+            //$("#TaskHandler").change();
+            $("#SendingFlag").val(newTaskNo);
+            //$("#SendingFlag").change();
+            $('#jobForm').submit();
+        }
 
-        $("#TaskHandler").val($("#selectListHandler").val());
-        //$("#TaskHandler").change();
 
-        $("#SendingFlag").val(newTaskNo);
-        //$("#SendingFlag").change();
-
-        $('#jobForm').submit();
     });
-
-
-
 }

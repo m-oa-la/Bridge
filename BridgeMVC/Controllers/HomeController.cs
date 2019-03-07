@@ -83,6 +83,12 @@ namespace BridgeMVC.Controllers
             return View();
         }
 
+        [ActionName("Settings")]
+        public ActionResult Settings()
+        {
+
+            return View();
+        }
 
 
     }

@@ -434,6 +434,9 @@
     <Content Include="SXL.pfx" />
     <Content Include="Views\Job\EditNew.cshtml" />
     <Content Include="Views\Job\SendJob.cshtml" />
+    <Content Include="Views\Job\M1_Task4.cshtml" />
+    <Content Include="Views\Job\Search.cshtml" />
+    <Content Include="Views\Home\Settings.cshtml" />
   </ItemGroup>
   <ItemGroup>
     <Folder Include="App_Data\M1\Projects\" />

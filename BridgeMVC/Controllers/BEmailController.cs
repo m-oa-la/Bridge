@@ -69,6 +69,24 @@ namespace BridgeMVC.Controllers
             {
                 return HttpNotFound();
             }
+            if (id == null)
+            {
+                return new HttpStatusCodeResult(HttpStatusCode.BadRequest);
+            }
+
+            var j = await DocumentDBRepository.GetItemAsync<Job>("a74571b7-2758-48ae-bd1a-d88efc437f26");
+            ViewBag.Job = j;
+            var i = await DocumentDBRepository.GetItemAsync<IORA>("db2da043-82da-488f-a5b5-12116323f3a4");
+            ViewBag.IORA = i;
+            var f = await DocumentDBRepository.GetItemsAsync<BFinancial>(d => d.Tag == "BFinancial" && d.BridgeModule == i.BridgeModule && d.CertType == j.CertType);
+            ViewBag.FinancialSet = f.FirstOrDefault();
+            var u = await DocumentDBRepository.GetItemsAsync<BUser>(d => d.Tag == "BUser" && d.Signature == "SXL");
+            ViewBag.TargetUser = u.FirstOrDefault();
+
+            if (item == null)
+            {
+                return HttpNotFound();
+            }
 
             return View(item);
         }

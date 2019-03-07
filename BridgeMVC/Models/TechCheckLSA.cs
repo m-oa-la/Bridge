@@ -101,6 +101,9 @@ namespace BridgeMVC.Models
         [JsonProperty(PropertyName = "mbl")]
         public string MBL { get; set; }
 
+        [JsonProperty(PropertyName = "localUnit")]
+        public string LocalUnit { get; set; }
+
         [JsonProperty(PropertyName = "ok1")]
         public Boolean OK1 { get; set; }
         [JsonProperty(PropertyName = "ok2")]
