@@ -163,23 +163,11 @@
 }
 <hr />
 
-@*//next task*@
-<div class="col-lg-12">
-    <div class="col-lg-5">
-        <h3>Please select the new task handler:</h3>
-        <select id="selectListHandler" class="form-control"></select>
-    </div>
-    <div class="col-lg-5">
-        <h3> and new task:</h3>
-        <select id="selectListTask" class="form-control"></select>
-    </div>
-</div>
-<h4>&nbsp;</h4>
-<input value="Send job" class="btn btn-default" id="sendJobEmail" readonly />
-<input value="Return to worklist" class="btn btn-default" id="returnToWorklist" style="float:right" readonly />@section Scripts {
-    @Scripts.Render("~/bundles/jqueryval")
+@Scripts.Render("~/bundles/jqueryval")
 }
-
+@{
+    Html.RenderPartial("_TaskSending");
+}
 <script>
     //Define global variables
 

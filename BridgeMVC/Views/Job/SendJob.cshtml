@@ -1,7 +1,7 @@
 ﻿@model BridgeMVC.Models.Job
 
 @{
-    
+
     string UserSignature = (string)Session["UserSignature"];
     string bridgeModule = (string)Session["BridgeModule"];
     var LCertType = ViewBag.LCertType;
@@ -29,9 +29,10 @@
 </style>
 
 <h2 id="statement"></h2>
-@Model.SendingFlag
+<input class="btn btn-default" value="Return to worklist" style="float:right" readonly onclick="window.location='@Url.Action("_Index", "Job")'" />
+
 <script>
-    
+
 
 
     //read viewbag's info.
@@ -62,9 +63,9 @@
     var emailBody = eval(bEmail.MailBody);
 
     window.location = 'mailto:' + emailReceiver + '?subject=' + emailSubject + '&body=' + emailBody;
-   
+
     $('#statement').html("The job is sent to " + Job.TaskHandler + " for further handling.");
-    
+
 </script>
 
 

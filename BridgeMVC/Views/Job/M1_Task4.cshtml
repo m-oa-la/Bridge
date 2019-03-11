@@ -26,7 +26,7 @@
     }
 </style>
 
-<h2>FEE SETTING</h2>
+<h2>COMPLETION</h2>
 
 
 @using (Html.BeginForm(null, null, FormMethod.Post, new { id = "jobForm" }))
@@ -93,44 +93,32 @@
     @Html.HiddenFor(model => model.MEDFBDue)
     @Html.HiddenFor(model => model.AnyDesignChange)
 
-    <div class="bing col-lg-6" >
+    <div class="bing col-lg-12 h2">
         Job ID:
         @Html.DisplayFor(model => model.NpsJobId)
     </div>
 
 
-    <div class="bing col-lg-6" hidden>
-      
+    <div class="bing col-lg-12" hidden>
+
         @Html.EditorFor(model => model.StatusNote, new { htmlAttributes = new { @class = "form-control", id = "NpsJobId" } })
         @Html.ValidationMessageFor(model => model.StatusNote, "", new { @class = "text-danger" })
     </div>
-    <div class="bing col-lg-6">
+
+    <div class="bing col-lg-6 h3">
         Completed:
-        @Html.EditorFor(model => model.IsComplete, new { htmlAttributes = new { @class = "form-control", id = "NpsJobId" } })
+        @Html.EditorFor(model => model.IsComplete)
         @Html.ValidationMessageFor(model => model.IsComplete, "", new { @class = "text-danger" })
+        <br /><br /><br />
     </div>
 
-    <div class="form-group" style="clear:both;">
+    <div class="form-group" >
         <div class="col-md-12">
-            <input type="submit" value="Save" class="btn btn-default" id="saveButton" readonly />
+            <input type="submit" value="Complete the job" class="btn btn-default" id="saveButton" readonly />
 
         </div>
     </div>
 
-    @*//next task, send job and return to work list*@
-    <div class="col-lg-12">
-        <div class="col-lg-5">
-            <h3>Please select the new task handler:</h3>
-            <select id="selectListHandler" class="form-control"></select>
-        </div>
-        <div class="col-lg-5">
-            <h3> and new task:</h3>
-            <select id="selectListTask" class="form-control"></select>
-        </div>
-    </div>
-    <h4>&nbsp;</h4>
-    <input value="Send job" class="btn btn-default" id="sendJobEmail" readonly />
-    <input value="Return to worklist" class="btn btn-default" id="returnToWorklist" style="float:right" readonly />
 </div>
 
 
@@ -141,14 +129,16 @@
 @section Scripts {
     @Scripts.Render("~/bundles/jqueryval")
 }
-
+@{
+    Html.RenderPartial("_TaskSending");
+}
 <script>
 
     //read viewbag's info.
     var userSignature = "@UserSignature";
     var bm = "@bridgeModule";
     var Job = @Html.Raw(Json.Encode(Model));
-    
+
     var LMainProdType = @Html.Raw(Json.Encode(LMainProdType));
     var LSubProdType = @Html.Raw(Json.Encode(LSubProdType));
     var LUser = @Html.Raw(Json.Encode(LUser));
@@ -170,7 +160,7 @@
 
     //console.log(getTodayDate());
 
-   
+
     //set up select list
     $.each(LCertType, function (key, data) {
         $("#selectCertType").append(new Option(data.ListItem, data.ListItem));

@@ -143,36 +143,10 @@
         @Html.ValidationMessageFor(model => model.ApprNote, "", new { @class = "text-danger" })
     </div>
 
+    @{
+        Html.RenderPartial("_SaveCompleteReopen");
+    }
 
-    @*Common controls for all job views*@
-    <h2 id="TaskStatus" class="col-lg-12" style="background-color:lightgray"></h2>
-
-    <h2>&nbsp;</h2>
-
-    <div class="form-group" style="clear:both;">
-        <div class="col-md-12">
-            <input type="submit" value="Save" class="btn btn-default" id="saveButton" readonly />
-            <input value="Re-open" class="btn btn-info" style="float:right" id="ReOpenTask" readonly />
-            <input value="Task completed" class="btn btn-default" style="float:right" id="TaskComplete" readonly />
-
-        </div>
-    </div>
-
-
-    @*//next task, send job and return to work list*@
-    <div class="col-lg-12">
-        <div class="col-lg-5">
-            <h3>Please select the new task handler:</h3>
-            <select id="selectListHandler" class="form-control"></select>
-        </div>
-        <div class="col-lg-5">
-            <h3> and new task:</h3>
-            <select id="selectListTask" class="form-control"></select>
-        </div>
-    </div>
-    <h4>&nbsp;</h4>
-    <input value="Send job" class="btn btn-default" id="sendJobEmail" readonly />
-    <input value="Return to worklist" class="btn btn-default" id="returnToWorklist" style="float:right" readonly />
 </div>
 
 
@@ -184,13 +158,16 @@
     @Scripts.Render("~/bundles/jqueryval")
 }
 
+@{
+    Html.RenderPartial("_TaskSending");
+}
 <script>
 
     //read viewbag's info.
     var userSignature = "@UserSignature";
     var bm = "@bridgeModule";
     var Job = @Html.Raw(Json.Encode(Model));
-    
+
     var LMainProdType = @Html.Raw(Json.Encode(LMainProdType));
     var LSubProdType = @Html.Raw(Json.Encode(LSubProdType));
     var LUser = @Html.Raw(Json.Encode(LUser));
@@ -203,7 +180,7 @@
 
     //Set task parameter
     var taskNo = 1;
-    var taskStatusFlag = "feeSetter";
+    var taskStatusFlag = "feeSetter"; //who completed the task
     var taskCompleteDate = "feeSetTime";
     var taskCompleteStr = "The fee is set by ";
 
@@ -212,7 +189,7 @@
 
     //console.log(getTodayDate());
 
-   
+
     //set up select list
     $.each(LCertType, function (key, data) {
         $("#selectCertType").append(new Option(data.ListItem, data.ListItem));

@@ -1,18 +1,18 @@
 ﻿@model IEnumerable<BridgeMVC.Models.Job>
 
 @{
-                /**/
+    /**/
 
-                ViewBag.Title = "Index";
-                string BridgeLastUsed = (string)Session["BridgeModule"];
-                string UserSignature = (string)Session["UserSignature"];
-                string colorY, colorN, colorTask;
-                colorY = "background-color:#5296c3; color:transparent;";
-                colorN = "background-color:azure; color:transparent;";
-                colorTask = "background-color:#81d078; color:transparent;";
+    ViewBag.Title = "Index";
+    string BridgeLastUsed = (string)Session["BridgeModule"];
+    string UserSignature = (string)Session["UserSignature"];
+    string colorY, colorN, colorTask;
+    colorY = "background-color:#5296c3; color:transparent;";
+    colorN = "background-color:azure; color:transparent;";
+    colorTask = "background-color:#81d078; color:transparent;";
 
-
-                var users = ViewBag.users;
+    var LUser = ViewBag.LUser;
+    var US = ViewBag.userSig;
 
 }
 
@@ -24,25 +24,47 @@
         </p>*@
 </h2>
 <hr />
-<br />
 
 @using (Html.BeginForm())
 {
-    <p>
-        @Html.TextBox("SearchString")
-        <input type="submit" value="Search" />
-    </p>
+<table>
+    <colgroup>
+        <col span="1" style="width: 12%;">
+        <col span="1" style="width: 76%;">
+        <col span="1" style="width: 12%;">
+
+    </colgroup>
+    <tr>
+        <td>
+            @Html.TextBox("SearchString", null, new { @class = "form-control" })
+            
+        </td>
+        <td>
+            <input type="submit" value="Search" />
+        </td>
+        <td style="float:right">
+            <select id="userSig" name="userSig" class="form-control"></select>
+        </td>
+        <td>
+            <input type="submit" value="Change User" />
+        </td>
+    </tr>
+
+</table>
+
 }
+<br />
 
 <table class="table table-mid-align-rows">
     <colgroup>
         <col span="1" style="width: 12%;">
+        <col span="1" style="width: 18%;">
+        <col span="1" style="width: 18%;">
+        <col span="1" style="width: 7%;">
+        <col span="1" style="width: 7%;">
+        <col span="1" style="width: 7%;">
+        <col span="1" style="width: 7%;">
         <col span="1" style="width: 24%;">
-        <col span="1" style="width: 24%;">
-        <col span="1" style="width: 10%;">
-        <col span="1" style="width: 10%;">
-        <col span="1" style="width: 10%;">
-        <col span="1" style="width: 10%;">
     </colgroup>
     <tr>
         <th style="border-top:none">           JOB ID       </th>
@@ -52,7 +74,7 @@
         <th style="border-top:none">           AGR       </th>
         <th style="border-top:none">           EXE        </th>
         <th style="border-top:none">           FNL        </th>
-        <th style="border-top:none"> </th>
+        <th style="border-top:none">           STATUS    </th>
         @*<th>            @Html.DisplayNameFor(model => model.TaskHandler)        </th>
             <th>            @Html.DisplayNameFor(model => model.Completed)        </th>*@
 
@@ -92,48 +114,65 @@
         string editlink2 = "'/Job/M1_Task2/" + item.Id + "?npsid=" + item.NpsJobId + "&fee=" + item.Fee + "'";
         string editlink3 = "'/Job/M1_Task3/" + item.Id + "'";
         string editlink4 = "'/Job/M1_Task4/" + item.Id + "'";
-        <tr>
-            <td>
-                @Html.DisplayFor(modelItem => item.NpsJobId)
-            </td>
-            <td>
-                @Html.DisplayFor(modelItem => item.CustomerName)
-            </td>
-            <td>
-                @Html.DisplayFor(modelItem => item.ProdDescription)
-            </td>
-            <td style="@styleT1" onclick="location.href=@editlink1">
-                @Html.DisplayFor(modelItem => item.Task1)
-            </td>
-            <td style="@styleT2" onclick="location.href=@editlink2">
-                @Html.DisplayFor(modelItem => item.Task2)
-            </td>
-            <td style="@styleT3" onclick="location.href=@editlink3">
-                @Html.DisplayFor(modelItem => item.Task3)
-            </td>
-            <td style="@styleT4" onclick="location.href=@editlink4">
-                @Html.DisplayFor(modelItem => item.Task4)
-            </td>
-            @*<td>
-                    @Html.DisplayFor(modelItem => item.Task5)
-                </td>*@
-            @*<td>
-                    @Html.DisplayFor(modelItem => item.TaskHandler)
-                </td>
-                <td>
-                    @Html.DisplayFor(modelItem => item.Completed)
-                </td>*@
-            @*<td>
-                    @Html.ActionLink("Edit", "M1_Edit", new { id = item.Id }) |
-                    @Html.ActionLink("Details", "Details", new { id = item.Id })
-                </td>*@
-        </tr>
+    <tr>
+        <td>
+            @Html.DisplayFor(modelItem => item.NpsJobId)
+        </td>
+        <td>
+            @Html.DisplayFor(modelItem => item.CustomerName)
+        </td>
+        <td>
+            @Html.DisplayFor(modelItem => item.ProdDescription)
+        </td>
+        <td style="@styleT1" onclick="location.href=@editlink1">
+            @Html.DisplayFor(modelItem => item.Task1)
+        </td>
+        <td style="@styleT2" onclick="location.href=@editlink2">
+            @Html.DisplayFor(modelItem => item.Task2)
+        </td>
+        <td style="@styleT3" onclick="location.href=@editlink3">
+            @Html.DisplayFor(modelItem => item.Task3)
+        </td>
+        <td style="@styleT4" onclick="location.href=@editlink4">
+            @Html.DisplayFor(modelItem => item.Task4)
+        </td>
+        <td>
+            @Html.DisplayFor(modelItem => item.StatusNote.Split('<')[0])
+        </td>
+        @*<td>
+            @Html.DisplayFor(modelItem => item.Task5)
+        </td>*@
+        @*<td>
+            @Html.DisplayFor(modelItem => item.TaskHandler)
+        </td>
+        <td>
+            @Html.DisplayFor(modelItem => item.Completed)
+        </td>*@
+        @*<td>
+            @Html.ActionLink("Edit", "M1_Edit", new { id = item.Id }) |
+            @Html.ActionLink("Details", "Details", new { id = item.Id })
+        </td>*@
+    </tr>
     }
 
 </table>
 
 <script>
-    var users = @Html.Raw(Json.Encode(users));
+    var LUser = @Html.Raw(Json.Encode(LUser));
+    var us = @Html.Raw(Json.Encode(US));
 
-    console.log(users);
+    console.log(LUser);
+
+    $("#userSig").append(new Option(us, us));
+
+    $.each(LUser, function (key, data) {
+        $("#userSig").append(new Option(data.Signature, data.Signature));
+    });
+
+    //$("#userSig").on("change", function () {
+    //    var mval = $("#selectMainProdType :selected").text();
+
+    //});
+
+
 </script>

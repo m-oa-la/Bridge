@@ -16,11 +16,19 @@
 }
 <style>
 
-    hr {
-        background-color: @bcolor;
-        height: 1px;
-  };
+    .magicWand {
+        /* Checkbox text */
+        height: 1.5em;
+        width: 1.5em;
+        border: none;
+    }
 
+
+    hr {
+        height: 1px;
+        background-color: white;
+        cursor: pointer;
+    }
 </style>
 
 @using (Html.BeginForm(null, null, FormMethod.Post, new { id = "jobForm" }))
@@ -55,7 +63,7 @@
 
             <td>
 
-                DNV GL Doc No: <span onclick="updateDocNo()" class="btn-info">DEFAULT</span> <br />
+                DNV GL Doc No: <img style="cursor:pointer" src="~/Content/pictures/magic.png" onclick="updateDocNo()" class="magicWand"> <br />
                 <div class="form-group">
                     @Html.EditorFor(model => model.DgDNVDocNo01, new { htmlAttributes = new { @class = "form-control", id = "DgDNVDocNo01" } })
                     @Html.ValidationMessageFor(model => model.DgDNVDocNo01, "", new { @class = "text-danger" })
@@ -66,7 +74,8 @@
     </table>
     <hr />
 
-    <h2>Parties<span onclick="updateParties2()" class="btn-info">DEFAULT</span></h2>
+    <h2>Parties<img style="cursor:pointer" src="~/Content/pictures/magic.png" onclick="updateParties2()" class="magicWand"></h2>
+
     <hr />
 
     <table>
@@ -188,7 +197,7 @@
         </tr>
     </table>
 
-    <h2>Project Details <span onclick="updateProjDetail()" class="btn-info">DEFAULT</span> <br /></h2><hr />
+    <h2>Project Details <img style="cursor:pointer" src="~/Content/pictures/magic.png" onclick="updateProjDetail()" class="magicWand"> <br /></h2><hr />
     <table>
         <colgroup>
             <col span="1" style="width: 20%;">
@@ -329,7 +338,7 @@
 
 
 
-    <h2>Special conditions w.r.t. budget details<span onclick="updateSpecialConditions()" class="btn-info">DEFAULT</span></h2>
+    <h2>Special conditions w.r.t. budget details<img style="cursor:pointer" src="~/Content/pictures/magic.png" onclick="updateSpecialConditions()" class="magicWand"></h2>
     <hr />
 
     <div class="form-group">
@@ -349,7 +358,7 @@
 
     <h4>&nbsp;</h4>
 
-    <h2>Signature from Selling Unit <span onclick="updateSigning()" class="btn-info">DEFAULT</span></h2>
+    <h2>Signature from Selling Unit <img style="cursor:pointer" src="~/Content/pictures/magic.png" onclick="updateSigning()" class="magicWand"></h2>
     <hr />
     <table class="col-lg-12">
         <tr>
@@ -390,6 +399,9 @@
     <div hidden>
         @Html.EditorFor(model => model.NpsJobID, new { htmlAttributes = new { @class = "form-control", id = "NpsJobId" } })
     </div>
+    <div hidden>
+        @Html.EditorFor(model => model.IORASentBy, new { htmlAttributes = new { @class = "form-control" } })
+    </div>
 
     <div class="form-horizontal">
 
@@ -399,57 +411,30 @@
         @Html.HiddenFor(model => model.BridgeModule)
         @Html.HiddenFor(model => model.DbJobId)
 
-        <div class="form-group" style="clear:both;">
-            <div class="col-md-12">
-                <input type="submit" value="Save" class="btn btn-default" id="saveButton" readonly />
-                <input value="Re-open" class="btn btn-info" style="float:right" id="ReOpenTask" readonly />
-                <input value="Task completed" class="btn btn-default" style="float:right" id="TaskComplete" readonly />
-            </div>
-        </div>
-
-
     </div>
     <div hidden>
-        @Html.EditorFor(model => model.SendingFlag, new { htmlAttributes = new { @class = "form-control"} })
+        @Html.EditorFor(model => model.SendingFlag, new { htmlAttributes = new { @class = "form-control" } })
+        @Html.EditorFor(model => model.IORASentTime, new { htmlAttributes = new { @class = "form-control" } })
 
     </div>
+    <div>
+        @{
+            Html.RenderPartial("_SaveCompleteReopen");
+        }
+    </div>
+
 }
 
 
-
-<div class="col-lg-12">
-    <div class="col-lg-5">
-        <h3>Please select the new task handler:</h3>
-        <select id="selectListHandler" class="form-control"></select>
-    </div>
-    <div class="col-lg-5">
-        <h3> and new task:</h3>
-        <select id="selectListTask" class="form-control"></select>
-    </div>
-</div>
-<h4>&nbsp;</h4>
-<div>
-
-    @using (Html.BeginForm("ExportToWordAsync", "IORA", FormMethod.Post, new { @class = "form-horizontal", role = "form" }))
-    {
-        <div class="form-group">
-            @*<input hidden name="bridgeModule" class="text-info" value=@Model.BridgeModule>*@
-            <input hidden name="ioraId" class="text-info" value=@Model.Id>
-        </div>
-        <!-- form here -->
-        @*<button type="submit" class="btn btn-secondary" style="float:right">Generate Word Format IORA</button>*@
-    }
-</div>
-<input value="Send job" class="btn btn-default" id="sendJobEmail" readonly />
-<input value="Return to worklist" class="btn btn-default" id="returnToWorklist" style="float:right" readonly />
+@{
+    Html.RenderPartial("_TaskSending");
+}
 
 
 @section Scripts {
     @Scripts.Render("~/bundles/jqueryval")
 }
 <script>
-
-
 
     var IORA = @Html.Raw(Json.Encode(Model));
     var BIORA = @Html.Raw(Json.Encode(BIORA));
@@ -462,36 +447,33 @@
 
     console.log(Job.NpsJobId);
 //general
-
-    //Set task parameter
-    //var taskNo = 1;
-    //var taskStatusFlag = "feeSetter";
-    //var taskCompleteDate = "feeSetTime";
-    //var taskCompleteStr = "The fee is set by ";
-
-
+    var userSignature = "@UserSignature";
+    var bm = "@bridgeModule";
 
     var TargetUser;
     var BEmail;
     var taskStatus;
-    var taskNo = 2;
-    //var taskStatusFlag = "feeSetter";
-    //var taskCompleteDate = "feeSetTime"
-    var taskCompleteStr = "The signed IORA is received on"
-    //renderTaskShowHide();
-    renderTaskHandling();
-//end of general
 
-    console.log("IORA");
-    console.log(IORA);
-    console.log("BIORA");
-    console.log(BIORA)
-    console.log("Job")
-    console.log(Job);
-    console.log("Rules")
-    console.log(Rules)
-    console.log("FinancialSet")
-    console.log(FinancialSet)
+    //Set task parameter
+    var taskNo = 2;
+    var taskStatusFlag = "IORASentBy";
+    var taskCompleteDate = "IORASentTime";
+    var taskCompleteStr = "IORA is sent to local unit by ";
+
+    renderTaskShowHide();
+    renderTaskHandling();
+    //end of general
+
+    //console.log("IORA");
+    //console.log(IORA);
+    //console.log("BIORA");
+    //console.log(BIORA)
+    //console.log("Job")
+    //console.log(Job);
+    //console.log("Rules")
+    //console.log(Rules)
+    //console.log("FinancialSet")
+    //console.log(FinancialSet)
 
     function updateChapter(chapter)
     {

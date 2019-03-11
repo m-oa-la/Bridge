@@ -51,15 +51,16 @@ function taskComplete(taskCompleteStr) {
     taskStatus = taskCompleteStr + userSignature + " on " + dt;
     $("#" + taskStatusFlag).val(userSignature);
     $("#TaskStatus").html(taskStatus);
-    $("#saveButton").hide();
+    $("#saveButton").click();
     $("#ReOpenTask").show();
     $("#TaskComplete").hide();
-    $("#saveButton").click();
+    $("#saveButton").hide();
 }
 
 
 function renderTaskShowHide() {
     if ($("#" + taskStatusFlag).val().length !== 0) {
+        console.log("taskcompletedate: " + taskCompleteDate);
         taskStatus = taskCompleteStr + $("#" + taskStatusFlag).val() + " on " + $("#" + taskCompleteDate).val();
         $("#TaskStatus").html(taskStatus);
         $("#saveButton").hide();
@@ -112,7 +113,7 @@ function renderTaskHandling() {
     $.each(["-- Please select --", "1.FEE", "2.AGR", "3.EXE"], function (index, value) {
         $("#selectListTask").append(new Option(value, value));
     });
-
+    
     $('#sendJobEmail').on('click', function (event) {
  
         var vtask = $("#selectListTask").val();
