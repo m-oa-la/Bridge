@@ -76,7 +76,7 @@
         styleT4 = styleT4 + "; cursor: pointer;";
 
         string editlink1 = "'/Job/M2_Task1/" + item.Id + "'";
-        string editlink2 = "'/Job/M2_Task2/" + item.Id +  "'";
+        string editlink2 = "'/Job/M2_Task2/" + item.Id + "'";
         string editlink3 = "'/Job/M2_Task3/" + item.Id + "?npsid=" + item.NpsJobId + "&fee=" + item.Fee + "'";
         //string editlink4 = "'/Job/M2_Task4/" + item.Id + "'";
         <tr>
@@ -98,10 +98,10 @@
             <td style="@styleT3" onclick="location.href=@editlink3">
                 @Html.DisplayFor(modelItem => item.Task3)
             </td>
-            
+
             @*<td style="@styleT4" onclick="location.href=@editlink4">
-                @Html.DisplayFor(modelItem => item.Task4)
-            </td>*@
+                    @Html.DisplayFor(modelItem => item.Task4)
+                </td>*@
             @*<td>
                     @Html.DisplayFor(modelItem => item.Task5)
                 </td>*@

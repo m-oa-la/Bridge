@@ -105,14 +105,14 @@ namespace BridgeMVC.Controllers
             return View(r);
         }
 
-        [HttpPost, ActionName("Delete")]
-        [ValidateAntiForgeryToken]
-        public async Task<ActionResult> DeleteConfirmed(string id)
-        {
-            BList r = await DocumentDBRepository.GetItemAsync<BList>(id);
-            await DocumentDBRepository.DeleteItemAsync(r.Id);
+        //[HttpPost, ActionName("Delete")]
+        //[ValidateAntiForgeryToken]
+        //public async Task<ActionResult> DeleteConfirmed(string id)
+        //{
+        //    BList r = await DocumentDBRepository.GetItemAsync<BList>(id);
+        //    await DocumentDBRepository.DeleteItemAsync(r.Id);
 
-            return RedirectToAction("Index");
-        }
+        //    return RedirectToAction("Index");
+        //}
     }
 }

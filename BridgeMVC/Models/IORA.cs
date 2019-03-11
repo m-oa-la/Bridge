@@ -128,5 +128,8 @@ namespace BridgeMVC.Models
 
         [JsonProperty(PropertyName = "sendingFlag")]
         public string SendingFlag { get; set; }
+
+        [JsonProperty(PropertyName = "ioraSentBy")]
+        public string IORASentBy { get; set; }
     }
 }

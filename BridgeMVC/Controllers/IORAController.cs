@@ -58,7 +58,7 @@ namespace BridgeMVC.Controllers
                 "DgCustomerRef01,DpProjStartDate01,DpProjStartEnd01,DpSoW01,DpSupportingDocs01,IORAFee,DgSpecialConditions," +
                 "Str_SpecialC,DnvIntUnPlace501,DnvIntUnDate501,DnvIntUnSigName501,DnvIntUnSigTitle501," +
             "SellingContactSig,BuyingContactSig,DgDNVDocNo01,DnvContPersName501,DpDeliverables01,IORASentTime,SignedIoraRcTime," +
-            "NPSJNo,DbJobId,SendingFlag" )] IORA item)
+            "NPSJNo,DbJobId,SendingFlag,IORASentBy" )] IORA item)
         {
             if (ModelState.IsValid)
             {
@@ -75,20 +75,27 @@ namespace BridgeMVC.Controllers
         [HttpPost]
         [ActionName("Edit")]
         [ValidateAntiForgeryToken]
-        public async Task<ActionResult> EditAsync([Bind(Include = "Id,Tag,BridgeModule,NpsJobID," +
-                "DnvUnitName501,DnvUnitNo501,DgIntUnVAT501,DnvIntCompAccnt501,DnvIntUnPrCeNo501,DpIntUnProjNo501," +
-                "DnvUnitName502,DnvUnitNo502,DgIntUnVAT502,DnvContPersName502,DnvIntCompAccnt502,DnvIntUnPrCeNo502," +
-                "DpIntUnProjNo502,DpProjName01,DpProjWorkLoc01,DpServiceName01,DpServiceCode01,DgCustName01," +
-                "DgCustomerRef01,DpProjStartDate01,DpProjStartEnd01,DpSoW01,DpSupportingDocs01,IORAFee,DgSpecialConditions," +
-                "Str_SpecialC,DnvIntUnPlace501,DnvIntUnDate501,DnvIntUnSigName501,DnvIntUnSigTitle501," +
-            "SellingContactSig,BuyingContactSig,DgDNVDocNo01,DnvContPersName501,DpDeliverables01,IORASentTime,SignedIoraRcTime," +
-            "NPSJNo,DbJobId,SendingFlag" )] IORA item)
+        public async Task<ActionResult> EditAsync(IORA item)
         {
             if (ModelState.IsValid)
             {
                 await DocumentDBRepository.UpdateItemAsync<IORA>(item.Id, item);
                 IORA ii = item;
                 Job j = await DocumentDBRepository.GetItemAsync<Job>(ii.DbJobId);
+                if (!string.IsNullOrEmpty(item.IORASentBy))
+                {
+                    j.IoraSentTime = ii.IORASentTime;
+                    j.Task2 = "Y";
+                    await DocumentDBRepository.UpdateItemAsync<Job>(j.Id, j);
+                }
+                else
+                {
+                    j.IoraSentTime = null;
+                    j.Task2 = "TASK";
+                    await DocumentDBRepository.UpdateItemAsync<Job>(j.Id, j);
+                }
+
+
                 ViewBag.Job = j;
                 ViewBag.BIORA = await DocumentDBRepository.GetItemsAsync<BIORA>(d => d.Tag == "BIORA" && d.BridgeModule == ii.BridgeModule);
                 ViewBag.Rules = await DocumentDBRepository.GetItemsAsync<Rule>(d => d.Tag == "Rule" && d.DbJobId == ii.DbJobId);
@@ -96,20 +103,11 @@ namespace BridgeMVC.Controllers
                 ViewBag.FinancialSet = f.FirstOrDefault();
                 ViewBag.LUser = await DocumentDBRepository.GetItemsAsync<BUser>(d => d.Tag == "BUser" && (d.BridgesGranted).Contains(j.BridgeModule));
 
-                string s = "12345";
-                string SF = item.SendingFlag;
-
-                if (SF != null)
+                //await DocumentDBRepository.UpdateItemAsync<Job>(item.Id, item);
+                if (!string.IsNullOrEmpty(item.SendingFlag) && item.SendingFlag != "-")
                 {
-                    if (s.Contains(SF))
-                    {
-                        Session["SendingFlag"] = item.SendingFlag;
-                        return Redirect(Url.Content("~/Job/SendJob/" + item.DbJobId));
-                    }
-                    else
-                    {
-                        return View(item);
-                    }
+                    Session["SendingFlag"] = item.SendingFlag;
+                    return Redirect(Url.Content("~/Job/SendJob/" + item.DbJobId));
                 }
                 else
                 {

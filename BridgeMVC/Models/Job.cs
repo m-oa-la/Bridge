@@ -230,6 +230,9 @@ namespace BridgeMVC.Models
         [DataType(DataType.MultilineText)]
         [JsonProperty(PropertyName = "docReqNote")]
         public string DocReqNote { get; set; }
+
+        [JsonProperty(PropertyName = "npsDbId")]
+        public string NpsDbId { get; set; }
     }
 }
 //ModificationDesc,OnHoldNote,FeeVerifyTime,RegisterTime,DocReq,NoOfCert,FeeSet,VesselID,DocReqNote

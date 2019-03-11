@@ -12,14 +12,14 @@ namespace BridgeMVC.Controllers
     [Authorize]
     public class BUserController : Controller
     {
-        [ActionName("Index")]
+        [ActionName("_Index")]
         public async Task<ActionResult> IndexAsync()
         {
             var s = await DocumentDBRepository.GetItemsAsync<BUser>(d => d.Tag == "BUser");
             return View(s);
         }
 
-        [ActionName("Create")]
+        [ActionName("_Create")]
         public ActionResult Create()
         {
             var S = new BUser();
@@ -28,34 +28,34 @@ namespace BridgeMVC.Controllers
 
 
         [HttpPost]
-        [ActionName("Create")]
+        [ActionName("_Create")]
         [ValidateAntiForgeryToken]
         public async Task<ActionResult> CreateAsync([Bind(Include = "Tag,Id,employeeID,email,signature,firstname,lastname,bridgesGranted,BridgeLastUsed")] BUser item)
         {
             if (ModelState.IsValid)
             {
                 await DocumentDBRepository.CreateItemAsync<BUser>(item);
-                return RedirectToAction("Index");
+                return RedirectToAction("_Index");
             }
 
             return View(item);
         }
 
         [HttpPost]
-        [ActionName("Edit")]
+        [ActionName("_Edit")]
         [ValidateAntiForgeryToken]
         public async Task<ActionResult> EditAsync([Bind(Include = "Tag,Id,employeeID,email,signature,firstname,lastname,bridgesGranted,BridgeLastUsed")] BUser item)
         {
             if (ModelState.IsValid)
             {
                 await DocumentDBRepository.UpdateItemAsync<BUser>(item.Id, item);
-                return RedirectToAction("Index");
+                return RedirectToAction("_Index");
             }
 
             return View(item);
         }
 
-        [ActionName("Edit")]
+        [ActionName("_Edit")]
         public async Task<ActionResult> EditAsync(string id)
         {
             if (id == null)

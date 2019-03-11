@@ -398,7 +398,7 @@
         <tr>
             <td>Verification level</td>
             <td>
-                @Html.EditorFor(model => model.VerificationLvl, new { htmlAttributes = new { @class = "form-control"} })
+                @Html.EditorFor(model => model.VerificationLvl, new { htmlAttributes = new { @class = "form-control" } })
                 @Html.ValidationMessageFor(model => model.VerificationLvl, "", new { @class = "text-danger" })
             </td>
         </tr>
@@ -456,7 +456,8 @@
 
 <div style="clear:both;"></div>
 <hr />
-<h2>Send job to another handler</h2>
+
+@*//next task, send job and return to work list*@
 <div class="col-lg-12">
     <div class="col-lg-5">
         <h3>Please select the new task handler:</h3>
@@ -468,8 +469,8 @@
     </div>
 </div>
 <h4>&nbsp;</h4>
-<a href="#" name="emailLink" id="emailLink" class="btn btn-info" style="float:right">Send job to the new task handler</a>
-
+<input value="Send job" class="btn btn-default" id="sendJobEmail" readonly />
+<input value="Return to worklist" class="btn btn-default" id="returnToWorklist" style="float:right" readonly />
 
 
 
