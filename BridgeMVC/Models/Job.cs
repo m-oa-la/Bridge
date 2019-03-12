@@ -233,6 +233,15 @@ namespace BridgeMVC.Models
 
         [JsonProperty(PropertyName = "npsDbId")]
         public string NpsDbId { get; set; }
+
+        [JsonProperty(PropertyName = "certAmount")]
+        public int? CertAmount { get; set; } = 1;
+
+        [JsonProperty(PropertyName = "exeDoneBy")]
+        public string ExeDoneBy { get; set; }
+
+        [JsonProperty(PropertyName = "exeDoneTime")]
+        public DateTime? ExeDoneTime { get; set; }
     }
 }
 //ModificationDesc,OnHoldNote,FeeVerifyTime,RegisterTime,DocReq,NoOfCert,FeeSet,VesselID,DocReqNote

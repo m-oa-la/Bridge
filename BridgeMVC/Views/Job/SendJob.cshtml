@@ -9,6 +9,7 @@
     var LMainProdType = ViewBag.LMainProdType;
     var LSubProdType = ViewBag.LSubProdType;
     var LUser = ViewBag.LUser;
+    var IIORA = ViewBag.iIORA;
 
     var bUser = ViewBag.bUser;
     var bEmail = ViewBag.bEmail;
@@ -52,13 +53,15 @@
 
     var bUser = BUser[0];
     var bEmail = BEmail[0];
+    var IIORA = @Html.Raw(Json.Encode(IIORA));
+    var iORA = IIORA[0];
 
-
+    console.log(iORA);
     console.log(bUser);
     console.log(bEmail);
 
     var TargetUser = bUser;
-    var emailReceiver = TargetUser.Email;
+    var emailReceiver = eval(bEmail.MailTo);
     var emailSubject = eval(bEmail.MailTitle);
     var emailBody = eval(bEmail.MailBody);
 

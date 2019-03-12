@@ -642,3 +642,10 @@ table {
         table tr:hover {
             background-color: #f5fcf0;
         }
+
+.magicWand {
+    /* Checkbox text */
+    height: 1.5em;
+    width: 1.5em;
+    border: none;
+}

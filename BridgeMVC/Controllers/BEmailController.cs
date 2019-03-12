@@ -74,9 +74,9 @@ namespace BridgeMVC.Controllers
                 return new HttpStatusCodeResult(HttpStatusCode.BadRequest);
             }
 
-            var j = await DocumentDBRepository.GetItemAsync<Job>("a74571b7-2758-48ae-bd1a-d88efc437f26");
+            var j = await DocumentDBRepository.GetItemAsync<Job>("93ffbdaa-72bd-4df8-a154-d140a73ef700");
             ViewBag.Job = j;
-            var i = await DocumentDBRepository.GetItemAsync<IORA>("db2da043-82da-488f-a5b5-12116323f3a4");
+            var i = await DocumentDBRepository.GetItemAsync<IORA>("38ea1592-88d9-4c53-a6d9-b571b1c37532");
             ViewBag.IORA = i;
             var f = await DocumentDBRepository.GetItemsAsync<BFinancial>(d => d.Tag == "BFinancial" && d.BridgeModule == i.BridgeModule && d.CertType == j.CertType);
             ViewBag.FinancialSet = f.FirstOrDefault();

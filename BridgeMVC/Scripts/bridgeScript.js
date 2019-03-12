@@ -55,6 +55,15 @@ function taskComplete(taskCompleteStr) {
     $("#ReOpenTask").show();
     $("#TaskComplete").hide();
     $("#saveButton").hide();
+
+    if (taskStatusFlag === "IORASentBy")
+    {
+        console.log("Send IORA to LU");
+        $("#SendingFlag").val(9); 
+        console.log($("#TaskHandler").val());
+        $('#jobForm').submit();
+    };
+
 }
 
 
@@ -124,11 +133,8 @@ function renderTaskHandling() {
         {
             
             $("#Task" + newTaskNo).val("TASK");
-            //$("#Task" + newTaskNo).change();
             $("#TaskHandler").val(vhandler);
-            //$("#TaskHandler").change();
             $("#SendingFlag").val(newTaskNo);
-            //$("#SendingFlag").change();
             $('#jobForm').submit();
         }
 

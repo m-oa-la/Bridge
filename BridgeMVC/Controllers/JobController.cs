@@ -84,7 +84,7 @@ namespace BridgeMVC.Controllers
             {
                 searchString = searchString.ToLower();
 
-                myModel = myModel.Where(s => s.NpsJobId.ToLower().Contains(searchString) || (s.CustomerName + "X").ToLower().Contains(searchString) || (s.ProdDescription + "X").ToLower().Contains(searchString));
+                myModel = myModel.Where(s => s.NpsJobId.ToLower().Contains(searchString) || (s.CustomerName + "X").ToLower().Contains(searchString) || (s.ProdDescription + "X").ToLower().Contains(searchString) || (s.CertType + "X").ToLower().Contains(searchString));
             }
             await SetViewBags();
             return View(myModel.OrderBy(s => s.NpsJobId));
@@ -111,7 +111,8 @@ namespace BridgeMVC.Controllers
             ViewBag.LMainProdType = await DocumentDBRepository.GetItemsAsync<BList>(d => d.Tag == "BList" && d.BridgeModule == bm && d.ListType == "MainProdType");
             ViewBag.LSubProdType = await DocumentDBRepository.GetItemsAsync<BList>(d => d.Tag == "BList" && d.BridgeModule == bm && d.ListType == "SubProdType");
             ViewBag.LUser = await DocumentDBRepository.GetItemsAsync<BUser>(d => d.Tag == "BUser" && (d.BridgesGranted).Contains(bm));
-            return ("");
+ 
+           return ("");
         }
 
         //[HttpPost]
@@ -154,7 +155,7 @@ namespace BridgeMVC.Controllers
             "CustomerId,Fee,FeeSetter,FeeVerifier,JobVerifier,RAE,MWL,ExistingCertNo,CertNo,SerialNo,MEDItemNo,DeliveryWeek,LocalUnit,ArchiveFolder," +
             "IsHold,StatusNote,VerifyLvl,SurveyDate,SurveyStation,TechPara1,TechPara2,TechPara3,TechPara4,MEDFactory,MEDFBNo,MEDFBDue,AnyDesignChange," +
             "ChecklistUsed,DesignFolder,IsDocQualityGood,IsDocSufficient,SetHoldTime,IORASpentTime,ModificationDesc,OnHoldNote,FeeVerifyTime,RegisterTime," +
-            "DocReq,NoOfCert,FeeSet,VesselID,DocReqNote,NpsDbId")] Job item)
+            "DocReq,NoOfCert,FeeSet,VesselID,DocReqNote,NpsDbId,ExeDoneBy,ExeDoneTime")] Job item)
         {
             if (ModelState.IsValid)
             {
@@ -272,10 +273,12 @@ namespace BridgeMVC.Controllers
             Session["DbJobId"] = item.Id;
             Session["NpsJobId"] = item.NpsJobId;
             string sf = (string)Session["SendingFlag"];
-
+            
             await SetViewBags();
             ViewBag.bEmail = await DocumentDBRepository.GetItemsAsync<BEmail>(d => d.Tag == "BEmail" && d.BridgeModule == item.BridgeModule && d.TemplateName == ("TASK" + sf));
             ViewBag.bUser = await DocumentDBRepository.GetItemsAsync<BUser>(d => d.Tag == "BUser" && d.Signature == item.TaskHandler);
+            ViewBag.iIORA = await DocumentDBRepository.GetItemsAsync<IORA>(d => d.Tag == "IORA" && d.DbJobId == item.Id);
+
             Session["SendingFlag"] = "";
             return View(item);
         }
@@ -373,19 +376,37 @@ namespace BridgeMVC.Controllers
             {
                 return new HttpStatusCodeResult(HttpStatusCode.BadRequest);
             }
-            var tc = await DocumentDBRepository.GetItemsAsync<TechCheckLSA>(d => (d.DbJobId == id) && (d.Tag == "TechCheckLSA"));
-            if (tc.Count() == 0)
-            {
-                Session["DbJobId"] = id;
-                return Redirect(Url.Content("~/TechCheckList/Create/"));
-            }
-            else
-            {
-                return Redirect(Url.Content("~/TechCheckList/Edit/" + tc.FirstOrDefault().Id));
-            }
+            //var tc = await DocumentDBRepository.GetItemsAsync<TechCheckLSA>(d => (d.DbJobId == id) && (d.Tag == "TechCheckLSA"));
+            Job item = await DocumentDBRepository.GetItemAsync<Job>(id);
+            //if (item.CertType == "MED-F") {
+            //    return View(item);
+            //}
+
+            //if (tc.Count() == 0)
+            //{
+            //    Session["DbJobId"] = id;
+            //    return Redirect(Url.Content("~/TechCheckList/Create/"));
+            //}
+            //else
+            //{
+            //    return Redirect(Url.Content("~/TechCheckList/Edit/" + tc.FirstOrDefault().Id));
+            //}
+
+            return View(item);
         }
 
-
+        [HttpPost]
+        [ActionName("M1_Task3")]
+        [ValidateAntiForgeryToken]
+        public async Task<ActionResult> M1_Task3Post(Job item)
+        {
+            if (ModelState.IsValid)
+            {
+                await DocumentDBRepository.UpdateItemAsync<Job>(item.Id, item);
+             }
+            await SetViewBags();
+            return View(item);
+        }
 
         [ActionName("Whiteboard")]
         public async Task<ActionResult> Whiteboard()
