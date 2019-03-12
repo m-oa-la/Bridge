@@ -1,6 +1,6 @@
 ﻿@model IEnumerable<BridgeMVC.Models.BFinancial>
 
-<p class="btn btn-default">
+<p class="btn ">
     @Html.ActionLink("Create New", "Create")
 </p>
 <table class="table">
@@ -28,6 +28,9 @@
         </th>
         <th>
             @Html.DisplayNameFor(model => model.ServiceCode)
+        </th>
+        <th>
+            @Html.DisplayNameFor(model => model.ConvFactor)
         </th>
         <th>
             @Html.DisplayNameFor(model => model.Deliverable)
@@ -63,6 +66,9 @@
         </td>
         <td>
             @Html.DisplayFor(modelItem => item.ServiceCode)
+        </td>
+        <td>
+            @Html.DisplayFor(modelItem => item.ConvFactor)
         </td>
         <td>
             @Html.DisplayFor(modelItem => item.Deliverable)

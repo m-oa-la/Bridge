@@ -1,4 +1,9 @@
-﻿@model BridgeMVC.Models.IORA
+﻿
+
+@model BridgeMVC.Models.IORA
+
+
+
 
 @{
 
@@ -16,12 +21,7 @@
 }
 <style>
 
-    .magicWand {
-        /* Checkbox text */
-        height: 1.5em;
-        width: 1.5em;
-        border: none;
-    }
+
 
 
     hr {
@@ -423,9 +423,19 @@
         }
     </div>
 
+    <div class="bing col-lg-3">
+        <h2>&nbsp</h2>
+        <hr />
+        <h3>The signed IORA is received on: (DD-MM-YYYY)</h3>
+        @Html.EditorFor(model => model.SignedIoraRcTime, new { htmlAttributes = new { @class = "form-control" } })
+        @Html.ValidationMessageFor(model => model.SignedIoraRcTime, "", new { @class = "text-danger" })
+
+    </div>
 }
 
+<br />
 
+<h4 style="clear:both;"></h4>
 @{
     Html.RenderPartial("_TaskSending");
 }
@@ -464,7 +474,11 @@
     renderTaskHandling();
     //end of general
 
-    //console.log("IORA");
+    //$("#TaskComplete").html = "Send IORA to local unit"
+
+    document.getElementById("TaskComplete").value = "IORA -> local unit";
+
+    console.log($("#buyerSig").val());
     //console.log(IORA);
     //console.log("BIORA");
     //console.log(BIORA)
@@ -569,7 +583,7 @@
 
             var x = data.BookMarkName.split("_")[1];
 
-            if (data.Formula != null && cax.includes(x + ",")) {
+            if (data.Formula != null && (cax.indexOf(x + ",")>-1)) {
                 sc = sc + "•  " + eval(data.Formula) + "\r\n";
             }
         });
@@ -605,8 +619,6 @@
         $("#Str_SpecialC").val(feeStr);
     }
 
-
-
-
+   
 
 </script>

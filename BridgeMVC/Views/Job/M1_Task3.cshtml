@@ -26,8 +26,8 @@
     }
 </style>
 
-<h2>COMPLETION
- 
+<h2>
+    Execution
     <br />
     Job ID:
     @Html.DisplayFor(model => model.NpsJobId)
@@ -39,17 +39,18 @@
 
 <div class="form-horizontal">
     <hr />
+    <br />
     @Html.HiddenFor(model => model.Tag)
     @Html.HiddenFor(model => model.BridgeModule)
     @Html.HiddenFor(model => model.Id)
-
+    @Html.HiddenFor(model => model.NpsJobId)
     @Html.HiddenFor(model => model.TaskHandler)
     @Html.HiddenFor(model => model.Task1)
     @Html.HiddenFor(model => model.Task2)
     @Html.HiddenFor(model => model.Task3)
     @Html.HiddenFor(model => model.CustomerName)
     @Html.HiddenFor(model => model.ProdDescription)
-    @Html.HiddenFor(model => model.ApprNote)
+    @*@Html.HiddenFor(model => model.ApprNote)*@
     @*@Html.HiddenFor(model => model.IsComplete)*@
     @Html.HiddenFor(model => model.SalesOrderNo)
     @Html.HiddenFor(model => model.SubOrderNo)
@@ -97,20 +98,106 @@
     @Html.HiddenFor(model => model.MEDFBDue)
     @Html.HiddenFor(model => model.AnyDesignChange)
 
-  
-    <div class="bing col-lg-6 h3">
+
+
+    <div class="bing col-lg-6">
+        Certificate type:
+        @Html.EditorFor(model => model.CertType, new { htmlAttributes = new { @class = "form-control", @readonly = "readonly" } })
+        @Html.ValidationMessageFor(model => model.CertType, "", new { @class = "text-danger" })
+    </div>
+
+    <div class="bing col-lg-6">
+        Certificate type:
+        @Html.EditorFor(model => model.CustomerName, new { htmlAttributes = new { @class = "form-control", @readonly = "readonly" } })
+        @Html.ValidationMessageFor(model => model.CustomerName, "", new { @class = "text-danger" })
+    </div>
+
+    <div class="bing col-lg-6">
+        Manufacturer (for MED-G and MED-F):
+        @Html.EditorFor(model => model.MEDFactory, new { htmlAttributes = new { @class = "form-control" } })
+        @Html.ValidationMessageFor(model => model.MEDFactory, "", new { @class = "text-danger" })
+    </div>
+
+    <div class="bing col-lg-6">
+        Certificate No.:
+        @Html.EditorFor(model => model.CertNo, new { htmlAttributes = new { @class = "form-control" } })
+        @Html.ValidationMessageFor(model => model.CertNo, "", new { @class = "text-danger" })
+    </div>
+
+    <div class="bing col-lg-6">
+        Reference Certificate No.:
+        @Html.EditorFor(model => model.ExistingCertNo, new { htmlAttributes = new { @class = "form-control" } })
+        @Html.ValidationMessageFor(model => model.ExistingCertNo, "", new { @class = "text-danger" })
+    </div>
+
+    @*<div class="bing col-lg-6">
+            Reference Certificate expire date:
+            @Html.EditorFor(model => model., new { htmlAttributes = new { @class = "form-control" } })
+            @Html.ValidationMessageFor(model => model.ExistingCertNo, "", new { @class = "text-danger" })
+        </div>*@
+
+    <div class="bing col-lg-6">
+        Designation:
+        @Html.EditorFor(model => model.ProdDescription, new { htmlAttributes = new { @class = "form-control" } })
+        @Html.ValidationMessageFor(model => model.ProdDescription, "", new { @class = "text-danger" })
+    </div>
+
+    <div class="bing col-lg-6">
+        MED Item No.:
+        @Html.EditorFor(model => model.MEDItemNo, new { htmlAttributes = new { @class = "form-control" } })
+        @Html.ValidationMessageFor(model => model.MEDItemNo, "", new { @class = "text-danger" })
+    </div>
+
+    <div class="bing col-lg-6">
+        Serial No.:
+        @Html.EditorFor(model => model.SerialNo, new { htmlAttributes = new { @class = "form-control" } })
+        @Html.ValidationMessageFor(model => model.SerialNo, "", new { @class = "text-danger" })
+    </div>
+
+    <div class="bing col-lg-6">
+        Note:
+        @Html.EditorFor(model => model.ApprNote, new { htmlAttributes = new { @class = "form-control" } })
+        @Html.ValidationMessageFor(model => model.ApprNote, "", new { @class = "text-danger" })
+    </div>
+
+
+
+
+
+    <div class="bing col-lg-12" hidden>
+
+        @Html.EditorFor(model => model.StatusNote, new { htmlAttributes = new { @class = "form-control" } })
+        @Html.ValidationMessageFor(model => model.StatusNote, "", new { @class = "text-danger" })
+    </div>
+    <div class="bing col-lg-12" hidden>
+
+        @Html.EditorFor(model => model.ExeDoneBy, new { htmlAttributes = new { @class = "form-control" } })
+        @Html.ValidationMessageFor(model => model.ExeDoneBy, "", new { @class = "text-danger" })
+    </div>
+    <div class="bing col-lg-12" hidden>
+
+        @Html.EditorFor(model => model.ExeDoneTime, new { htmlAttributes = new { @class = "form-control" } })
+        @Html.ValidationMessageFor(model => model.ExeDoneTime, "", new { @class = "text-danger" })
+    </div>
+
+    <div class="bing col-lg-6 h3" hidden>
         Completed:
         @Html.EditorFor(model => model.IsComplete)
         @Html.ValidationMessageFor(model => model.IsComplete, "", new { @class = "text-danger" })
         <br /><br /><br />
     </div>
 
-    <div class="form-group" >
+    <div class="form-group" hidden>
         <div class="col-md-12">
             <input type="submit" value="Complete the job" class="btn btn-default" id="saveButton" readonly />
 
         </div>
     </div>
+
+
+    @{
+        Html.RenderPartial("_SaveCompleteReopen");
+    }
 
 </div>
 
@@ -143,10 +230,10 @@
     var taskStatus;
 
     //Set task parameter
-    var taskNo = 1;
-    var taskStatusFlag = "feeSetter";
-    var taskCompleteDate = "feeSetTime";
-    var taskCompleteStr = "The fee is set by ";
+    var taskNo = 3;
+    var taskStatusFlag = "ExeDoneBy";
+    var taskCompleteDate = "ExeDoneTime";
+    var taskCompleteStr = "The execution of the job is done by ";
 
     renderTaskShowHide();
     renderTaskHandling();
@@ -168,13 +255,13 @@
     });
 
     var mval = $("#selectMainProdType :selected").text();
-      $.each(LSubProdType, function (key, data) {
+    $.each(LSubProdType, function (key, data) {
         if (data.UpperLvl == mval) {
             $("#selectSubProdType").append(new Option(data.ListItem, data.ListItem));
         }
     });
 
-//When main prodtype changes, refesh the sub prod type.
+    //When main prodtype changes, refesh the sub prod type.
     $("#selectMainProdType").on("change", function () {
         var mval = $("#selectMainProdType :selected").text();
 

@@ -90,6 +90,13 @@
         </div>
     </div>
 
+    <div class="form-group">
+        @Html.LabelFor(model => model.ConvFactor, htmlAttributes: new { @class = "control-label col-md-2" })
+        <div class="col-md-10">
+            @Html.EditorFor(model => model.ConvFactor, new { htmlAttributes = new { @class = "form-control" } })
+            @Html.ValidationMessageFor(model => model.ConvFactor, "", new { @class = "text-danger" })
+        </div>
+    </div>
 
     <div class="form-group">
         @Html.LabelFor(model => model.CertAction1, htmlAttributes: new { @class = "control-label col-md-2" })
