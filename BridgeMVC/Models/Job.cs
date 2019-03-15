@@ -124,7 +124,7 @@ namespace BridgeMVC.Models
         public string MEDItemNo { get; set; }
 
         [JsonProperty(PropertyName = "deliveryWeek")]
-        public string DeliveryWeek { get; set; }
+        public int? DeliveryWeek { get; set; }
 
         [JsonProperty(PropertyName = "localUnit")]
         public string LocalUnit { get; set; }
@@ -242,6 +242,9 @@ namespace BridgeMVC.Models
 
         [JsonProperty(PropertyName = "exeDoneTime")]
         public DateTime? ExeDoneTime { get; set; }
+
+        [JsonProperty(PropertyName = "completedBy")]
+        public string CompletedBy { get; set; }
     }
 }
 //ModificationDesc,OnHoldNote,FeeVerifyTime,RegisterTime,DocReq,NoOfCert,FeeSet,VesselID,DocReqNote
