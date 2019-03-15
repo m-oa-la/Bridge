@@ -23,6 +23,14 @@ namespace BridgeMVC.Controllers
             //Session["BridgeModule"] = items.FirstOrDefault().BridgeModule;
             return View(items);
         }
+        [ActionName("IndexReadOnly")]
+        public async Task<ActionResult> IndexReadOnlyAsync()
+        {
+
+            var items = await DocumentDBRepository.GetItemsAsync<Rule>(d => d.Tag == "Rule" && d.DbJobId == (string)Session["DbJobId"]);
+            //Session["BridgeModule"] = items.FirstOrDefault().BridgeModule;
+            return View(items);
+        }
 
         [ActionName("FullList")]
         public async Task<ActionResult> FullListAsync()

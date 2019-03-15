@@ -8,6 +8,7 @@ using System.Threading.Tasks;
 using BridgeMVC.Models;
 using System.Security.Claims;
 using BridgeMVC.Extensions;
+using Newtonsoft.Json;
 
 namespace BridgeMVC.Controllers
 {
@@ -150,12 +151,12 @@ namespace BridgeMVC.Controllers
         [HttpPost]
         [ActionName("CreateNewJob")]
         [ValidateAntiForgeryToken]
-        public async Task<string> CreateNewJob([Bind(Include = "Tag,BridgeModule,Id,NpsJobId,TaskHandler,Task1,Task2,Task3,CustomerName,ProdDescription,ApprNote," +
+        public async Task<string> CreateNewJob([Bind(Include = "Tag,BridgeModule,Id,NpsJobId,TaskHandler,Task1,Task2,Task3,Task4,CustomerName,ProdDescription,ApprNote," +
             "IsComplete,SalesOrderNo,SubOrderNo,CertType,CertAction,MainProdType, SubProdType,ReceivedTime,FeeSetTime,IoraSentTime,IoraReturnedTime,JobCompletedTime,CustomerName," +
             "CustomerId,Fee,FeeSetter,FeeVerifier,JobVerifier,RAE,MWL,ExistingCertNo,CertNo,SerialNo,MEDItemNo,DeliveryWeek,LocalUnit,ArchiveFolder," +
             "IsHold,StatusNote,VerifyLvl,SurveyDate,SurveyStation,TechPara1,TechPara2,TechPara3,TechPara4,MEDFactory,MEDFBNo,MEDFBDue,AnyDesignChange," +
             "ChecklistUsed,DesignFolder,IsDocQualityGood,IsDocSufficient,SetHoldTime,IORASpentTime,ModificationDesc,OnHoldNote,FeeVerifyTime,RegisterTime," +
-            "DocReq,NoOfCert,FeeSet,VesselID,DocReqNote,NpsDbId,ExeDoneBy,ExeDoneTime")] Job item)
+            "DocReq,NoOfCert,FeeSet,VesselID,DocReqNote,NpsDbId,ExeDoneBy,ExeDoneTime,CompletedBy")] Job item)
         {
             if (ModelState.IsValid)
             {
@@ -175,6 +176,7 @@ namespace BridgeMVC.Controllers
             //await SaveJobChanges(item);
             if (ModelState.IsValid)
             {
+
                 await DocumentDBRepository.UpdateItemAsync<Job>(item.Id, item);
                 if (!string.IsNullOrEmpty(item.SendingFlag) && item.SendingFlag != "-")
                 {
@@ -184,6 +186,16 @@ namespace BridgeMVC.Controllers
             }
             await SetViewBags();   
             return View(item);
+        }
+
+        [HttpGet]
+        [ActionName("M1_Task1_BudgetHourCalc")]
+        public async Task<string> M1_TaskM1_Task1_BudgetHourCalc1(string bm_f, string ct_f)
+        {
+            var f = await DocumentDBRepository.GetItemsAsync<BFinancial>(d => d.Tag == "BFinancial" && d.BridgeModule == bm_f && d.CertType == ct_f);
+            ViewBag.FinancialSet = f.FirstOrDefault();
+            return JsonConvert.SerializeObject(f.FirstOrDefault());
+          
         }
 
         [HttpPost]
@@ -214,10 +226,9 @@ namespace BridgeMVC.Controllers
             }
 
             Job item = await DocumentDBRepository.GetItemAsync<Job>(id);
-            if (item.StatusNote != null)
-            {
-                item.StatusNote = CleanHtmlString(item.StatusNote);
-            }
+
+                item.StatusNote = "";
+            
             item.IsComplete = true;
             if (item == null)
             {
@@ -245,13 +256,13 @@ namespace BridgeMVC.Controllers
             {
                 return HttpNotFound();
             }
-            //ViewBag.SelectList = await DocumentDBRepository<BRule>.GetItemsAsync(d => d.Tag == "BRule" && d.BridgeModule == item.BridgeModule);
+
+
             Session["DbJobId"] = item.Id;
             Session["NpsJobId"] = item.NpsJobId;
-            if (item.StatusNote != null)
-            {
-                item.StatusNote = CleanHtmlString(item.StatusNote);
-            }
+
+            item.StatusNote = "";
+            
             await SetViewBags();
             item.SendingFlag = "-";
             return View(item);
@@ -376,22 +387,19 @@ namespace BridgeMVC.Controllers
             {
                 return new HttpStatusCodeResult(HttpStatusCode.BadRequest);
             }
-            //var tc = await DocumentDBRepository.GetItemsAsync<TechCheckLSA>(d => (d.DbJobId == id) && (d.Tag == "TechCheckLSA"));
+
             Job item = await DocumentDBRepository.GetItemAsync<Job>(id);
-            //if (item.CertType == "MED-F") {
-            //    return View(item);
-            //}
-
-            //if (tc.Count() == 0)
-            //{
-            //    Session["DbJobId"] = id;
-            //    return Redirect(Url.Content("~/TechCheckList/Create/"));
-            //}
-            //else
-            //{
-            //    return Redirect(Url.Content("~/TechCheckList/Edit/" + tc.FirstOrDefault().Id));
-            //}
-
+            if (item == null)
+            {
+                return HttpNotFound();
+            }
+            //ViewBag.SelectList = await DocumentDBRepository<BRule>.GetItemsAsync(d => d.Tag == "BRule" && d.BridgeModule == item.BridgeModule);
+            Session["DbJobId"] = item.Id;
+            Session["NpsJobId"] = item.NpsJobId;
+           item.StatusNote = "";
+            
+            await SetViewBags();
+            item.SendingFlag = "-";
             return View(item);
         }
 

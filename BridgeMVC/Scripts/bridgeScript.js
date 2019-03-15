@@ -119,7 +119,7 @@ function renderTaskHandling() {
     });
 
     // Set up selectList for variable items
-    $.each(["-- Please select --", "1.FEE", "2.AGR", "3.EXE"], function (index, value) {
+    $.each(["-- Please select --", "1.FEE", "2.AGR", "3.EXE", "4.FNL"], function (index, value) {
         $("#selectListTask").append(new Option(value, value));
     });
     

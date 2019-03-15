@@ -442,6 +442,8 @@
     <Content Include="Views\Shared\_TaskSending.cshtml" />
     <Content Include="Views\Shared\_SaveCompleteReopen.cshtml" />
     <Content Include="Views\Job\M1_Task3.cshtml" />
+    <Content Include="Views\Rule\IndexReadOnly.cshtml" />
+    <Content Include="Views\Shared\_HiddenJobProperties.cshtml" />
   </ItemGroup>
   <ItemGroup>
     <Folder Include="App_Data\M1\Projects\" />
