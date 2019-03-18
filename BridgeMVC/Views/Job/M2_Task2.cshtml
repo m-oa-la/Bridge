@@ -206,8 +206,10 @@
             @Html.ValidationMessageFor(model => model.SurveyDate, "", new { @class = "text-danger" })
         </div>
 
+        <iframe id="iframe" frameborder="0" src="@Url.Content("~/Product/IndexReadOnly")" style="width: 100%; height: 200px;"></iframe>
 
         <iframe id="iframe" frameborder="0" src="@Url.Content("~/Rule/IndexReadOnly")" style="width: 100%; height: 200px;"></iframe>
+        <iframe id="iframe" frameborder="0" src="@Url.Content("~/DocReq/IndexReadOnly")" style="width: 100%; height: 200px;"></iframe>
 
         <div class="bing col-lg-6">
             Fee (External, incl. TSA/MSA):

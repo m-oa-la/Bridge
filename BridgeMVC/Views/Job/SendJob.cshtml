@@ -11,6 +11,7 @@
     var LUser = ViewBag.LUser;
     var IIORA = ViewBag.iIORA;
 
+
     var bUser = ViewBag.bUser;
     var bEmail = ViewBag.bEmail;
 }
@@ -65,9 +66,14 @@
     var emailSubject = eval(bEmail.MailTitle);
     var emailBody = eval(bEmail.MailBody);
 
-    window.location = 'mailto:' + emailReceiver + '?subject=' + emailSubject + '&body=' + emailBody;
+    if (Job.TaskHandler == "WHITEBOARD") {
+        $('#statement').html("The job is sent to WHITEBOARD.");
+    } else {
+        window.location = 'mailto:' + emailReceiver + '?subject=' + emailSubject + '&body=' + emailBody;
 
-    $('#statement').html("The job is sent to " + Job.TaskHandler + " for further handling.");
+        $('#statement').html("The job is sent to " + Job.TaskHandler + " for further handling.");
+    }
+ 
 
 </script>
 

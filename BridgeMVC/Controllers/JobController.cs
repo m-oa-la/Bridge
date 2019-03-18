@@ -272,7 +272,7 @@ namespace BridgeMVC.Controllers
             ViewBag.bEmail = await DocumentDBRepository.GetItemsAsync<BEmail>(d => d.Tag == "BEmail" && d.BridgeModule == item.BridgeModule && d.TemplateName == ("TASK" + sf));
             ViewBag.bUser = await DocumentDBRepository.GetItemsAsync<BUser>(d => d.Tag == "BUser" && d.Signature == item.TaskHandler);
             ViewBag.iIORA = await DocumentDBRepository.GetItemsAsync<IORA>(d => d.Tag == "IORA" && d.DbJobId == item.Id);
-
+      
             Session["SendingFlag"] = "";
             return View(item);
         }
@@ -427,12 +427,49 @@ namespace BridgeMVC.Controllers
         }
 
         [ActionName("Whiteboard")]
-        public async Task<ActionResult> Whiteboard()
+        public async Task<ActionResult> Whiteboard(string wbTab)
         {
             var bm = (string)Session["BridgeModule"];
+
+            if (!string.IsNullOrEmpty(wbTab) && wbTab.Contains(","))
+            {
+                List<string> ls = wbTab.Split(',').ToList<string>();
+                Job j = await DocumentDBRepository.GetItemAsync<Job>(ls[0]);
+                j.TaskHandler = ls[1];
+                await DocumentDBRepository.UpdateItemAsync<Job>(j.Id, j);
+            }
+
+            var myModel = await DocumentDBRepository.GetItemsAsync<Job>(d => d.Tag == "Job" && d.BridgeModule == bm && d.IsComplete == false);
+
+            switch (wbTab)
+            {
+                case "wb_dist":
+                    myModel = myModel.Where(d => d.TaskHandler == "WHITEBOARD");
+                    break;
+                case "wb_v":
+                    myModel = myModel.Where(d => d.TaskHandler == "WHITEBOARD");
+                    break;
+                case "wb_oh":
+                    myModel = myModel.Where(d => d.IsHold == true && d.Task4=="TASK");
+                    break;
+                case "wb_og":
+                    myModel = myModel.Where(d => d.TaskHandler !="WHITEBOARD");
+                    //myModel = myModel.Where(d => d.IsHold == false && d.Task4 == "TASK");
+                    break;
+                case "wb_done":
+                    myModel = myModel.Where(d => d.IsComplete == true && d.JobCompletedTime > DateTime.Today.AddDays(-7));
+                    break;
+                default:
+                    myModel = myModel.Where(d => d.TaskHandler == "WHITEBOARD");
+                    break;
+            }
+
+
+            ViewBag.WBT = wbTab;
+
             await SetViewBags();
-            var myModel = await DocumentDBRepository.GetItemsAsync<Job>(d => d.Tag == "Job" && d.BridgeModule == bm);
             return View(myModel);
+
         }
 
         [ActionName("SubViews/WB_SV1")]

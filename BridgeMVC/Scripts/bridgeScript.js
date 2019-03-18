@@ -124,7 +124,7 @@ function renderTaskHandling() {
             $("#selectListTask").append(new Option(value, value));
         });
     } else if (bm === "M2") {
-        $.each(["-- Please select --", "1.FEE", "2.VER", "3.AGR"], function (index, value) {
+        $.each(["-- Please select --", "1.FEE", "2.VER", "3.AGR", "4.WHITEBOARD"], function (index, value) {
             $("#selectListTask").append(new Option(value, value));
         });
     }

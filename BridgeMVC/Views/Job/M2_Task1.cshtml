@@ -130,7 +130,7 @@
 
 
 
-        <div class="bing col-lg-6">
+        <div class="bing col-lg-6" hidden>
             <p>Designation:</p>
             @Html.EditorFor(model => model.ProdDescription, new { htmlAttributes = new { @class = "form-control" } })
             @Html.ValidationMessageFor(model => model.ProdDescription, "", new { @class = "text-danger" })
@@ -155,11 +155,11 @@
             @Html.EditorFor(model => model.ExistingCertNo, new { htmlAttributes = new { @class = "form-control" } })
             @Html.ValidationMessageFor(model => model.ExistingCertNo, "", new { @class = "text-danger" })
         </div>
-        <div class="bing col-lg-6">
+        <div class="bing col-lg-6" hidden>
             <p>Main Equipment category:</p>
             @Html.DropDownListFor(model => model.MainProdType, new List<SelectListItem> { new SelectListItem { Text = Model.MainProdType, Value = Model.MainProdType } }, new { @class = "form-control", id = "selectMainProdType" })
         </div>
-        <div class="bing col-lg-6">
+        <div class="bing col-lg-6" hidden>
             <p>Sub Equipment category:</p>
             @Html.DropDownListFor(model => model.SubProdType, new List<SelectListItem> { new SelectListItem { Text = Model.SubProdType, Value = Model.SubProdType } }, new { @class = "form-control", id = "selectSubProdType" })
         </div>

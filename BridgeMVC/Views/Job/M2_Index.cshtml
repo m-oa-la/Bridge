@@ -35,9 +35,9 @@
 
 <h2>
     MY BRIDGE JOBLIST
-    @*<p class="btn btn-subtle" style="float:right; border:none" hidden>
-            @Html.ActionLink("Create New", "Create")
-        </p>*@
+    <p class="btn btn-subtle" style="float:right; border:none" hidden>
+            @Html.ActionLink("WHITEBOARD", "Whiteboard")
+        </p>
 </h2>
 <hr />
 
@@ -85,7 +85,7 @@
     <tr>
         <th style="border-top:none">           JOB ID       </th>
         <th style="border-top:none">            CUSTOMER        </th>
-        <th style="border-top:none">            DESIGNATION     </th>
+        <th style="border-top:none">            CERTIFICATE TYPE     </th>
         <th style="border-top:none">           FEE       </th>
         <th style="border-top:none">           VERIFY       </th>
         <th style="border-top:none">           IORA       </th>
@@ -138,7 +138,7 @@
                 @Html.DisplayFor(modelItem => item.CustomerName)
             </td>
             <td>
-                <p> @Html.DisplayFor(modelItem => item.ProdDescription) </p>
+                <p> @Html.DisplayFor(modelItem => item.CertType) </p>
             </td>
             <td style="@styleT1" onclick="location.href=@editlink1">
                 @Html.DisplayFor(modelItem => item.Task1)
