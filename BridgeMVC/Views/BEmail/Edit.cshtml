@@ -85,18 +85,32 @@
     </div>
 }
 
-<div>
-    @Html.ActionLink("Back to List", "Index")
+
+
+<div id="grammer1">
+   
+</div>
+<div id="grammer2">
+
 </div>
 <script>
     var Job = @Html.Raw(Json.Encode(Job));
-    var IORA = @Html.Raw(Json.Encode(IORA));
+    var iORA = @Html.Raw(Json.Encode(IORA));
     var TargetUser = @Html.Raw(Json.Encode(TargetUser));
     var FinancialSet = @Html.Raw(Json.Encode(FinancialSet));
 
     $("#toTestFormula").click(function () {
         $("#testFormulaResult").html(eval($("#MailBody").val()));
     });
+
+    $("#grammer1").html("[[Job]]: " + JSON.stringify(Job))
+    $("#grammer2").html("[[TargetUser]]: " + JSON.stringify(TargetUser))
+    console.log("Job Example");
     console.log(Job);
-    console.log("hi");
+    console.log("TargetUser Example");
+    console.log(TargetUser);
+    console.log("iORA");
+    console.log(iORA);
+    console.log("Change line: %0D%0A%0D%0A")
+
 </script>

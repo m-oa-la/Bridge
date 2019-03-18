@@ -1,4 +1,4 @@
-﻿@model IEnumerable<BridgeMVC.Models.Rule>
+﻿@model IEnumerable<BridgeMVC.Models.DocReq>
 
 @{
     Layout = null;
@@ -21,33 +21,19 @@
     </style>
 </head>
 
-
-<h4 style="margin-top:1px">Applicable Rules <span style="float:right; padding-right:4em"> @Html.ActionLink("Add New", "Create")</span></h4>
-
+<h4 style="margin-top:1px">Applicable DocReqs </h4>
 
 <table class="table">
-    <colgroup>
-        <col span="1" style="width: 90%;">
-        <col span="1" style="width: 10%;">
-
-
-    </colgroup>
 
     @foreach (var item in Model)
     {
         <tr>
 
             <td>
-                @Html.DisplayFor(modelItem => item.RuleName)
+                @Html.DisplayFor(modelItem => item.DocReqItem)
             </td>
 
-            <td>
 
-                @using (Html.BeginForm("Delete", "Rule", new { id = item.Id }, FormMethod.Post, null))
-                {@Html.AntiForgeryToken()
-                <input type="submit" value="Delete" />
-            }
-            </td>
         </tr>
     }
 

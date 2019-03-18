@@ -20,7 +20,7 @@ namespace BridgeMVC.Controllers
     [Authorize]
     public class IORAController : Controller
     {
-        [ActionName("Index")]
+        [ActionName("__Index")]
         public async Task<ActionResult> IndexAsync()
         {
 
@@ -38,6 +38,7 @@ namespace BridgeMVC.Controllers
                 NpsJobID = (string)Session["NpsJobId"],
                 DbJobId = (string)Session["DbJobId"],
                 IORAFee = (int)Session["IORAFee"],
+
             };
 
             await DocumentDBRepository.CreateItemAsync<IORA>(i);
@@ -58,7 +59,7 @@ namespace BridgeMVC.Controllers
                 "DgCustomerRef01,DpProjStartDate01,DpProjStartEnd01,DpSoW01,DpSupportingDocs01,IORAFee,DgSpecialConditions," +
                 "Str_SpecialC,DnvIntUnPlace501,DnvIntUnDate501,DnvIntUnSigName501,DnvIntUnSigTitle501," +
             "SellingContactSig,BuyingContactSig,DgDNVDocNo01,DnvContPersName501,DpDeliverables01,IORASentTime,SignedIoraRcTime," +
-            "NPSJNo,DbJobId,SendingFlag,IORASentBy" )] IORA item)
+            "NPSJNo,DbJobId,SendingFlag,IORASentBy,TaskHandler" )] IORA item)
         {
             if (ModelState.IsValid)
             {
@@ -82,6 +83,7 @@ namespace BridgeMVC.Controllers
                 await DocumentDBRepository.UpdateItemAsync<IORA>(item.Id, item);
                 IORA ii = item;
                 Job j = await DocumentDBRepository.GetItemAsync<Job>(ii.DbJobId);
+
                 if (!string.IsNullOrEmpty(item.IORASentBy))
                 {
                     j.IoraSentTime = ii.IORASentTime;
@@ -107,6 +109,11 @@ namespace BridgeMVC.Controllers
                 if (!string.IsNullOrEmpty(item.SendingFlag) && item.SendingFlag != "-")
                 {
                     Session["SendingFlag"] = item.SendingFlag;
+                    j.TaskHandler = ii.TaskHandler;
+                    j.GetType().GetProperty("Task" + item.SendingFlag).SetValue(j, "TASK", null);
+           
+                    await DocumentDBRepository.UpdateItemAsync<Job>(j.Id, j);
+
                     return Redirect(Url.Content("~/Job/SendJob/" + item.DbJobId));
                 }
                 else

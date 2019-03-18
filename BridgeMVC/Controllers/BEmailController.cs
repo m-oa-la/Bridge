@@ -16,7 +16,8 @@ namespace BridgeMVC.Controllers
         [ActionName("Index")]
         public async Task<ActionResult> IndexAsync()
         {
-            var s = await DocumentDBRepository.GetItemsAsync<BEmail>(d => d.Tag == "BEmail");
+            string bm = (string)Session["BridgeModule"];
+            var s = await DocumentDBRepository.GetItemsAsync<BEmail>(d => d.Tag == "BEmail" && d.BridgeModule == bm);
             return View(s);
         }
 
@@ -80,8 +81,8 @@ namespace BridgeMVC.Controllers
             ViewBag.IORA = i;
             var f = await DocumentDBRepository.GetItemsAsync<BFinancial>(d => d.Tag == "BFinancial" && d.BridgeModule == i.BridgeModule && d.CertType == j.CertType);
             ViewBag.FinancialSet = f.FirstOrDefault();
-            var u = await DocumentDBRepository.GetItemsAsync<BUser>(d => d.Tag == "BUser" && d.Signature == "SXL");
-            ViewBag.TargetUser = u.FirstOrDefault();
+            var u = await DocumentDBRepository.GetItemAsync<BUser>("8864ba7d-8593-4eb5-88c0-0b224e24567f");
+            ViewBag.TargetUser = u;
 
             if (item == null)
             {

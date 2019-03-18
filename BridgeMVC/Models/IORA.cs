@@ -132,5 +132,12 @@ namespace BridgeMVC.Models
 
         [JsonProperty(PropertyName = "ioraSentBy")]
         public string IORASentBy { get; set; }
+
+        [JsonProperty(PropertyName = "taskHandler")]
+        public string TaskHandler { get; set; }
+
+
+        
+
     }
 }

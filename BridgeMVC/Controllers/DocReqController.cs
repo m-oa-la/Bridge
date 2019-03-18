@@ -12,25 +12,14 @@ using Newtonsoft.Json;
 namespace BridgeMVC.Controllers
 {
     [Authorize]
-    public class ProductController : Controller
+    public class DocReqController : Controller
     {
-        public async Task<string> SetViewBags()
-        {
-            var bm = (string)Session["BridgeModule"];
-            //ViewBag.LCertType = await DocumentDBRepository.GetItemsAsync<BList>(d => d.Tag == "BList" && d.BridgeModule == bm && d.ListType == "CertType");
-            //ViewBag.LCertAction = await DocumentDBRepository.GetItemsAsync<BList>(d => d.Tag == "BList" && d.BridgeModule == bm && d.ListType == "CertAction");
-            ViewBag.LMainProdType = await DocumentDBRepository.GetItemsAsync<BList>(d => d.Tag == "BList" && d.BridgeModule == bm && d.ListType == "MainProdType");
-            ViewBag.LSubProdType = await DocumentDBRepository.GetItemsAsync<BList>(d => d.Tag == "BList" && d.BridgeModule == bm && d.ListType == "SubProdType");
-            //ViewBag.LUser = await DocumentDBRepository.GetItemsAsync<BUser>(d => d.Tag == "BUser" && (d.BridgesGranted).Contains(bm));
-
-            return ("");
-        }
-        // GET: Product
+        // GET: DocReq
         [ActionName("Index")]
         public async Task<ActionResult> IndexAsync()
         {
 
-            var items = await DocumentDBRepository.GetItemsAsync<Product>(d => d.Tag == "Product" && d.DbJobId == (string)Session["DbJobId"]);
+            var items = await DocumentDBRepository.GetItemsAsync<DocReq>(d => d.Tag == "DocReq" && d.DbJobId == (string)Session["DbJobId"]);
             //Session["BridgeModule"] = items.FirstOrDefault().BridgeModule;
             return View(items);
         }
@@ -38,7 +27,7 @@ namespace BridgeMVC.Controllers
         public async Task<ActionResult> IndexReadOnlyAsync()
         {
 
-            var items = await DocumentDBRepository.GetItemsAsync<Product>(d => d.Tag == "Product" && d.DbJobId == (string)Session["DbJobId"]);
+            var items = await DocumentDBRepository.GetItemsAsync<DocReq>(d => d.Tag == "DocReq" && d.DbJobId == (string)Session["DbJobId"]);
             //Session["BridgeModule"] = items.FirstOrDefault().BridgeModule;
             return View(items);
         }
@@ -47,7 +36,7 @@ namespace BridgeMVC.Controllers
         public async Task<ActionResult> FullListAsync()
         {
 
-            var items = await DocumentDBRepository.GetItemsAsync<Product>(d => d.Tag == "Product");
+            var items = await DocumentDBRepository.GetItemsAsync<DocReq>(d => d.Tag == "DocReq");
             //Session["BridgeModule"] = items.FirstOrDefault().BridgeModule;
             return View(items);
         }
@@ -59,7 +48,7 @@ namespace BridgeMVC.Controllers
                 return new HttpStatusCodeResult(HttpStatusCode.BadRequest);
             }
 
-            Product r = await DocumentDBRepository.GetItemAsync<Product>(id);
+            DocReq r = await DocumentDBRepository.GetItemAsync<DocReq>(id);
 
             if (r == null)
             {
@@ -73,7 +62,7 @@ namespace BridgeMVC.Controllers
         [ValidateAntiForgeryToken]
         public async Task<ActionResult> DeleteConfirmed(string id)
         {
-            Product r = await DocumentDBRepository.GetItemAsync<Product>(id);
+            DocReq r = await DocumentDBRepository.GetItemAsync<DocReq>(id);
             await DocumentDBRepository.DeleteItemAsync(r.Id);
 
             return RedirectToAction("Index");
@@ -90,16 +79,17 @@ namespace BridgeMVC.Controllers
         [ActionName("Create")]
         public async Task<ActionResult> CreateAsync()
         {
-            var r = new Product
+            var r = new DocReq
             {
-                Tag = "Product",
+                Tag = "DocReq",
                 NpsJobId = (string)Session["NpsJobId"],
                 DbJobId = (string)Session["DbJobId"],
                 BridgeModule = (string)Session["BridgeModule"]
 
             };
-            await SetViewBags();
-  
+
+            ViewBag.DocReqSelectList = await DocumentDBRepository.GetItemsAsync<BList>(d => d.Tag == "BList" && d.BridgeModule == r.BridgeModule && d.ListType == "DocReq");
+
 
             return View(r);
 
@@ -108,13 +98,11 @@ namespace BridgeMVC.Controllers
         [HttpPost]
         [ActionName("Create")]
         [ValidateAntiForgeryToken]
-        public async Task<ActionResult> CreateAsync([Bind(Include = "Id,Tag,BridgeModule,MainProdType,SubProdType,ProdDescription,NpsJobId,DbJobId," +
-            "DesignPara1,DesignPara2,DesignPara3,DesignPara4,DesignPara5,DesignPara6,Note")] Product item)
+        public async Task<ActionResult> CreateAsync([Bind(Include = "Id,Tag,BridgeModule,DocReqItem,NpsJobId,DbJobId")] DocReq item)
         {
             if (ModelState.IsValid)
             {
-                //await SetViewBags();
-                await DocumentDBRepository.CreateItemAsync<Product>(item);
+                await DocumentDBRepository.CreateItemAsync<DocReq>(item);
                 return RedirectToAction("Index");
             }
 
@@ -124,12 +112,11 @@ namespace BridgeMVC.Controllers
         [HttpPost]
         [ActionName("Edit")]
         [ValidateAntiForgeryToken]
-        public async Task<ActionResult> EditAsync([Bind(Include = "Id,Tag,BridgeModule,MainProdType,SubProdType,ProdDescription,NpsJobId,DbJobId," +
-            "DesignPara1,DesignPara2,DesignPara3,DesignPara4,DesignPara5,DesignPara6,Note")] Product item)
+        public async Task<ActionResult> EditAsync([Bind(Include = "Id,Tag,BridgeModule,DocReqItem,NpsJobId,DbJobId")] DocReq item)
         {
             if (ModelState.IsValid)
             {
-                await DocumentDBRepository.UpdateItemAsync<Product>(item.Id, item);
+                await DocumentDBRepository.UpdateItemAsync<DocReq>(item.Id, item);
                 return RedirectToAction("Index");
             }
 
@@ -144,12 +131,12 @@ namespace BridgeMVC.Controllers
                 return new HttpStatusCodeResult(HttpStatusCode.BadRequest);
             }
 
-            Product item = await DocumentDBRepository.GetItemAsync<Product>(id);
+            DocReq item = await DocumentDBRepository.GetItemAsync<DocReq>(id);
             if (item == null)
             {
                 return HttpNotFound();
             }
-            await SetViewBags();
+
             return View(item);
         }
 
