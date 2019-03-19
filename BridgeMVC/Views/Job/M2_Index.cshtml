@@ -1,6 +1,8 @@
 ﻿@model IEnumerable<BridgeMVC.Models.Job>
 
 @{
+    /**/
+
     ViewBag.Title = "Index";
     string BridgeLastUsed = (string)Session["BridgeModule"];
     string UserSignature = (string)Session["UserSignature"];
@@ -9,37 +11,86 @@
     colorN = "background-color:azure; color:transparent;";
     colorTask = "background-color:#81d078; color:transparent;";
 
-
-    var users = ViewBag.users;
+    var LUser = ViewBag.LUser;
+    var US = ViewBag.userSig;
 
 }
 
-<p class="btn btn-secondary">
-    @Html.ActionLink("Create New", "Create")
-</p>
+<style>
+    .hoverRow p {
+        display: block;
+        overflow: hidden;
+        text-overflow: ellipsis;
+        white-space: nowrap;
+        width: 200px;
+        max-width: 240px;
+    }
 
-<p style="float:right" class="btn btn-secondary">
-    @Html.ActionLink("Whiteboard", "Whiteboard")
-</p>
-<table class="table table-mid-align-rows">
+    .hoverRow td:hover p {
+        white-space: normal;
+        word-wrap: normal;
+        word-break: break-all;
+    }
+</style>
+
+<h2>
+    MY BRIDGE JOBLIST
+    <p class="btn btn-subtle" style="float:right; border:none" hidden>
+            @Html.ActionLink("WHITEBOARD", "Whiteboard")
+        </p>
+</h2>
+<hr />
+
+@using (Html.BeginForm())
+{
+    <table>
+        <colgroup>
+            <col span="1" style="width: 12%;">
+            <col span="1" style="width: 76%;">
+            <col span="1" style="width: 12%;">
+
+        </colgroup>
+        <tr>
+            <td>
+                @Html.TextBox("SearchString", null, new { @class = "form-control" })
+
+            </td>
+            <td>
+                <input type="submit" value="Search" />
+            </td>
+            <td style="float:right">
+                <select id="userSig" name="userSig" class="form-control"></select>
+            </td>
+            <td>
+                <input type="submit" value="Change User" />
+            </td>
+        </tr>
+
+    </table>
+
+}
+<br />
+
+<table class="table table-mid-align-rows hoverRow">
     <colgroup>
-        <col span="1" style="width: 21%;">
-        <col span="1" style="width: 26%;">
-        <col span="1" style="width: 26%;">
-        <col span="1" style="width: 9%;">
-        <col span="1" style="width: 9%;">
-        <col span="1" style="width: 9%;">
-
+        <col span="1" style="width: 12%;">
+        <col span="1" style="width: 18%;">
+        <col span="1" style="width: 18%;">
+        <col span="1" style="width: 8%;">
+        <col span="1" style="width: 8%;">
+        <col span="1" style="width: 8%;">
+        <col span="1" style="width: 1%;">
+        <col span="1" style="width: 20%;">
     </colgroup>
     <tr>
-        <th>           Job ID        </th>
-        <th>           Customer      </th>
-        <th>           Designation   </th>
-        <th>           FEE           </th>
-        <th>           VERIFY        </th>
-        <th>           IORA          </th>
-
-        <th> </th>
+        <th style="border-top:none">           JOB ID       </th>
+        <th style="border-top:none">            CUSTOMER        </th>
+        <th style="border-top:none">            CERTIFICATE TYPE     </th>
+        <th style="border-top:none">           FEE       </th>
+        <th style="border-top:none">           VERIFY       </th>
+        <th style="border-top:none">           IORA       </th>
+        <th style="border-top:none">                   </th>
+        <th style="border-top:none">           STATUS    </th>
         @*<th>            @Html.DisplayNameFor(model => model.TaskHandler)        </th>
             <th>            @Html.DisplayNameFor(model => model.Completed)        </th>*@
 
@@ -87,7 +138,7 @@
                 @Html.DisplayFor(modelItem => item.CustomerName)
             </td>
             <td>
-                @Html.DisplayFor(modelItem => item.ProdDescription)
+                <p> @Html.DisplayFor(modelItem => item.CertType) </p>
             </td>
             <td style="@styleT1" onclick="location.href=@editlink1">
                 @Html.DisplayFor(modelItem => item.Task1)
@@ -98,30 +149,34 @@
             <td style="@styleT3" onclick="location.href=@editlink3">
                 @Html.DisplayFor(modelItem => item.Task3)
             </td>
+            <td style="@styleT4">
+                @*@Html.DisplayFor(modelItem => item.Task4)*@
+            </td>
+            <td>
+                <p> @Html.DisplayFor(modelItem => item.StatusNote.Split('<')[0]) </p>
+            </td>
 
-            @*<td style="@styleT4" onclick="location.href=@editlink4">
-                    @Html.DisplayFor(modelItem => item.Task4)
-                </td>*@
-            @*<td>
-                    @Html.DisplayFor(modelItem => item.Task5)
-                </td>*@
-            @*<td>
-                    @Html.DisplayFor(modelItem => item.TaskHandler)
-                </td>
-                <td>
-                    @Html.DisplayFor(modelItem => item.Completed)
-                </td>*@
-            @*<td>
-                    @Html.ActionLink("Edit", "M2_Edit", new { id = item.Id }) |
-                    @Html.ActionLink("Details", "Details", new { id = item.Id })
-                </td>*@
         </tr>
     }
 
 </table>
 
 <script>
-    var users = @Html.Raw(Json.Encode(users));
+    var LUser = @Html.Raw(Json.Encode(LUser));
+    var us = @Html.Raw(Json.Encode(US));
 
-    console.log(users);
+    console.log(LUser);
+
+    $("#userSig").append(new Option(us, us));
+
+    $.each(LUser, function (key, data) {
+        $("#userSig").append(new Option(data.Signature, data.Signature));
+    });
+
+    //$("#userSig").on("change", function () {
+    //    var mval = $("#selectMainProdType :selected").text();
+
+    //});
+
+
 </script>

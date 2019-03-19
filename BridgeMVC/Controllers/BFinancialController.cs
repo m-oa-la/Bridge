@@ -16,7 +16,8 @@ namespace BridgeMVC.Controllers
         [ActionName("Index")]
         public async Task<ActionResult> IndexAsync()
         {
-            var s = await DocumentDBRepository.GetItemsAsync<BFinancial>(d => d.Tag == "BFinancial");
+            string bm = (string)Session["BridgeModule"];
+            var s = await DocumentDBRepository.GetItemsAsync<BFinancial>(d => d.Tag == "BFinancial" && d.BridgeModule == bm);
             return View(s);
         }
 

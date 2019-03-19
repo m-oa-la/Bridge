@@ -119,9 +119,16 @@ function renderTaskHandling() {
     });
 
     // Set up selectList for variable items
-    $.each(["-- Please select --", "1.FEE", "2.AGR", "3.EXE", "4.FNL"], function (index, value) {
-        $("#selectListTask").append(new Option(value, value));
-    });
+    if (bm === "M1") {
+        $.each(["-- Please select --", "1.FEE", "2.AGR", "3.EXE", "4.FNL"], function (index, value) {
+            $("#selectListTask").append(new Option(value, value));
+        });
+    } else if (bm === "M2") {
+        $.each(["-- Please select --", "1.FEE", "2.VER", "3.AGR", "4.WHITEBOARD"], function (index, value) {
+            $("#selectListTask").append(new Option(value, value));
+        });
+    }
+
     
     $('#sendJobEmail').on('click', function (event) {
  

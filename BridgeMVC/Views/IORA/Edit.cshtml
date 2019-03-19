@@ -297,8 +297,8 @@
     <table class="table table-mid-align-rows">
         <tr style="border-top:1px double #ffffff">
             <td>Pricing Model:</td>
-            <td colspan="2">  <input type="checkbox" name="" value=""> Hourly Rates      </td>
-            <td colspan="2">  <input type="checkbox" name="" value="" checked="checked"> or Fixed Fees    </td>
+            <td colspan="2">  <input type="checkbox" name="" value="" disabled> Hourly Rates      </td>
+            <td colspan="2">  <input type="checkbox" name="" value="" checked="checked" disabled> or Fixed Fees    </td>
         </tr>
         <tr>
             <td>
@@ -308,30 +308,30 @@
             <td colspan="2">
                 Currency: <span style="font-weight:bold">NOK</span>
             </td>
-            <td colspan="2">
+            @*<td colspan="2">
                 Budget Hours: &nbsp;<input type="number" />
-            </td>
+            </td>*@
         </tr>
         <tr>
             <td>Travel Expenses (incl. subsistence):</td>
             <td>
-                <input type="checkbox" name="travelAtCost" value="Car" checked="checked"> Yes, at cost.<br>
+                <input type="checkbox" name="travelAtCost" value="Car" checked="checked" disabled> Yes, at cost.<br>
             </td>
             <td colspan="2">  <input type="checkbox" name="" value=""> No   </td>
         </tr>
         <tr>
             <td>Other Expenses</td>
-            <td>  <input type="checkbox" name="" value="">None     </td>
-            <td>  <input type="checkbox" name="" value="" checked="checked">At Cost     </td>
-            <td>  <input type="checkbox" name="" value="">Incl. in Fixed Fee  </td>
-            <td>  <input type="checkbox" name="" value="">Other (see conditions below)     </td>
+            <td>  <input type="checkbox" name="" value="" disabled>None     </td>
+            <td>  <input type="checkbox" name="" value="" checked="checked" disabled>At Cost     </td>
+            <td>  <input type="checkbox" name="" value="" disabled>Incl. in Fixed Fee  </td>
+            <td>  <input type="checkbox" name="" value="" disabled>Other (see conditions below)     </td>
         </tr>
         <tr>
             <td>Invoicing Details:</td>
-            <td> <input type="checkbox" name="" value="" checked="checked">  At completion    </td>
-            <td> <input type="checkbox" name="" value="">  Monthly    </td>
-            <td>  <input type="checkbox" name="" value=""> As per PQP  </td>
-            <td>  <input type="checkbox" name="" value=""> Other (see conditions below)     </td>
+            <td> <input type="checkbox" name="" value="" checked="checked" disabled>  At completion    </td>
+            <td> <input type="checkbox" name="" value="" disabled>  Monthly    </td>
+            <td>  <input type="checkbox" name="" value="" disabled> As per PQP  </td>
+            <td>  <input type="checkbox" name="" value="" disabled> Other (see conditions below)     </td>
         </tr>
 
     </table>
@@ -398,8 +398,9 @@
 
     <div hidden>
         @Html.EditorFor(model => model.NpsJobID, new { htmlAttributes = new { @class = "form-control", id = "NpsJobId" } })
-    </div>
-    <div hidden>
+
+        @Html.EditorFor(model => model.TaskHandler, new { htmlAttributes = new { @class = "form-control" } })
+
         @Html.EditorFor(model => model.IORASentBy, new { htmlAttributes = new { @class = "form-control" } })
     </div>
 
@@ -584,7 +585,7 @@
             var x = data.BookMarkName.split("_")[1];
 
             if (data.Formula != null && (cax.indexOf(x + ",")>-1)) {
-                sc = sc + "•  " + eval(data.Formula) + "\r\n";
+                sc = sc + eval(data.Formula) + "\r\n";
             }
         });
 

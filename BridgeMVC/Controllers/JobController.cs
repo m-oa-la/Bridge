@@ -83,6 +83,7 @@ namespace BridgeMVC.Controllers
 
             if (!String.IsNullOrEmpty(searchString))
             {
+                searchString.Replace(" ", "");
                 searchString = searchString.ToLower();
 
                 myModel = myModel.Where(s => s.NpsJobId.ToLower().Contains(searchString) || (s.CustomerName + "X").ToLower().Contains(searchString) || (s.ProdDescription + "X").ToLower().Contains(searchString) || (s.CertType + "X").ToLower().Contains(searchString));
@@ -93,17 +94,29 @@ namespace BridgeMVC.Controllers
 
 
         [ActionName("M2_Index")]
-        public async Task<ActionResult> M2_IndexAsync()
+        public async Task<ActionResult> M2_IndexAsync(string searchString, string userSig)
         {
-            string userSig = (string)Session["UserSignature"];
-            string bm = (string)Session["BridgeModule"];
+            {
+                if (string.IsNullOrEmpty(userSig))
+                {
+                    userSig = (string)Session["UserSignature"];
+                }
+                ViewBag.userSig = userSig;
 
-            var myModel = await DocumentDBRepository.GetItemsAsync<Job>(d => d.Tag == "Job" && d.BridgeModule.ToUpper() == bm && d.TaskHandler.ToUpper() == userSig);
+                string bm = (string)Session["BridgeModule"];
+                var myModel = await DocumentDBRepository.GetItemsAsync<Job>(d => d.Tag == "Job" && d.BridgeModule.ToUpper() == bm && d.TaskHandler.ToUpper() == userSig && d.IsComplete == false);
 
-            await SetViewBags();
-            return View(myModel);
+                if (!String.IsNullOrEmpty(searchString))
+                {
+                    searchString.Replace(" ", "");
+                    searchString = searchString.ToLower();
+
+                    myModel = myModel.Where(s => s.NpsJobId.ToLower().Contains(searchString) || (s.CustomerName + "X").ToLower().Contains(searchString) || (s.ProdDescription + "X").ToLower().Contains(searchString) || (s.CertType + "X").ToLower().Contains(searchString));
+                }
+                await SetViewBags();
+                return View(myModel.OrderBy(s => s.NpsJobId));
+            }
         }
-
         public async Task<string> SetViewBags()
         {
             var bm = (string)Session["BridgeModule"];
@@ -116,37 +129,7 @@ namespace BridgeMVC.Controllers
            return ("");
         }
 
-        //[HttpPost]
-        //[ActionName("SaveJobChanges")]
-        //[ValidateAntiForgeryToken]
-        //public async Task<string> SaveJobChanges([Bind(Include = "Tag,BridgeModule,Id,NpsJobId,TaskHandler,Task1,Task2,Task3,CustomerName,ProdDescription,ApprNote," +
-        //    "IsComplete,SalesOrderNo,SubOrderNo,CertType,CertAction,MainProdType, SubProdType,ReceivedTime,FeeSetTime,IoraSentTime,IoraReturnedTime,JobCompletedTime,CustomerName," +
-        //    "CustomerId,Fee,FeeSetter,FeeVerifier,JobVerifier,RAE,MWL,ExistingCertNo,CertNo,SerialNo,MEDItemNo,DeliveryWeek,LocalUnit,ArchiveFolder," +
-        //    "IsHold,StatusNote,VerifyLvl,SurveyDate,SurveyStation,TechPara1,TechPara2,TechPara3,TechPara4,MEDFactory,MEDFBNo,MEDFBDue,AnyDesignChange," +
-        //    "ChecklistUsed,DesignFolder,IsDocQualityGood,IsDocSufficient,SetHoldTime,IORASpentTime,ModificationDesc,OnHoldNote,FeeVerifyTime,RegisterTime," +
-        //    "DocReq,NoOfCert,FeeSet,VesselID,DocReqNote,NpsDbId")] Job item)
-        //{
-        //    if (ModelState.IsValid)
-        //    {
-        //        if (item.StatusNote != null)
-        //        {
-        //            item.StatusNote = CleanHtmlString(item.StatusNote);
-        //        }
 
-        //        string s = "12345";
-        //        string SF = item.SendingFlag;
-
-        //        if (SF != null && s.Contains(SF))
-        //        {
-        //            Session["SendingFlag"] = item.SendingFlag;
-        //            Redirect(Url.Content("~/Job/SendJob/" + item.Id));
-        //        }
-
-        //        await DocumentDBRepository.UpdateItemAsync<Job>(item.Id, item);
-        //    }
-        //    await SetViewBags();
-        //    return null;
-        //}
 
         [HttpPost]
         [ActionName("CreateNewJob")]
@@ -289,7 +272,7 @@ namespace BridgeMVC.Controllers
             ViewBag.bEmail = await DocumentDBRepository.GetItemsAsync<BEmail>(d => d.Tag == "BEmail" && d.BridgeModule == item.BridgeModule && d.TemplateName == ("TASK" + sf));
             ViewBag.bUser = await DocumentDBRepository.GetItemsAsync<BUser>(d => d.Tag == "BUser" && d.Signature == item.TaskHandler);
             ViewBag.iIORA = await DocumentDBRepository.GetItemsAsync<IORA>(d => d.Tag == "IORA" && d.DbJobId == item.Id);
-
+      
             Session["SendingFlag"] = "";
             return View(item);
         }
@@ -378,6 +361,26 @@ namespace BridgeMVC.Controllers
             }
         }
 
+        [ActionName("M2_Task3")]
+        public async Task<ActionResult> M2_Task3Async(string id, string npsid, int fee)
+        {
+            if (id == null)
+            {
+                return new HttpStatusCodeResult(HttpStatusCode.BadRequest);
+            }
+            var ioras = await DocumentDBRepository.GetItemsAsync<IORA>(d => (d.NpsJobID == npsid) && (d.Tag == "IORA"));
+            if (ioras.Count() == 0)
+            {
+                Session["NpsJobId"] = npsid;
+                Session["DbJobId"] = id;
+                Session["IORAFee"] = fee;
+                return Redirect(Url.Content("~/IORA/Create/"));
+            }
+            else
+            {
+                return Redirect(Url.Content("~/IORA/Edit/" + ioras.FirstOrDefault().Id));
+            }
+        }
 
 
         [ActionName("M1_Task3")]
@@ -408,21 +411,65 @@ namespace BridgeMVC.Controllers
         [ValidateAntiForgeryToken]
         public async Task<ActionResult> M1_Task3Post(Job item)
         {
+            //await SaveJobChanges(item);
             if (ModelState.IsValid)
             {
+
                 await DocumentDBRepository.UpdateItemAsync<Job>(item.Id, item);
-             }
+                if (!string.IsNullOrEmpty(item.SendingFlag) && item.SendingFlag != "-")
+                {
+                    Session["SendingFlag"] = item.SendingFlag;
+                    return Redirect(Url.Content("~/Job/SendJob/" + item.Id));
+                }
+            }
             await SetViewBags();
             return View(item);
         }
 
         [ActionName("Whiteboard")]
-        public async Task<ActionResult> Whiteboard()
+        public async Task<ActionResult> Whiteboard(string wbTab)
         {
             var bm = (string)Session["BridgeModule"];
+
+            if (!string.IsNullOrEmpty(wbTab) && wbTab.Contains(","))
+            {
+                List<string> ls = wbTab.Split(',').ToList<string>();
+                Job j = await DocumentDBRepository.GetItemAsync<Job>(ls[0]);
+                j.TaskHandler = ls[1];
+                await DocumentDBRepository.UpdateItemAsync<Job>(j.Id, j);
+            }
+
+            var myModel = await DocumentDBRepository.GetItemsAsync<Job>(d => d.Tag == "Job" && d.BridgeModule == bm && d.IsComplete == false);
+
+            switch (wbTab)
+            {
+                case "wb_dist":
+                    myModel = myModel.Where(d => d.TaskHandler == "WHITEBOARD");
+                    break;
+                case "wb_v":
+                    myModel = myModel.Where(d => d.TaskHandler == "WHITEBOARD");
+                    break;
+                case "wb_oh":
+                    myModel = myModel.Where(d => d.IsHold == true && d.Task4=="TASK");
+                    break;
+                case "wb_og":
+                    myModel = myModel.Where(d => d.TaskHandler !="WHITEBOARD");
+                    //myModel = myModel.Where(d => d.IsHold == false && d.Task4 == "TASK");
+                    break;
+                case "wb_done":
+                    myModel = myModel.Where(d => d.IsComplete == true && d.JobCompletedTime > DateTime.Today.AddDays(-7));
+                    break;
+                default:
+                    myModel = myModel.Where(d => d.TaskHandler == "WHITEBOARD");
+                    break;
+            }
+
+
+            ViewBag.WBT = wbTab;
+
             await SetViewBags();
-            var myModel = await DocumentDBRepository.GetItemsAsync<Job>(d => d.Tag == "Job" && d.BridgeModule == bm);
             return View(myModel);
+
         }
 
         [ActionName("SubViews/WB_SV1")]
@@ -461,8 +508,10 @@ namespace BridgeMVC.Controllers
         [ValidateAntiForgeryToken]
         public async Task<ActionResult> M2_Task1Async(Job item)
         {
+            //await SaveJobChanges(item);
             if (ModelState.IsValid)
             {
+
                 await DocumentDBRepository.UpdateItemAsync<Job>(item.Id, item);
                 if (!string.IsNullOrEmpty(item.SendingFlag) && item.SendingFlag != "-")
                 {
@@ -479,8 +528,10 @@ namespace BridgeMVC.Controllers
         [ValidateAntiForgeryToken]
         public async Task<ActionResult> M2_Task2Async(Job item)
         {
+            //await SaveJobChanges(item);
             if (ModelState.IsValid)
             {
+
                 await DocumentDBRepository.UpdateItemAsync<Job>(item.Id, item);
                 if (!string.IsNullOrEmpty(item.SendingFlag) && item.SendingFlag != "-")
                 {
@@ -505,11 +556,15 @@ namespace BridgeMVC.Controllers
             {
                 return HttpNotFound();
             }
-            //ViewBag.SelectList = await DocumentDBRepository<BRule>.GetItemsAsync(d => d.Tag == "BRule" && d.BridgeModule == item.BridgeModule);
-            Session["NpsJobId"] = item.NpsJobId;
+
 
             Session["DbJobId"] = item.Id;
+            Session["NpsJobId"] = item.NpsJobId;
+
+            item.StatusNote = "";
+
             await SetViewBags();
+            item.SendingFlag = "-";
             return View(item);
         }
 
@@ -521,41 +576,25 @@ namespace BridgeMVC.Controllers
             {
                 return new HttpStatusCodeResult(HttpStatusCode.BadRequest);
             }
+
             Job item = await DocumentDBRepository.GetItemAsync<Job>(id);
             if (item == null)
             {
                 return HttpNotFound();
             }
-            //ViewBag.SelectList = await DocumentDBRepository<BRule>.GetItemsAsync(d => d.Tag == "BRule" && d.BridgeModule == item.BridgeModule);
-            Session["NpsJobId"] = item.NpsJobId;
-            Session["BridgeModule"] = item.BridgeModule;
+
+
             Session["DbJobId"] = item.Id;
-            ViewBag.LUser = await DocumentDBRepository.GetItemsAsync<BUser>(d => d.Tag == "BUser" && (d.BridgesGranted).Contains(item.BridgeModule));
+            Session["NpsJobId"] = item.NpsJobId;
+
+            item.StatusNote = "";
+
+            await SetViewBags();
+            item.SendingFlag = "-";
             return View(item);
         }
 
-        [ActionName("M2_Task3")]
-        public async Task<ActionResult> M2_Task3Async(string id, string npsid, int? fee)
-        {
-            if (id == null)
-            {
-                return new HttpStatusCodeResult(HttpStatusCode.BadRequest);
-            }
 
-            var ioras = await DocumentDBRepository.GetItemsAsync<IORA>(d => (d.NpsJobID == npsid) && (d.Tag == "IORA"));
-
-            if (ioras.Count() == 0)
-            {
-                Session["NpsJobId"] = npsid;
-                Session["DbJobId"] = id;
-                Session["IORAFee"] = fee;
-                return Redirect(Url.Content("~/IORA/Create/"));
-            }
-            else
-            {
-                return Redirect(Url.Content("~/IORA/Edit/" + ioras.FirstOrDefault().Id));
-            }
-        }
 
         public string CleanHtmlString (string s)
         {

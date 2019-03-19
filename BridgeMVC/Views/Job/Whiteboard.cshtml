@@ -1,10 +1,29 @@
 ﻿@model IEnumerable<BridgeMVC.Models.Job>
+@{ 
+    string UserSignature = (string)Session["UserSignature"];
+    string bridgeModule = (string)Session["BridgeModule"];
+    //string SF = (string)Session["SendingFlag"];
+
+    //var LCertType = ViewBag.LCertType;
+    //var LCertAction = ViewBag.LCertAction;
+    //var LMainProdType = ViewBag.LMainProdType;
+    //var LSubProdType = ViewBag.LSubProdType;
+    var LUser = ViewBag.LUser;
+    string wbt = ViewBag.WBT;
+
+    ViewBag.Title = "Whiteboard";
+    var users = ViewBag.users;
+    var i = 0;
+    var classNv = "";
+}
+
 
 <style>
-    .ct1{
-        background-color:#0094ff;
-        color:aliceblue;
+    .ct1 {
+        background-color: #0094ff;
+        color: aliceblue;
     }
+
     .ct2 {
         background-color: #064579;
         color: aliceblue;
@@ -17,14 +36,16 @@
         min-width: 300px;
         font-weight: bold;
         height: 100px;
-        float:left;
-        margin-right:1em;
+        float: left;
+        margin-right: 1em;
     }
+
         .wbTab:hover {
             background-color: #eee;
-            cursor:pointer;
-            color:black;
+            cursor: pointer;
+            color: black;
         }
+
     .wbnav {
         overflow: hidden;
         background-color: white;
@@ -105,33 +126,50 @@
 </style>
 
 
-@{
-    ViewBag.Title = "M1_Task1";
-    string UserSignature = (string)Session["UserSignature"];
-    string bridgeModule = (string)Session["BridgeModule"];
-    var LCertType = ViewBag.LCertType;
-    var LCertAction = ViewBag.LCertAction;
-    var LMainProdType = ViewBag.LMainProdType;
-    var LSubProdType = ViewBag.LSubProdType;
-    var LUser = ViewBag.LUser;
 
-    ViewBag.Title = "Index";
-    var users = ViewBag.users;
-    var i = 0;
-    var classNv = "";
+@using (Html.BeginForm(null, null, FormMethod.Post, new { id = "tabFilter" }))
+{
+
+
+    <table>
+        <colgroup>
+            <col span="1" style="width: 17%;">
+            <col span="1" style="width: 12%;">
+            <col span="1" style="width: 12%;">
+            <col span="1" style="width: 17%;">
+            <col span="1" style="width: 21%;">
+            <col span="1" style="width: 21%;">
+
+        </colgroup>
+        <tr>
+            <td hidden>
+                @Html.TextBox("wbTab", null, new { @class = "form-control" })   @Html.TextBox("wbTaskHandler", null, new { @class = "form-control" })
+            </td>
+
+            <td>
+                <input id="wb_dist" value="TO BE DISTRIBUTED" class="btn" readonly/>
+            </td>
+            <td>
+                <input id="wb_oh" value="ON HOLD" class="btn" readonly/>
+            </td>
+            <td>
+                <input id="wb_og" value="ON GOING" class="btn" readonly/>
+            </td>
+            <td>
+                <input id="wb_v" value="UNDER VERIFICATION" class="btn" readonly/>
+            </td>
+            <td>
+                <input id="wb_done" style="width:300px;" value="COMPLETED LAST WEEK" class="btn" readonly/>
+            </td>
+
+        </tr>
+
+    </table>
+
 
 }
 
-<div class="wbnav">
-    <a href="">TO Be DISTRIBUTED</a>
-    <a href="">ON HOLD</a>
-    <a href="">ON GOING</a>
-    <a href="">UNDER VERIFICATION</a>
-    <a href="">COMPLETED LAST WEEK</a>
-</div>
-
-
-<h3>Due in 5 days</h3>
+@*<h3>Due in 5 days</h3>*@
 
 <table class="table table-mid-align-rows">
 
@@ -139,21 +177,23 @@
     {
         i += 1;
         var nv = "myDropdown" + i;
-        classNv = "wbTab  ct"+i;
+        classNv = "wbTab  ct" + i;
+        string s = "\"" + item.Id + "\"";
 
-    <div class="card @classNv" onclick="myFunction(@i)">
+
+    <div class="card @classNv" onclick="myFunction(@i, @s)">
         @Html.DisplayFor(modelItem => item.NpsJobId)
         <br />
         @Html.DisplayFor(modelItem => item.ProdDescription)
         <br /> Budget:
         @Html.DisplayFor(modelItem => item.BudgetHour) hours
-        
+        <br />
+        @Html.DisplayFor(modelItem => item.TaskHandler) 
 
         <div id=@nv class="dropdown-content">
-            <a href=""><u>SEND JOB TO</u></a>
-            <a href="#home">SXL</a>
-            <a href="#about">SADEL</a>
-            <a href="#contact">NECA</a>
+            <p><u>SEND JOB TO:</u></p>
+            <select id="selectListHandler" class="form-control"></select>
+            @*<select id="selectListTask" class="form-control"></select>*@
         </div>
 
 
@@ -174,10 +214,19 @@
 </script>
 
 <script>
-    
-    function myFunction(x) {
+
+    var jobdbid = "";
+    var newHandler = "";
+    var bm = "@bridgeModule";
+    var wbt = "@wbt";
+
+        var LUser = @Html.Raw(Json.Encode(LUser));
+
+    function myFunction(x, iid) {
         i = x;
         document.getElementById("myDropdown" + x).classList.toggle("show");
+        jobdbid = iid;
+        console.log(iid);
     }
 
     // Close the dropdown if the user clicks outside of it
@@ -194,4 +243,63 @@
             }
         }
     }
+
+    $('#wb_dist').on('click', function (event) {
+
+        $('#wbTab').val("wb_dist");
+        $('#tabFilter').submit();
+    })
+    $('#wb_oh').on('click', function (event) {
+
+        $('#wbTab').val("wb_oh");
+        $('#tabFilter').submit();
+    })
+    $('#wb_og').on('click', function (event) {
+
+        $('#wbTab').val("wb_og");
+        $('#tabFilter').submit();
+    })
+    $('#wb_v').on('click', function (event) {
+
+        $('#wbTab').val("wb_v");
+        $('#tabFilter').submit();
+    })
+    $('#wb_done').on('click', function (event) {
+
+        $('#wbTab').val("wb_done");
+        $('#tabFilter').submit();
+    })
+
+
+
+    $("#selectListHandler").append(new Option("-- Please select --", null));
+    $.each(LUser, function (key, data) {
+        $("#selectListHandler").append(new Option(data.Signature, data.Signature));
+    });
+
+
+    $.each(["-- Please select --", "1.FEE", "2.VER", "3.AGR"], function (index, value) {
+        $("#selectListTask").append(new Option(value, value));
+    });
+
+    $("#selectListHandler").on('click', function (event) {
+        newHandler = $("#selectListHandler").val();
+        $('#wbTab').val(jobdbid + "," + newHandler);
+        console.log(newHandler);
+        $('#tabFilter').submit();
+    });
+
+    console.log("wbt" + wbt);
+    if (wbt != null && wbt != "") {
+        document.getElementById(wbt).style.backgroundColor = "lightblue";
+    }
+
+
+
+
+
+
+
+
+
 </script>

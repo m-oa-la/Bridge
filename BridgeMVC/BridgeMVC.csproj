@@ -247,6 +247,7 @@
     <Compile Include="Controllers\BTechChecklistController.cs" />
     <Compile Include="Controllers\BUserController.cs" />
     <Compile Include="Controllers\CustomerController.cs" />
+    <Compile Include="Controllers\DocReqController.cs" />
     <Compile Include="Controllers\HomeController.cs" />
     <Compile Include="Controllers\IORAController.cs" />
     <Compile Include="Controllers\ItemController.cs" />
@@ -282,6 +283,7 @@
     <Compile Include="Models\Job.cs" />
     <Compile Include="Models\Order.cs" />
     <Compile Include="Models\Product.cs" />
+    <Compile Include="Models\DocReq.cs" />
     <Compile Include="Models\Rule.cs" />
     <Compile Include="Models\TechCheckLSA.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
@@ -376,7 +378,6 @@
     <Content Include="Views\Onboarding\ProcessCode.cshtml" />
     <Content Include="Views\Onboarding\SignUp.cshtml" />
     <Content Include="Views\Order\MOALA_Index.cshtml" />
-    <Content Include="Views\Product\MOALA_Index.cshtml" />
     <Content Include="Views\Shared\Error.cshtml" />
     <Content Include="Views\Shared\_Layout.cshtml" />
     <Content Include="Views\Shared\_LoginPartial.cshtml" />
@@ -444,6 +445,18 @@
     <Content Include="Views\Job\M1_Task3.cshtml" />
     <Content Include="Views\Rule\IndexReadOnly.cshtml" />
     <Content Include="Views\Shared\_HiddenJobProperties.cshtml" />
+    <Content Include="Views\DocReq\IndexReadOnly.cshtml" />
+    <Content Include="Views\DocReq\Create.cshtml" />
+    <Content Include="Views\DocReq\Delete.cshtml" />
+    <Content Include="Views\DocReq\Edit.cshtml" />
+    <Content Include="Views\DocReq\FullList.cshtml" />
+    <Content Include="Views\DocReq\Index.cshtml" />
+    <Content Include="Views\Product\IndexReadOnly.cshtml" />
+    <Content Include="Views\Product\Create.cshtml" />
+    <Content Include="Views\Product\Delete.cshtml" />
+    <Content Include="Views\Product\Edit.cshtml" />
+    <Content Include="Views\Product\FullList.cshtml" />
+    <Content Include="Views\Product\Index.cshtml" />
   </ItemGroup>
   <ItemGroup>
     <Folder Include="App_Data\M1\Projects\" />
