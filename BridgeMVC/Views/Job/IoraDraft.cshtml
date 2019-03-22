@@ -275,16 +275,15 @@
         var cax = FinancialSet[ca];
 
         console.log("CA:" + ca);
-
+        console.log("CAX:" + cax);
 
         $.each(chBIORA, function (key, data) {
 
             var x = data.BookMarkName.split("_")[1];
-            console.log(x);
 
-
-            if (data.Formula != null && (cax.indexOf(x + ",")>-1)) {
+            if (data.Formula != null && (cax.indexOf("," + x + ",")>-1)) {
                 sc = sc + eval(data.Formula) + "\r\n";
+                console.log(x);
             }
         });
 
