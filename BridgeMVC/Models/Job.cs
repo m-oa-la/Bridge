@@ -245,6 +245,28 @@ namespace BridgeMVC.Models
 
         [JsonProperty(PropertyName = "completedBy")]
         public string CompletedBy { get; set; }
+
+        [JsonProperty(PropertyName = "ioraDbId")]
+        public string IoraDbId { get; set; }
+
+        [JsonProperty(PropertyName = "ioraProjName")]
+        public string IoraProjName { get; set; }
+
+        [DataType(DataType.MultilineText)]
+        [JsonProperty(PropertyName = "ioraSoW")]
+        public string IoraSoW { get; set; }
+
+        [DataType(DataType.MultilineText)]
+        [JsonProperty(PropertyName = "ioraConditions")]
+        public string IoraConditions { get; set; }
+
+        [DataType(DataType.MultilineText)]
+        [JsonProperty(PropertyName = "ioraFeeCalc")]
+        public string IoraFeeCalc { get; set; }
+
+
+
+
     }
 }
 //ModificationDesc,OnHoldNote,FeeVerifyTime,RegisterTime,DocReq,NoOfCert,FeeSet,VesselID,DocReqNote

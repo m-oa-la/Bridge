@@ -7,9 +7,9 @@
     string BridgeLastUsed = (string)Session["BridgeModule"];
     string UserSignature = (string)Session["UserSignature"];
     string colorY, colorN, colorTask;
-    colorY = "background-color:#5296c3; color:transparent;";
-    colorN = "background-color:azure; color:transparent;";
-    colorTask = "background-color:#81d078; color:transparent;";
+    colorY = "background-color:#5296c3; color:transparent;  ";
+    colorN = "background-color:azure; color:transparent;  ";
+    colorTask = "background-color:#81d078; color:transparent; ";
 
     var LUser = ViewBag.LUser;
     var US = ViewBag.userSig;
@@ -20,10 +20,10 @@
     .hoverRow p {
         display: block;
         overflow: hidden;
-        text-overflow: ellipsis;
+        text-overflow:clip;
         white-space: nowrap;
-        width: 200px;
-        max-width:240px;
+    
+        max-width:480px;
     }
 
     .hoverRow td:hover p {
@@ -32,6 +32,10 @@
         word-break: break-all;
     }
 
+    .table th, td {
+        border-radius: 25px;
+        border: 3px solid white;
+    }
 
 </style>
 
@@ -73,15 +77,15 @@
 }
 <br />
 
-<table class="table table-mid-align-rows hoverRow">
+<table class="table table-mid-align-rows hoverRow" style="table-layout:fixed;">
     <colgroup>
-        <col span="1" style="width: 12%;">
-        <col span="1" style="width: 18%;">
-        <col span="1" style="width: 18%;">
-        <col span="1" style="width: 8%;">
-        <col span="1" style="width: 8%;">
-        <col span="1" style="width: 8%;">
-        <col span="1" style="width: 8%;">
+        <col span="1" style="width: 20%;">
+        <col span="1" style="width: 20%;">
+        <col span="1" style="width: 20%;">
+        <col span="1" style="width: 50px;">
+        <col span="1" style="width: 50px;">
+        <col span="1" style="width: 50px;">
+        <col span="1" style="width: 50px;">
         <col span="1" style="width: 20%;">
     </colgroup>
     <tr>
@@ -92,12 +96,12 @@
         <th style="border-top:none">           AGR       </th>
         <th style="border-top:none">           EXE        </th>
         <th style="border-top:none">           FNL        </th>
-        <th style="border-top:none">           STATUS    </th>
+        <th style="border-top:none">          IORA STATUS    </th>
         @*<th>            @Html.DisplayNameFor(model => model.TaskHandler)        </th>
             <th>            @Html.DisplayNameFor(model => model.Completed)        </th>*@
 
     </tr>
-
+    
     @foreach (var item in Model)
     {
 
@@ -129,7 +133,10 @@
         styleT4 = styleT4 + "; cursor: pointer;";
 
         string editlink1 = "'/Job/M1_Task1/" + item.Id + "'";
-        string editlink2 = "'/Job/M1_Task2/" + item.Id + "?npsid=" + item.NpsJobId + "&fee=" + item.Fee + "'";
+        string editlink2 = "'/Job/IsIORAExisting/" + item.Id + "'";
+        //string editlink2 = "'/Job/M1_Task2/" + item.Id + "?npsid=" + item.NpsJobId + "&fee=" + item.Fee + "'";
+
+
         string editlink3 = "'/Job/M1_Task3/" + item.Id + "'";
         string editlink4 = "'/Job/M1_Task4/" + item.Id + "'";
     <tr>
@@ -137,12 +144,12 @@
             @Html.DisplayFor(modelItem => item.NpsJobId)
         </td>
         <td>
-            @Html.DisplayFor(modelItem => item.CustomerName)
-        </td>
+            <p>  @Html.DisplayFor(modelItem => item.CustomerName)</p>
+</td>
         <td>
-            <p> @Html.DisplayFor(modelItem => item.ProdDescription) </p>
+             @Html.DisplayFor(modelItem => item.ProdDescription) 
         </td>
-        <td style="@styleT1" onclick="location.href=@editlink1">
+        <td style="@styleT1;" onclick="location.href=@editlink1">
             @Html.DisplayFor(modelItem => item.Task1)
         </td>
         <td style="@styleT2" onclick="location.href=@editlink2">
@@ -155,7 +162,12 @@
             @Html.DisplayFor(modelItem => item.Task4)
         </td>
         <td>
-            <p> @Html.DisplayFor(modelItem => item.StatusNote.Split('<')[0]) </p>
+            <p>
+                @if (!string.IsNullOrEmpty(item.IoraDbId))
+                {
+                    @Html.DisplayFor(modelItem => item.IoraDbId)
+                }
+            </p>
         </td>
 
     </tr>

@@ -457,6 +457,9 @@
     <Content Include="Views\Product\Edit.cshtml" />
     <Content Include="Views\Product\FullList.cshtml" />
     <Content Include="Views\Product\Index.cshtml" />
+    <Content Include="Views\Job\IsIORAExisting.cshtml" />
+    <Content Include="Views\Job\IoraDraft.cshtml" />
+    <Content Include="Views\Job\CreateIora.cshtml" />
   </ItemGroup>
   <ItemGroup>
     <Folder Include="App_Data\M1\Projects\" />
