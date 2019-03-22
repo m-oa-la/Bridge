@@ -139,7 +139,7 @@ namespace BridgeMVC.Controllers
             "CustomerId,Fee,FeeSetter,FeeVerifier,JobVerifier,RAE,MWL,ExistingCertNo,CertNo,SerialNo,MEDItemNo,DeliveryWeek,LocalUnit,ArchiveFolder," +
             "IsHold,StatusNote,VerifyLvl,SurveyDate,SurveyStation,TechPara1,TechPara2,TechPara3,TechPara4,MEDFactory,MEDFBNo,MEDFBDue,AnyDesignChange," +
             "ChecklistUsed,DesignFolder,IsDocQualityGood,IsDocSufficient,SetHoldTime,IORASpentTime,ModificationDesc,OnHoldNote,FeeVerifyTime,RegisterTime," +
-            "DocReq,NoOfCert,FeeSet,VesselID,DocReqNote,NpsDbId,ExeDoneBy,ExeDoneTime,CompletedBy")] Job item)
+            "DocReq,NoOfCert,FeeSet,VesselID,DocReqNote,NpsDbId,ExeDoneBy,ExeDoneTime,CompletedBy,IoraDbId")] Job item)
         {
             if (ModelState.IsValid)
             {
@@ -226,6 +226,52 @@ namespace BridgeMVC.Controllers
             return View(item);
         }
 
+
+        [ActionName("IsIORAExisting")]
+        public async Task<ActionResult> IsIORAExisting(string id)
+        {
+            Job j = await DocumentDBRepository.GetItemAsync<Job>(id);
+
+            return null;
+        }
+
+        [ActionName("IoraDraft")]
+        public async Task<ActionResult> IoraDraftAsync(string id)
+        {
+            Job j = await DocumentDBRepository.GetItemAsync<Job>(id);
+
+            ViewBag.Job = j;
+            ViewBag.BIORA = await DocumentDBRepository.GetItemsAsync<BIORA>(d => d.Tag == "BIORA" && d.BridgeModule == j.BridgeModule);
+            ViewBag.Rules = await DocumentDBRepository.GetItemsAsync<Rule>(d => d.Tag == "Rule" && d.DbJobId == j.Id);
+            var f = await DocumentDBRepository.GetItemsAsync<BFinancial>(d => d.Tag == "BFinancial" && d.BridgeModule == j.BridgeModule && d.CertType == j.CertType);
+            ViewBag.FinancialSet = f.FirstOrDefault();
+            ViewBag.LUser = await DocumentDBRepository.GetItemsAsync<BUser>(d => d.Tag == "BUser" && (d.BridgesGranted).Contains(j.BridgeModule));
+            j.StatusNote = "";
+            return View(j);
+        }
+
+        [HttpPost]
+        [ActionName("IoraDraft")]
+        public async Task<ActionResult> IoraDraftPost(Job item)
+        {
+    
+                await DocumentDBRepository.UpdateItemAsync<Job>(item.Id, item);
+         
+            return Redirect(Url.Content("~/Job/CreateIora/" + item.Id));
+        }
+
+
+        [ActionName("CreateIora")]
+        public async Task<ActionResult> CreatIora(string id)
+        {
+            Job j = await DocumentDBRepository.GetItemAsync<Job>(id);
+            j.StatusNote = "";
+            return View(j);
+        }
+
+
+
+
         [ActionName("M1_Task1")]
         public async Task<ActionResult> M1_Task1Async(string id)
         {
@@ -239,7 +285,7 @@ namespace BridgeMVC.Controllers
             {
                 return HttpNotFound();
             }
-
+ 
 
             Session["DbJobId"] = item.Id;
             Session["NpsJobId"] = item.NpsJobId;
