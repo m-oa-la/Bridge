@@ -60,8 +60,9 @@ function taskComplete(taskCompleteStr) {
 
 
 function renderTaskShowHide() {
-   
-      if ($("#" + taskStatusFlag).val()!== null && !$("#" + taskStatusFlag).val()==="") {
+
+    var s = $("#" + taskStatusFlag).val();
+      if (s!= null && s!="") {
 
 
         console.log("taskcompletedate: " + taskCompleteDate);
