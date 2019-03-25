@@ -2,14 +2,7 @@
 
 @{
 
-    string UserSignature = (string)Session["UserSignature"];
-    string bridgeModule = (string)Session["BridgeModule"];
-    var LCertType = ViewBag.LCertType;
-    var LCertAction = ViewBag.LCertAction;
-    var LMainProdType = ViewBag.LMainProdType;
-    var LSubProdType = ViewBag.LSubProdType;
-    var LUser = ViewBag.LUser;
-    var IIORA = ViewBag.iIORA;
+
 
 
     var bUser = ViewBag.bUser;
@@ -38,30 +31,16 @@
 
 
     //read viewbag's info.
-    var userSignature = "@UserSignature";
-    var bm = "@bridgeModule";
+
     var Job = @Html.Raw(Json.Encode(Model));
 
 
-    var LMainProdType = @Html.Raw(Json.Encode(LMainProdType));
-    var LSubProdType = @Html.Raw(Json.Encode(LSubProdType));
-    var LUser = @Html.Raw(Json.Encode(LUser));
-    var LCertAction = @Html.Raw(Json.Encode(LCertAction));
-    var LCertType = @Html.Raw(Json.Encode(LCertType));
 
     var BUser = @Html.Raw(Json.Encode(bUser));
     var BEmail = @Html.Raw(Json.Encode(bEmail));
 
-    var bUser = BUser[0];
     var bEmail = BEmail[0];
-    var IIORA = @Html.Raw(Json.Encode(IIORA));
-    var iORA = IIORA[0];
-
-    console.log(iORA);
-    console.log(bUser);
-    console.log(bEmail);
-
-    var TargetUser = bUser;
+    var TargetUser = BUser[0];
     var emailReceiver = eval(bEmail.MailTo);
     var emailSubject = eval(bEmail.MailTitle);
     var emailBody = eval(bEmail.MailBody);
