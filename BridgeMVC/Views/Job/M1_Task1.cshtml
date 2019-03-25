@@ -146,11 +146,7 @@
         <p>Issurance type:</p>
         @Html.DropDownListFor(model => model.CertAction, new List<SelectListItem> { new SelectListItem { Text = Model.CertAction, Value = Model.CertAction } }, new { @class = "form-control", id = "selectCertAction" })
     </div>
-    <div class="bing col-lg-6">
-        <p>Ref. certificate due date.:</p>
-        @Html.EditorFor(model => model.MEDFBDue, new { htmlAttributes = new { @class = "form-control" } })
-        @Html.ValidationMessageFor(model => model.MEDFBDue, "", new { @class = "text-danger" })
-    </div>
+
     <div class="bing col-lg-6">
         <p>Ref. existing certificate no.:</p>
         @Html.EditorFor(model => model.ExistingCertNo, new { htmlAttributes = new { @class = "form-control" } })
@@ -180,7 +176,11 @@
         @Html.EditorFor(model => model.MEDFBNo, new { htmlAttributes = new { @class = "form-control" } })
         @Html.ValidationMessageFor(model => model.MEDFBNo, "", new { @class = "text-danger" })
     </div>
-
+    <div class="bing col-lg-6">
+        <p>Ref. MED-B certificate Expiring date.:  ((DD-MM-YYYY))</p>
+        @Html.EditorFor(model => model.MEDFBDue, new { htmlAttributes = new { @class = "form-control", @Value = Model.ReceivedTime?.ToString("dd-MM-yyyy HH:mm:ss") } })
+        @Html.ValidationMessageFor(model => model.MEDFBDue, "", new { @class = "text-danger" })
+    </div>
     <div class="bing col-lg-6">
         <p> MED Item No.: </p>
         @Html.EditorFor(model => model.MEDItemNo, new { htmlAttributes = new { @class = "form-control" } })
@@ -199,7 +199,7 @@
     </div>
     <div class="bing col-lg-6">
         <p> Survey date: ((DD-MM-YYYY))</p>
-        @Html.EditorFor(model => model.SurveyDate, new { htmlAttributes = new { @class = "form-control" } })
+        @Html.EditorFor(model => model.SurveyDate, new { htmlAttributes = new { @class = "form-control", @Value = Model.ReceivedTime?.ToString("dd-MM-yyyy HH:mm:ss") } })
         @Html.ValidationMessageFor(model => model.SurveyDate, "", new { @class = "text-danger" })
     </div>
 
@@ -213,7 +213,7 @@
 
     <div class="bing col-lg-6">
         Budget hour: <img style="cursor:pointer" src="~/Content/pictures/magic.png" onclick="budgetHourCalc()" class="magicWand">
- 
+
         @Html.EditorFor(model => model.BudgetHour, new { htmlAttributes = new { @class = "form-control" } })
         @Html.ValidationMessageFor(model => model.BudgetHour, "", new { @class = "text-danger" })
     </div>
@@ -226,11 +226,11 @@
 
     <div class="bing col-lg-6" hidden>
         Fee setter
-        @Html.EditorFor(model => model.FeeSetter, new { htmlAttributes = new { @class = "form-control", id = "feeSetter" } })
+        @Html.EditorFor(model => model.FeeSetter, new { htmlAttributes = new { @class = "form-control" } })
 
-        @Html.EditorFor(model => model.FeeSetTime, new { htmlAttributes = new { @class = "form-control", id = "feeSetTime", @Value = Model.FeeSetTime?.ToString("yyyyMMdd HH:mm:ss") } })
+        @Html.HiddenFor(model => model.FeeSetTime, new { htmlAttributes = new { @class = "form-control" } })
 
-        @Html.EditorFor(model => model.TaskHandler, new { htmlAttributes = new { @class = "form-control"} })
+        @Html.EditorFor(model => model.TaskHandler, new { htmlAttributes = new { @class = "form-control" } })
     </div>
 
     <div class=" col-lg-12 ">
@@ -241,6 +241,7 @@
 
     @{
         Html.RenderPartial("_SaveCompleteReopen");
+        Html.RenderPartial("_TaskSending");
     }
 
 
@@ -255,9 +256,9 @@
     @Scripts.Render("~/bundles/jqueryval")
 }
 
-@{
-    Html.RenderPartial("_TaskSending");
-}
+
+  
+
 <script>
 
     //read viewbag's info.
@@ -277,8 +278,8 @@
 
     //Set task parameter
     var taskNo = 1;
-    var taskStatusFlag = "feeSetter"; //who completed the task
-    var taskCompleteDate = "feeSetTime";
+    var taskStatusFlag = "FeeSetter"; //who completed the task
+    var taskCompleteDate = "FeeSetTime";
     var taskCompleteStr = "The fee is set by ";
 
     renderTaskShowHide();

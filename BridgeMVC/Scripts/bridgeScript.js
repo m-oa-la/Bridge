@@ -56,14 +56,6 @@ function taskComplete(taskCompleteStr) {
     $("#TaskComplete").hide();
     $("#saveButton").hide();
 
-    if (taskStatusFlag === "IORASentBy")
-    {
-        console.log("Send IORA to LU");
-        $("#SendingFlag").val(9); 
-        console.log($("#TaskHandler").val());
-        $('#jobForm').submit();
-    };
-
 }
 
 
@@ -130,21 +122,22 @@ function renderTaskHandling() {
     }
 
     
-    $('#sendJobEmail').on('click', function (event) {
+    //$('#sendJobEmail').on('click', function (event) {
  
-        var vtask = $("#selectListTask").val();
-        var vhandler = $("#selectListHandler").val(); 
+    //    var vtask = $("#selectListTask").val();
+    //    var vhandler = $("#selectListHandler").val(); 
 
-        var newTaskNo = vtask.slice(0, 1);
-        if (vtask.search("-") + vhandler.search("-") === -2)
-        {
+    //    var newTaskNo = vtask.slice(0, 1);
+
+    //    if (vtask.search("-") + vhandler.search("-") === -2)
+    //    {
             
-            $("#Task" + newTaskNo).val("TASK");
-            $("#TaskHandler").val(vhandler);
-            $("#SendingFlag").val(newTaskNo);
-            $('#jobForm').submit();
-        }
+    //        $("#Task" + newTaskNo).val("TASK");
+    //        $("#TaskHandler").val(vhandler);
+    //        $("#SendingFlag").val(newTaskNo);
+    //        $('#jobForm').submit();
+    //    }
 
 
-    });
+    //});
 }

@@ -111,35 +111,36 @@
     @Html.HiddenFor(model => model.SendingFlag)
     @Html.HiddenFor(model => model.IoraDbId)
 
-    <div class="form-horizontal">
-        <hr />
+<div class="form-horizontal">
+    <hr />
 
-        <h4>Click the button below will close the job in BRIDGE.</h4>
-        <div class="bing col-lg-6 h3" hidden>
-            Completed:
-            @Html.EditorFor(model => model.IsComplete)
-            @Html.ValidationMessageFor(model => model.IsComplete, "", new { @class = "text-danger" })
-            <br /><br /><br />
-        </div>
-        <div class="bing col-lg-6" hidden>
-
-            @Html.EditorFor(model => model.JobCompletedTime, new { htmlAttributes = new { @class = "form-control" } })
-            @Html.ValidationMessageFor(model => model.JobCompletedTime, "", new { @class = "text-danger" })
-        </div>
-        <div class="bing col-lg-6" hidden>
-
-            @Html.EditorFor(model => model.CompletedBy, new { htmlAttributes = new { @class = "form-control" } })
-            @Html.ValidationMessageFor(model => model.CompletedBy, "", new { @class = "text-danger" })
-        </div>
-        <div class="form-group">
-            <div class="col-md-12">
-                <input type="submit" value="Complete job in Bridge" class="btn btn-default" id="saveButton" readonly />
-
-            </div>
-        </div>
-
+    <h4>Click the button below will close the job in BRIDGE.</h4>
+    <div class="bing col-lg-6 h3" hidden>
+        Completed:
+        @Html.EditorFor(model => model.IsComplete)
+        @Html.ValidationMessageFor(model => model.IsComplete, "", new { @class = "text-danger" })
+        <br /><br /><br />
     </div>
+    <div class="bing col-lg-6" hidden>
 
+        @Html.EditorFor(model => model.JobCompletedTime, new { htmlAttributes = new { @class = "form-control" } })
+        @Html.ValidationMessageFor(model => model.JobCompletedTime, "", new { @class = "text-danger" })
+    </div>
+    <div class="bing col-lg-6" hidden>
+
+        @Html.EditorFor(model => model.CompletedBy, new { htmlAttributes = new { @class = "form-control" } })
+        @Html.ValidationMessageFor(model => model.CompletedBy, "", new { @class = "text-danger" })
+    </div>
+    <div class="form-group">
+        <div class="col-md-12">
+            <input type="submit" value="Complete job in Bridge" class="btn btn-default" id="saveButton" readonly />
+
+        </div>
+    </div>
+    @{
+        Html.RenderPartial("_TaskSending");
+    }
+</div>
 
 }
 <hr />
@@ -147,10 +148,7 @@
 @section Scripts {
     @Scripts.Render("~/bundles/jqueryval")
 }
-@{
-    Html.RenderPartial("_TaskSending");
 
-}
 <script>
 
     //read viewbag's info.
