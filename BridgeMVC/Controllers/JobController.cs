@@ -166,7 +166,7 @@ namespace BridgeMVC.Controllers
                     string s = NewTask[0].ToString();
                     item.TaskHandler = NewHandler;
                     
-                    if(item.GetType().GetProperty("Task" + s).GetValue(item, null) != "Y")
+                    if((string)item.GetType().GetProperty("Task" + s).GetValue(item, null) != "Y")
                     {
                         item.GetType().GetProperty("Task" + s).SetValue(item, "TASK", null);
                     }
