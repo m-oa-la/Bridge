@@ -93,10 +93,10 @@
         <th style="border-top:none">           FEE       </th>
         <th style="border-top:none">           AGR       </th>
         <th style="border-top:none">           EXE        </th>
-
+        <th style="border-top:none">                  </th>
         <th style="border-top:none">          IORA STATUS    </th>
         @*<th>            @Html.DisplayNameFor(model => model.TaskHandler)        </th>
-            <th>            @Html.DisplayNameFor(model => model.Completed)        </th>*@
+        <th>            @Html.DisplayNameFor(model => model.Completed)        </th>*@
 
     </tr>
 
@@ -137,36 +137,37 @@
 
         string editlink3 = "'/Job/M2_Task3/" + item.Id + "'";
         string editlink4 = "'/Job/M2_Task4/" + item.Id + "'";
-        <tr>
-            <td>
-                @Html.DisplayFor(modelItem => item.NpsJobId)
-            </td>
-            <td>
-                <p>  @Html.DisplayFor(modelItem => item.CustomerName)</p>
-            </td>
-            <td>
-                @Html.DisplayFor(modelItem => item.ProdDescription)
-            </td>
-            <td style="@styleT1;" onclick="location.href=@editlink1">
-                @Html.DisplayFor(modelItem => item.Task1)
-            </td>
-            <td style="@styleT2" onclick="location.href=@editlink2">
-                @Html.DisplayFor(modelItem => item.Task2)
-            </td>
-            <td style="@styleT3" onclick="location.href=@editlink3">
-                @Html.DisplayFor(modelItem => item.Task3)
-            </td>
+    <tr>
+        <td>
+            @Html.DisplayFor(modelItem => item.NpsJobId)
+        </td>
+        <td>
+            <p>  @Html.DisplayFor(modelItem => item.CustomerName)</p>
+        </td>
+        <td>
+            @Html.DisplayFor(modelItem => item.ProdDescription)
+        </td>
+        <td style="@styleT1;" onclick="location.href=@editlink1">
+            @Html.DisplayFor(modelItem => item.Task1)
+        </td>
+        <td style="@styleT2" onclick="location.href=@editlink2">
+            @Html.DisplayFor(modelItem => item.Task2)
+        </td>
+        <td style="@styleT3" onclick="location.href=@editlink3">
+            @Html.DisplayFor(modelItem => item.Task3)
+        </td>
+        <td >
+        </td>
+        <td>
+            <p>
+                @if (!string.IsNullOrEmpty(item.IoraDbId))
+                {
+                    @Html.DisplayFor(modelItem => item.IoraDbId)
+                }
+            </p>
+        </td>
 
-            <td>
-                <p>
-                    @if (!string.IsNullOrEmpty(item.IoraDbId))
-                    {
-                        @Html.DisplayFor(modelItem => item.IoraDbId)
-                    }
-                </p>
-            </td>
-
-        </tr>
+    </tr>
     }
 
 </table>
