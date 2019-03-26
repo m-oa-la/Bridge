@@ -45,8 +45,8 @@ function getTodayDate() {
 
 function taskComplete(taskCompleteStr) {
     $("#Task" + taskNo).val("Y");
-     dt = getTodayDate();
-     $("#" + taskCompleteDate).val(dt);
+    dt = getTodayDate();
+    $("#" + taskCompleteDate).val(dt);
 
     taskStatus = taskCompleteStr + userSignature + " on " + dt;
     $("#" + taskStatusFlag).val(userSignature);
@@ -56,15 +56,18 @@ function taskComplete(taskCompleteStr) {
     $("#TaskComplete").hide();
     $("#saveButton").hide();
 
+    if (taskStatusFlag === "IORASentBy") {
+        console.log("Send IORA to LU");
+        $("#SendingFlag").val(9);
+        console.log($("#TaskHandler").val());
+        $('#jobForm').submit();
+    };
+
 }
 
 
 function renderTaskShowHide() {
-
-    var s = $("#" + taskStatusFlag).val() + "x";
-    if (s.length > 2) {
-
-
+    if ($("#" + taskStatusFlag).val().length !== 0) {
         console.log("taskcompletedate: " + taskCompleteDate);
         taskStatus = taskCompleteStr + $("#" + taskStatusFlag).val() + " on " + $("#" + taskCompleteDate).val();
         $("#TaskStatus").html(taskStatus);
@@ -125,23 +128,21 @@ function renderTaskHandling() {
         });
     }
 
-    
-    //$('#sendJobEmail').on('click', function (event) {
- 
-    //    var vtask = $("#selectListTask").val();
-    //    var vhandler = $("#selectListHandler").val(); 
 
-    //    var newTaskNo = vtask.slice(0, 1);
+    $('#sendJobEmail').on('click', function (event) {
 
-    //    if (vtask.search("-") + vhandler.search("-") === -2)
-    //    {
-            
-    //        $("#Task" + newTaskNo).val("TASK");
-    //        $("#TaskHandler").val(vhandler);
-    //        $("#SendingFlag").val(newTaskNo);
-    //        $('#jobForm').submit();
-    //    }
+        var vtask = $("#selectListTask").val();
+        var vhandler = $("#selectListHandler").val();
+
+        var newTaskNo = vtask.slice(0, 1);
+        if (vtask.search("-") + vhandler.search("-") === -2) {
+
+            $("#Task" + newTaskNo).val("TASK");
+            $("#TaskHandler").val(vhandler);
+            $("#SendingFlag").val(newTaskNo);
+            $('#jobForm').submit();
+        }
 
 
-    //});
+    });
 }

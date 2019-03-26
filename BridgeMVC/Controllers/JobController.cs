@@ -150,35 +150,25 @@ namespace BridgeMVC.Controllers
         }
 
 
- 
 
 
         [HttpPost]
         [ActionName("M1_Task1")]
-    
-        public async Task<ActionResult> M1_Task1Async( Job item, string NewTask, string NewHandler)
+
+        public async Task<ActionResult> M1_Task1Async(Job item)
         {
             //await SaveJobChanges(item);
             if (ModelState.IsValid)
             {
-                if (!string.IsNullOrEmpty(NewTask) && !string.IsNullOrEmpty(NewHandler) && !(NewTask + NewHandler).Contains("-"))
+
+                await DocumentDBRepository.UpdateItemAsync<Job>(item.Id, item);
+                if (!string.IsNullOrEmpty(item.SendingFlag) && item.SendingFlag != "-")
                 {
-                    string s = NewTask[0].ToString();
-                    item.TaskHandler = NewHandler;
-                    
-                    if((string)item.GetType().GetProperty("Task" + s).GetValue(item, null) != "Y")
-                    {
-                        item.GetType().GetProperty("Task" + s).SetValue(item, "TASK", null);
-                    }
-                   await DocumentDBRepository.UpdateItemAsync<Job>(item.Id, item);
-                   return Redirect(Url.Content("~/Job/SendJob/" + item.Id + "?SendingFlag=" + s));
-                }
-                else
-                {
-                    await DocumentDBRepository.UpdateItemAsync<Job>(item.Id, item);
+                    Session["SendingFlag"] = item.SendingFlag;
+                    return Redirect(Url.Content("~/Job/SendJob/" + item.Id));
                 }
             }
-            await SetViewBags();   
+            await SetViewBags();
             return View(item);
         }
 
@@ -338,14 +328,19 @@ namespace BridgeMVC.Controllers
             {
                 return HttpNotFound();
             }
-      
+
+
+            Session["DbJobId"] = item.Id;
+            Session["NpsJobId"] = item.NpsJobId;
+
             item.StatusNote = "";
+
             await SetViewBags();
+            item.SendingFlag = "-";
             return View(item);
         }
-
         [ActionName("SendJob")]
-        public async Task<ActionResult> SendJobAsync(string id, string SendingFlag)
+        public async Task<ActionResult> SendJobAsync(string id)
         {
             if (id == null)
             {
@@ -357,12 +352,16 @@ namespace BridgeMVC.Controllers
             {
                 return HttpNotFound();
             }
-             
-          
-            ViewBag.bEmail = await DocumentDBRepository.GetItemsAsync<BEmail>(d => d.Tag == "BEmail" && d.BridgeModule == item.BridgeModule && d.TemplateName == ("TASK" + SendingFlag));
-            ViewBag.bUser = await DocumentDBRepository.GetItemsAsync<BUser>(d => d.Tag == "BUser" && d.Signature.ToLower() == item.TaskHandler.ToLower());
-     
-  
+            Session["DbJobId"] = item.Id;
+            Session["NpsJobId"] = item.NpsJobId;
+            string sf = (string)Session["SendingFlag"];
+
+            await SetViewBags();
+            ViewBag.bEmail = await DocumentDBRepository.GetItemsAsync<BEmail>(d => d.Tag == "BEmail" && d.BridgeModule == item.BridgeModule && d.TemplateName == ("TASK" + sf));
+            ViewBag.bUser = await DocumentDBRepository.GetItemsAsync<BUser>(d => d.Tag == "BUser" && d.Signature == item.TaskHandler);
+            ViewBag.iIORA = await DocumentDBRepository.GetItemsAsync<IORA>(d => d.Tag == "IORA" && d.DbJobId == item.Id);
+
+            Session["SendingFlag"] = "";
             return View(item);
         }
 

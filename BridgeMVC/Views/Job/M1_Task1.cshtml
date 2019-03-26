@@ -32,7 +32,7 @@
 
 @using (Html.BeginForm(null, null, FormMethod.Post, new { id = "jobForm" }))
 {
-   
+
 
     <div>
 
@@ -241,7 +241,7 @@
 
         @{
             Html.RenderPartial("_SaveCompleteReopen");
-            Html.RenderPartial("_TaskSending");
+
 
         }
 
@@ -250,14 +250,18 @@
 
 
 
-            }
+}
 <hr />
 
 @section Scripts {
     @Scripts.Render("~/bundles/jqueryval")
 }
 
+@{
+  
+    Html.RenderPartial("_TaskSending");
 
+}
 
 
 <script>
