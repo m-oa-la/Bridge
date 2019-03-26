@@ -24,6 +24,7 @@
 
 @using (Html.BeginForm(null, null, FormMethod.Post))
 {
+    @Html.AntiForgeryToken()
 
 
     @Html.HiddenFor(model => model.Tag)
@@ -145,7 +146,7 @@
 
     </table>
 
-    <input type="submit" value="Update IORA" class="btn btn-default"  readonly />
+    <input type="submit" value="Update IORA" class="btn btn-default" readonly />
 
 }
 
