@@ -32,7 +32,7 @@
 
 @using (Html.BeginForm(null, null, FormMethod.Post, new { id = "jobForm" }))
 {
-   
+    @Html.AntiForgeryToken()
 
     <div>
 
@@ -227,7 +227,7 @@
         <div class="bing col-lg-6" hidden>
             Fee setter
             @Html.EditorFor(model => model.FeeSetter, new { htmlAttributes = new { @class = "form-control" } })
-           @Html.HiddenFor(model => model.FeeSetTime, new { htmlAttributes = new { @class = "form-control" } })
+            @Html.HiddenFor(model => model.FeeSetTime, new { htmlAttributes = new { @class = "form-control" } })
             @Html.EditorFor(model => model.TaskHandler, new { htmlAttributes = new { @class = "form-control" } })
         </div>
 
@@ -239,7 +239,7 @@
 
         @{
             Html.RenderPartial("_SaveCompleteReopen");
-            Html.RenderPartial("_TaskSending");
+
         }
 
 
@@ -247,14 +247,16 @@
 
 
 
-            }
+}
 <hr />
 
 @section Scripts {
     @Scripts.Render("~/bundles/jqueryval")
 }
 
-
+@{
+    Html.RenderPartial("_TaskSending");
+}
 
 
 <script>
