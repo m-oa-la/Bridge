@@ -133,8 +133,8 @@ function renderTaskHandling() {
     $('#sendJobEmail').on('click', function (event) {
  
         var vtask = $("#selectListTask").val();
-        var vhandler = $("#selectListHandler").val(); 
-
+        var vhandler = $("#selectListHandler").val();
+        console.log(vtask + vhandler);
         var newTaskNo = vtask.slice(0, 1);
         if (vtask.search("-") + vhandler.search("-") === -2)
         {

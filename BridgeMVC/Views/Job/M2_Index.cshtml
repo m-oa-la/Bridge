@@ -7,9 +7,9 @@
     string BridgeLastUsed = (string)Session["BridgeModule"];
     string UserSignature = (string)Session["UserSignature"];
     string colorY, colorN, colorTask;
-    colorY = "background-color:#5296c3; color:transparent;";
-    colorN = "background-color:azure; color:transparent;";
-    colorTask = "background-color:#81d078; color:transparent;";
+    colorY = "background-color:#5296c3; color:transparent;  ";
+    colorN = "background-color:azure; color:transparent;  ";
+    colorTask = "background-color:#81d078; color:transparent; ";
 
     var LUser = ViewBag.LUser;
     var US = ViewBag.userSig;
@@ -20,10 +20,9 @@
     .hoverRow p {
         display: block;
         overflow: hidden;
-        text-overflow: ellipsis;
+        text-overflow: clip;
         white-space: nowrap;
-        width: 200px;
-        max-width: 240px;
+        max-width: 480px;
     }
 
     .hoverRow td:hover p {
@@ -31,13 +30,18 @@
         word-wrap: normal;
         word-break: break-all;
     }
+
+    .table th, td {
+        border-radius: 25px;
+        border: 3px solid white;
+    }
 </style>
 
 <h2>
     MY BRIDGE JOBLIST
-    <p class="btn btn-subtle" style="float:right; border:none" hidden>
-            @Html.ActionLink("WHITEBOARD", "Whiteboard")
-        </p>
+    @*<p class="btn btn-subtle" style="float:right; border:none" hidden>
+            @Html.ActionLink("Create New", "Create")
+        </p>*@
 </h2>
 <hr />
 
@@ -71,25 +75,25 @@
 }
 <br />
 
-<table class="table table-mid-align-rows hoverRow">
+<table class="table table-mid-align-rows hoverRow" style="table-layout:fixed;">
     <colgroup>
-        <col span="1" style="width: 12%;">
-        <col span="1" style="width: 18%;">
-        <col span="1" style="width: 18%;">
-        <col span="1" style="width: 8%;">
-        <col span="1" style="width: 8%;">
-        <col span="1" style="width: 8%;">
-        <col span="1" style="width: 1%;">
         <col span="1" style="width: 20%;">
+        <col span="1" style="width: 20%;">
+        <col span="1" style="width: 20%;">
+        <col span="1" style="width: 50px;">
+        <col span="1" style="width: 50px;">
+        <col span="1" style="width: 50px;">
+        <col span="1" style="width: 50px;">
+        <col span="1" style="width: 30%;">
     </colgroup>
     <tr>
         <th style="border-top:none">           JOB ID       </th>
         <th style="border-top:none">            CUSTOMER        </th>
-        <th style="border-top:none">            CERTIFICATE TYPE     </th>
+        <th style="border-top:none">            DESIGNATION     </th>
         <th style="border-top:none">           FEE       </th>
-        <th style="border-top:none">           VERIFY       </th>
-        <th style="border-top:none">           IORA       </th>
-        <th style="border-top:none">                   </th>
+        <th style="border-top:none">           AGR       </th>
+        <th style="border-top:none">           EXE        </th>
+        <th style="border-top:none">                  </th>
         <th style="border-top:none">          IORA STATUS    </th>
         @*<th>            @Html.DisplayNameFor(model => model.TaskHandler)        </th>
             <th>            @Html.DisplayNameFor(model => model.Completed)        </th>*@
@@ -127,45 +131,45 @@
         styleT4 = styleT4 + "; cursor: pointer;";
 
         string editlink1 = "'/Job/M2_Task1/" + item.Id + "'";
-        string editlink2 = "'/Job/M2_Task2/" + item.Id + "'";
-        string editlink3 = "'/Job/M2_Task3/" + item.Id + "?npsid=" + item.NpsJobId + "&fee=" + item.Fee + "'";
-        //string editlink4 = "'/Job/M2_Task4/" + item.Id + "'";
-    <tr>
-        <td>
-            @Html.DisplayFor(modelItem => item.NpsJobId)
-        </td>
-        <td>
-            @Html.DisplayFor(modelItem => item.CustomerName)
-        </td>
-        <td>
-            <p> @Html.DisplayFor(modelItem => item.CertType) </p>
-        </td>
-        <td style="@styleT1" onclick="location.href=@editlink1">
-            @Html.DisplayFor(modelItem => item.Task1)
-        </td>
-        <td style="@styleT2" onclick="location.href=@editlink2">
-            @Html.DisplayFor(modelItem => item.Task2)
-        </td>
-        <td style="@styleT3" onclick="location.href=@editlink3">
-            @Html.DisplayFor(modelItem => item.Task3)
-        </td>
-        <td style="@styleT4">
-            @*@Html.DisplayFor(modelItem => item.Task4)*@
-        </td>
-        <td>
-            <p>
-                @if (!string.IsNullOrEmpty(item.IoraDbId))
-                {
-                    @Html.DisplayFor(modelItem => item.IoraDbId)
-                }
-            </p>
-        </td>
+        string editlink2 = "'/Job/IsIORAExisting/" + item.Id + "'";
+        //string editlink2 = "'/Job/M1_Task2/" + item.Id + "?npsid=" + item.NpsJobId + "&fee=" + item.Fee + "'";
 
-    </tr>
+
+        string editlink3 = "'/Job/M2_Task3/" + item.Id + "'";
+        string editlink4 = "'/Job/M2_Task4/" + item.Id + "'";
+        <tr>
+            <td>
+                @Html.DisplayFor(modelItem => item.NpsJobId)
+            </td>
+            <td>
+                <p>  @Html.DisplayFor(modelItem => item.CustomerName)</p>
+            </td>
+            <td>
+                @Html.DisplayFor(modelItem => item.ProdDescription)
+            </td>
+            <td style="@styleT1;" onclick="location.href=@editlink1">
+                @Html.DisplayFor(modelItem => item.Task1)
+            </td>
+            <td style="@styleT2" onclick="location.href=@editlink2">
+                @Html.DisplayFor(modelItem => item.Task2)
+            </td>
+            <td style="@styleT3" onclick="location.href=@editlink3">
+                @Html.DisplayFor(modelItem => item.Task3)
+            </td>
+            <td></td>
+            <td>
+                <p>
+                    @if (!string.IsNullOrEmpty(item.IoraDbId))
+                    {
+                        @Html.DisplayFor(modelItem => item.IoraDbId)
+                    }
+                </p>
+            </td>
+
+        </tr>
     }
 
 </table>
-
 <script>
     var LUser = @Html.Raw(Json.Encode(LUser));
     var us = @Html.Raw(Json.Encode(US));
