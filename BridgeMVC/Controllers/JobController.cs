@@ -164,14 +164,15 @@ namespace BridgeMVC.Controllers
                 if (!string.IsNullOrEmpty(NewTask) && !string.IsNullOrEmpty(NewHandler) && !(NewTask + NewHandler).Contains("-"))
                 {
                     string s = NewTask[0].ToString();
+
                     item.TaskHandler = NewHandler;
                     
                     if((string)item.GetType().GetProperty("Task" + s).GetValue(item, null) != "Y")
                     {
                         item.GetType().GetProperty("Task" + s).SetValue(item, "TASK", null);
                     }
-                   await DocumentDBRepository.UpdateItemAsync<Job>(item.Id, item);
-                   return Redirect(Url.Content("~/Job/SendJob/" + item.Id + "?SendingFlag=" + s));
+                    await DocumentDBRepository.UpdateItemAsync<Job>(item.Id, item);
+                    return Redirect(Url.Content("~/Job/SendJob/" + item.Id + "?SendingFlag=" + s));
                 }
                 else
                 {
