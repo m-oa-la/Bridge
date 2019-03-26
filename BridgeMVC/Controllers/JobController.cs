@@ -156,7 +156,7 @@ namespace BridgeMVC.Controllers
         [HttpPost]
         [ActionName("M1_Task1")]
         [ValidateAntiForgeryToken]
-        public async Task<ActionResult> M1_Task1Async( Job item, string NewTask, string NewHandler)
+        public async Task<ActionResult> M1_Task1Async( Job item)
         {
             //await SaveJobChanges(item);
             if (ModelState.IsValid)
@@ -342,7 +342,7 @@ namespace BridgeMVC.Controllers
         }
 
         [ActionName("SendJob")]
-        public async Task<ActionResult> SendJobAsync(string id, string SendingFlag)
+        public async Task<ActionResult> SendJobAsync(string id)
         {
             if (id == null)
             {
