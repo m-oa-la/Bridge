@@ -36,7 +36,7 @@
 
 @using (Html.BeginForm(null, null, FormMethod.Post, new { id = "jobForm" }))
 {
-    @Html.AntiForgeryToken()
+ 
 
     @Html.HiddenFor(model => model.Tag)
     @Html.HiddenFor(model => model.BridgeModule)

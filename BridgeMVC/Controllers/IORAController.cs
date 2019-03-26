@@ -51,7 +51,7 @@ namespace BridgeMVC.Controllers
 
         [HttpPost]
         [ActionName("Create")]
-        [ValidateAntiForgeryToken]
+       
         public async Task<ActionResult> CreateAsync([Bind(Include = "Id,Tag,BridgeModule,NpsJobID," +
                 "DnvUnitName501,DnvUnitNo501,DgIntUnVAT501,DnvIntCompAccnt501,DnvIntUnPrCeNo501,DpIntUnProjNo501," +
                 "DnvUnitName502,DnvUnitNo502,DgIntUnVAT502,DnvContPersName502,DnvIntCompAccnt502,DnvIntUnPrCeNo502," +
@@ -75,7 +75,7 @@ namespace BridgeMVC.Controllers
 
         [HttpPost]
         [ActionName("Edit")]
-        [ValidateAntiForgeryToken]
+       
         public async Task<ActionResult> EditAsync(IORA item)
         {
             if (ModelState.IsValid)

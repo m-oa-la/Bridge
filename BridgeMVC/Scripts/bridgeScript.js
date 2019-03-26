@@ -45,8 +45,8 @@ function getTodayDate() {
 
 function taskComplete(taskCompleteStr) {
     $("#Task" + taskNo).val("Y");
-    dt = getTodayDate();
-    $("#" + taskCompleteDate).val(dt);
+     dt = getTodayDate();
+     $("#" + taskCompleteDate).val(dt);
 
     taskStatus = taskCompleteStr + userSignature + " on " + dt;
     $("#" + taskStatusFlag).val(userSignature);
@@ -56,13 +56,8 @@ function taskComplete(taskCompleteStr) {
     $("#TaskComplete").hide();
     $("#saveButton").hide();
 
-    if (taskStatusFlag === "IORASentBy") {
-        console.log("Send IORA to LU");
-        $("#SendingFlag").val(9);
-        console.log($("#TaskHandler").val());
-        $('#jobForm').submit();
-    }
 }
+
 
 function renderTaskShowHide() {
 
@@ -111,6 +106,7 @@ function readBUser(sig) {
 function returnTargetUser(data) {
     TargetUser = jQuery.parseJSON(data);
 }
+
 function renderTaskHandling() {
 
     $("#selectListHandler").append(new Option("-- Please select --", null));
@@ -129,21 +125,23 @@ function renderTaskHandling() {
         });
     }
 
+    
+    //$('#sendJobEmail').on('click', function (event) {
+ 
+    //    var vtask = $("#selectListTask").val();
+    //    var vhandler = $("#selectListHandler").val(); 
 
-    $('#sendJobEmail').on('click', function (event) {
+    //    var newTaskNo = vtask.slice(0, 1);
 
-        var vtask = $("#selectListTask").val();
-        var vhandler = $("#selectListHandler").val();
-
-        var newTaskNo = vtask.slice(0, 1);
-        if (vtask.search("-") + vhandler.search("-") === -2) {
-
-            $("#Task" + newTaskNo).val("TASK");
-            $("#TaskHandler").val(vhandler);
-            $("#SendingFlag").val(newTaskNo);
-            $('#jobForm').submit();
-        }
+    //    if (vtask.search("-") + vhandler.search("-") === -2)
+    //    {
+            
+    //        $("#Task" + newTaskNo).val("TASK");
+    //        $("#TaskHandler").val(vhandler);
+    //        $("#SendingFlag").val(newTaskNo);
+    //        $('#jobForm').submit();
+    //    }
 
 
-    });
+    //});
 }
