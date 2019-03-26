@@ -86,7 +86,7 @@
             <td>
 
                 @using (Html.BeginForm("Delete", "Product", new { id = item.Id }, FormMethod.Post, null))
-                {@Html.AntiForgeryToken()
+                {
                 <input type="submit" value="Delete" />
             }
             </td>

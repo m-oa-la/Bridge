@@ -133,7 +133,7 @@ namespace BridgeMVC.Controllers
 
         [HttpPost]
         [ActionName("CreateNewJob")]
-        [ValidateAntiForgeryToken]
+        
         public async Task<string> CreateNewJob([Bind(Include = "Tag,BridgeModule,Id,NpsJobId,TaskHandler,Task1,Task2,Task3,Task4,CustomerName,ProdDescription,ApprNote," +
             "IsComplete,SalesOrderNo,SubOrderNo,CertType,CertAction,MainProdType, SubProdType,ReceivedTime,FeeSetTime,IoraSentTime,IoraReturnedTime,JobCompletedTime,CustomerName," +
             "CustomerId,Fee,FeeSetter,FeeVerifier,JobVerifier,RAE,MWL,ExistingCertNo,CertNo,SerialNo,MEDItemNo,DeliveryWeek,LocalUnit,ArchiveFolder," +
@@ -155,26 +155,36 @@ namespace BridgeMVC.Controllers
 
         [HttpPost]
         [ActionName("M1_Task1")]
-             public async Task<ActionResult> M1_Task1Async( Job item)
+    
+        public async Task<ActionResult> M1_Task1Async( Job item, string NewTask, string NewHandler)
         {
             //await SaveJobChanges(item);
             if (ModelState.IsValid)
             {
-
-                await DocumentDBRepository.UpdateItemAsync<Job>(item.Id, item);
-                if (!string.IsNullOrEmpty(item.SendingFlag) && item.SendingFlag != "-")
+                if (!string.IsNullOrEmpty(NewTask) && !string.IsNullOrEmpty(NewHandler) && !(NewTask + NewHandler).Contains("-"))
                 {
-                    Session["SendingFlag"] = item.SendingFlag;
-                    return Redirect(Url.Content("~/Job/SendJob/" + item.Id));
+                    string s = NewTask[0].ToString();
+                    item.TaskHandler = NewHandler;
+                    
+                    if((string)item.GetType().GetProperty("Task" + s).GetValue(item, null) != "Y")
+                    {
+                        item.GetType().GetProperty("Task" + s).SetValue(item, "TASK", null);
+                    }
+                   await DocumentDBRepository.UpdateItemAsync<Job>(item.Id, item);
+                   return Redirect(Url.Content("~/Job/SendJob/" + item.Id + "?SendingFlag=" + s));
+                }
+                else
+                {
+                    await DocumentDBRepository.UpdateItemAsync<Job>(item.Id, item);
                 }
             }
-            await SetViewBags();
+            await SetViewBags();   
             return View(item);
         }
 
         [HttpPost]
         [ActionName("M2_Task3")]
-        [ValidateAntiForgeryToken]
+        
         public async Task<ActionResult> M2_Task3Async(Job item, string NewTask, string NewHandler)
         {
             //await SaveJobChanges(item);
@@ -215,7 +225,7 @@ namespace BridgeMVC.Controllers
 
         [HttpPost]
         [ActionName("M1_Task4")]
-        [ValidateAntiForgeryToken]
+        
         public async Task<ActionResult> M1_Task4Async(Job item, string NewTask, string NewHandler)
         {
             if (ModelState.IsValid)
@@ -328,20 +338,14 @@ namespace BridgeMVC.Controllers
             {
                 return HttpNotFound();
             }
-
-
-            Session["DbJobId"] = item.Id;
-            Session["NpsJobId"] = item.NpsJobId;
-
+      
             item.StatusNote = "";
-
             await SetViewBags();
-            item.SendingFlag = "-";
             return View(item);
         }
 
         [ActionName("SendJob")]
-        public async Task<ActionResult> SendJobAsync(string id)
+        public async Task<ActionResult> SendJobAsync(string id, string SendingFlag)
         {
             if (id == null)
             {
@@ -353,23 +357,19 @@ namespace BridgeMVC.Controllers
             {
                 return HttpNotFound();
             }
-            Session["DbJobId"] = item.Id;
-            Session["NpsJobId"] = item.NpsJobId;
-            string sf = (string)Session["SendingFlag"];
-
-            await SetViewBags();
-            ViewBag.bEmail = await DocumentDBRepository.GetItemsAsync<BEmail>(d => d.Tag == "BEmail" && d.BridgeModule == item.BridgeModule && d.TemplateName == ("TASK" + sf));
-            ViewBag.bUser = await DocumentDBRepository.GetItemsAsync<BUser>(d => d.Tag == "BUser" && d.Signature == item.TaskHandler);
-            ViewBag.iIORA = await DocumentDBRepository.GetItemsAsync<IORA>(d => d.Tag == "IORA" && d.DbJobId == item.Id);
-
-            Session["SendingFlag"] = "";
+             
+          
+            ViewBag.bEmail = await DocumentDBRepository.GetItemsAsync<BEmail>(d => d.Tag == "BEmail" && d.BridgeModule == item.BridgeModule && d.TemplateName == ("TASK" + SendingFlag));
+            ViewBag.bUser = await DocumentDBRepository.GetItemsAsync<BUser>(d => d.Tag == "BUser" && d.Signature.ToLower() == item.TaskHandler.ToLower());
+     
+  
             return View(item);
         }
 
 
         [HttpPost]
         [ActionName("EditNew")]
-        [ValidateAntiForgeryToken]
+        
         public async Task<ActionResult> EditNewAsync(Job item, string NewTask, string NewHandler)
         {
             if (ModelState.IsValid)
@@ -507,7 +507,7 @@ namespace BridgeMVC.Controllers
 
         [HttpPost]
         [ActionName("M1_Task3")]
-        [ValidateAntiForgeryToken]
+        
         public async Task<ActionResult> M1_Task3Post(Job item, string NewTask, string NewHandler)
         {
             if (ModelState.IsValid)
@@ -602,7 +602,7 @@ namespace BridgeMVC.Controllers
 
         [HttpPost]
         [ActionName("Create")]
-        [ValidateAntiForgeryToken]
+        
         public async Task<ActionResult> CreateAsync(Job item)
         {
             await CreateNewJob(item);
@@ -612,7 +612,7 @@ namespace BridgeMVC.Controllers
 
         [HttpPost]
         [ActionName("M2_Task1")]
-        [ValidateAntiForgeryToken]
+        
         public async Task<ActionResult> M2_Task1Async(Job item, string NewTask, string NewHandler)
         {
             if (ModelState.IsValid)
@@ -640,7 +640,7 @@ namespace BridgeMVC.Controllers
 
         [HttpPost]
         [ActionName("M2_Task2")]
-        [ValidateAntiForgeryToken]
+        
         public async Task<ActionResult> M2_Task2Async(Job item, string NewTask, string NewHandler)
         {
             if (ModelState.IsValid)

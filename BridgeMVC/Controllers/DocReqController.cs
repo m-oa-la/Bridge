@@ -59,7 +59,7 @@ namespace BridgeMVC.Controllers
         }
 
         [HttpPost, ActionName("Delete")]
-        [ValidateAntiForgeryToken]
+       
         public async Task<ActionResult> DeleteConfirmed(string id)
         {
             DocReq r = await DocumentDBRepository.GetItemAsync<DocReq>(id);
@@ -97,7 +97,7 @@ namespace BridgeMVC.Controllers
 
         [HttpPost]
         [ActionName("Create")]
-        [ValidateAntiForgeryToken]
+       
         public async Task<ActionResult> CreateAsync([Bind(Include = "Id,Tag,BridgeModule,DocReqItem,NpsJobId,DbJobId")] DocReq item)
         {
             if (ModelState.IsValid)
@@ -111,7 +111,7 @@ namespace BridgeMVC.Controllers
 
         [HttpPost]
         [ActionName("Edit")]
-        [ValidateAntiForgeryToken]
+       
         public async Task<ActionResult> EditAsync([Bind(Include = "Id,Tag,BridgeModule,DocReqItem,NpsJobId,DbJobId")] DocReq item)
         {
             if (ModelState.IsValid)
