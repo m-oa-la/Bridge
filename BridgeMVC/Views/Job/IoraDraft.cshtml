@@ -17,7 +17,7 @@
     var Rules = ViewBag.Rules;
     var FinancialSet = ViewBag.FinancialSet;
     var LUser = ViewBag.LUser;
-
+    var Products = ViewBag.Products;
 }
 
 
@@ -161,7 +161,7 @@
     var Rules = @Html.Raw(Json.Encode(Rules));
     var FinancialSet = @Html.Raw(Json.Encode(FinancialSet));
     var LUser = @Html.Raw(Json.Encode(LUser));
-
+    var Products = @Html.Raw(Json.Encode(Products));
     console.log(Job.NpsJobId);
 //general
     var userSignature = "@UserSignature";
@@ -230,7 +230,14 @@
             sowStr += " with expire date: " + Job.ExpireDate;
         };
         sowStr += ". \r\n";
-
+        
+        if (bm == "M2") {
+            sowStr += "List of products: \r\n"
+            $.each(Products, function (key, data) {
+                sowStr += "•  " + data.SubProdType + ": " + data.ProdDescription + "\r\n";
+            });
+        }
+        
         sowStr += "Applicable Rules: \r\n"
         $.each(Rules, function (key, data) {
             sowStr += "•  " + data.RuleName + "\r\n";
