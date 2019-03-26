@@ -155,7 +155,7 @@ namespace BridgeMVC.Controllers
 
         [HttpPost]
         [ActionName("M1_Task1")]
-        [ValidateAntiForgeryToken]
+      
         public async Task<ActionResult> M1_Task1Async( Job item, string NewTask, string NewHandler)
         {
             //await SaveJobChanges(item);
@@ -196,7 +196,7 @@ namespace BridgeMVC.Controllers
                     string s = NewTask[0].ToString();
                     item.TaskHandler = NewHandler;
 
-                    if (item.GetType().GetProperty("Task" + s).GetValue(item, null) != "Y")
+                    if ((string)item.GetType().GetProperty("Task" + s).GetValue(item, null) != "Y")
                     {
                         item.GetType().GetProperty("Task" + s).SetValue(item, "TASK", null);
                     }
@@ -236,7 +236,7 @@ namespace BridgeMVC.Controllers
                     string s = NewTask[0].ToString();
                     item.TaskHandler = NewHandler;
 
-                    if (item.GetType().GetProperty("Task" + s).GetValue(item, null) != "Y")
+                    if ((string)item.GetType().GetProperty("Task" + s).GetValue(item, null) != "Y")
                     {
                         item.GetType().GetProperty("Task" + s).SetValue(item, "TASK", null);
                     }
@@ -380,7 +380,7 @@ namespace BridgeMVC.Controllers
                     string s = NewTask[0].ToString();
                     item.TaskHandler = NewHandler;
 
-                    if (item.GetType().GetProperty("Task" + s).GetValue(item, null) != "Y")
+                    if ((string)item.GetType().GetProperty("Task" + s).GetValue(item, null) != "Y")
                     {
                         item.GetType().GetProperty("Task" + s).SetValue(item, "TASK", null);
                     }
@@ -518,7 +518,7 @@ namespace BridgeMVC.Controllers
                     string s = NewTask[0].ToString();
                     item.TaskHandler = NewHandler;
 
-                    if (item.GetType().GetProperty("Task" + s).GetValue(item, null) != "Y")
+                    if ((string)item.GetType().GetProperty("Task" + s).GetValue(item, null) != "Y")
                     {
                         item.GetType().GetProperty("Task" + s).SetValue(item, "TASK", null);
                     }
@@ -623,7 +623,7 @@ namespace BridgeMVC.Controllers
                     string s = NewTask[0].ToString();
                     item.TaskHandler = NewHandler;
 
-                    if (item.GetType().GetProperty("Task" + s).GetValue(item, null) != "Y")
+                    if ((string)item.GetType().GetProperty("Task" + s).GetValue(item, null) != "Y")
                     {
                         item.GetType().GetProperty("Task" + s).SetValue(item, "TASK", null);
                     }
@@ -651,7 +651,7 @@ namespace BridgeMVC.Controllers
                     string s = NewTask[0].ToString();
                     item.TaskHandler = NewHandler;
 
-                    if (item.GetType().GetProperty("Task" + s).GetValue(item, null) != "Y")
+                    if ((string)item.GetType().GetProperty("Task" + s).GetValue(item, null) != "Y")
                     {
                         item.GetType().GetProperty("Task" + s).SetValue(item, "TASK", null);
                     }
