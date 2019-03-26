@@ -33,83 +33,82 @@
 
 @using (Html.BeginForm(null, null, FormMethod.Post, new { id = "jobForm" }))
 {
-
     @Html.AntiForgeryToken()
-    <div>
+<div>
 
-        @Html.HiddenFor(model => model.Tag)
-        @Html.HiddenFor(model => model.BridgeModule)
-        @Html.HiddenFor(model => model.Id)
-        @*@Html.HiddenFor(model => model.NpsJobId)*@
-        @*@Html.HiddenFor(model => model.TaskHandler)*@
-        @Html.HiddenFor(model => model.Task1)
-        @Html.HiddenFor(model => model.Task2)
-        @Html.HiddenFor(model => model.Task3)
-        @*@Html.HiddenFor(model => model.CustomerName)*@
-        @*@Html.HiddenFor(model => model.ProdDescription)*@
-        @*@Html.HiddenFor(model => model.ApprNote)*@
-        @Html.HiddenFor(model => model.IsComplete)
-        @*@Html.HiddenFor(model => model.SalesOrderNo)*@
-        @Html.HiddenFor(model => model.SubOrderNo)
-        @*@Html.HiddenFor(model => model.CertType)*@
-        @*@Html.HiddenFor(model => model.CertAction)*@
-        @*@Html.HiddenFor(model => model.MainProdType)*@
-        @*@Html.HiddenFor(model => model.SubProdType)*@
-        @Html.HiddenFor(model => model.ReceivedTime)
-        @*@Html.HiddenFor(model => model.FeeSetTime)*@
-        @Html.HiddenFor(model => model.IoraSentTime)
-        @Html.HiddenFor(model => model.IoraReturnedTime)
-        @Html.HiddenFor(model => model.JobCompletedTime)
-        @*@Html.HiddenFor(model => model.CustomerName)
-            @Html.HiddenFor(model => model.CustomerId)*@
-        @*@Html.HiddenFor(model => model.Fee)*@
-        @*@Html.HiddenFor(model => model.FeeSetter)
-            @Html.HiddenFor(model => model.FeeVerifier)*@
-        @Html.HiddenFor(model => model.JobVerifier)
-        @Html.HiddenFor(model => model.RAE)
-        @*@Html.HiddenFor(model => model.MWL)*@
-        @*@Html.HiddenFor(model => model.ExistingCertNo)*@
-        @Html.HiddenFor(model => model.CertNo)
-        @*@Html.HiddenFor(model => model.SerialNo)*@
-        @*@Html.HiddenFor(model => model.MEDItemNo)*@
-        @Html.HiddenFor(model => model.DeliveryWeek)
-        @Html.HiddenFor(model => model.LocalUnit)
-        @Html.HiddenFor(model => model.ArchiveFolder)
-        @Html.HiddenFor(model => model.IsHold)
-        @Html.HiddenFor(model => model.StatusNote)
-        @Html.HiddenFor(model => model.VerifyLvl)
-        @*@Html.HiddenFor(model => model.SurveyDate)
-            @Html.HiddenFor(model => model.SurveyStation)*@
-        @Html.HiddenFor(model => model.TechPara1)
-        @Html.HiddenFor(model => model.TechPara2)
-        @Html.HiddenFor(model => model.TechPara3)
-        @Html.HiddenFor(model => model.TechPara4)
-        @Html.HiddenFor(model => model.MEDFactory)
-        @*@Html.HiddenFor(model => model.MEDFBNo)*@
-        @*@Html.HiddenFor(model => model.MEDFBDue)*@
-        @Html.HiddenFor(model => model.AnyDesignChange)
-        @Html.HiddenFor(model => model.ChecklistUsed)
-        @Html.HiddenFor(model => model.DesignFolder)
-        @Html.HiddenFor(model => model.IsDocQualityGood)
-        @Html.HiddenFor(model => model.IsDocSufficient)
-        @Html.HiddenFor(model => model.SetHoldTime)
-        @Html.HiddenFor(model => model.IORASpentTime)
-        @Html.HiddenFor(model => model.ModificationDesc)
-        @Html.HiddenFor(model => model.OnHoldNote)
-        @Html.HiddenFor(model => model.FeeVerifyTime)
-        @Html.HiddenFor(model => model.RegisterTime)
-        @Html.HiddenFor(model => model.DocReq)
-        @Html.HiddenFor(model => model.NoOfCert)
-        @Html.HiddenFor(model => model.FeeSet)
-        @Html.HiddenFor(model => model.VesselID)
-        @Html.HiddenFor(model => model.DocReqNote)
-        @Html.HiddenFor(model => model.NpsDbId)
-        @*@Html.HiddenFor(model => model.ExeDoneBy)
-            @Html.HiddenFor(model => model.ExeDoneTime)*@
-        @Html.HiddenFor(model => model.CompletedBy)
-        @Html.HiddenFor(model => model.SendingFlag)
-        @Html.HiddenFor(model => model.IoraDbId)
-    </div>
+    @Html.HiddenFor(model => model.Tag)
+    @Html.HiddenFor(model => model.BridgeModule)
+    @Html.HiddenFor(model => model.Id)
+    @*@Html.HiddenFor(model => model.NpsJobId)*@
+    @*@Html.HiddenFor(model => model.TaskHandler)*@
+    @Html.HiddenFor(model => model.Task1)
+    @Html.HiddenFor(model => model.Task2)
+    @Html.HiddenFor(model => model.Task3)
+    @*@Html.HiddenFor(model => model.CustomerName)*@
+    @*@Html.HiddenFor(model => model.ProdDescription)*@
+    @*@Html.HiddenFor(model => model.ApprNote)*@
+    @Html.HiddenFor(model => model.IsComplete)
+    @*@Html.HiddenFor(model => model.SalesOrderNo)*@
+    @Html.HiddenFor(model => model.SubOrderNo)
+    @*@Html.HiddenFor(model => model.CertType)*@
+    @*@Html.HiddenFor(model => model.CertAction)*@
+    @*@Html.HiddenFor(model => model.MainProdType)*@
+    @*@Html.HiddenFor(model => model.SubProdType)*@
+    @Html.HiddenFor(model => model.ReceivedTime)
+    @*@Html.HiddenFor(model => model.FeeSetTime)*@
+    @Html.HiddenFor(model => model.IoraSentTime)
+    @Html.HiddenFor(model => model.IoraReturnedTime)
+    @Html.HiddenFor(model => model.JobCompletedTime)
+    @*@Html.HiddenFor(model => model.CustomerName)
+        @Html.HiddenFor(model => model.CustomerId)*@
+    @*@Html.HiddenFor(model => model.Fee)*@
+    @*@Html.HiddenFor(model => model.FeeSetter)
+        @Html.HiddenFor(model => model.FeeVerifier)*@
+    @Html.HiddenFor(model => model.JobVerifier)
+    @Html.HiddenFor(model => model.RAE)
+    @*@Html.HiddenFor(model => model.MWL)*@
+    @*@Html.HiddenFor(model => model.ExistingCertNo)*@
+    @Html.HiddenFor(model => model.CertNo)
+    @*@Html.HiddenFor(model => model.SerialNo)*@
+    @*@Html.HiddenFor(model => model.MEDItemNo)*@
+    @Html.HiddenFor(model => model.DeliveryWeek)
+    @Html.HiddenFor(model => model.LocalUnit)
+    @Html.HiddenFor(model => model.ArchiveFolder)
+    @Html.HiddenFor(model => model.IsHold)
+    @Html.HiddenFor(model => model.StatusNote)
+    @Html.HiddenFor(model => model.VerifyLvl)
+    @*@Html.HiddenFor(model => model.SurveyDate)
+        @Html.HiddenFor(model => model.SurveyStation)*@
+    @Html.HiddenFor(model => model.TechPara1)
+    @Html.HiddenFor(model => model.TechPara2)
+    @Html.HiddenFor(model => model.TechPara3)
+    @Html.HiddenFor(model => model.TechPara4)
+    @Html.HiddenFor(model => model.MEDFactory)
+    @*@Html.HiddenFor(model => model.MEDFBNo)*@
+    @*@Html.HiddenFor(model => model.MEDFBDue)*@
+    @Html.HiddenFor(model => model.AnyDesignChange)
+    @Html.HiddenFor(model => model.ChecklistUsed)
+    @Html.HiddenFor(model => model.DesignFolder)
+    @Html.HiddenFor(model => model.IsDocQualityGood)
+    @Html.HiddenFor(model => model.IsDocSufficient)
+    @Html.HiddenFor(model => model.SetHoldTime)
+    @Html.HiddenFor(model => model.IORASpentTime)
+    @Html.HiddenFor(model => model.ModificationDesc)
+    @Html.HiddenFor(model => model.OnHoldNote)
+    @Html.HiddenFor(model => model.FeeVerifyTime)
+    @Html.HiddenFor(model => model.RegisterTime)
+    @Html.HiddenFor(model => model.DocReq)
+    @Html.HiddenFor(model => model.NoOfCert)
+    @Html.HiddenFor(model => model.FeeSet)
+    @Html.HiddenFor(model => model.VesselID)
+    @Html.HiddenFor(model => model.DocReqNote)
+    @Html.HiddenFor(model => model.NpsDbId)
+    @*@Html.HiddenFor(model => model.ExeDoneBy)
+        @Html.HiddenFor(model => model.ExeDoneTime)*@
+    @Html.HiddenFor(model => model.CompletedBy)
+    @Html.HiddenFor(model => model.SendingFlag)
+    @Html.HiddenFor(model => model.IoraDbId)
+</div>
     <div class="form-horizontal">
         <hr />
 
@@ -218,9 +217,9 @@
         </div>
         <div class="bing col-lg-6" hidden>
             Fee setter
-            @Html.EditorFor(model => model.FeeSetter, new { htmlAttributes = new { @class = "form-control" } })
+            @Html.EditorFor(model => model.FeeSetter, new { htmlAttributes = new { @class = "form-control", id = "feeSetter" } })
 
-            @Html.EditorFor(model => model.FeeSetTime, new { htmlAttributes = new { @class = "form-control" } })
+            @Html.EditorFor(model => model.FeeSetTime, new { htmlAttributes = new { @class = "form-control", id = "feeSetTime", @Value = Model.FeeSetTime?.ToString("yyyyMMdd HH:mm:ss") } })
 
             @Html.EditorFor(model => model.TaskHandler, new { htmlAttributes = new { @class = "form-control" } })
             @Html.EditorFor(model => model.ExeDoneBy, new { htmlAttributes = new { @class = "form-control" } })
@@ -238,7 +237,6 @@
 
         @{
             Html.RenderPartial("_SaveCompleteReopen");
-
         }
 
     </div>
@@ -251,8 +249,8 @@
 @section Scripts {
     @Scripts.Render("~/bundles/jqueryval")
 }
-@{
 
+@{
     Html.RenderPartial("_TaskSending");
 }
 <script>
@@ -293,7 +291,7 @@
         console.log(Job.CertType);
 
         switch (Job.CertType) {
-
+            
             case "MED-F":
                 toShow += "MEDFBNo,MEDFBDue,SerialNo,CertAmount,MEDItemNo,SurveyStation,SurveyDate,";
                 $("#pMEDFBNo").html("Ref. MED-B certificate No.");

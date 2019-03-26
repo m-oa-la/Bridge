@@ -460,8 +460,7 @@
     <Content Include="Views\Job\IsIORAExisting.cshtml" />
     <Content Include="Views\Job\IoraDraft.cshtml" />
     <Content Include="Views\Job\CreateIora.cshtml" />
-    <Content Include="Views\Job\M2_Task3.cshtml" />
-  </ItemGroup>
+   <Content Include="Views\Job\M2_Task3.cshtml" />  </ItemGroup>
   <ItemGroup>
     <Folder Include="App_Data\M1\Projects\" />
     <Folder Include="Views\Account\" />

@@ -70,7 +70,7 @@ namespace BridgeMVC.Controllers
         }
 
         [HttpPost, ActionName("Delete")]
-       
+        [ValidateAntiForgeryToken]
         public async Task<ActionResult> DeleteConfirmed(string id)
         {
             Product r = await DocumentDBRepository.GetItemAsync<Product>(id);
@@ -107,7 +107,7 @@ namespace BridgeMVC.Controllers
 
         [HttpPost]
         [ActionName("Create")]
-       
+        [ValidateAntiForgeryToken]
         public async Task<ActionResult> CreateAsync([Bind(Include = "Id,Tag,BridgeModule,MainProdType,SubProdType,ProdDescription,NpsJobId,DbJobId," +
             "DesignPara1,DesignPara2,DesignPara3,DesignPara4,DesignPara5,DesignPara6,Note")] Product item)
         {
@@ -123,7 +123,7 @@ namespace BridgeMVC.Controllers
 
         [HttpPost]
         [ActionName("Edit")]
-       
+        [ValidateAntiForgeryToken]
         public async Task<ActionResult> EditAsync([Bind(Include = "Id,Tag,BridgeModule,MainProdType,SubProdType,ProdDescription,NpsJobId,DbJobId," +
             "DesignPara1,DesignPara2,DesignPara3,DesignPara4,DesignPara5,DesignPara6,Note")] Product item)
         {
