@@ -45,8 +45,8 @@ function getTodayDate() {
 
 function taskComplete(taskCompleteStr) {
     $("#Task" + taskNo).val("Y");
-    dt = getTodayDate();
-    $("#" + taskCompleteDate).val(dt);
+     dt = getTodayDate();
+     $("#" + taskCompleteDate).val(dt);
 
     taskStatus = taskCompleteStr + userSignature + " on " + dt;
     $("#" + taskStatusFlag).val(userSignature);
@@ -56,9 +56,10 @@ function taskComplete(taskCompleteStr) {
     $("#TaskComplete").hide();
     $("#saveButton").hide();
 
-    if (taskStatusFlag === "IORASentBy") {
+    if (taskStatusFlag === "IORASentBy")
+    {
         console.log("Send IORA to LU");
-        $("#SendingFlag").val(9);
+        $("#SendingFlag").val(9); 
         console.log($("#TaskHandler").val());
         $('#jobForm').submit();
     };
@@ -128,15 +129,16 @@ function renderTaskHandling() {
         });
     }
 
-
+    
     $('#sendJobEmail').on('click', function (event) {
-
+ 
         var vtask = $("#selectListTask").val();
-        var vhandler = $("#selectListHandler").val();
+        var vhandler = $("#selectListHandler").val(); 
 
         var newTaskNo = vtask.slice(0, 1);
-        if (vtask.search("-") + vhandler.search("-") === -2) {
-
+        if (vtask.search("-") + vhandler.search("-") === -2)
+        {
+            
             $("#Task" + newTaskNo).val("TASK");
             $("#TaskHandler").val(vhandler);
             $("#SendingFlag").val(newTaskNo);

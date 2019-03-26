@@ -27,7 +27,7 @@
 <h4 style="margin-top:1px"> Add Product </h4>
 @using (Html.BeginForm())
 {
-    
+    @Html.AntiForgeryToken()
 
 
     <div class="form-horizontal">

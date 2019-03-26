@@ -17,14 +17,12 @@
     var Rules = ViewBag.Rules;
     var FinancialSet = ViewBag.FinancialSet;
     var LUser = ViewBag.LUser;
-    var Products = ViewBag.Products;
 
 }
 
 
 @using (Html.BeginForm(null, null, FormMethod.Post))
 {
-    @Html.AntiForgeryToken()
 
 
     @Html.HiddenFor(model => model.Tag)
@@ -146,7 +144,7 @@
 
     </table>
 
-    <input type="submit" value="Update IORA" class="btn btn-default" readonly />
+    <input type="submit" value="Update IORA" class="btn btn-default"  readonly />
 
 }
 
@@ -163,7 +161,7 @@
     var Rules = @Html.Raw(Json.Encode(Rules));
     var FinancialSet = @Html.Raw(Json.Encode(FinancialSet));
     var LUser = @Html.Raw(Json.Encode(LUser));
-    var Products = @Html.Raw(Json.Encode(Products));
+
     console.log(Job.NpsJobId);
 //general
     var userSignature = "@UserSignature";
@@ -233,15 +231,6 @@
         };
         sowStr += ". \r\n";
 
-        if (bm === "M2") {
-            sowStr += "List of products: \r\n"
-            $.each(Products, function (key, data) {
-                sowStr += "•  " + data.SubProdType + ": " + data.ProdDescription + "\r\n";
-            });
-        }
-
-
-
         sowStr += "Applicable Rules: \r\n"
         $.each(Rules, function (key, data) {
             sowStr += "•  " + data.RuleName + "\r\n";
@@ -286,15 +275,16 @@
         var cax = FinancialSet[ca];
 
         console.log("CA:" + ca);
-        console.log("CAX:" + cax);
+
 
         $.each(chBIORA, function (key, data) {
 
             var x = data.BookMarkName.split("_")[1];
+            console.log(x);
 
-            if (data.Formula != null && (cax.indexOf("," + x + ",")>-1)) {
+
+            if (data.Formula != null && (cax.indexOf(x + ",")>-1)) {
                 sc = sc + eval(data.Formula) + "\r\n";
-                console.log(x);
             }
         });
 

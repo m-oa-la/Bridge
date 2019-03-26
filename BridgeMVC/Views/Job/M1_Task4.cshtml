@@ -36,7 +36,6 @@
 
 @using (Html.BeginForm(null, null, FormMethod.Post, new { id = "jobForm" }))
 {
-
     @Html.AntiForgeryToken()
 
     @Html.HiddenFor(model => model.Tag)
@@ -141,6 +140,7 @@
 
     </div>
 
+
 }
 <hr />
 
@@ -149,6 +149,7 @@
 }
 @{
     Html.RenderPartial("_TaskSending");
+
 }
 <script>
 

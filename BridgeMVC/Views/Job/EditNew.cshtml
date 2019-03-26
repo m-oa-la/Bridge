@@ -40,7 +40,6 @@
 {
     @Html.AntiForgeryToken()
 
-
     <div class="form-horizontal">
         <hr />
         @Html.ValidationSummary(true, "", new { @class = "text-danger" })
@@ -132,7 +131,7 @@
         <div class="bing col-lg-6" hidden>
             Fee set time
 
-            @Html.EditorFor(model => model.FeeSetTime, new { htmlAttributes = new { @class = "form-control", id = "feeSetTime" } })
+            @Html.EditorFor(model => model.FeeSetTime, new { htmlAttributes = new { @class = "form-control", id = "feeSetTime", @Value = Model.FeeSetTime?.ToString("yyyyMMdd HH:mm:ss") } })
             @Html.ValidationMessageFor(model => model.FeeSetTime, "", new { @class = "text-danger" })
         </div>
         <div class="bing col-lg-6" hidden>
@@ -160,16 +159,15 @@
 
             </div>
         </div>
-
     </div>
 }
 <hr />
 
 @Scripts.Render("~/bundles/jqueryval")
+
 @{
     Html.RenderPartial("_TaskSending");
 }
-
 <script>
     //Define global variables
 
