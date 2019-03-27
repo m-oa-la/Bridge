@@ -1,4 +1,5 @@
 ﻿@model IEnumerable<BridgeMVC.Models.Job>
+
 @{
     /**/
 
@@ -6,16 +7,16 @@
     string BridgeLastUsed = (string)Session["BridgeModule"];
     string UserSignature = (string)Session["UserSignature"];
     string colorY, colorN, colorTask;
-    colorY = "background-color:seagreen; color:transparent;  ";
-    colorN = "background-color:honeydew; color:transparent;  ";
-    colorTask = "background-color:lightgreen; color:transparent; ";
+    colorY = "background-color:#5296c3; color:transparent;  ";
+    colorN = "background-color:azure; color:transparent;  ";
+    colorTask = "background-color:#81d078; color:transparent; ";
 
     var LUser = ViewBag.LUser;
     var US = ViewBag.userSig;
 
 }
-<style>
 
+<style>
     .hoverRow p {
         display: block;
         overflow: hidden;
@@ -35,13 +36,16 @@
         border: 3px solid white;
     }
 </style>
+
 <h2>
     MY BRIDGE JOBLIST
-    @*<p class="btn btn-subtle" style="float:right; border:none" hidden>
-            @Html.ActionLink("Create New", "Create")
-        </p>*@
+    <p style="float:right" class="btn btn-secondary">
+        @Html.ActionLink("Whiteboard", "Whiteboard")
+    </p>
 </h2>
+
 <hr />
+
 @using (Html.BeginForm())
 {
     <table>
@@ -49,6 +53,7 @@
             <col span="1" style="width: 12%;">
             <col span="1" style="width: 76%;">
             <col span="1" style="width: 12%;">
+
         </colgroup>
         <tr>
             <td>
@@ -65,10 +70,12 @@
                 <input type="submit" value="Change User" />
             </td>
         </tr>
+
     </table>
 
 }
 <br />
+
 <table class="table table-mid-align-rows hoverRow" style="table-layout:fixed;">
     <colgroup>
         <col span="1" style="width: 20%;">
@@ -78,19 +85,20 @@
         <col span="1" style="width: 50px;">
         <col span="1" style="width: 50px;">
         <col span="1" style="width: 50px;">
-        <col span="1" style="width: 20%;">
+        <col span="1" style="width: 30%;">
     </colgroup>
     <tr>
         <th style="border-top:none">           JOB ID       </th>
         <th style="border-top:none">            CUSTOMER        </th>
         <th style="border-top:none">            DESIGNATION     </th>
-        <th style="border-top:none">           FEE       </th>
-        <th style="border-top:none">           AGR       </th>
-        <th style="border-top:none">           EXE        </th>
-        <th style="border-top:none">           FNL        </th>
+        <th style="border-top:none">           FEE      </th>
+        <th style="border-top:none">           VERI       </th>
+        <th style="border-top:none">           W.B.        </th>
+        <th style="border-top:none">                  </th>
         <th style="border-top:none">          IORA STATUS    </th>
         @*<th>            @Html.DisplayNameFor(model => model.TaskHandler)        </th>
             <th>            @Html.DisplayNameFor(model => model.Completed)        </th>*@
+
     </tr>
 
     @foreach (var item in Model)
@@ -149,9 +157,7 @@
             <td style="@styleT3" onclick="location.href=@editlink3">
                 @Html.DisplayFor(modelItem => item.Task3)
             </td>
-            <td style="@styleT4" onclick="location.href=@editlink4">
-                @Html.DisplayFor(modelItem => item.Task4)
-            </td>
+            <td></td>
             <td>
                 <p>
                     @if (!string.IsNullOrEmpty(item.IoraDbId))
@@ -160,8 +166,10 @@
                     }
                 </p>
             </td>
+
         </tr>
     }
+
 </table>
 <script>
     var LUser = @Html.Raw(Json.Encode(LUser));
@@ -175,10 +183,7 @@
         $("#userSig").append(new Option(data.Signature, data.Signature));
     });
 
-    //$("#userSig").on("change", function () {
-    //    var mval = $("#selectMainProdType :selected").text();
 
-    //});
 
 
 </script>

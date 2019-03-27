@@ -119,7 +119,7 @@ function renderTaskHandling() {
     });
 
     // Set up selectList for variable items
-    if (bm === "M1") {
+    if (bm !== "M2") {
         $.each(["-- Please select --", "1.FEE", "2.AGR", "3.EXE", "4.FNL"], function (index, value) {
             $("#selectListTask").append(new Option(value, value));
         });
@@ -128,7 +128,7 @@ function renderTaskHandling() {
             $("#selectListTask").append(new Option(value, value));
         });
     }
-
+ 
     
 
     $("#selectListHandler").on('change', function () {
