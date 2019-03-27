@@ -428,7 +428,7 @@
     <Content Include="Views\Job\M2_Task1.cshtml" />
     <Content Include="Views\Job\Whiteboard.cshtml" />
     <Content Include="Views\Job\SubViews\WB_SV1.cshtml" />
-    <Content Include="Views\Job\M2_Task2.cshtml" />
+    <Content Include="Views\Job\M2_Task2-NA.cshtml" />
     <Content Include="Views\Blob\CreateBlobContainer.cshtml" />
     <Content Include="Views\Blob\ListBlobs.cshtml" />
     <Content Include="Views\Blobs\Index.cshtml" />
@@ -460,7 +460,13 @@
     <Content Include="Views\Job\IsIORAExisting.cshtml" />
     <Content Include="Views\Job\IoraDraft.cshtml" />
     <Content Include="Views\Job\CreateIora.cshtml" />
-   <Content Include="Views\Job\M2_Task3.cshtml" />  </ItemGroup>
+    <Content Include="Views\Job\M2_Task3.cshtml" />
+    <Content Include="Views\Job\SendJobAPI.cshtml" />
+    <Content Include="Views\Job\M3_Index.cshtml" />
+    <Content Include="Views\Job\M3_Task1.cshtml" />
+    <Content Include="Views\Job\M3_Task3.cshtml" />
+    <Content Include="Views\Job\M3_Task4.cshtml" />
+  </ItemGroup>
   <ItemGroup>
     <Folder Include="App_Data\M1\Projects\" />
     <Folder Include="Views\Account\" />

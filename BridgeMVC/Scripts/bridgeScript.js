@@ -130,21 +130,37 @@ function renderTaskHandling() {
     }
 
     
-    $('#sendJobEmail').on('click', function (event) {
- 
+
+    $("#selectListHandler").on('change', function () {
+        UpdateSendingInfo();
+    });
+
+
+    $("#selectListTask").on('change', function () {
+        UpdateSendingInfo();
+     });
+
+    function UpdateSendingInfo() {
         var vtask = $("#selectListTask").val();
         var vhandler = $("#selectListHandler").val();
-        console.log(vtask + vhandler);
+
         var newTaskNo = vtask.slice(0, 1);
-        if (vtask.search("-") + vhandler.search("-") === -2)
-        {
-            
-            $("#Task" + newTaskNo).val("TASK");
-            $("#TaskHandler").val(vhandler);
-            $("#SendingFlag").val(newTaskNo);
-            $('#jobForm').submit();
+        $("#Task" + newTaskNo).val("TASK");
+
+
+
+        if (vtask !== null) {
+            return $.ajax({
+                type: 'GET',
+                url: '/Job/SetTaskSendingFlag',
+                data: { newHandler: vhandler, newTask: newTaskNo },
+                cache: false,
+                success: console.log(vhandler + " " + newTaskNo)
+            });
         }
+    }
 
 
-    });
+
+
 }
