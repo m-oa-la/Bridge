@@ -466,6 +466,8 @@
     <Content Include="Views\Job\M3_Task1.cshtml" />
     <Content Include="Views\Job\M3_Task3.cshtml" />
     <Content Include="Views\Job\M3_Task4.cshtml" />
+    <Content Include="Views\Job\M2_Index - Backup.cshtml" />
+    <Content Include="Views\Job\M2_Task1 - Backup.cshtml" />
   </ItemGroup>
   <ItemGroup>
     <Folder Include="App_Data\M1\Projects\" />
