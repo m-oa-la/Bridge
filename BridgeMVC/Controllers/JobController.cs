@@ -435,15 +435,25 @@ namespace BridgeMVC.Controllers
         {
             if (ModelState.IsValid)
             {
-                await DocumentDBRepository.UpdateItemAsync<Job>(item.Id, item);
-                if (!string.IsNullOrEmpty(item.SendingFlag) && item.SendingFlag != "-")
+
+                string nHandler = (string)Session["newHandler"];
+                string nTask = (string)Session["newTask"];
+
+
+                if (!(nHandler + nTask).Contains("-"))
                 {
-                    Session["SendingFlag"] = item.SendingFlag;
+                    Session["SendingFlag"] = nTask;
+                    item.TaskHandler = nHandler;
+                    item.GetType().GetProperty("Task" + nTask).SetValue(item, "TASK");
+                    await DocumentDBRepository.UpdateItemAsync<Job>(item.Id, item);
+
                     return Redirect(Url.Content("~/Job/SendJob/" + item.Id));
                 }
             }
+
+            await DocumentDBRepository.UpdateItemAsync<Job>(item.Id, item);
             await SetViewBags();
-            return View(item);
+            return View((string)Session["BridgeModule"] + "_Task1", item);
         }
 
         [ActionName("EditNew")]
