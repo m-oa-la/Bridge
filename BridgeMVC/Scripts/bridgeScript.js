@@ -134,17 +134,34 @@ function renderTaskHandling() {
  
         var vtask = $("#selectListTask").val();
         var vhandler = $("#selectListHandler").val();
-        console.log(vtask + vhandler);
-        var newTaskNo = vtask.slice(0, 1);
+
         if (vtask.search("-") + vhandler.search("-") === -2)
         {
-            
-            $("#Task" + newTaskNo).val("TASK");
-            $("#TaskHandler").val(vhandler);
-            $("#SendingFlag").val(newTaskNo);
-            $('#jobForm').submit();
+          $('#jobForm').submit();
         }
 
 
     });
+
+    function setNewHandler() {
+        var vhandler = $("#selectListHandler").val();
+        $("#TaskHandler").val(vhandler);
+
+    }
+    function setNewTask() {
+        var vtask = $("#selectListTask").val();
+
+        console.log(vtask + vhandler);
+        var newTaskNo = vtask.slice(0, 1);
+        $("#Task" + newTaskNo).val("TASK");
+        $("#SendingFlag").val(newTaskNo);
+    }
+
+
+
+
+
+
+
+
 }

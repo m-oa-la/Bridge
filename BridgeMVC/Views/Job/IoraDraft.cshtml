@@ -290,7 +290,7 @@
             console.log(x);
 
 
-            if (data.Formula != null && (cax.indexOf(x + ",")>-1)) {
+            if (data.Formula != null && (cax.indexOf("," + x + ",")>-1)) {
                 sc = sc + eval(data.Formula) + "\r\n";
             }
         });
