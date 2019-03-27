@@ -34,11 +34,6 @@
         <col span="1" style="width: 18%;">
         <col span="1" style="width: 10%;">
 
-
-    </colgroup>
-
-    @foreach (var item in Model)
-    {
         <tr>
             <th>
                 Main Type
@@ -59,6 +54,10 @@
                 Note
             </th>
         </tr>
+
+    </colgroup>
+    @foreach (var item in Model)
+    {
         <tr>
             <td>
                 @Html.DisplayFor(modelItem => item.MainProdType)
@@ -69,7 +68,6 @@
             <td>
                 @Html.DisplayFor(modelItem => item.ProdDescription)
             </td>
-
             <td>
                 @Html.DisplayFor(modelItem => item.DesignPara1)
             </td>
@@ -81,23 +79,16 @@
             </td>
 
 
-
-
             <td>
-
                 @using (Html.BeginForm("Delete", "Product", new { id = item.Id }, FormMethod.Post, null))
                 {@Html.AntiForgeryToken()
                 <input type="submit" value="Delete" />
             }
             </td>
             <td>
-
-                 @Html.ActionLink("Edit", "Edit", new { id = item.Id })
-
+                @Html.ActionLink("Edit", "Edit", new { id = item.Id })
             </td>
 
-
         </tr>
-        }
-
-    </table>
+    }
+</table>

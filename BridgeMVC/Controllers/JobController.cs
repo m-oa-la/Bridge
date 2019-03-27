@@ -119,8 +119,58 @@ namespace BridgeMVC.Controllers
             return View((string)Session["BridgeModule"] + "_Task1", item);
         }
 
+        [ActionName("CommonTask3")]
+        public async Task<ActionResult> CommonTask3(string id)
+        {
+            if (id == null)
+            {
+                return new HttpStatusCodeResult(HttpStatusCode.BadRequest);
+            }
+
+            Job item = await DocumentDBRepository.GetItemAsync<Job>(id);
+
+            item.StatusNote = "";
+            Session["newHandler"] = "-";
+            Session["newTask"] = "-";
+
+            if (item == null)
+            {
+                return HttpNotFound();
+            }
+            //ViewBag.SelectList = await DocumentDBRepository<BRule>.GetItemsAsync(d => d.Tag == "BRule" && d.BridgeModule == item.BridgeModule);
+            Session["DbJobId"] = item.Id;
+            Session["NpsJobId"] = item.NpsJobId;
 
 
+            await SetViewBags();
+            return View((string)Session["BridgeModule"] + "_Task1", item);
+        }
+        [ActionName("CommonTask4")]
+        public async Task<ActionResult> CommonTask4(string id)
+        {
+            if (id == null)
+            {
+                return new HttpStatusCodeResult(HttpStatusCode.BadRequest);
+            }
+
+            Job item = await DocumentDBRepository.GetItemAsync<Job>(id);
+
+            item.StatusNote = "";
+            Session["newHandler"] = "-";
+            Session["newTask"] = "-";
+
+            if (item == null)
+            {
+                return HttpNotFound();
+            }
+            //ViewBag.SelectList = await DocumentDBRepository<BRule>.GetItemsAsync(d => d.Tag == "BRule" && d.BridgeModule == item.BridgeModule);
+            Session["DbJobId"] = item.Id;
+            Session["NpsJobId"] = item.NpsJobId;
+
+
+            await SetViewBags();
+            return View((string)Session["BridgeModule"] + "_Task1", item);
+        }
 
 
         public async Task<string> SetViewBags()
@@ -184,6 +234,74 @@ namespace BridgeMVC.Controllers
             return View((string)Session["BridgeModule"] + "_Task1", item);
         }
 
+        [HttpPost]
+        [ActionName("CommonTask3")]
+        [ValidateAntiForgeryToken]
+        public async Task<ActionResult> CommonTask3Post(Job item)
+        {
+            //await SaveJobChanges(item);
+            if (ModelState.IsValid)
+            {
+
+                string nHandler = (string)Session["newHandler"];
+                string nTask = (string)Session["newTask"];
+
+
+                if (!(nHandler + nTask).Contains("-"))
+                {
+                    Session["SendingFlag"] = nTask;
+                    item.TaskHandler = nHandler;
+                    item.GetType().GetProperty("Task" + nTask).SetValue(item, "TASK");
+                    await DocumentDBRepository.UpdateItemAsync<Job>(item.Id, item);
+
+                    return Redirect(Url.Content("~/Job/SendJob/" + item.Id));
+                }
+            }
+
+            await DocumentDBRepository.UpdateItemAsync<Job>(item.Id, item);
+            await SetViewBags();
+            return View((string)Session["BridgeModule"] + "_Task1", item);
+        }
+
+
+        [HttpPost]
+        [ActionName("CommonTask4")]
+        [ValidateAntiForgeryToken]
+        public async Task<ActionResult> CommonTask4Post(Job item)
+        {
+            //await SaveJobChanges(item);
+            if (ModelState.IsValid)
+            {
+
+                string nHandler = (string)Session["newHandler"];
+                string nTask = (string)Session["newTask"];
+
+
+                if (!(nHandler + nTask).Contains("-"))
+                {
+                    Session["SendingFlag"] = nTask;
+                    item.TaskHandler = nHandler;
+                    item.GetType().GetProperty("Task" + nTask).SetValue(item, "TASK");
+                    await DocumentDBRepository.UpdateItemAsync<Job>(item.Id, item);
+
+                    return Redirect(Url.Content("~/Job/SendJob/" + item.Id));
+                }
+            }
+
+            await DocumentDBRepository.UpdateItemAsync<Job>(item.Id, item);
+            await SetViewBags();
+            return View((string)Session["BridgeModule"] + "_Task1", item);
+        }
+
+
+
+
+
+
+
+
+
+
         [HttpGet]
         [ActionName("SetTaskSendingFlag")]
         public  string SetTaskSendingFlag(string newHandler, string newTask)
@@ -205,50 +323,6 @@ namespace BridgeMVC.Controllers
             return JsonConvert.SerializeObject(f.FirstOrDefault());
         }
 
-        [HttpPost]
-        [ActionName("M1_Task4")]
-        [ValidateAntiForgeryToken]
-        public async Task<ActionResult> M1_Task4Async(Job item)
-        {
-            if (ModelState.IsValid)
-            {
-                await DocumentDBRepository.UpdateItemAsync<Job>(item.Id, item);
-                if (!string.IsNullOrEmpty(item.SendingFlag) && item.SendingFlag != "-")
-                {
-                    Session["SendingFlag"] = item.SendingFlag;
-                    return Redirect(Url.Content("~/Job/SendJob/" + item.Id));
-                }
-            }
-            await SetViewBags();
-            return Redirect(Url.Content("~/Job/_Index/"));
-            
-        }
-
-        [ActionName("M1_Task4")]
-        public async Task<ActionResult> M1_Task4Async(string id)
-        {
-            if (id == null)
-            {
-                return new HttpStatusCodeResult(HttpStatusCode.BadRequest);
-            }
-
-            Job item = await DocumentDBRepository.GetItemAsync<Job>(id);
-
-                item.StatusNote = "";
-            
-            item.IsComplete = true;
-            if (item == null)
-            {
-                return HttpNotFound();
-            }
-            //ViewBag.SelectList = await DocumentDBRepository<BRule>.GetItemsAsync(d => d.Tag == "BRule" && d.BridgeModule == item.BridgeModule);
-            Session["DbJobId"] = item.Id;
-            Session["NpsJobId"] = item.NpsJobId;
-
-
-            await SetViewBags();
-            return View(item);
-        }
 
 
         [ActionName("IsIORAExisting")]
