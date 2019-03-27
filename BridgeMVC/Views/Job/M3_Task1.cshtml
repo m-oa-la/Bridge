@@ -1,5 +1,4 @@
 ﻿@model BridgeMVC.Models.Job
-
 @{
     ViewBag.Title = "M1_Task1";
     string UserSignature = (string)Session["UserSignature"];
@@ -13,8 +12,8 @@
     var LUser = ViewBag.LUser;
     var FinancialSet = ViewBag.FinancialSet;
 }
-
 <style>
+
     .bing {
         float: left;
         /*width: 450px;*/
@@ -27,218 +26,212 @@
         font-weight: normal;
     }
 </style>
-
 <h2>FEE SETTING</h2>
-
 @using (Html.BeginForm(null, null, FormMethod.Post, new { id = "jobForm" }))
 {
     @Html.AntiForgeryToken()
 
-<div>
-
-    @Html.HiddenFor(model => model.Tag)
-    @Html.HiddenFor(model => model.BridgeModule)
-    @Html.HiddenFor(model => model.Id)
-    @*@Html.HiddenFor(model => model.NpsJobId)*@
-    @*@Html.HiddenFor(model => model.TaskHandler)*@
-    @Html.HiddenFor(model => model.Task1)
-    @Html.HiddenFor(model => model.Task2)
-    @Html.HiddenFor(model => model.Task3)
-    @*@Html.HiddenFor(model => model.CustomerName)*@
-    @*@Html.HiddenFor(model => model.ProdDescription)*@
-    @*@Html.HiddenFor(model => model.ApprNote)*@
-    @Html.HiddenFor(model => model.IsComplete)
-    @*@Html.HiddenFor(model => model.SalesOrderNo)*@
-    @Html.HiddenFor(model => model.SubOrderNo)
-    @*@Html.HiddenFor(model => model.CertType)*@
-    @*@Html.HiddenFor(model => model.CertAction)*@
-    @*@Html.HiddenFor(model => model.MainProdType)*@
-    @*@Html.HiddenFor(model => model.SubProdType)*@
-    @Html.HiddenFor(model => model.ReceivedTime)
-    @*@Html.HiddenFor(model => model.FeeSetTime)*@
-    @Html.HiddenFor(model => model.IoraSentTime)
-    @Html.HiddenFor(model => model.IoraReturnedTime)
-    @Html.HiddenFor(model => model.JobCompletedTime)
-    @*@Html.HiddenFor(model => model.CustomerName)
-        @Html.HiddenFor(model => model.CustomerId)*@
-    @*@Html.HiddenFor(model => model.Fee)*@
-    @*@Html.HiddenFor(model => model.FeeSetter)
-        @Html.HiddenFor(model => model.FeeVerifier)*@
-    @Html.HiddenFor(model => model.JobVerifier)
-    @Html.HiddenFor(model => model.RAE)
-    @*@Html.HiddenFor(model => model.MWL)*@
-    @*@Html.HiddenFor(model => model.ExistingCertNo)*@
-    @Html.HiddenFor(model => model.CertNo)
-    @*@Html.HiddenFor(model => model.SerialNo)*@
-    @*@Html.HiddenFor(model => model.MEDItemNo)*@
-    @*@Html.HiddenFor(model => model.DeliveryWeek)*@
-    @Html.HiddenFor(model => model.LocalUnit)
-    @Html.HiddenFor(model => model.ArchiveFolder)
-    @Html.HiddenFor(model => model.IsHold)
-    @Html.HiddenFor(model => model.StatusNote)
-    @Html.HiddenFor(model => model.VerifyLvl)
-    @*@Html.HiddenFor(model => model.SurveyDate)
-        @Html.HiddenFor(model => model.SurveyStation)*@
-    @Html.HiddenFor(model => model.TechPara1)
-    @Html.HiddenFor(model => model.TechPara2)
-    @Html.HiddenFor(model => model.TechPara3)
-    @Html.HiddenFor(model => model.TechPara4)
-    @Html.HiddenFor(model => model.MEDFactory)
-    @*@Html.HiddenFor(model => model.MEDFBNo)*@
-    @*@Html.HiddenFor(model => model.MEDFBDue)*@
-    @Html.HiddenFor(model => model.AnyDesignChange)
-    @Html.HiddenFor(model => model.ChecklistUsed)
-    @Html.HiddenFor(model => model.DesignFolder)
-    @Html.HiddenFor(model => model.IsDocQualityGood)
-    @Html.HiddenFor(model => model.IsDocSufficient)
-    @Html.HiddenFor(model => model.SetHoldTime)
-    @Html.HiddenFor(model => model.IORASpentTime)
-    @Html.HiddenFor(model => model.ModificationDesc)
-    @Html.HiddenFor(model => model.OnHoldNote)
-    @Html.HiddenFor(model => model.FeeVerifyTime)
-    @Html.HiddenFor(model => model.RegisterTime)
-    @Html.HiddenFor(model => model.DocReq)
-    @Html.HiddenFor(model => model.NoOfCert)
-    @Html.HiddenFor(model => model.FeeSet)
-    @Html.HiddenFor(model => model.VesselID)
-    @Html.HiddenFor(model => model.DocReqNote)
-    @Html.HiddenFor(model => model.NpsDbId)
-    @Html.HiddenFor(model => model.ExeDoneBy)
-    @Html.HiddenFor(model => model.ExeDoneTime)
-    @Html.HiddenFor(model => model.CompletedBy)
-    @Html.HiddenFor(model => model.SendingFlag)
-    @Html.HiddenFor(model => model.IoraDbId)
-</div>
-
-<div class="form-horizontal">
-    <hr />
-    <div class="bing col-lg-6">
-        <p> NPS Job ID: </p>
-        @Html.EditorFor(model => model.NpsJobId, new { htmlAttributes = new { @class = "form-control", id = "NpsJobId" } })
-        @Html.ValidationMessageFor(model => model.NpsJobId, "", new { @class = "text-danger" })
-    </div>
-    <div class="bing col-lg-6">
-        <p>Customer:</p>
-        @Html.EditorFor(model => model.CustomerName, new { htmlAttributes = new { @class = "form-control" } })
-        @Html.ValidationMessageFor(model => model.CustomerName, "", new { @class = "text-danger" })
-    </div>
-    <div class="bing col-lg-6">
-        <p>Sales Order:</p>
-        @Html.EditorFor(model => model.SalesOrderNo, new { htmlAttributes = new { @class = "form-control" } })
-        @Html.ValidationMessageFor(model => model.SalesOrderNo, "", new { @class = "text-danger" })
+    <div>
+        @Html.HiddenFor(model => model.Tag)
+        @Html.HiddenFor(model => model.BridgeModule)
+        @Html.HiddenFor(model => model.Id)
+        @*@Html.HiddenFor(model => model.NpsJobId)*@
+        @*@Html.HiddenFor(model => model.TaskHandler)*@
+        @Html.HiddenFor(model => model.Task1)
+        @Html.HiddenFor(model => model.Task2)
+        @Html.HiddenFor(model => model.Task3)
+        @*@Html.HiddenFor(model => model.CustomerName)*@
+        @*@Html.HiddenFor(model => model.ProdDescription)*@
+        @*@Html.HiddenFor(model => model.ApprNote)*@
+        @Html.HiddenFor(model => model.IsComplete)
+        @*@Html.HiddenFor(model => model.SalesOrderNo)*@
+        @Html.HiddenFor(model => model.SubOrderNo)
+        @*@Html.HiddenFor(model => model.CertType)*@
+        @*@Html.HiddenFor(model => model.CertAction)*@
+        @*@Html.HiddenFor(model => model.MainProdType)*@
+        @*@Html.HiddenFor(model => model.SubProdType)*@
+        @Html.HiddenFor(model => model.ReceivedTime)
+        @*@Html.HiddenFor(model => model.FeeSetTime)*@
+        @Html.HiddenFor(model => model.IoraSentTime)
+        @Html.HiddenFor(model => model.IoraReturnedTime)
+        @Html.HiddenFor(model => model.JobCompletedTime)
+        @*@Html.HiddenFor(model => model.CustomerName)
+            @Html.HiddenFor(model => model.CustomerId)*@
+        @*@Html.HiddenFor(model => model.Fee)*@
+        @*@Html.HiddenFor(model => model.FeeSetter)
+            @Html.HiddenFor(model => model.FeeVerifier)*@
+        @Html.HiddenFor(model => model.JobVerifier)
+        @Html.HiddenFor(model => model.RAE)
+        @*@Html.HiddenFor(model => model.MWL)*@
+        @*@Html.HiddenFor(model => model.ExistingCertNo)*@
+        @Html.HiddenFor(model => model.CertNo)
+        @*@Html.HiddenFor(model => model.SerialNo)*@
+        @*@Html.HiddenFor(model => model.MEDItemNo)*@
+        @*@Html.HiddenFor(model => model.DeliveryWeek)*@
+        @Html.HiddenFor(model => model.LocalUnit)
+        @Html.HiddenFor(model => model.ArchiveFolder)
+        @Html.HiddenFor(model => model.IsHold)
+        @Html.HiddenFor(model => model.StatusNote)
+        @Html.HiddenFor(model => model.VerifyLvl)
+        @*@Html.HiddenFor(model => model.SurveyDate)
+            @Html.HiddenFor(model => model.SurveyStation)*@
+        @Html.HiddenFor(model => model.TechPara1)
+        @Html.HiddenFor(model => model.TechPara2)
+        @Html.HiddenFor(model => model.TechPara3)
+        @Html.HiddenFor(model => model.TechPara4)
+        @Html.HiddenFor(model => model.MEDFactory)
+        @*@Html.HiddenFor(model => model.MEDFBNo)*@
+        @*@Html.HiddenFor(model => model.MEDFBDue)*@
+        @Html.HiddenFor(model => model.AnyDesignChange)
+        @Html.HiddenFor(model => model.ChecklistUsed)
+        @Html.HiddenFor(model => model.DesignFolder)
+        @Html.HiddenFor(model => model.IsDocQualityGood)
+        @Html.HiddenFor(model => model.IsDocSufficient)
+        @Html.HiddenFor(model => model.SetHoldTime)
+        @Html.HiddenFor(model => model.IORASpentTime)
+        @Html.HiddenFor(model => model.ModificationDesc)
+        @Html.HiddenFor(model => model.OnHoldNote)
+        @Html.HiddenFor(model => model.FeeVerifyTime)
+        @Html.HiddenFor(model => model.RegisterTime)
+        @Html.HiddenFor(model => model.DocReq)
+        @Html.HiddenFor(model => model.NoOfCert)
+        @Html.HiddenFor(model => model.FeeSet)
+        @Html.HiddenFor(model => model.VesselID)
+        @Html.HiddenFor(model => model.DocReqNote)
+        @Html.HiddenFor(model => model.NpsDbId)
+        @Html.HiddenFor(model => model.ExeDoneBy)
+        @Html.HiddenFor(model => model.ExeDoneTime)
+        @Html.HiddenFor(model => model.CompletedBy)
+        @Html.HiddenFor(model => model.SendingFlag)
+        @Html.HiddenFor(model => model.IoraDbId)
     </div>
 
-    <div class="bing col-lg-6">
-        <p>Designation:</p>
-        @Html.EditorFor(model => model.ProdDescription, new { htmlAttributes = new { @class = "form-control" } })
-        @Html.ValidationMessageFor(model => model.ProdDescription, "", new { @class = "text-danger" })
-    </div>
-    <div class="bing col-lg-6">
-        <p>Certificate type:</p>
-        @Html.DropDownListFor(model => model.CertType, new List<SelectListItem> { new SelectListItem { Text = Model.CertType, Value = Model.CertType } }, new { @class = "form-control", id = "selectCertType" })
-    </div>
-    <div class="bing col-lg-6">
-        <p>Issurance type:</p>
-        @Html.DropDownListFor(model => model.CertAction, new List<SelectListItem> { new SelectListItem { Text = Model.CertAction, Value = Model.CertAction } }, new { @class = "form-control", id = "selectCertAction" })
-    </div>
-    <div class="bing col-lg-6">
-        <p>Ref. certificate due date.:</p>
-        @Html.EditorFor(model => model.MEDFBDue, new { htmlAttributes = new { @class = "form-control" } })
-        @Html.ValidationMessageFor(model => model.MEDFBDue, "", new { @class = "text-danger" })
-    </div>
-    <div class="bing col-lg-6">
-        <p>Ref. existing certificate no.:</p>
-        @Html.EditorFor(model => model.ExistingCertNo, new { htmlAttributes = new { @class = "form-control" } })
-        @Html.ValidationMessageFor(model => model.ExistingCertNo, "", new { @class = "text-danger" })
-    </div>
-    <div class="bing col-lg-6">
-        <p>Main Equipment category:</p>
-        @Html.DropDownListFor(model => model.MainProdType, new List<SelectListItem> { new SelectListItem { Text = Model.MainProdType, Value = Model.MainProdType } }, new { @class = "form-control", id = "selectMainProdType" })
-    </div>
-    <div class="bing col-lg-6">
-        <p>Sub Equipment category:</p>
-        @Html.DropDownListFor(model => model.SubProdType, new List<SelectListItem> { new SelectListItem { Text = Model.SubProdType, Value = Model.SubProdType } }, new { @class = "form-control", id = "selectSubProdType" })
-    </div>
-    <div class="bing col-lg-6">
-        <p>Maximum working load:</p>
-        @Html.EditorFor(model => model.MWL, new { htmlAttributes = new { @class = "form-control" } })
-        @Html.ValidationMessageFor(model => model.MWL, "", new { @class = "text-danger" })
-    </div>
-    <div class="bing col-lg-6">
-        <p>Amount of certificate:</p>
-        @Html.EditorFor(model => model.CertAmount, new { htmlAttributes = new { @class = "form-control" } })
-        @Html.ValidationMessageFor(model => model.CertAmount, "", new { @class = "text-danger" })
-    </div>
-    <div class="bing col-lg-6">
-        <p id="pMEDFBNo">Ref. Certificate No.:</p>
-        @Html.EditorFor(model => model.MEDFBNo, new { htmlAttributes = new { @class = "form-control" } })
-        @Html.ValidationMessageFor(model => model.MEDFBNo, "", new { @class = "text-danger" })
-    </div>
-    <div class="bing col-lg-6">
-        <p> MED Item No.: </p>
-        @Html.EditorFor(model => model.MEDItemNo, new { htmlAttributes = new { @class = "form-control" } })
-        @Html.ValidationMessageFor(model => model.MEDItemNo, "", new { @class = "text-danger" })
-    </div>
-    <div class="bing col-lg-6">
-        <p> Serial no.: </p>
-        @Html.EditorFor(model => model.SerialNo, new { htmlAttributes = new { @class = "form-control" } })
-        @Html.ValidationMessageFor(model => model.SerialNo, "", new { @class = "text-danger" })
-    </div>
-    <div class="bing col-lg-6">
-        <p> Survey station </p>
-        @Html.EditorFor(model => model.SurveyStation, new { htmlAttributes = new { @class = "form-control" } })
-        @Html.ValidationMessageFor(model => model.SurveyStation, "", new { @class = "text-danger" })
-    </div>
-    <div class="bing col-lg-6">
-        <p> Survey date: ((DD-MM-YYYY))</p>
-        @Html.EditorFor(model => model.SurveyDate, new { htmlAttributes = new { @class = "form-control" } })
-        @Html.ValidationMessageFor(model => model.SurveyDate, "", new { @class = "text-danger" })
-    </div>
-    <iframe id="iframe" frameborder="0" src="@Url.Content("~/Rule/Index")" style="width: 100%; height: 200px;"></iframe>
-    <div class="bing col-lg-6">
-        Fee (External, incl. TSA/MSA):
-        @Html.EditorFor(model => model.Fee, new { htmlAttributes = new { @class = "form-control" } })
-        @Html.ValidationMessageFor(model => model.Fee, "", new { @class = "text-danger" })
-    </div>
-    <div class="bing col-lg-6">
-        Budget hour: <img style="cursor:pointer" src="~/Content/pictures/magic.png" onclick="budgetHourCalc()" class="magicWand">
+    <div class="form-horizontal">
+        <hr />
+        <div class="bing col-lg-6">
+            <p> NPS Job ID: </p>
+            @Html.EditorFor(model => model.NpsJobId, new { htmlAttributes = new { @class = "form-control", id = "NpsJobId" } })
+            @Html.ValidationMessageFor(model => model.NpsJobId, "", new { @class = "text-danger" })
+        </div>
+        <div class="bing col-lg-6">
+            <p>Customer:</p>
+            @Html.EditorFor(model => model.CustomerName, new { htmlAttributes = new { @class = "form-control" } })
+            @Html.ValidationMessageFor(model => model.CustomerName, "", new { @class = "text-danger" })
+        </div>
+        <div class="bing col-lg-6">
+            <p>Sales Order:</p>
+            @Html.EditorFor(model => model.SalesOrderNo, new { htmlAttributes = new { @class = "form-control" } })
+            @Html.ValidationMessageFor(model => model.SalesOrderNo, "", new { @class = "text-danger" })
+        </div>
 
-        @Html.EditorFor(model => model.BudgetHour, new { htmlAttributes = new { @class = "form-control" } })
-        @Html.ValidationMessageFor(model => model.BudgetHour, "", new { @class = "text-danger" })
-    </div>
-    <div class="bing col-lg-6">
-        To be delivered in ? week(s):
-        @Html.EditorFor(model => model.DeliveryWeek, new { htmlAttributes = new { @class = "form-control" } })
-        @Html.ValidationMessageFor(model => model.DeliveryWeek, "", new { @class = "text-danger" })
-    </div>
-    <div class="bing col-lg-6" hidden>
-        Fee setter
-        @Html.EditorFor(model => model.FeeSetter, new { htmlAttributes = new { @class = "form-control", id = "feeSetter" } })
-        @Html.EditorFor(model => model.FeeSetTime, new { htmlAttributes = new { @class = "form-control", id = "feeSetTime", @Value = Model.FeeSetTime?.ToString("yyyyMMdd HH:mm:ss") } })
-        @Html.EditorFor(model => model.TaskHandler, new { htmlAttributes = new { @class = "form-control" } })
-    </div>
-    <div class=" col-lg-12 ">
-        <h4 style="clear:both;">Note:</h4>
-        @Html.EditorFor(model => model.ApprNote, new { htmlAttributes = new { @class = "form-control", style = "height:100px" } })
-        @Html.ValidationMessageFor(model => model.ApprNote, "", new { @class = "text-danger" })
-    </div>
-    @{
-        Html.RenderPartial("_SaveCompleteReopen");
-        Html.RenderPartial("_TaskSending");
-    }
+        <div class="bing col-lg-6">
+            <p>Designation:</p>
+            @Html.EditorFor(model => model.ProdDescription, new { htmlAttributes = new { @class = "form-control" } })
+            @Html.ValidationMessageFor(model => model.ProdDescription, "", new { @class = "text-danger" })
+        </div>
+        <div class="bing col-lg-6">
+            <p>Certificate type:</p>
+            @Html.DropDownListFor(model => model.CertType, new List<SelectListItem> { new SelectListItem { Text = Model.CertType, Value = Model.CertType } }, new { @class = "form-control", id = "selectCertType" })
+        </div>
+        <div class="bing col-lg-6">
+            <p>Issurance type:</p>
+            @Html.DropDownListFor(model => model.CertAction, new List<SelectListItem> { new SelectListItem { Text = Model.CertAction, Value = Model.CertAction } }, new { @class = "form-control", id = "selectCertAction" })
+        </div>
+        <div class="bing col-lg-6">
+            <p>Ref. certificate due date.:</p>
+            @Html.EditorFor(model => model.MEDFBDue, new { htmlAttributes = new { @class = "form-control" } })
+            @Html.ValidationMessageFor(model => model.MEDFBDue, "", new { @class = "text-danger" })
+        </div>
+        <div class="bing col-lg-6">
+            <p>Ref. existing certificate no.:</p>
+            @Html.EditorFor(model => model.ExistingCertNo, new { htmlAttributes = new { @class = "form-control" } })
+            @Html.ValidationMessageFor(model => model.ExistingCertNo, "", new { @class = "text-danger" })
+        </div>
+        <div class="bing col-lg-6">
+            <p>Main Equipment category:</p>
+            @Html.DropDownListFor(model => model.MainProdType, new List<SelectListItem> { new SelectListItem { Text = Model.MainProdType, Value = Model.MainProdType } }, new { @class = "form-control", id = "selectMainProdType" })
+        </div>
+        <div class="bing col-lg-6">
+            <p>Sub Equipment category:</p>
+            @Html.DropDownListFor(model => model.SubProdType, new List<SelectListItem> { new SelectListItem { Text = Model.SubProdType, Value = Model.SubProdType } }, new { @class = "form-control", id = "selectSubProdType" })
+        </div>
+        <div class="bing col-lg-6">
+            <p>Maximum working load:</p>
+            @Html.EditorFor(model => model.MWL, new { htmlAttributes = new { @class = "form-control" } })
+            @Html.ValidationMessageFor(model => model.MWL, "", new { @class = "text-danger" })
+        </div>
+        <div class="bing col-lg-6">
+            <p>Amount of certificate:</p>
+            @Html.EditorFor(model => model.CertAmount, new { htmlAttributes = new { @class = "form-control" } })
+            @Html.ValidationMessageFor(model => model.CertAmount, "", new { @class = "text-danger" })
+        </div>
+        <div class="bing col-lg-6">
+            <p id="pMEDFBNo">Ref. Certificate No.:</p>
+            @Html.EditorFor(model => model.MEDFBNo, new { htmlAttributes = new { @class = "form-control" } })
+            @Html.ValidationMessageFor(model => model.MEDFBNo, "", new { @class = "text-danger" })
+        </div>
+        <div class="bing col-lg-6">
+            <p> MED Item No.: </p>
+            @Html.EditorFor(model => model.MEDItemNo, new { htmlAttributes = new { @class = "form-control" } })
+            @Html.ValidationMessageFor(model => model.MEDItemNo, "", new { @class = "text-danger" })
+        </div>
+        <div class="bing col-lg-6">
+            <p> Serial no.: </p>
+            @Html.EditorFor(model => model.SerialNo, new { htmlAttributes = new { @class = "form-control" } })
+            @Html.ValidationMessageFor(model => model.SerialNo, "", new { @class = "text-danger" })
+        </div>
+        <div class="bing col-lg-6">
+            <p> Survey station </p>
+            @Html.EditorFor(model => model.SurveyStation, new { htmlAttributes = new { @class = "form-control" } })
+            @Html.ValidationMessageFor(model => model.SurveyStation, "", new { @class = "text-danger" })
+        </div>
+        <div class="bing col-lg-6">
+            <p> Survey date: ((DD-MM-YYYY))</p>
+            @Html.EditorFor(model => model.SurveyDate, new { htmlAttributes = new { @class = "form-control" } })
+            @Html.ValidationMessageFor(model => model.SurveyDate, "", new { @class = "text-danger" })
+        </div>
+        <iframe id="iframe" frameborder="0" src="@Url.Content("~/Rule/Index")" style="width: 100%; height: 200px;"></iframe>
+        <div class="bing col-lg-6">
+            Fee (External, incl. TSA/MSA):
+            @Html.EditorFor(model => model.Fee, new { htmlAttributes = new { @class = "form-control" } })
+            @Html.ValidationMessageFor(model => model.Fee, "", new { @class = "text-danger" })
+        </div>
+        <div class="bing col-lg-6">
+            Budget hour: <img style="cursor:pointer" src="~/Content/pictures/magic.png" onclick="budgetHourCalc()" class="magicWand">
 
-</div>
+            @Html.EditorFor(model => model.BudgetHour, new { htmlAttributes = new { @class = "form-control" } })
+            @Html.ValidationMessageFor(model => model.BudgetHour, "", new { @class = "text-danger" })
+        </div>
+        <div class="bing col-lg-6">
+            To be delivered in ? week(s):
+            @Html.EditorFor(model => model.DeliveryWeek, new { htmlAttributes = new { @class = "form-control" } })
+            @Html.ValidationMessageFor(model => model.DeliveryWeek, "", new { @class = "text-danger" })
+        </div>
+        <div class="bing col-lg-6" hidden>
+            Fee setter
+            @Html.EditorFor(model => model.FeeSetter, new { htmlAttributes = new { @class = "form-control" } })
+            @Html.EditorFor(model => model.FeeSetTime, new { htmlAttributes = new { @class = "form-control", @Value = Model.FeeSetTime?.ToString("yyyyMMdd HH:mm:ss") } })
+            @Html.EditorFor(model => model.TaskHandler, new { htmlAttributes = new { @class = "form-control" } })
+        </div>
+        <div class=" col-lg-12 ">
+            <h4 style="clear:both;">Note:</h4>
+            @Html.EditorFor(model => model.ApprNote, new { htmlAttributes = new { @class = "form-control", style = "height:100px" } })
+            @Html.ValidationMessageFor(model => model.ApprNote, "", new { @class = "text-danger" })
+        </div>
+        @{
+            Html.RenderPartial("_SaveCompleteReopen");
+            Html.RenderPartial("_TaskSending");
+        }
+
+    </div>
 
 
 
 }
 <hr />
-
 @section Scripts {
     @Scripts.Render("~/bundles/jqueryval")
 }
-
-
 <script>
 
     //read viewbag's info.
@@ -258,8 +251,8 @@
 
     //Set task parameter
     var taskNo = 1;
-    var taskStatusFlag = "feeSetter"; //who completed the task
-    var taskCompleteDate = "feeSetTime";
+    var taskStatusFlag = "FeeSetter"; //who completed the task
+    var taskCompleteDate = "FeeSetTime";
     var taskCompleteStr = "The fee is set by ";
 
     renderTaskShowHide();
@@ -269,7 +262,7 @@
     showHideFields();
     function showHideFields()
     {
-       
+
         var defaultHiddenList = "MEDFBNo,MEDFBDue,SerialNo,CertAmount,MWL,MEDItemNo,ExistingCertNo,SurveyStation,SurveyDate".split(',');
         defaultHiddenList.forEach(hideElement);
 
@@ -325,8 +318,8 @@
         if (toShow) {
             var splitS = toShow.split(',');
             splitS.forEach(showElement);
-           
-        }       
+
+        }
      }
 
     function showElement(value) {
@@ -431,7 +424,11 @@
             ";\nBudgetHour = InternalFee * 0,74 / 1200 = " + bh);
     }
 
+    $.each(["-- Please select --", "1.FEE", "2.VER", "3.AGR", "4.WHITEBOARD"], function (index, value) {
+        $("#selectListTask").append(new Option(value, value));
+    });
+
+
 
 </script>
-
 

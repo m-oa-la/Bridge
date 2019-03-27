@@ -39,10 +39,11 @@
 
 <h2>
     MY BRIDGE JOBLIST
-    @*<p class="btn btn-subtle" style="float:right; border:none" hidden>
-            @Html.ActionLink("Create New", "Create")
-        </p>*@
+    <p style="float:right" class="btn btn-secondary">
+        @Html.ActionLink("Whiteboard", "Whiteboard")
+    </p>
 </h2>
+
 <hr />
 
 @using (Html.BeginForm())
@@ -90,9 +91,9 @@
         <th style="border-top:none">           JOB ID       </th>
         <th style="border-top:none">            CUSTOMER        </th>
         <th style="border-top:none">            DESIGNATION     </th>
-        <th style="border-top:none">           FEESETTING       </th>
-        <th style="border-top:none">           VERIFICATION       </th>
-        <th style="border-top:none">           WHITEBOARD        </th>
+        <th style="border-top:none">           FEE      </th>
+        <th style="border-top:none">           VERI       </th>
+        <th style="border-top:none">           W.B.        </th>
         <th style="border-top:none">                  </th>
         <th style="border-top:none">          IORA STATUS    </th>
         @*<th>            @Html.DisplayNameFor(model => model.TaskHandler)        </th>
