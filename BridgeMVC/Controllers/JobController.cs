@@ -103,8 +103,9 @@ namespace BridgeMVC.Controllers
             Job item = await DocumentDBRepository.GetItemAsync<Job>(id);
 
             item.StatusNote = "";
-            item.SendingFlag = "-";
-            item.IsComplete = true;
+            Session["newHandler"] = "-";
+            Session["newTask"] = "-";
+
             if (item == null)
             {
                 return HttpNotFound();
@@ -162,20 +163,35 @@ namespace BridgeMVC.Controllers
             //await SaveJobChanges(item);
             if (ModelState.IsValid)
             {
-                string s = item.SendingFlag;
-                await DocumentDBRepository.UpdateItemAsync<Job>(item.Id, item);
-                s = item.SendingFlag;
-                if (!string.IsNullOrEmpty(item.SendingFlag) && item.SendingFlag != "-")
+   
+                string nHandler = (string)Session["newHandler"];
+                string nTask = (string)Session["newTask"];
+  
+
+                if (!(nHandler + nTask).Contains("-"))
                 {
-                    s = item.SendingFlag;
-                    Session["SendingFlag"] = item.SendingFlag;
+                    Session["SendingFlag"] = nTask;
+                    item.TaskHandler = nHandler;
+                    item.GetType().GetProperty("Task" + nTask).SetValue(item, "TASK");
+                    await DocumentDBRepository.UpdateItemAsync<Job>(item.Id, item);
+
                     return Redirect(Url.Content("~/Job/SendJob/" + item.Id));
                 }
             }
+
+            await DocumentDBRepository.UpdateItemAsync<Job>(item.Id, item);
             await SetViewBags();
             return View((string)Session["BridgeModule"] + "_Task1", item);
         }
 
+        [HttpGet]
+        [ActionName("SetTaskSendingFlag")]
+        public  string SetTaskSendingFlag(string newHandler, string newTask)
+        {
+            Session["newHandler"] = newHandler;
+            Session["newTask"] = newTask;
+            return "Done";
+        }
 
 
 
@@ -187,7 +203,6 @@ namespace BridgeMVC.Controllers
             var f = await DocumentDBRepository.GetItemsAsync<BFinancial>(d => d.Tag == "BFinancial" && d.BridgeModule == bm_f && d.CertType == ct_f);
             ViewBag.FinancialSet = f.FirstOrDefault();
             return JsonConvert.SerializeObject(f.FirstOrDefault());
-          
         }
 
         [HttpPost]

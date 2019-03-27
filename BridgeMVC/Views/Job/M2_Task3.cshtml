@@ -237,11 +237,11 @@
             @Html.EditorFor(model => model.ApprNote, new { htmlAttributes = new { @class = "form-control", style = "height:100px" } })
             @Html.ValidationMessageFor(model => model.ApprNote, "", new { @class = "text-danger" })
         </div>
-
         @{
             Html.RenderPartial("_SaveCompleteReopen");
-         
+            Html.RenderPartial("_TaskSending");
         }
+
 
     </div>
 
@@ -251,9 +251,7 @@
 @section Scripts {
     @Scripts.Render("~/bundles/jqueryval")
 }
-@{
-    Html.RenderPartial("_TaskSending");
-}
+
 
 <script>
 

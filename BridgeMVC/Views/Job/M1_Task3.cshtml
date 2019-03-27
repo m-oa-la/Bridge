@@ -109,137 +109,122 @@
     @Html.HiddenFor(model => model.SendingFlag)
     @Html.HiddenFor(model => model.IoraDbId)
 </div>
-    <div class="form-horizontal">
-        <hr />
+<div class="form-horizontal">
+    <hr />
 
-
-        <div class="bing col-lg-6">
-            <p> NPS Job ID: </p>
-            @Html.EditorFor(model => model.NpsJobId, new { htmlAttributes = new { @class = "form-control", @readonly = "readonly", id = "NpsJobId" } })
-            @Html.ValidationMessageFor(model => model.NpsJobId, "", new { @class = "text-danger" })
-        </div>
-        <div class="bing col-lg-6">
-            <p>Customer:</p>
-            @Html.EditorFor(model => model.CustomerName, new { htmlAttributes = new { @class = "form-control", @readonly = "readonly" } })
-            @Html.ValidationMessageFor(model => model.CustomerName, "", new { @class = "text-danger" })
-        </div>
-
-        <div class="bing col-lg-6">
-            <p>Sales Order:</p>
-            @Html.EditorFor(model => model.SalesOrderNo, new { htmlAttributes = new { @class = "form-control", @readonly = "readonly" } })
-            @Html.ValidationMessageFor(model => model.SalesOrderNo, "", new { @class = "text-danger" })
-        </div>
-
-
-
-        <div class="bing col-lg-6">
-            <p>Designation:</p>
-            @Html.EditorFor(model => model.ProdDescription, new { htmlAttributes = new { @class = "form-control", @readonly = "readonly" } })
-            @Html.ValidationMessageFor(model => model.ProdDescription, "", new { @class = "text-danger" })
-        </div>
-
-        <div class="bing col-lg-6">
-            <p>Certificate type:</p>
-            @Html.EditorFor(model => model.CertType, new { htmlAttributes = new { @class = "form-control", @readonly = "readonly" } })
-            @Html.ValidationMessageFor(model => model.CertType, "", new { @class = "text-danger" })
-        </div>
-
-        <div class="bing col-lg-6">
-            <p>Issurance type:</p>
-            @Html.EditorFor(model => model.CertAction, new { htmlAttributes = new { @class = "form-control", @readonly = "readonly" } })
-            @Html.ValidationMessageFor(model => model.CertAction, "", new { @class = "text-danger" })
-        </div>
-        <div class="bing col-lg-6">
-            <p>Ref. certificate due date.:</p>
-            @Html.EditorFor(model => model.MEDFBDue, new { htmlAttributes = new { @class = "form-control", @readonly = "readonly" } })
-            @Html.ValidationMessageFor(model => model.MEDFBDue, "", new { @class = "text-danger" })
-        </div>
-        <div class="bing col-lg-6">
-            <p>Ref. existing certificate no.:</p>
-            @Html.EditorFor(model => model.ExistingCertNo, new { htmlAttributes = new { @class = "form-control", @readonly = "readonly" } })
-            @Html.ValidationMessageFor(model => model.ExistingCertNo, "", new { @class = "text-danger" })
-        </div>
-        <div class="bing col-lg-6">
-            <p>Main Equipment category:</p>
-            @Html.EditorFor(model => model.MainProdType, new { htmlAttributes = new { @class = "form-control", @readonly = "readonly" } })
-            @Html.ValidationMessageFor(model => model.MainProdType, "", new { @class = "text-danger" })
-        </div>
-        <div class="bing col-lg-6">
-            <p>Sub Equipment category:</p>
-            @Html.EditorFor(model => model.SubProdType, new { htmlAttributes = new { @class = "form-control", @readonly = "readonly" } })
-            @Html.ValidationMessageFor(model => model.SubProdType, "", new { @class = "text-danger" })
-        </div>
-        <div class="bing col-lg-6">
-            <p>Maximum working load:</p>
-            @Html.EditorFor(model => model.MWL, new { htmlAttributes = new { @class = "form-control", @readonly = "readonly" } })
-            @Html.ValidationMessageFor(model => model.MWL, "", new { @class = "text-danger" })
-        </div>
-        <div class="bing col-lg-6">
-            <p>Amount of certificate:</p>
-            @Html.EditorFor(model => model.CertAmount, new { htmlAttributes = new { @class = "form-control", @readonly = "readonly" } })
-            @Html.ValidationMessageFor(model => model.CertAmount, "", new { @class = "text-danger" })
-        </div>
-
-        <div class="bing col-lg-6">
-            <p id="pMEDFBNo">Ref. Certificate No.:</p>
-            @Html.EditorFor(model => model.MEDFBNo, new { htmlAttributes = new { @class = "form-control", @readonly = "readonly" } })
-            @Html.ValidationMessageFor(model => model.MEDFBNo, "", new { @class = "text-danger" })
-        </div>
-
-        <div class="bing col-lg-6">
-            <p> MED Item No.: </p>
-            @Html.EditorFor(model => model.MEDItemNo, new { htmlAttributes = new { @class = "form-control", @readonly = "readonly" } })
-            @Html.ValidationMessageFor(model => model.MEDItemNo, "", new { @class = "text-danger" })
-        </div>
-        <div class="bing col-lg-6">
-            <p> Serial no.: </p>
-            @Html.EditorFor(model => model.SerialNo, new { htmlAttributes = new { @class = "form-control", @readonly = "readonly" } })
-            @Html.ValidationMessageFor(model => model.SerialNo, "", new { @class = "text-danger" })
-        </div>
-        <div class="bing col-lg-6">
-            <p> Survey station </p>
-            @Html.EditorFor(model => model.SurveyStation, new { htmlAttributes = new { @class = "form-control" } })
-            @Html.ValidationMessageFor(model => model.SurveyStation, "", new { @class = "text-danger" })
-        </div>
-        <div class="bing col-lg-6">
-            <p> Survey date: (DD-MM-YYYY) </p>
-            @Html.EditorFor(model => model.SurveyDate, new { htmlAttributes = new { @class = "form-control" } })
-            @Html.ValidationMessageFor(model => model.SurveyDate, "", new { @class = "text-danger" })
-        </div>
-
-
-        <iframe id="iframe" frameborder="0" src="@Url.Content("~/Rule/IndexReadOnly")" style="width: 100%; height: 200px;"></iframe>
-
-        <div class="bing col-lg-6">
-            Fee (External, incl. TSA/MSA):
-            @Html.EditorFor(model => model.Fee, new { htmlAttributes = new { @class = "form-control", @readonly = "readonly" } })
-            @Html.ValidationMessageFor(model => model.Fee, "", new { @class = "text-danger" })
-        </div>
-        <div class="bing col-lg-6" hidden>
-            Fee setter
-            @Html.EditorFor(model => model.FeeSetter, new { htmlAttributes = new { @class = "form-control", id = "feeSetter" } })
-
-            @Html.EditorFor(model => model.FeeSetTime, new { htmlAttributes = new { @class = "form-control", id = "feeSetTime", @Value = Model.FeeSetTime?.ToString("yyyyMMdd HH:mm:ss") } })
-
-            @Html.EditorFor(model => model.TaskHandler, new { htmlAttributes = new { @class = "form-control" } })
-            @Html.EditorFor(model => model.ExeDoneBy, new { htmlAttributes = new { @class = "form-control" } })
-
-            @Html.EditorFor(model => model.ExeDoneTime, new { htmlAttributes = new { @class = "form-control" } })
-
-        </div>
-
-
-        <div class=" col-lg-12 ">
-            <h4 style="clear:both;">Note:</h4>
-            @Html.EditorFor(model => model.ApprNote, new { htmlAttributes = new { @class = "form-control", style = "height:100px" } })
-            @Html.ValidationMessageFor(model => model.ApprNote, "", new { @class = "text-danger" })
-        </div>
-
-        @{
-            Html.RenderPartial("_SaveCompleteReopen");
-        }
-
+    <div class="bing col-lg-6">
+        <p> NPS Job ID: </p>
+        @Html.EditorFor(model => model.NpsJobId, new { htmlAttributes = new { @class = "form-control", @readonly = "readonly", id = "NpsJobId" } })
+        @Html.ValidationMessageFor(model => model.NpsJobId, "", new { @class = "text-danger" })
     </div>
+    <div class="bing col-lg-6">
+        <p>Customer:</p>
+        @Html.EditorFor(model => model.CustomerName, new { htmlAttributes = new { @class = "form-control", @readonly = "readonly" } })
+        @Html.ValidationMessageFor(model => model.CustomerName, "", new { @class = "text-danger" })
+    </div>
+    <div class="bing col-lg-6">
+        <p>Sales Order:</p>
+        @Html.EditorFor(model => model.SalesOrderNo, new { htmlAttributes = new { @class = "form-control", @readonly = "readonly" } })
+        @Html.ValidationMessageFor(model => model.SalesOrderNo, "", new { @class = "text-danger" })
+    </div>
+
+    <div class="bing col-lg-6">
+        <p>Designation:</p>
+        @Html.EditorFor(model => model.ProdDescription, new { htmlAttributes = new { @class = "form-control", @readonly = "readonly" } })
+        @Html.ValidationMessageFor(model => model.ProdDescription, "", new { @class = "text-danger" })
+    </div>
+    <div class="bing col-lg-6">
+        <p>Certificate type:</p>
+        @Html.EditorFor(model => model.CertType, new { htmlAttributes = new { @class = "form-control", @readonly = "readonly" } })
+        @Html.ValidationMessageFor(model => model.CertType, "", new { @class = "text-danger" })
+    </div>
+    <div class="bing col-lg-6">
+        <p>Issurance type:</p>
+        @Html.EditorFor(model => model.CertAction, new { htmlAttributes = new { @class = "form-control", @readonly = "readonly" } })
+        @Html.ValidationMessageFor(model => model.CertAction, "", new { @class = "text-danger" })
+    </div>
+    <div class="bing col-lg-6">
+        <p>Ref. certificate due date.:</p>
+        @Html.EditorFor(model => model.MEDFBDue, new { htmlAttributes = new { @class = "form-control", @readonly = "readonly" } })
+        @Html.ValidationMessageFor(model => model.MEDFBDue, "", new { @class = "text-danger" })
+    </div>
+    <div class="bing col-lg-6">
+        <p>Ref. existing certificate no.:</p>
+        @Html.EditorFor(model => model.ExistingCertNo, new { htmlAttributes = new { @class = "form-control", @readonly = "readonly" } })
+        @Html.ValidationMessageFor(model => model.ExistingCertNo, "", new { @class = "text-danger" })
+    </div>
+    <div class="bing col-lg-6">
+        <p>Main Equipment category:</p>
+        @Html.EditorFor(model => model.MainProdType, new { htmlAttributes = new { @class = "form-control", @readonly = "readonly" } })
+        @Html.ValidationMessageFor(model => model.MainProdType, "", new { @class = "text-danger" })
+    </div>
+    <div class="bing col-lg-6">
+        <p>Sub Equipment category:</p>
+        @Html.EditorFor(model => model.SubProdType, new { htmlAttributes = new { @class = "form-control", @readonly = "readonly" } })
+        @Html.ValidationMessageFor(model => model.SubProdType, "", new { @class = "text-danger" })
+    </div>
+    <div class="bing col-lg-6">
+        <p>Maximum working load:</p>
+        @Html.EditorFor(model => model.MWL, new { htmlAttributes = new { @class = "form-control", @readonly = "readonly" } })
+        @Html.ValidationMessageFor(model => model.MWL, "", new { @class = "text-danger" })
+    </div>
+    <div class="bing col-lg-6">
+        <p>Amount of certificate:</p>
+        @Html.EditorFor(model => model.CertAmount, new { htmlAttributes = new { @class = "form-control", @readonly = "readonly" } })
+        @Html.ValidationMessageFor(model => model.CertAmount, "", new { @class = "text-danger" })
+    </div>
+    <div class="bing col-lg-6">
+        <p id="pMEDFBNo">Ref. Certificate No.:</p>
+        @Html.EditorFor(model => model.MEDFBNo, new { htmlAttributes = new { @class = "form-control", @readonly = "readonly" } })
+        @Html.ValidationMessageFor(model => model.MEDFBNo, "", new { @class = "text-danger" })
+    </div>
+    <div class="bing col-lg-6">
+        <p> MED Item No.: </p>
+        @Html.EditorFor(model => model.MEDItemNo, new { htmlAttributes = new { @class = "form-control", @readonly = "readonly" } })
+        @Html.ValidationMessageFor(model => model.MEDItemNo, "", new { @class = "text-danger" })
+    </div>
+    <div class="bing col-lg-6">
+        <p> Serial no.: </p>
+        @Html.EditorFor(model => model.SerialNo, new { htmlAttributes = new { @class = "form-control", @readonly = "readonly" } })
+        @Html.ValidationMessageFor(model => model.SerialNo, "", new { @class = "text-danger" })
+    </div>
+    <div class="bing col-lg-6">
+        <p> Survey station </p>
+        @Html.EditorFor(model => model.SurveyStation, new { htmlAttributes = new { @class = "form-control" } })
+        @Html.ValidationMessageFor(model => model.SurveyStation, "", new { @class = "text-danger" })
+    </div>
+    <div class="bing col-lg-6">
+        <p> Survey date: (DD-MM-YYYY) </p>
+        @Html.EditorFor(model => model.SurveyDate, new { htmlAttributes = new { @class = "form-control" } })
+        @Html.ValidationMessageFor(model => model.SurveyDate, "", new { @class = "text-danger" })
+    </div>
+
+    <iframe id="iframe" frameborder="0" src="@Url.Content("~/Rule/IndexReadOnly")" style="width: 100%; height: 200px;"></iframe>
+    <div class="bing col-lg-6">
+        Fee (External, incl. TSA/MSA):
+        @Html.EditorFor(model => model.Fee, new { htmlAttributes = new { @class = "form-control", @readonly = "readonly" } })
+        @Html.ValidationMessageFor(model => model.Fee, "", new { @class = "text-danger" })
+    </div>
+    <div class="bing col-lg-6" hidden>
+        Fee setter
+        @Html.EditorFor(model => model.FeeSetter, new { htmlAttributes = new { @class = "form-control", id = "feeSetter" } })
+        @Html.EditorFor(model => model.FeeSetTime, new { htmlAttributes = new { @class = "form-control", id = "feeSetTime", @Value = Model.FeeSetTime?.ToString("yyyyMMdd HH:mm:ss") } })
+        @Html.EditorFor(model => model.TaskHandler, new { htmlAttributes = new { @class = "form-control" } })
+        @Html.EditorFor(model => model.ExeDoneBy, new { htmlAttributes = new { @class = "form-control" } })
+        @Html.EditorFor(model => model.ExeDoneTime, new { htmlAttributes = new { @class = "form-control" } })
+    </div>
+
+    <div class=" col-lg-12 ">
+        <h4 style="clear:both;">Note:</h4>
+        @Html.EditorFor(model => model.ApprNote, new { htmlAttributes = new { @class = "form-control", style = "height:100px" } })
+        @Html.ValidationMessageFor(model => model.ApprNote, "", new { @class = "text-danger" })
+    </div>
+    @{
+        Html.RenderPartial("_SaveCompleteReopen");
+        Html.RenderPartial("_TaskSending");
+    }
+
+</div>
 
 
 
@@ -250,9 +235,7 @@
     @Scripts.Render("~/bundles/jqueryval")
 }
 
-@{
-    Html.RenderPartial("_TaskSending");
-}
+
 <script>
 
     //read viewbag's info.

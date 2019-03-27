@@ -226,9 +226,9 @@
 
     <div class="bing col-lg-6" hidden>
         Fee setter
-        @Html.EditorFor(model => model.FeeSetter, new { htmlAttributes = new { @class = "form-control", id = "feeSetter" } })
+        @Html.EditorFor(model => model.FeeSetter, new { htmlAttributes = new { @class = "form-control" } })
 
-        @Html.EditorFor(model => model.FeeSetTime, new { htmlAttributes = new { @class = "form-control", id = "feeSetTime", @Value = Model.FeeSetTime?.ToString("yyyyMMdd HH:mm:ss") } })
+        @Html.EditorFor(model => model.FeeSetTime, new { htmlAttributes = new { @class = "form-control", @Value = Model.FeeSetTime?.ToString("yyyyMMdd HH:mm:ss") } })
 
         @Html.EditorFor(model => model.TaskHandler, new { htmlAttributes = new { @class = "form-control"} })
     </div>
@@ -241,6 +241,7 @@
 
     @{
         Html.RenderPartial("_SaveCompleteReopen");
+        Html.RenderPartial("_TaskSending");
     }
 
 
@@ -248,16 +249,13 @@
 
 
 
-}
+        }
 <hr />
 
 @section Scripts {
     @Scripts.Render("~/bundles/jqueryval")
 }
 
-@{
-    Html.RenderPartial("_TaskSending");
-}
 <script>
 
     //read viewbag's info.
@@ -277,8 +275,8 @@
 
     //Set task parameter
     var taskNo = 1;
-    var taskStatusFlag = "feeSetter"; //who completed the task
-    var taskCompleteDate = "feeSetTime";
+    var taskStatusFlag = "FeeSetter"; //who completed the task
+    var taskCompleteDate = "FeeSetTime";
     var taskCompleteStr = "The fee is set by ";
 
     renderTaskShowHide();
@@ -449,6 +447,9 @@
             ";\nInternal Fee: " + internalFee +
             ";\nBudgetHour = InternalFee * 0,74 / 1200 = " + bh);
     }
+
+
+
 
 
 </script>
