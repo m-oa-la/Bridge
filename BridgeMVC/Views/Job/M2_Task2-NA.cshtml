@@ -221,7 +221,7 @@
             Fee setter
             @Html.EditorFor(model => model.FeeSetter, new { htmlAttributes = new { @class = "form-control", id = "feeSetter" } })
 
-            @Html.EditorFor(model => model.FeeSetTime, new { htmlAttributes = new { @class = "form-control", id = "feeSetTime", @Value = Model.FeeSetTime?.ToString("yyyyMMdd HH:mm:ss") } })
+            @Html.EditorFor(model => model.FeeSetTime, new { htmlAttributes = new { @class = "form-control", id = "feeSetTime", @Value = Model.FeeSetTime?.ToString("dd-MM-yyyy HH:mm:ss") } })
 
             @Html.EditorFor(model => model.TaskHandler, new { htmlAttributes = new { @class = "form-control" } })
             @Html.EditorFor(model => model.ExeDoneBy, new { htmlAttributes = new { @class = "form-control" } })

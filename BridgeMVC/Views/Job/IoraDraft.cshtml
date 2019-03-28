@@ -193,7 +193,7 @@
     {
         var chBIORA = getObject(BIORA, "Chapter", chapter);
         $.each(chBIORA, function (key, data) {
-            if (data.Formula != null) {
+            if (data.Formula != null && (eval(data.Condition) || data.Condition == null)) {
                 $("#" + data.BookMarkName).val(eval(data.Formula));
             }
         });
@@ -243,6 +243,12 @@
             sowStr += "•  " + data.RuleName + "\r\n";
         });
 
+
+        if (getSowConditions() != "") {
+            sowStr += "\r\n"
+            sowStr += getSowConditions();
+        }
+
         sowStr += "*) Estimated termination date: " + Job.DeliveryWeek + " weeks after receipt of signed Short Form Agreement, " +
                   "and all relevant documentation are received and correctly filled in. ";
 
@@ -290,13 +296,33 @@
             console.log(x);
 
 
-            if (data.Formula != null && (cax.indexOf("," + x + ",")>-1)) {
+            if ((cax.indexOf("," + x + ",") > -1)) {
                 sc = sc + eval(data.Formula) + "\r\n";
             }
         });
 
+
         $("#DgSpecialConditions").val(sc);
-        updateFeeCalc();
+
+    }
+
+
+
+
+    function getSowConditions() {
+        var chapter = "Scope of work";
+        var chBIORA = getObject(BIORA, "Chapter", chapter);
+        var s = "";
+
+        
+        $.each(chBIORA, function (key, data) {
+ 
+        
+                s = s + eval(data.Formula) + "\r\n";
+         
+        });
+        console.log("s:" + s);
+        return s;
     }
 
     function updateFeeCalc() {
