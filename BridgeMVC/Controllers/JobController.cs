@@ -431,29 +431,25 @@ namespace BridgeMVC.Controllers
         [HttpPost]
         [ActionName("EditNew")]
         [ValidateAntiForgeryToken]
-        public async Task<ActionResult> EditNewAsync(Job item)
+        public async Task<ActionResult> EditNewAsync(Job item, string NewTask, string NewHandler)
         {
             if (ModelState.IsValid)
             {
+                string  NewTaskNo = NewTask[0].ToString();
 
-                string nHandler = (string)Session["newHandler"];
-                string nTask = (string)Session["newTask"];
-
-
-                if (!(nHandler + nTask).Contains("-"))
+                if (!(NewTask + NewHandler).Contains("-"))
                 {
-                    Session["SendingFlag"] = nTask;
-                    item.TaskHandler = nHandler;
-                    item.GetType().GetProperty("Task" + nTask).SetValue(item, "TASK");
+                    Session["SendingFlag"] = NewTaskNo;
+                    item.TaskHandler = NewHandler;
+                    item.GetType().GetProperty("Task" + NewTaskNo).SetValue(item, "TASK");
                     await DocumentDBRepository.UpdateItemAsync<Job>(item.Id, item);
 
                     return Redirect(Url.Content("~/Job/SendJob/" + item.Id));
                 }
             }
 
-            await DocumentDBRepository.UpdateItemAsync<Job>(item.Id, item);
             await SetViewBags();
-            return View((string)Session["BridgeModule"] + "_Task1", item);
+            return View(item);
         }
 
         [ActionName("EditNew")]
