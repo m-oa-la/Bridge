@@ -117,7 +117,7 @@
     <div class="bing col-lg-6" hidden>
         Fee set time
 
-        @Html.EditorFor(model => model.FeeSetTime, new { htmlAttributes = new { @class = "form-control", id = "feeSetTime", @Value = Model.FeeSetTime?.ToString("yyyyMMdd HH:mm:ss") } })
+        @Html.EditorFor(model => model.FeeSetTime, new { htmlAttributes = new { @class = "form-control", id = "feeSetTime", @Value = Model.FeeSetTime?.ToString("dd-MM-yyyy HH:mm:ss") } })
         @Html.ValidationMessageFor(model => model.FeeSetTime, "", new { @class = "text-danger" })
     </div>
     <div class="bing col-lg-6" hidden>

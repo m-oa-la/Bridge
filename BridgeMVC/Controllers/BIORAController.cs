@@ -24,10 +24,9 @@ namespace BridgeMVC.Controllers
         public async Task<ActionResult> CreateAsync()
         {
             
-            var j = await DocumentDBRepository.GetItemAsync<Job>("a74571b7-2758-48ae-bd1a-d88efc437f26");
+            var j = await DocumentDBRepository.GetItemAsync<Job>("baa3ba82-0829-4a27-bafc-d93c1a243699");
             ViewBag.Job = j;
-            var i = await DocumentDBRepository.GetItemAsync<IORA>("290c5999-2076-46f1-b40f-443f42cea4f8");
-            ViewBag.IORA = i;
+
             var f = await DocumentDBRepository.GetItemsAsync<BFinancial>(d => d.Tag == "BFinancial" && d.BridgeModule == j.BridgeModule && d.CertType == j.CertType);
             ViewBag.FinancialSet = f.FirstOrDefault();
             var S = new BIORA();
