@@ -487,12 +487,6 @@
     <Content Include="Scripts\jquery-3.3.1.min.map" />
   </ItemGroup>
   <ItemGroup>
-    <ProjectReference Include="..\MABridge.OpenXml\MABridge.OpenXml.csproj">
-      <Project>{af83e6f8-0dd9-404c-bff4-d8f40a3be823}</Project>
-      <Name>MABridge.OpenXml</Name>
-    </ProjectReference>
-  </ItemGroup>
-  <ItemGroup>
     <WCFMetadata Include="Connected Services\" />
   </ItemGroup>
   <PropertyGroup>

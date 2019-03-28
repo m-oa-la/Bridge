@@ -131,34 +131,34 @@ function renderTaskHandling() {
  
     
 
-    $("#selectListHandler").on('change', function () {
-        UpdateSendingInfo();
-    });
+    //$("#selectListHandler").on('change', function () {
+    //    UpdateSendingInfo();
+    //});
 
 
-    $("#selectListTask").on('change', function () {
-        UpdateSendingInfo();
-     });
+    //$("#selectListTask").on('change', function () {
+    //    UpdateSendingInfo();
+    // });
 
-    function UpdateSendingInfo() {
-        var vtask = $("#selectListTask").val();
-        var vhandler = $("#selectListHandler").val();
+    //function UpdateSendingInfo() {
+    //    var vtask = $("#selectListTask").val();
+    //    var vhandler = $("#selectListHandler").val();
 
-        var newTaskNo = vtask.slice(0, 1);
-        $("#Task" + newTaskNo).val("TASK");
+    //    var newTaskNo = vtask.slice(0, 1);
+    //    $("#Task" + newTaskNo).val("TASK");
 
 
 
-        if (vtask !== null) {
-            return $.ajax({
-                type: 'GET',
-                url: '/Job/SetTaskSendingFlag',
-                data: { newHandler: vhandler, newTask: newTaskNo },
-                cache: false,
-                success: console.log(vhandler + " " + newTaskNo)
-            });
-        }
-    }
+    //    if (vtask !== null) {
+    //        return $.ajax({
+    //            type: 'GET',
+    //            url: '/Job/SetTaskSendingFlag',
+    //            data: { newHandler: vhandler, newTask: newTaskNo },
+    //            cache: false,
+    //            success: console.log(vhandler + " " + newTaskNo)
+    //        });
+    //    }
+    //}
 
 
 
