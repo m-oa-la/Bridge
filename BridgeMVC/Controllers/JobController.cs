@@ -143,7 +143,7 @@ namespace BridgeMVC.Controllers
 
 
             await SetViewBags();
-            return View((string)Session["BridgeModule"] + "_Task1", item);
+            return View((string)Session["BridgeModule"] + "_Task3", item);
         }
         [ActionName("CommonTask4")]
         public async Task<ActionResult> CommonTask4(string id)
@@ -169,7 +169,7 @@ namespace BridgeMVC.Controllers
 
 
             await SetViewBags();
-            return View((string)Session["BridgeModule"] + "_Task1", item);
+            return View((string)Session["BridgeModule"] + "_Task4", item);
         }
 
 
@@ -208,21 +208,17 @@ namespace BridgeMVC.Controllers
         [HttpPost]
         [ActionName("CommonTask1")]
         [ValidateAntiForgeryToken]
-        public async Task<ActionResult> CommonTask1Post(Job item)
+        public async Task<ActionResult> CommonTask1Post(Job item, string NewTask, string NewHandler)
         {
-            //await SaveJobChanges(item);
             if (ModelState.IsValid)
             {
-   
-                string nHandler = (string)Session["newHandler"];
-                string nTask = (string)Session["newTask"];
-  
+                string NewTaskNo = NewTask[0].ToString();
 
-                if (!(nHandler + nTask).Contains("-"))
+                if (!(NewTask + NewHandler).Contains("-"))
                 {
-                    Session["SendingFlag"] = nTask;
-                    item.TaskHandler = nHandler;
-                    item.GetType().GetProperty("Task" + nTask).SetValue(item, "TASK");
+                    Session["SendingFlag"] = NewTaskNo;
+                    item.TaskHandler = NewHandler;
+                    item.GetType().GetProperty("Task" + NewTaskNo).SetValue(item, "TASK");
                     await DocumentDBRepository.UpdateItemAsync<Job>(item.Id, item);
 
                     return Redirect(Url.Content("~/Job/SendJob/" + item.Id));
@@ -237,21 +233,17 @@ namespace BridgeMVC.Controllers
         [HttpPost]
         [ActionName("CommonTask3")]
         [ValidateAntiForgeryToken]
-        public async Task<ActionResult> CommonTask3Post(Job item)
+        public async Task<ActionResult> CommonTask3Post(Job item, string NewTask, string NewHandler)
         {
-            //await SaveJobChanges(item);
             if (ModelState.IsValid)
             {
+                string NewTaskNo = NewTask[0].ToString();
 
-                string nHandler = (string)Session["newHandler"];
-                string nTask = (string)Session["newTask"];
-
-
-                if (!(nHandler + nTask).Contains("-"))
+                if (!(NewTask + NewHandler).Contains("-"))
                 {
-                    Session["SendingFlag"] = nTask;
-                    item.TaskHandler = nHandler;
-                    item.GetType().GetProperty("Task" + nTask).SetValue(item, "TASK");
+                    Session["SendingFlag"] = NewTaskNo;
+                    item.TaskHandler = NewHandler;
+                    item.GetType().GetProperty("Task" + NewTaskNo).SetValue(item, "TASK");
                     await DocumentDBRepository.UpdateItemAsync<Job>(item.Id, item);
 
                     return Redirect(Url.Content("~/Job/SendJob/" + item.Id));
@@ -260,28 +252,24 @@ namespace BridgeMVC.Controllers
 
             await DocumentDBRepository.UpdateItemAsync<Job>(item.Id, item);
             await SetViewBags();
-            return View((string)Session["BridgeModule"] + "_Task1", item);
+            return View((string)Session["BridgeModule"] + "_Task3", item);
         }
 
 
         [HttpPost]
         [ActionName("CommonTask4")]
         [ValidateAntiForgeryToken]
-        public async Task<ActionResult> CommonTask4Post(Job item)
+        public async Task<ActionResult> CommonTask4Post(Job item, string NewTask, string NewHandler)
         {
-            //await SaveJobChanges(item);
             if (ModelState.IsValid)
             {
+                string NewTaskNo = NewTask[0].ToString();
 
-                string nHandler = (string)Session["newHandler"];
-                string nTask = (string)Session["newTask"];
-
-
-                if (!(nHandler + nTask).Contains("-"))
+                if (!(NewTask + NewHandler).Contains("-"))
                 {
-                    Session["SendingFlag"] = nTask;
-                    item.TaskHandler = nHandler;
-                    item.GetType().GetProperty("Task" + nTask).SetValue(item, "TASK");
+                    Session["SendingFlag"] = NewTaskNo;
+                    item.TaskHandler = NewHandler;
+                    item.GetType().GetProperty("Task" + NewTaskNo).SetValue(item, "TASK");
                     await DocumentDBRepository.UpdateItemAsync<Job>(item.Id, item);
 
                     return Redirect(Url.Content("~/Job/SendJob/" + item.Id));
@@ -290,15 +278,8 @@ namespace BridgeMVC.Controllers
 
             await DocumentDBRepository.UpdateItemAsync<Job>(item.Id, item);
             await SetViewBags();
-            return View((string)Session["BridgeModule"] + "_Task1", item);
+            return Redirect(Url.Content("~/Job/_Index/"));
         }
-
-
-
-
-
-
-
 
 
 
@@ -495,70 +476,8 @@ namespace BridgeMVC.Controllers
             return View(item);
         }
 
-        [ActionName("M2_Task3")]
-        public async Task<ActionResult> M2_Task3Async(string id, string npsid, int fee)
-        {
-            if (id == null)
-            {
-                return new HttpStatusCodeResult(HttpStatusCode.BadRequest);
-            }
-            var ioras = await DocumentDBRepository.GetItemsAsync<IORA>(d => (d.NpsJobID == npsid) && (d.Tag == "IORA"));
-            if (ioras.Count() == 0)
-            {
-                Session["NpsJobId"] = npsid;
-                Session["DbJobId"] = id;
-                Session["IORAFee"] = fee;
-                return Redirect(Url.Content("~/IORA/Create/"));
-            }
-            else
-            {
-                return Redirect(Url.Content("~/IORA/Edit/" + ioras.FirstOrDefault().Id));
-            }
-        }
 
 
-        [ActionName("M1_Task3")]
-        public async Task<ActionResult> M1_Task3Async(string id)
-        {
-            if (id == null)
-            {
-                return new HttpStatusCodeResult(HttpStatusCode.BadRequest);
-            }
-
-            Job item = await DocumentDBRepository.GetItemAsync<Job>(id);
-            if (item == null)
-            {
-                return HttpNotFound();
-            }
-            //ViewBag.SelectList = await DocumentDBRepository<BRule>.GetItemsAsync(d => d.Tag == "BRule" && d.BridgeModule == item.BridgeModule);
-            Session["DbJobId"] = item.Id;
-            Session["NpsJobId"] = item.NpsJobId;
-           item.StatusNote = "";
-            
-            await SetViewBags();
-            item.SendingFlag = "-";
-            return View(item);
-        }
-
-        [HttpPost]
-        [ActionName("M1_Task3")]
-        [ValidateAntiForgeryToken]
-        public async Task<ActionResult> M1_Task3Post(Job item)
-        {
-            //await SaveJobChanges(item);
-            if (ModelState.IsValid)
-            {
-
-                await DocumentDBRepository.UpdateItemAsync<Job>(item.Id, item);
-                if (!string.IsNullOrEmpty(item.SendingFlag) && item.SendingFlag != "-")
-                {
-                    Session["SendingFlag"] = item.SendingFlag;
-                    return Redirect(Url.Content("~/Job/SendJob/" + item.Id));
-                }
-            }
-            await SetViewBags();
-            return View(item);
-        }
 
         [ActionName("Whiteboard")]
         public async Task<ActionResult> Whiteboard(string wbTab)
