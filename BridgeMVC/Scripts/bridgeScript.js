@@ -129,7 +129,9 @@ function renderTaskHandling() {
         });
     }
  
-    
+    //$.validator.methods.date = function (value, element) {
+    //    return this.optional(element) || Globalize.parseDate(value);
+    //}; 
 
     //$("#selectListHandler").on('change', function () {
     //    UpdateSendingInfo();
