@@ -176,7 +176,7 @@ namespace BridgeMVC.Controllers
         public async Task<string> SetViewBags()
         {
             var bm = (string)Session["BridgeModule"];
-            ViewBag.LCertType = await DocumentDBRepository.GetItemsAsync<BList>(d => d.Tag == "BList" && d.BridgeModule == bm && d.ListType == "CertType");
+            ViewBag.LCertType = await DocumentDBRepository.GetItemsAsync<BFinancial>(d => d.Tag == "BFinancial" && d.BridgeModule == bm);
             ViewBag.LCertAction = await DocumentDBRepository.GetItemsAsync<BList>(d => d.Tag == "BList" && d.BridgeModule == bm && d.ListType == "CertAction");
             ViewBag.LMainProdType = await DocumentDBRepository.GetItemsAsync<BList>(d => d.Tag == "BList" && d.BridgeModule == bm && d.ListType == "MainProdType");
             ViewBag.LSubProdType = await DocumentDBRepository.GetItemsAsync<BList>(d => d.Tag == "BList" && d.BridgeModule == bm && d.ListType == "SubProdType");
@@ -326,6 +326,7 @@ namespace BridgeMVC.Controllers
             ViewBag.FinancialSet = f.FirstOrDefault();
             ViewBag.LUser = await DocumentDBRepository.GetItemsAsync<BUser>(d => d.Tag == "BUser" && (d.BridgesGranted).Contains(j.BridgeModule));
             ViewBag.Products = await DocumentDBRepository.GetItemsAsync<Product>(d => d.Tag == "Product" && d.DbJobId == j.Id);
+            ViewBag.DocReqs = await DocumentDBRepository.GetItemsAsync<DocReq>(d => d.Tag == "DocReq" && d.DbJobId == j.Id);
             j.StatusNote = "";
             return View(j);
         }
