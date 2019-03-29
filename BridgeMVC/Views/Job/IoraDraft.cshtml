@@ -1,10 +1,7 @@
 ﻿@model BridgeMVC.Models.Job
-
 <h2>
     The content below is generated according to input data and Bridge settings.
 </h2>
-
-
 
 @{
 
@@ -18,8 +15,8 @@
     var FinancialSet = ViewBag.FinancialSet;
     var LUser = ViewBag.LUser;
     var Products = ViewBag.Products;
+    var DocReqs = ViewBag.DocReqs;
 }
-
 
 @using (Html.BeginForm(null, null, FormMethod.Post))
 {
@@ -102,7 +99,6 @@
 
     <table>
         <tr>
-
             <td>
                 <h3> Project Name: </h3>
                 <div class="form-group">
@@ -112,42 +108,47 @@
             </td>
         </tr>
         <tr>
-
             <td>
                 <h3>Scope of work: </h3>
-
                 @Html.TextAreaFor(model => model.IoraSoW, new { @style = "height:150px; width:100%;", id = "DpSoW01", @class = "form-control" })
                 @Html.ValidationMessageFor(model => model.IoraSoW, "", new { @class = "text-danger" })
             </td>
         </tr>
-
         <tr>
             <td>
                 <h3>Conditions: </h3>
-
                 @Html.TextAreaFor(model => model.IoraConditions, new { @style = "height:200px; width:100%;", id = "DgSpecialConditions", @class = "form-control" })
                 @Html.ValidationMessageFor(model => model.IoraConditions, "", new { @class = "text-danger" })
             </td>
         </tr>
 
-
         <tr>
             <td>
                 <h3>Fee: </h3>
-
                 @Html.TextAreaFor(model => model.IoraFeeCalc, new { @style = "height:150px; width:100%;", id = "Str_SpecialC", @class = "form-control" })
                 @Html.ValidationMessageFor(model => model.IoraFeeCalc, "", new { @class = "text-danger" })
             </td>
         </tr>
 
-
-
     </table>
 
-    <input type="submit" value="Update IORA" class="btn btn-default"  readonly />
+    <div class=" col-lg-12 ">
+        <h4 style="clear:both;">External note to be shown on IORA/Sow:</h4>
+        @Html.EditorFor(model => model.DocReqNote, new { htmlAttributes = new { @class = "form-control", style = "height:100px" } })
+        @Html.ValidationMessageFor(model => model.DocReqNote, "", new { @class = "text-danger" })
+    </div>
+
+    <div class=" col-lg-12 ">
+        <h4 style="clear:both;">Internal approval note:</h4>
+        @Html.EditorFor(model => model.ApprNote, new { htmlAttributes = new { @class = "form-control", style = "height:100px" } })
+        @Html.ValidationMessageFor(model => model.ApprNote, "", new { @class = "text-danger" })
+    </div>
+
+
+
+    <input type="submit" value="Update IORA" class="btn btn-default" readonly />
 
 }
-
 @section Scripts {
     @Scripts.Render("~/bundles/jqueryval")
 }
@@ -162,6 +163,7 @@
     var FinancialSet = @Html.Raw(Json.Encode(FinancialSet));
     var LUser = @Html.Raw(Json.Encode(LUser));
     var Products = @Html.Raw(Json.Encode(Products));
+    var DocReqs = @Html.Raw(Json.Encode(DocReqs));
     console.log(Job.NpsJobId);
 //general
     var userSignature = "@UserSignature";
@@ -230,24 +232,29 @@
             sowStr += " with expire date: " + Job.ExpireDate;
         };
         sowStr += ". \r\n";
-        
+
         if (bm == "M2") {
             sowStr += "List of products: \r\n"
             $.each(Products, function (key, data) {
-                sowStr += "•  " + data.SubProdType + ": " + data.ProdDescription + "\r\n";
+                sowStr += "-  " + data.SubProdType + ": " + data.ProdDescription + "\r\n";
             });
         }
-        
+
         sowStr += "Applicable Rules: \r\n"
         $.each(Rules, function (key, data) {
-            sowStr += "•  " + data.RuleName + "\r\n";
+            sowStr += "-  " + data.RuleName + "\r\n";
+        });
+   
+    
+        sowStr += "Notes: \r\n"
+        $.each(DocReqs, function (key, data) {
+
+            console.log("DocReq-: " + data.bm);
+
+            sowStr += "-  " + data.DocReqItem + "\r\n";
         });
 
-
-        if (getSowConditions() != "") {
-            sowStr += "\r\n"
-            sowStr += getSowConditions();
-        }
+  
 
         sowStr += "*) Estimated termination date: " + Job.DeliveryWeek + " weeks after receipt of signed Short Form Agreement, " +
                   "and all relevant documentation are received and correctly filled in. ";
@@ -309,21 +316,30 @@
 
 
 
-    function getSowConditions() {
-        var chapter = "Scope of work";
-        var chBIORA = getObject(BIORA, "Chapter", chapter);
-        var s = "";
+    //function getSowConditions() {
+    //    var chapter = "Scope of work";
+    //    var chBIORA = getObject(BIORA, "Chapter", chapter);
+    //    var s = "";
+    //    $.each(chBIORA, function (key, data) {
+    //            s = s + eval(data.Formula) + "\r\n";
+    //    });
+    //    console.log("s:" + s);
+    //    return s;
+    //}
 
-        
-        $.each(chBIORA, function (key, data) {
- 
-        
-                s = s + eval(data.Formula) + "\r\n";
-         
-        });
-        console.log("s:" + s);
-        return s;
-    }
+    //function getDocReq() {
+    //    var chapter = "Scope of work";
+    //    var chBIORA = getObject(BIORA, "Chapter", chapter);
+    //    var s = "";
+    //    $.each(chBIORA, function (key, data) {
+    //        s = s + eval(data.Formula) + "\r\n";
+    //    });
+    //    console.log("s:" + s);
+    //    return s;
+    //}
+
+
+
 
     function updateFeeCalc() {
         var fee = Job.Fee;
@@ -355,4 +371,3 @@
 
 
 </script>
-
