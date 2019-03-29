@@ -214,11 +214,11 @@
             @Html.EditorFor(model => model.FeeSetTime, new { htmlAttributes = new { @class = "form-control", id = "feeSetTime", @Value = Model.FeeSetTime?.ToString("dd-MM-yyyy HH:mm:ss") } })
             @Html.EditorFor(model => model.TaskHandler, new { htmlAttributes = new { @class = "form-control" } })
         </div>
-        <div class=" col-lg-12 ">
+        @*<div class=" col-lg-12 ">
             <h4 style="clear:both;">External note to be shown on IORA/Sow:</h4>
             @Html.EditorFor(model => model.DocReqNote, new { htmlAttributes = new { @class = "form-control", style = "height:100px" } })
             @Html.ValidationMessageFor(model => model.DocReqNote, "", new { @class = "text-danger" })
-        </div>
+        </div>*@
 
         <div class=" col-lg-12 ">
             <h4 style="clear:both;">Internal approval note:</h4>
