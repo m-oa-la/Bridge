@@ -195,7 +195,7 @@ namespace BridgeMVC.Controllers
             "CustomerId,Fee,FeeSetter,FeeVerifier,JobVerifier,RAE,MWL,ExistingCertNo,CertNo,SerialNo,MEDItemNo,DeliveryWeek,LocalUnit,ArchiveFolder," +
             "IsHold,StatusNote,VerifyLvl,SurveyDate,SurveyStation,TechPara1,TechPara2,TechPara3,TechPara4,MEDFactory,MEDFBNo,MEDFBDue,AnyDesignChange," +
             "ChecklistUsed,DesignFolder,IsDocQualityGood,IsDocSufficient,SetHoldTime,IORASpentTime,ModificationDesc,OnHoldNote,FeeVerifyTime,RegisterTime," +
-            "DocReq,NoOfCert,FeeSet,VesselID,DocReqNote,NpsDbId,ExeDoneBy,ExeDoneTime,CompletedBy,IoraDbId")] Job item)
+            "DocReq,NoOfCert,FeeSet,VesselID,DocReqNote,NpsDbId,ExeDoneBy,ExeDoneTime,CompletedBy,IoraDbId,InternalFee")] Job item)
         {
             if (ModelState.IsValid)
             {

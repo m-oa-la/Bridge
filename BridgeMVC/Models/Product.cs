@@ -26,7 +26,6 @@ namespace BridgeMVC.Models
         [JsonProperty(PropertyName = "prodDescription")]
         public string ProdDescription { get; set; }
 
-
         [JsonProperty(PropertyName = "id")]
         public string Id { get; set; }
      

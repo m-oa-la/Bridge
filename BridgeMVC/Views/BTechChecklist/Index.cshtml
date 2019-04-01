@@ -5,15 +5,6 @@
 </p>
 <table class="table">
     <tr>
-        <th>
-            @Html.DisplayNameFor(model => model.Tag)
-        </th>
-        <th>
-            @Html.DisplayNameFor(model => model.BridgeModule)
-        </th>
-        <th>
-            @Html.DisplayNameFor(model => model.BookMarkName)
-        </th>
 
 
         <th>
@@ -36,15 +27,6 @@
 
 @foreach (var item in Model) {
     <tr>
-        <td>
-            @Html.DisplayFor(modelItem => item.Tag)
-        </td>
-        <td>
-            @Html.DisplayFor(modelItem => item.BridgeModule)
-        </td>
-        <td>
-            @Html.DisplayFor(modelItem => item.BookMarkName)
-        </td>
 
         <td>
             @Html.DisplayFor(modelItem => item.TemplateName)
