@@ -35,7 +35,6 @@
 {
     @Html.AntiForgeryToken()
 <div>
-
     @Html.HiddenFor(model => model.Tag)
     @Html.HiddenFor(model => model.BridgeModule)
     @Html.HiddenFor(model => model.Id)
@@ -108,6 +107,7 @@
     @Html.HiddenFor(model => model.CompletedBy)
     @Html.HiddenFor(model => model.SendingFlag)
     @Html.HiddenFor(model => model.IoraDbId)
+    @Html.HiddenFor(model => model.InternalFee)
 </div>
 <div class="form-horizontal">
     <hr />

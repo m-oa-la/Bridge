@@ -264,7 +264,8 @@ namespace BridgeMVC.Models
         [JsonProperty(PropertyName = "ioraFeeCalc")]
         public string IoraFeeCalc { get; set; }
 
-
+        [JsonProperty(PropertyName = "internalFee")]
+        public int? InternalFee { get; set; }
 
 
     }

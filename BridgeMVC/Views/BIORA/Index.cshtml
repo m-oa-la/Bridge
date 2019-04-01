@@ -1,19 +1,23 @@
 ﻿@model IEnumerable<BridgeMVC.Models.BIORA>
-
 @{
     ViewBag.Title = "Index";
     Layout = "~/Views/Shared/_Layout.cshtml";
 }
-
 <h2>Settings for IORA</h2>
-
-<p class="btn btn-info">
+<p class="btn btn-info" style="float:right">
     @Html.ActionLink("Create New", "Create")
 </p>
+@using (Html.BeginForm())
+{
+    <p>
+        Filter: @Html.TextBox("SearchString")
+        <input type="submit" value="Search" />
+    </p>
+}
 <table class="table">
     <tr>
         <th>
-            @Html.DisplayNameFor(model => model.BridgeModule)
+            @Html.DisplayNameFor(model => model.Chapter)
         </th>
         <th>
             @Html.DisplayNameFor(model => model.Description)
@@ -27,21 +31,16 @@
         <th>
             @Html.DisplayNameFor(model => model.Condition)
         </th>
-        <th>
-            @Html.DisplayNameFor(model => model.Chapter)
-        </th>
 
 
         <th></th>
     </tr>
-
     @foreach (var item in Model)
     {
     <tr>
         <td>
-            @Html.DisplayFor(modelItem => item.BridgeModule)
+            @Html.DisplayFor(modelItem => item.Chapter)
         </td>
-
         <td>
             @Html.DisplayFor(modelItem => item.Description)
         </td>
@@ -54,14 +53,10 @@
         <td>
             @Html.DisplayFor(modelItem => item.Condition)
         </td>
-        <td>
-            @Html.DisplayFor(modelItem => item.Chapter)
-        </td>
 
         <td>
-            @Html.ActionLink("Edit", "Edit", new { id = item.Id }) 
+            @Html.ActionLink("Edit", "Edit", new { id = item.Id })
         </td>
     </tr>
     }
-
 </table>

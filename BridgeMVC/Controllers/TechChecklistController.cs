@@ -55,9 +55,7 @@ namespace BridgeMVC.Controllers
         public async Task<ActionResult> CreateAsync([Bind(Include = "Tag,Id,BridgeModule,DbJobId,MainProdType,SubProdType,Uk," +
             "CustomerName,Designation,CustomerNo,IssuerSig,IssuerSection,NpsJobId,CertAction,DavitMWL,WinchMWL,MHL,WireDia,DavitComment," +
             "Verifier,VerificationLvl,SurveyDate,SurveyStation,FinalizeDate,VerifyDate,ApprNote,VerifyNote,MEDItemNo,MBL,LocalUnit,IsFinalized" +
-            "OK1,OK2,OK3,OK4,OK5,OK6,OK7,OK8,OK9,OK10,OK11,OK12,OK13,OK14,OK15,OK16,OK17,OK18,OK19,OK20," +
-            "TC1,TC2,TC3,TC4,TC5,TC6,TC7,TC8,TC9,TC10,TC11,TC12,TC13,TC14,TC15,TC16,TC17,TC18,TC19,TC20," +
-            "NA1,NA2,NA3,NA4,NA5,NA6,NA7,NA8,NA9,NA10,NA11,NA12,NA13,NA14,NA15,NA16,NA17,NA18,NA19,NA20" )] TechChecklist item)
+            "TCItems" )] TechChecklist item)
         {
             if (ModelState.IsValid)
             {
@@ -73,9 +71,7 @@ namespace BridgeMVC.Controllers
         public async Task<ActionResult> EditAsync([Bind(Include = "Tag,Id,BridgeModule,DbJobId,MainProdType,SubProdType,Uk," +
             "CustomerName,Designation,CustomerNo,IssuerSig,IssuerSection,NpsJobId,CertAction,DavitMWL,WinchMWL,MHL,WireDia,DavitComment," +
             "Verifier,VerificationLvl,SurveyDate,SurveyStation,FinalizeDate,VerifyDate,ApprNote,VerifyNote,MEDItemNo,MBL,LocalUnit,IsFinalized" +
-            "OK1,OK2,OK3,OK4,OK5,OK6,OK7,OK8,OK9,OK10,OK11,OK12,OK13,OK14,OK15,OK16,OK17,OK18,OK19,OK20," +
-            "TC1,TC2,TC3,TC4,TC5,TC6,TC7,TC8,TC9,TC10,TC11,TC12,TC13,TC14,TC15,TC16,TC17,TC18,TC19,TC20," +
-            "NA1,NA2,NA3,NA4,NA5,NA6,NA7,NA8,NA9,NA10,NA11,NA12,NA13,NA14,NA15,NA16,NA17,NA18,NA19,NA20" )] TechChecklist item)
+            "TCItems" )] TechChecklist item)
         {
             if (ModelState.IsValid)
             {

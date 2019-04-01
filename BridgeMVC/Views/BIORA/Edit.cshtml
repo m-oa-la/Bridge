@@ -28,7 +28,7 @@
 
     @Html.HiddenFor(model => model.Id)
 
-    <div class="form-group">
+    <div class="form-group" hidden>
         @Html.LabelFor(model => model.BridgeModule, htmlAttributes: new { @class = "control-label col-md-2" })
         <div class="col-md-10">
             @Html.EditorFor(model => model.BridgeModule, new { htmlAttributes = new { @class = "form-control" } })
@@ -108,9 +108,11 @@
     
     var FinancialSet = @Html.Raw(Json.Encode(FinancialSet));
 
+
     $("#toTestFormula").click(function () {
-        $("#testFormulaResult").html(eval($("#fomula").val()));
+        var s = document.getElementById('Formula').value;
+        $("#testFormulaResult").html(eval(s));
     });
     console.log(Job);
-    console.log("hi");
+    console.log(FinancialSet);
 </script>

@@ -13,11 +13,21 @@ namespace BridgeMVC.Controllers
     public class BIORAController : Controller
     {
         [ActionName("Index")]
-        public async Task<ActionResult> IndexAsync()
+        public async Task<ActionResult> IndexAsync(string searchString)
         {
             string bm = (string)Session["BridgeModule"];
-            var s = await DocumentDBRepository.GetItemsAsync<BIORA>(d => d.Tag == "BIORA" && d.BridgeModule == bm);
-            return View(s);
+            var bioras = await DocumentDBRepository.GetItemsAsync<BIORA>(d => d.Tag == "BIORA" && d.BridgeModule == bm);
+
+            if (!String.IsNullOrEmpty(searchString))
+            {
+                searchString = searchString.ToLower();
+
+                bioras = bioras.Where(s => (s.BookMarkName+"x").ToLower().Contains(searchString) || (s.Chapter + "x").ToLower().Contains(searchString) || (s.Formula+"x").ToLower().Contains(searchString));
+            }
+
+
+            return View(bioras.OrderBy(s => s.Chapter));
+
         }
 
         [ActionName("Create")]
@@ -27,9 +37,12 @@ namespace BridgeMVC.Controllers
             var j = await DocumentDBRepository.GetItemAsync<Job>("baa3ba82-0829-4a27-bafc-d93c1a243699");
             ViewBag.Job = j;
 
+
             var f = await DocumentDBRepository.GetItemsAsync<BFinancial>(d => d.Tag == "BFinancial" && d.BridgeModule == j.BridgeModule && d.CertType == j.CertType);
             ViewBag.FinancialSet = f.FirstOrDefault();
+
             var S = new BIORA();
+            S.BridgeModule = (string)Session["BridgeModule"];
             return View(S);
         }
 
@@ -75,9 +88,9 @@ namespace BridgeMVC.Controllers
             BIORA item = await DocumentDBRepository.GetItemAsync<BIORA>(id);
             var j = await DocumentDBRepository.GetItemAsync<Job>("93ffbdaa-72bd-4df8-a154-d140a73ef700");
             ViewBag.Job = j;
-            var i = await DocumentDBRepository.GetItemAsync<IORA>("38ea1592-88d9-4c53-a6d9-b571b1c37532");
-            ViewBag.IORA = i;
-            var f = await DocumentDBRepository.GetItemsAsync<BFinancial>(d => d.Tag == "BFinancial" && d.BridgeModule == i.BridgeModule && d.CertType == j.CertType);
+            //var i = await DocumentDBRepository.GetItemAsync<IORA>("38ea1592-88d9-4c53-a6d9-b571b1c37532");
+            //ViewBag.IORA = i;
+            var f = await DocumentDBRepository.GetItemsAsync<BFinancial>(d => d.Tag == "BFinancial" && d.BridgeModule == j.BridgeModule && d.CertType == j.CertType);
             ViewBag.FinancialSet = f.FirstOrDefault();
 
             if (item == null)

@@ -5,10 +5,28 @@
     ViewBag.Title = "Index";
     string BridgeLastUsed = (string)Session["BridgeModule"];
     string UserSignature = (string)Session["UserSignature"];
-    string colorY, colorN, colorTask;
-    colorY = "background-color:seagreen; color:transparent;  ";
-    colorN = "background-color:honeydew; color:transparent;  ";
-    colorTask = "background-color:lightgreen; color:transparent; ";
+
+    IDictionary<string, string> styleDict = new Dictionary<string, string>();
+    styleDict.Add("Y", "background-color:seagreen; color:transparent;; cursor: pointer; ");
+    styleDict.Add("N", "background-color:LightPink; color:transparent;; cursor: pointer; ");
+    styleDict.Add("TASK", "background-color:lightgreen; color:transparent;; cursor: pointer; ");
+    styleDict.Add("Default", "background-color:LightPink; color:transparent;; cursor: pointer; ");
+
+
+    string getValuefromDict(string taskVal)
+    {
+        if (string.IsNullOrEmpty(taskVal))
+        {
+            return styleDict["Default"];
+        }
+        else
+        {
+            return styleDict[taskVal];
+        }
+
+
+    }
+
 
     var LUser = ViewBag.LUser;
     var US = ViewBag.userSig;

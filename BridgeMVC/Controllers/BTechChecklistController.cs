@@ -23,8 +23,9 @@ namespace BridgeMVC.Controllers
         [ActionName("Create")]
         public ActionResult Create()
         {
-
+            string bm = (string)Session["BridgeModule"];
             var S = new BTechChecklist();
+            S.BridgeModule = bm;
             return View(S);
         }
 

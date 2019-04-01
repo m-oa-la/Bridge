@@ -84,15 +84,19 @@
     <table class="thinTB">
         <tr>
             <td>Equipment category</td>
-            <td style="font-weight:bold" colspan="3">Lifesaving Appliances</td>
+            <td style="font-weight:bold" colspan="3">
+                @Html.DisplayFor(model => model.MainProdType, new { htmlAttributes = new { @class = "form-control" } })
+            </td>
         </tr>
         <tr>
             <td>Type of equipment category: </td>
-            <td style="font-weight:bold">Launching appliances using falls (davits)</td>
+            <td style="font-weight:bold">
+                @Html.DisplayFor(model => model.SubProdType, new { htmlAttributes = new { @class = "form-control" } })
+            </td>
             <td>Item No. </td>
             <td style="font-weight:bold">
-                @Html.EditorFor(model => model.MEDItemNo, new { htmlAttributes = new { @class = "form-control" } })
-                @Html.ValidationMessageFor(model => model.MEDItemNo, "", new { @class = "text-danger" })
+                @Html.DisplayFor(model => model.MEDItemNo, new { htmlAttributes = new { @class = "form-control" } })
+
             </td>
         </tr>
         <tr>
@@ -117,8 +121,7 @@
             </td>
         </tr>
         <tr>
-            <td>RAE</td>
-            <td>Responsible Appr. Engineer</td>
+           
             <td>Responsible Section</td>
             <td>
                 @Html.EditorFor(model => model.IssuerSection, new { htmlAttributes = new { @class = "form-control" } })

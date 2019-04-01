@@ -6,13 +6,30 @@
     ViewBag.Title = "Index";
     string BridgeLastUsed = (string)Session["BridgeModule"];
     string UserSignature = (string)Session["UserSignature"];
-    string colorY, colorN, colorTask;
-    colorY = "background-color:#5296c3; color:transparent;  ";
-    colorN = "background-color:azure; color:transparent;  ";
-    colorTask = "background-color:#81d078; color:transparent; ";
 
     var LUser = ViewBag.LUser;
     var US = ViewBag.userSig;
+
+    IDictionary<string, string> styleDict = new Dictionary<string, string>();
+    styleDict.Add("Y", "background-color:seagreen; color:transparent;; cursor: pointer; ");
+    styleDict.Add("N", "background-color:LightPink; color:transparent;; cursor: pointer; ");
+    styleDict.Add("TASK", "background-color:lightgreen; color:transparent;; cursor: pointer; ");
+    styleDict.Add("Default", "background-color:LightPink; color:transparent;; cursor: pointer; ");
+
+
+    string getValuefromDict(string taskVal)
+    {
+        if (string.IsNullOrEmpty(taskVal))
+        {
+            return styleDict["Default"];
+        }
+        else
+        {
+            return styleDict[taskVal];
+        }
+
+
+    }
 
 }
 
@@ -105,69 +122,46 @@
     {
 
 
-        string styleT1 = "";
-        styleT1 = item.Task1 == "Y" ? colorY : styleT1;
-        styleT1 = item.Task1 == "N" ? colorN : styleT1;
-        styleT1 = item.Task1 == "TASK" ? colorTask : styleT1;
-
-
-        string styleT2 = "";
-        styleT2 = item.Task2 == "Y" ? colorY : styleT2;
-        styleT2 = item.Task2 == "N" ? colorN : styleT2;
-        styleT2 = item.Task2 == "TASK" ? colorTask : styleT2;
-
-        string styleT3 = "";
-        styleT3 = item.Task3 == "Y" ? colorY : styleT3;
-        styleT3 = item.Task3 == "N" ? colorN : styleT3;
-        styleT3 = item.Task3 == "TASK" ? colorTask : styleT3;
-
-        string styleT4 = "";
-        styleT4 = item.Task4 == "Y" ? colorY : styleT4;
-        styleT4 = item.Task4 == "N" ? colorN : styleT4;
-        styleT4 = item.Task4 == "TASK" ? colorTask : styleT4;
-
-        styleT1 = styleT1 + "; cursor: pointer;";
-        styleT2 = styleT2 + "; cursor: pointer;";
-        styleT3 = styleT3 + "; cursor: pointer;";
-        styleT4 = styleT4 + "; cursor: pointer;";
+        string styleT1 = getValuefromDict(item.Task1);
+        string styleT2 = getValuefromDict(item.Task2);
+        string styleT3 = getValuefromDict(item.Task3);
+        string styleT4 = getValuefromDict(item.Task4);
 
         string editlink1 = "'/Job/CommonTask1/" + item.Id + "'";
         string editlink2 = "'/Job/IsIORAExisting/" + item.Id + "'";
-        //string editlink2 = "'/Job/M1_Task2/" + item.Id + "?npsid=" + item.NpsJobId + "&fee=" + item.Fee + "'";
-
 
         string editlink3 = "'/Job/CommonTask3/" + item.Id + "'";
         string editlink4 = "'/Job/CommonTask4/" + item.Id + "'";
-        <tr>
-            <td>
-                @Html.DisplayFor(modelItem => item.NpsJobId)
-            </td>
-            <td>
-                <p>  @Html.DisplayFor(modelItem => item.CustomerName)</p>
-            </td>
-            <td>
-                @Html.DisplayFor(modelItem => item.ProdDescription)
-            </td>
-            <td style="@styleT1;" onclick="location.href=@editlink1">
-                @Html.DisplayFor(modelItem => item.Task1)
-            </td>
-            <td style="@styleT2" onclick="location.href=@editlink2">
-                @Html.DisplayFor(modelItem => item.Task2)
-            </td>
-            <td style="@styleT3" onclick="location.href=@editlink3">
-                @Html.DisplayFor(modelItem => item.Task3)
-            </td>
-            <td></td>
-            <td>
-                <p>
-                    @if (!string.IsNullOrEmpty(item.IoraDbId))
-                    {
-                        @Html.DisplayFor(modelItem => item.IoraDbId)
-                    }
-                </p>
-            </td>
+    <tr>
+        <td>
+            @Html.DisplayFor(modelItem => item.NpsJobId)
+        </td>
+        <td>
+            <p>  @Html.DisplayFor(modelItem => item.CustomerName)</p>
+        </td>
+        <p>
+            @Html.DisplayFor(modelItem => item.ProdDescription)
+        </p>
+        <td style="@styleT1;" onclick="location.href=@editlink1">
+            @Html.DisplayFor(modelItem => item.Task1)
+        </td>
+        <td style="@styleT2" onclick="location.href=@editlink2">
+            @Html.DisplayFor(modelItem => item.Task2)
+        </td>
+        <td style="@styleT3" onclick="location.href=@editlink3">
+            @Html.DisplayFor(modelItem => item.Task3)
+        </td>
+        <td></td>
+        <td>
+            <p>
+                @if (!string.IsNullOrEmpty(item.IoraDbId))
+                {
+                    @Html.DisplayFor(modelItem => item.IoraDbId)
+                }
+            </p>
+        </td>
 
-        </tr>
+    </tr>
     }
 
 </table>
