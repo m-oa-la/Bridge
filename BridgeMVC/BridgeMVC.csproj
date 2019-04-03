@@ -482,6 +482,7 @@
     <Content Include="Views\TechChecklist - Backup\Create.cshtml" />
     <Content Include="Views\TechChecklist - Backup\Edit.cshtml" />
     <Content Include="Views\TechChecklist - Backup\Index.cshtml" />
+    <Content Include="Views\Job\M1_Task3_LSA.cshtml" />
   </ItemGroup>
   <ItemGroup>
     <Folder Include="App_Data\M1\Projects\" />

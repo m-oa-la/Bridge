@@ -43,14 +43,18 @@ namespace BridgeMVC.Models
         [JsonProperty(PropertyName = "subject")]
         public string Subject { get; set; }
 
-        [JsonProperty(PropertyName = "lsaRef")]
-        public string LSARef { get; set; }
+        [JsonProperty(PropertyName = "ruleRef")]
+        public string RuleRef { get; set; }
 
         [JsonProperty(PropertyName = "medItemNo")]
         public string MEDItemNo { get; set; }
 
+        [JsonProperty(PropertyName = "chapter")]
+        public string Chapter { get; set; }
+
         [JsonProperty(PropertyName = "gudianceNote")]
         public string GudianceNote { get; set; }
-                     
+
+
     }
 }
