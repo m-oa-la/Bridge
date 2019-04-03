@@ -23,13 +23,26 @@
     .form-control {
         font-weight: normal;
     }
+    input[type=checkbox] {
+        /* Double-sized Checkboxes */
+        -ms-transform: scale(2); /* IE */
+        -moz-transform: scale(2); /* FF */
+        -webkit-transform: scale(2); /* Safari and Chrome */
+        -o-transform: scale(2); /* Opera */
+        padding: 10px;
+    }
+
+    /* Might want to wrap a span around your checkbox text */
+    .checkboxtext {
+        /* Checkbox text */
+        font-size: 110%;
+        display: inline;
 </style>
 <h2>
-    COMPLETION
+    JOB COMPLETION
 
     <br />
-    Job ID:
-    @Html.DisplayFor(model => model.NpsJobId)
+ 
 </h2>
 @using (Html.BeginForm(null, null, FormMethod.Post, new { id = "jobForm" }))
 {
@@ -109,39 +122,59 @@
     @Html.HiddenFor(model => model.IoraDbId)
     @Html.HiddenFor(model => model.InternalFee)
 
-    <div class="form-horizontal">
-        <hr />
-        <h4>Click the button below will close the job in BRIDGE.</h4>
-        <div class="bing col-lg-6 h3" hidden>
-            Completed:
-            @Html.EditorFor(model => model.IsComplete)
-            @Html.ValidationMessageFor(model => model.IsComplete, "", new { @class = "text-danger" })
-            <br /><br /><br />
-        </div>
-        <div class="bing col-lg-6" hidden>
-            @Html.EditorFor(model => model.JobCompletedTime, new { htmlAttributes = new { @class = "form-control" } })
-            @Html.ValidationMessageFor(model => model.JobCompletedTime, "", new { @class = "text-danger" })
-        </div>
-        <div class="bing col-lg-6" hidden>
-            @Html.EditorFor(model => model.CompletedBy, new { htmlAttributes = new { @class = "form-control" } })
-            @Html.ValidationMessageFor(model => model.CompletedBy, "", new { @class = "text-danger" })
-        </div>
-        <div class=" col-lg-12 ">
-            <h4 style="clear:both;">Internal approval note:</h4>
-            @Html.EditorFor(model => model.ApprNote, new { htmlAttributes = new { @class = "form-control", style = "height:100px" } })
-            @Html.ValidationMessageFor(model => model.ApprNote, "", new { @class = "text-danger" })
-        </div>
+<div class="form-horizontal">
+    <hr />
+    <div class="bing col-lg-6 ">
+        Job ID:
+        @Html.EditorFor(model => model.NpsJobId, new { htmlAttributes = new { @class = "form-control", @readonly = "readonly" } })
 
-        <div class="form-group">
-            <div class="col-md-12">
-                <input type="submit" value="Complete job in Bridge" class="btn btn-default" id="saveButton" readonly />
-            </div>
-        </div>
-        @{
-
-            Html.RenderPartial("_TaskSending");
-        }
     </div>
+    <div class="bing col-lg-6 ">
+        Customer Name:
+        @Html.EditorFor(model => model.CustomerName, new { htmlAttributes = new { @class = "form-control", @readonly = "readonly" } })
+    </div>
+    <div class="bing col-lg-6 ">
+        Equipment type:
+        @Html.EditorFor(model => model.SubProdType, new { htmlAttributes = new { @class = "form-control", @readonly = "readonly" } })
+    </div>
+    <div class="bing col-lg-6 ">
+        Designation:
+        @Html.EditorFor(model => model.ProdDescription, new { htmlAttributes = new { @class = "form-control", @readonly = "readonly" } })
+    </div>
+
+    <div class=" col-lg-12 ">
+        <h4 style="clear:both;">Internal approval note:</h4>
+        @Html.EditorFor(model => model.ApprNote, new { htmlAttributes = new { @class = "form-control", style = "height:100px" } })
+        @Html.ValidationMessageFor(model => model.ApprNote, "", new { @class = "text-danger" })
+    </div>
+
+
+    <div class="bing col-lg-6 h4">
+        The job is ready to be completed: &nbsp;
+        @Html.EditorFor(model => model.IsComplete)
+        @Html.ValidationMessageFor(model => model.IsComplete, "", new { @class = "text-danger" })
+        <br />
+    </div>
+    <div class="bing col-lg-6" hidden>
+        @Html.EditorFor(model => model.JobCompletedTime, new { htmlAttributes = new { @class = "form-control" } })
+        @Html.ValidationMessageFor(model => model.JobCompletedTime, "", new { @class = "text-danger" })
+    </div>
+    <div class="bing col-lg-6" hidden>
+        @Html.EditorFor(model => model.CompletedBy, new { htmlAttributes = new { @class = "form-control" } })
+        @Html.ValidationMessageFor(model => model.CompletedBy, "", new { @class = "text-danger" })
+    </div>
+
+
+    <div class="form-group">
+        <div class="col-md-12">
+            <input type="submit" value="Complete job in Bridge" class="btn btn-danger" id="saveButton" readonly />
+        </div>
+    </div>
+    @{
+
+        Html.RenderPartial("_TaskSending");
+    }
+</div>
 
 
 }

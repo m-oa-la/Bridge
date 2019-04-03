@@ -1,5 +1,4 @@
 ﻿@model BridgeMVC.Models.TechChecklist
-
 @{
 
 
@@ -15,8 +14,8 @@
 
 }
 
-
 <style>
+
     input[type=checkbox] {
         /* Double-sized Checkboxes */
         -ms-transform: scale(2); /* IE */
@@ -50,11 +49,10 @@
     }
 </style>
 
-
 @using (Html.BeginForm())
 {
     @Html.AntiForgeryToken()
-    @Html.HiddenFor(model => model.Id)
+    @*@Html.HiddenFor(model => model.Id)*@
     @Html.HiddenFor(model => model.Tag)
     @Html.HiddenFor(model => model.BridgeModule)
     @Html.HiddenFor(model => model.DbJobId)
@@ -62,6 +60,8 @@
     @Html.HiddenFor(model => model.SubProdType)
 
 
+    @Html.EditorFor(model => model.TCItems[0].TCNo, new { htmlAttributes = new { @class = "" } })
+        @Html.ValidationMessageFor(model => model.TCItems[0].TCNo, "", new { @class = "text-danger" })
 
 
     <table style="border:hidden">
@@ -81,21 +81,23 @@
                 <h3>CHECKLIST, EC TYPE EXAMINATION</h3>
             </td>
         </tr>
-
     </table>
     <hr />
     <table class="thinTB">
         <tr>
             <td>Equipment category</td>
-            <td style="font-weight:bold" colspan="3">Lifesaving Appliances</td>
+            <td style="font-weight:bold" colspan="3">
+                @Html.DisplayFor(model => model.MainProdType, new { htmlAttributes = new { @class = "form-control" } })
+            </td>
         </tr>
         <tr>
             <td>Type of equipment category: </td>
-            <td style="font-weight:bold">Launching appliances using falls (davits)</td>
+            <td style="font-weight:bold">
+                @Html.DisplayFor(model => model.SubProdType, new { htmlAttributes = new { @class = "form-control" } })
+            </td>
             <td>Item No. </td>
             <td style="font-weight:bold">
-                @Html.EditorFor(model => model.MEDItemNo, new { htmlAttributes = new { @class = "form-control" } })
-                @Html.ValidationMessageFor(model => model.MEDItemNo, "", new { @class = "text-danger" })
+                @Html.DisplayFor(model => model.MEDItemNo, new { htmlAttributes = new { @class = "form-control" } })
 
             </td>
         </tr>
@@ -119,11 +121,9 @@
                 @Html.EditorFor(model => model.Designation, new { htmlAttributes = new { @class = "form-control" } })
                 @Html.ValidationMessageFor(model => model.Designation, "", new { @class = "text-danger" })
             </td>
-
         </tr>
         <tr>
-            <td>RAE</td>
-            <td>Responsible Appr. Engineer</td>
+
             <td>Responsible Section</td>
             <td>
                 @Html.EditorFor(model => model.IssuerSection, new { htmlAttributes = new { @class = "form-control" } })
@@ -140,7 +140,6 @@
             <td>
                 @Html.EditorFor(model => model.CertAction, new { htmlAttributes = new { @class = "form-control" } })
                 @Html.ValidationMessageFor(model => model.CertAction, "", new { @class = "text-danger" })
-
             </td>
         </tr>
         <tr>
@@ -149,7 +148,6 @@
                 in order to ensure that the requirements in the EU Marine Equipment Directive have been complied with.
             </td>
         </tr>
-
     </table>
 
     //Build standard
@@ -163,7 +161,6 @@
         <tr>
             <td>LSA-Code /IMO Res. MSC 48(66).</td>
         </tr>
-
     </table>
 
     <h2>Drawings and calculations</h2>
@@ -187,126 +184,126 @@
             <th>OK</th>
             <th>NA</th>
         </tr>
-        <tr hidden>
-            <td></td>
-            <td></td>
-            <td></td>
-            <td></td>
-            <td> @Html.EditorFor(model => model.OK1)</td>
-            <td> @Html.EditorFor(model => model.NA1)</td>
-        </tr>
-        <tr hidden>
-            <td></td>
-            <td></td>
-            <td></td>
-            <td></td>
-            <td> @Html.EditorFor(model => model.OK2)</td>
-            <td> @Html.EditorFor(model => model.NA2)</td>
-        </tr>
-        <tr hidden>
-            <td></td>
-            <td></td>
-            <td></td>
-            <td></td>
-            <td> @Html.EditorFor(model => model.OK3)</td>
-            <td> @Html.EditorFor(model => model.NA3)</td>
-        </tr>
-        <tr hidden>
-            <td></td>
-            <td></td>
-            <td></td>
-            <td></td>
-            <td> @Html.EditorFor(model => model.OK4)</td>
-            <td> @Html.EditorFor(model => model.NA4)</td>
-        </tr>
-        <tr hidden>
-            <td></td>
-            <td></td>
-            <td></td>
-            <td></td>
-            <td> @Html.EditorFor(model => model.OK5)</td>
-            <td> @Html.EditorFor(model => model.NA5)</td>
-        </tr>
-        <tr hidden>
-            <td></td>
-            <td></td>
-            <td></td>
-            <td></td>
-            <td> @Html.EditorFor(model => model.OK6)</td>
-            <td> @Html.EditorFor(model => model.NA6)</td>
-        </tr>
-        <tr hidden>
-            <td></td>
-            <td></td>
-            <td></td>
-            <td></td>
-            <td> @Html.EditorFor(model => model.OK7)</td>
-            <td> @Html.EditorFor(model => model.NA7)</td>
-        </tr>
-        <tr hidden>
-            <td></td>
-            <td></td>
-            <td></td>
-            <td></td>
-            <td> @Html.EditorFor(model => model.OK8)</td>
-            <td> @Html.EditorFor(model => model.NA8)</td>
-        </tr>
-        <tr hidden>
-            <td></td>
-            <td></td>
-            <td></td>
-            <td></td>
-            <td> @Html.EditorFor(model => model.OK9)</td>
-            <td> @Html.EditorFor(model => model.NA9)</td>
-        </tr>
-        <tr hidden>
-            <td></td>
-            <td></td>
-            <td></td>
-            <td></td>
-            <td> @Html.EditorFor(model => model.OK10)</td>
-            <td> @Html.EditorFor(model => model.NA10)</td>
-        </tr>
-        <tr hidden>
-            <td></td>
-            <td></td>
-            <td></td>
-            <td></td>
-            <td> @Html.EditorFor(model => model.OK11)</td>
-            <td> @Html.EditorFor(model => model.NA11)</td>
-        </tr>
-        <tr hidden>
-            <td></td>
-            <td></td>
-            <td></td>
-            <td></td>
-            <td> @Html.EditorFor(model => model.OK12)</td>
-            <td> @Html.EditorFor(model => model.NA12)</td>
-        </tr>
-        <tr hidden>
-            <td></td>
-            <td></td>
-            <td></td>
-            <td></td>
-            <td> @Html.EditorFor(model => model.OK13)</td>
-            <td> @Html.EditorFor(model => model.NA13)</td>
-        </tr>
-        <tr hidden>
-            <td></td>
-            <td></td>
-            <td></td>
-            <td></td>
-            <td> @Html.EditorFor(model => model.OK14)</td>
-            <td> @Html.EditorFor(model => model.NA14)</td>
-        </tr>
-        <tr hidden>
-            <td></td>
-            <td></td>
-            <td></td>
-            <td></td>
-            <td> @Html.EditorFor(model => model.OK15)</td>
-            <td> @Html.EditorFor(model => model.NA15)</td>
-        </tr>
+        @*<tr hidden>
+                <td></td>
+                <td></td>
+                <td></td>
+                <td></td>
+                <td> @Html.EditorFor(model => model.OK1)</td>
+                <td> @Html.EditorFor(model => model.NA1)</td>
+            </tr>
+            <tr hidden>
+                <td></td>
+                <td></td>
+                <td></td>
+                <td></td>
+                <td> @Html.EditorFor(model => model.OK2)</td>
+                <td> @Html.EditorFor(model => model.NA2)</td>
+            </tr>
+            <tr hidden>
+                <td></td>
+                <td></td>
+                <td></td>
+                <td></td>
+                <td> @Html.EditorFor(model => model.OK3)</td>
+                <td> @Html.EditorFor(model => model.NA3)</td>
+            </tr>
+            <tr hidden>
+                <td></td>
+                <td></td>
+                <td></td>
+                <td></td>
+                <td> @Html.EditorFor(model => model.OK4)</td>
+                <td> @Html.EditorFor(model => model.NA4)</td>
+            </tr>
+            <tr hidden>
+                <td></td>
+                <td></td>
+                <td></td>
+                <td></td>
+                <td> @Html.EditorFor(model => model.OK5)</td>
+                <td> @Html.EditorFor(model => model.NA5)</td>
+            </tr>
+            <tr hidden>
+                <td></td>
+                <td></td>
+                <td></td>
+                <td></td>
+                <td> @Html.EditorFor(model => model.OK6)</td>
+                <td> @Html.EditorFor(model => model.NA6)</td>
+            </tr>
+            <tr hidden>
+                <td></td>
+                <td></td>
+                <td></td>
+                <td></td>
+                <td> @Html.EditorFor(model => model.OK7)</td>
+                <td> @Html.EditorFor(model => model.NA7)</td>
+            </tr>
+            <tr hidden>
+                <td></td>
+                <td></td>
+                <td></td>
+                <td></td>
+                <td> @Html.EditorFor(model => model.OK8)</td>
+                <td> @Html.EditorFor(model => model.NA8)</td>
+            </tr>
+            <tr hidden>
+                <td></td>
+                <td></td>
+                <td></td>
+                <td></td>
+                <td> @Html.EditorFor(model => model.OK9)</td>
+                <td> @Html.EditorFor(model => model.NA9)</td>
+            </tr>
+            <tr hidden>
+                <td></td>
+                <td></td>
+                <td></td>
+                <td></td>
+                <td> @Html.EditorFor(model => model.OK10)</td>
+                <td> @Html.EditorFor(model => model.NA10)</td>
+            </tr>
+            <tr hidden>
+                <td></td>
+                <td></td>
+                <td></td>
+                <td></td>
+                <td> @Html.EditorFor(model => model.OK11)</td>
+                <td> @Html.EditorFor(model => model.NA11)</td>
+            </tr>
+            <tr hidden>
+                <td></td>
+                <td></td>
+                <td></td>
+                <td></td>
+                <td> @Html.EditorFor(model => model.OK12)</td>
+                <td> @Html.EditorFor(model => model.NA12)</td>
+            </tr>
+            <tr hidden>
+                <td></td>
+                <td></td>
+                <td></td>
+                <td></td>
+                <td> @Html.EditorFor(model => model.OK13)</td>
+                <td> @Html.EditorFor(model => model.NA13)</td>
+            </tr>
+            <tr hidden>
+                <td></td>
+                <td></td>
+                <td></td>
+                <td></td>
+                <td> @Html.EditorFor(model => model.OK14)</td>
+                <td> @Html.EditorFor(model => model.NA14)</td>
+            </tr>
+            <tr hidden>
+                <td></td>
+                <td></td>
+                <td></td>
+                <td></td>
+                <td> @Html.EditorFor(model => model.OK15)</td>
+                <td> @Html.EditorFor(model => model.NA15)</td>
+            </tr>*@
     </table>
 
     <h2>Basis and limitations</h2>
@@ -316,7 +313,6 @@
         <colgroup>
             <col span="1" style="width: 10%;">
             <col span="1" style="width: 80%;">
-
             <col span="1" style="width: 5%;">
             <col span="1" style="width: 5%;">
         </colgroup>
@@ -333,8 +329,8 @@
                 @Html.EditorFor(model => model.DavitMWL, new { htmlAttributes = new { @class = "" } })
                 @Html.ValidationMessageFor(model => model.DavitMWL, "", new { @class = "text-danger" })
             </td>
-            <td> @Html.EditorFor(model => model.OK16)</td>
-            <td> @Html.EditorFor(model => model.NA16)</td>
+            @*<td> @Html.EditorFor(model => model.OK16)</td>
+                <td> @Html.EditorFor(model => model.NA16)</td>*@
         </tr>
         <tr>
             <td>Winch</td>
@@ -349,8 +345,8 @@
                 @Html.EditorFor(model => model.WireDia, new { htmlAttributes = new { @class = "" } })
                 @Html.ValidationMessageFor(model => model.WireDia, "", new { @class = "text-danger" })
             </td>
-            <td> @Html.EditorFor(model => model.OK17)</td>
-            <td> @Html.EditorFor(model => model.NA17)</td>
+            @*<td> @Html.EditorFor(model => model.OK17)</td>
+                <td> @Html.EditorFor(model => model.NA17)</td>*@
         </tr>
         <tr>
             <td>Wire</td>
@@ -359,10 +355,9 @@
                 @Html.EditorFor(model => model.MBL, new { htmlAttributes = new { @class = "" } })
                 @Html.ValidationMessageFor(model => model.MBL, "", new { @class = "text-danger" })
             </td>
-            <td> @Html.EditorFor(model => model.OK18)</td>
-            <td> @Html.EditorFor(model => model.NA18)</td>
+            @*<td> @Html.EditorFor(model => model.OK18)</td>
+                <td> @Html.EditorFor(model => model.NA18)</td>*@
         </tr>
-
     </table>
 
 
@@ -371,7 +366,6 @@
         <colgroup>
             <col span="1" style="width: 35%;">
             <col span="1" style="width: 30%;">
-
             <col span="1" style="width: 30%;">
             <col span="1" style="width: 5%;">
         </colgroup>
@@ -391,9 +385,8 @@
                 @Html.EditorFor(model => model.Verifier, new { htmlAttributes = new { @class = "form-control" } })
                 @Html.ValidationMessageFor(model => model.Verifier, "", new { @class = "text-danger" })
             </td>
-            <td rowspan="2"> @Html.EditorFor(model => model.OK19)</td>
+            @*<td rowspan="2"> @Html.EditorFor(model => model.OK19)</td>*@
             @*<td> @Html.EditorFor(model => model.NA18)</td>*@
-
         </tr>
         <tr>
             <td>Verification level</td>
@@ -412,7 +405,7 @@
                 @Html.EditorFor(model => model.SurveyDate, new { htmlAttributes = new { @class = "form-control" } })
                 @Html.ValidationMessageFor(model => model.SurveyDate, "", new { @class = "text-danger" })
             </td>
-            <td rowspan="2"> @Html.EditorFor(model => model.OK20)</td>
+            @*<td rowspan="2"> @Html.EditorFor(model => model.OK20)</td>*@
         </tr>
         <tr>
             <td>DNVGL Station</td>
@@ -428,51 +421,46 @@
     @Html.ValidationMessageFor(model => model.ApprNote, "", new { @class = "text-danger" })
 
     <input type="submit" value="Save" class="btn btn-default col-lg-3" id="saveButton" readonly />
-    <input value="Re-open" class="btn btn-info" style="float:right" id="ReOpenTask" readonly />
-    <input value="Task completed" class="btn btn-default" style="float:right" id="TaskComplete" readonly />
+    @*<input value="Re-open" class="btn btn-info" style="float:right" id="ReOpenTask" readonly />
+        <input value="Task completed" class="btn btn-default" style="float:right" id="TaskComplete" readonly />*@
     @*<input value="Draft Certificate" class="btn btn-subtle" id="DraftLSACert" readonly />*@
-    <a href='~/Job/M1_LSACert/@Model.DbJobId' target="_blank" class="btn btn-subtle">Draft Certificate </a>
+    @*<a href='~/Job/M1_LSACert/@Model.DbJobId' target="_blank" class="btn btn-subtle">Draft Certificate </a>*@
 
     <div style="clear:both;"></div>
     <h3 id="TaskStatus" sty></h3>
 
 
-    <h2>Verification Note</h2>
-    @Html.TextAreaFor(model => model.VerifyNote, new { @style = "height:100px; width:100%;", htmlAttributes = new { @class = "form-control", id = "DpSoW01" } })
-    @Html.ValidationMessageFor(model => model.VerifyNote, "", new { @class = "text-danger" })
+    @*<h2>Verification Note</h2>
+        @Html.TextAreaFor(model => model.VerifyNote, new { @style = "height:100px; width:100%;", htmlAttributes = new { @class = "form-control", id = "DpSoW01" } })
+        @Html.ValidationMessageFor(model => model.VerifyNote, "", new { @class = "text-danger" })*@
 
 
     <div hidden>
-
         @Html.EditorFor(model => model.Verifier, new { htmlAttributes = new { @class = "" } })
         @Html.EditorFor(model => model.VerifyDate, new { htmlAttributes = new { @class = "" } })
         @Html.EditorFor(model => model.IssuerSig, new { htmlAttributes = new { @class = "" } })
         @Html.EditorFor(model => model.FinalizeDate, new { htmlAttributes = new { @class = "" } })
     </div>
 
-    <input value="Reject" class="btn btn-danger" style="float:right" id="RejectTask" readonly />
-    <input value="Verify" class="btn btn-primary col-lg-3" id="VerifyTask" readonly />
+    @*<input value="Reject" class="btn btn-danger" style="float:right" id="RejectTask" readonly />
+        <input value="Verify" class="btn btn-primary col-lg-3" id="VerifyTask" readonly />*@
 }
-
 <div style="clear:both;"></div>
 <hr />
-
 @*//next task, send job and return to work list*@
-<div class="col-lg-12">
-    <div class="col-lg-5">
-        <h3>Please select the new task handler:</h3>
-        <select id="selectListHandler" class="form-control"></select>
-    </div>
-    <div class="col-lg-5">
-        <h3> and new task:</h3>
-        <select id="selectListTask" class="form-control"></select>
-    </div>
-</div>
-<h4>&nbsp;</h4>
-<input value="Send job" class="btn btn-default" id="sendJobEmail" readonly />
-<input value="Return to worklist" class="btn btn-default" id="returnToWorklist" style="float:right" readonly />
-
-
+@*<div class="col-lg-12">
+        <div class="col-lg-5">
+            <h3>Please select the new task handler:</h3>
+            <select id="selectListHandler" class="form-control"></select>
+        </div>
+        <div class="col-lg-5">
+            <h3> and new task:</h3>
+            <select id="selectListTask" class="form-control"></select>
+        </div>
+    </div>*@
+@*<h4>&nbsp;</h4>
+    <input value="Send job" class="btn btn-default" id="sendJobEmail" readonly />
+    <input value="Return to worklist" class="btn btn-default" id="returnToWorklist" style="float:right" readonly />*@
 
 
 <script type="text/javascript">
@@ -507,14 +495,14 @@
     //$("#TaskComplete").click(function () {
     //});
 
-    $("#VerifyTask").click(function () {
-        var s = $("#TaskStatus").html();
-        $("#TaskStatus").html(s + "; verified by " + userSignature + " on " + getTodayDate());
-    });
+    //$("#VerifyTask").click(function () {
+    //    var s = $("#TaskStatus").html();
+    //    $("#TaskStatus").html(s + "; verified by " + userSignature + " on " + getTodayDate());
+    //});
 
-    $("#RejectTask").click(function () {
-        $("#TaskStatus").html("The checklist is Rejected. Please follow the comment given in Verification Note or contact the verifier.")
-    });
+    //$("#RejectTask").click(function () {
+    //    $("#TaskStatus").html("The checklist is Rejected. Please follow the comment given in Verification Note or contact the verifier.")
+    //});
 
 
     //$("#DraftLSACert").click(function () {
@@ -522,6 +510,7 @@
     //});
 
 
+    console.log(BTC);
 
 
 

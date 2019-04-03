@@ -131,9 +131,13 @@
 
         string editlink3 = "'/Job/CommonTask3/" + item.Id + "'";
         string editlink4 = "'/Job/CommonTask4/" + item.Id + "'";
+
+        string t2tag = "T2TAG" + item.Task2 + "T2TAG"; 
     <tr>
         <td>
-            @Html.DisplayFor(modelItem => item.NpsJobId)
+            <p>
+                @Html.DisplayFor(modelItem => item.NpsJobId)
+            </p>
         </td>
         <td>
             <p>  @Html.DisplayFor(modelItem => item.CustomerName)</p>
@@ -146,7 +150,7 @@
         <td style="@styleT1;" onclick="location.href=@editlink1">
             @Html.DisplayFor(modelItem => item.Task1)
         </td>
-        <td style="@styleT2" onclick="location.href=@editlink2">
+        <td style="@styleT2" onclick="location.href=@editlink2" tag="@t2tag">
             @Html.DisplayFor(modelItem => item.Task2)
         </td>
         <td style="@styleT3" onclick="location.href=@editlink3">

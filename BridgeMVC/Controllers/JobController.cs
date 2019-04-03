@@ -122,12 +122,21 @@ namespace BridgeMVC.Controllers
         [ActionName("CommonTask3")]
         public async Task<ActionResult> CommonTask3(string id)
         {
+            Job item = await DocumentDBRepository.GetItemAsync<Job>(id);
+            Session["DbJobId"] = item.Id;
+            Session["NpsJobId"] = item.NpsJobId;
             if (id == null)
             {
                 return new HttpStatusCodeResult(HttpStatusCode.BadRequest);
             }
 
-            Job item = await DocumentDBRepository.GetItemAsync<Job>(id);
+
+
+            if(item.BridgeModule == "M1" && item.MainProdType.ToLower() == "life-saving appliances")
+            {
+                return View("M1_Task3_LSA", item);
+            }
+
 
             item.StatusNote = "";
             Session["newHandler"] = "-";
@@ -138,8 +147,7 @@ namespace BridgeMVC.Controllers
                 return HttpNotFound();
             }
             //ViewBag.SelectList = await DocumentDBRepository<BRule>.GetItemsAsync(d => d.Tag == "BRule" && d.BridgeModule == item.BridgeModule);
-            Session["DbJobId"] = item.Id;
-            Session["NpsJobId"] = item.NpsJobId;
+
 
 
             await SetViewBags();
@@ -563,6 +571,58 @@ namespace BridgeMVC.Controllers
             s = s.Replace("</div>", "");
             return s;
 
+        }
+
+        [ActionName("M1_Task3_LSA")]
+        public async Task<ActionResult> M1_Task3_LSA(string id)
+        {
+            if (id == null)
+            {
+                return new HttpStatusCodeResult(HttpStatusCode.BadRequest);
+            }
+
+            Job item = await DocumentDBRepository.GetItemAsync<Job>(id);
+
+            item.StatusNote = "";
+            Session["newHandler"] = "-";
+            Session["newTask"] = "-";
+
+
+            if (item == null)
+            {
+                return HttpNotFound();
+            }
+            //ViewBag.SelectList = await DocumentDBRepository<BRule>.GetItemsAsync(d => d.Tag == "BRule" && d.BridgeModule == item.BridgeModule);
+            Session["DbJobId"] = item.Id;
+            Session["NpsJobId"] = item.NpsJobId;
+
+
+            await SetViewBags();
+            return View("M1_Task3_LSA", item);
+        }
+        [HttpPost]
+        [ActionName("M1_Task3_LSA")]
+        [ValidateAntiForgeryToken]
+        public async Task<ActionResult> M1_Task3_LSAPost(Job item, string NewTask, string NewHandler)
+        {
+            if (ModelState.IsValid)
+            {
+                string NewTaskNo = NewTask[0].ToString();
+
+                if (!(NewTask + NewHandler).Contains("-"))
+                {
+                    Session["SendingFlag"] = NewTaskNo;
+                    item.TaskHandler = NewHandler;
+                    item.GetType().GetProperty("Task" + NewTaskNo).SetValue(item, "TASK");
+                    await DocumentDBRepository.UpdateItemAsync<Job>(item.Id, item);
+
+                    return Redirect(Url.Content("~/Job/SendJob/" + item.Id));
+                }
+            }
+
+            await DocumentDBRepository.UpdateItemAsync<Job>(item.Id, item);
+            await SetViewBags();
+            return View("M1_Task3_LSA", item);
         }
 
     }

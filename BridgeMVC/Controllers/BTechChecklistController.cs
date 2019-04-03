@@ -21,9 +21,13 @@ namespace BridgeMVC.Controllers
         }
 
         [ActionName("Create")]
-        public ActionResult Create()
+        public async Task<ActionResult> CreateAsync()
         {
             string bm = (string)Session["BridgeModule"];
+            ViewBag.LMainProdType = await DocumentDBRepository.GetItemsAsync<BList>(d => d.Tag == "BList" && d.BridgeModule == bm && d.ListType == "MainProdType");
+            ViewBag.LSubProdType = await DocumentDBRepository.GetItemsAsync<BList>(d => d.Tag == "BList" && d.BridgeModule == bm && d.ListType == "SubProdType");
+            var j = await DocumentDBRepository.GetItemAsync<Job>("891fb8cc-1ec0-499f-b2c7-d21f318c90f5");
+            ViewBag.Job = j;
             var S = new BTechChecklist();
             S.BridgeModule = bm;
             return View(S);
@@ -34,7 +38,7 @@ namespace BridgeMVC.Controllers
         [ActionName("Create")]
         [ValidateAntiForgeryToken]
         public async Task<ActionResult> CreateAsync([Bind(Include = "Tag,Id,BridgeModule,BookMarkName,Description,Formula,Condition,ItemNo," +
-            "TemplateName,MainProdType,SubProdType,Uk,Subject,LSARef,MEDItemNo,GudianceNote,")] BTechChecklist item)
+            "TemplateName,MainProdType,SubProdType,Uk,Subject,RuleRef,MEDItemNo,GudianceNote,Chapter")] BTechChecklist item)
         {
             if (ModelState.IsValid)
             {
@@ -49,7 +53,7 @@ namespace BridgeMVC.Controllers
         [ActionName("Edit")]
         [ValidateAntiForgeryToken]
         public async Task<ActionResult> EditAsync([Bind(Include = "Tag,Id,BridgeModule,BookMarkName,Description,Formula,Condition,ItemNo," +
-            "TemplateName,MainProdType,SubProdType,Uk,Subject,LSARef,MEDItemNo,GudianceNote,")] BTechChecklist item)
+            "TemplateName,MainProdType,SubProdType,Uk,Subject,RuleRef,MEDItemNo,GudianceNote,Chapter")] BTechChecklist item)
         { 
             if (ModelState.IsValid)
             {
@@ -69,12 +73,13 @@ namespace BridgeMVC.Controllers
             }
 
             BTechChecklist item = await DocumentDBRepository.GetItemAsync<BTechChecklist>(id);
-            var j = await DocumentDBRepository.GetItemAsync<Job>("a74571b7-2758-48ae-bd1a-d88efc437f26");
+            var j = await DocumentDBRepository.GetItemAsync<Job>("891fb8cc-1ec0-499f-b2c7-d21f318c90f5");
             ViewBag.Job = j;
-            var i = await DocumentDBRepository.GetItemAsync<Job>("290c5999-2076-46f1-b40f-443f42cea4f8");
-            ViewBag.IORA = i;
-            var f = await DocumentDBRepository.GetItemsAsync<BFinancial>(d => d.Tag == "BFinancial" && d.BridgeModule == i.BridgeModule && d.CertType == j.CertType);
-            ViewBag.FinancialSet = f.FirstOrDefault();
+
+            string bm = (string)Session["BridgeModule"];
+            ViewBag.LMainProdType = await DocumentDBRepository.GetItemsAsync<BList>(d => d.Tag == "BList" && d.BridgeModule == bm && d.ListType == "MainProdType");
+            ViewBag.LSubProdType = await DocumentDBRepository.GetItemsAsync<BList>(d => d.Tag == "BList" && d.BridgeModule == bm && d.ListType == "SubProdType");
+
 
             if (item == null)
             {
