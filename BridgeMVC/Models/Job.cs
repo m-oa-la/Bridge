@@ -267,6 +267,8 @@ namespace BridgeMVC.Models
         [JsonProperty(PropertyName = "internalFee")]
         public int? InternalFee { get; set; }
 
+        [JsonProperty(PropertyName = "npsJobName")]
+        public string NpsJobName { get; set; }
 
     }
 }

@@ -120,6 +120,11 @@
 
     @foreach (var item in Model)
     {
+        string npsJobName = item.NpsJobName;
+        if (string.IsNullOrEmpty(npsJobName))
+        {
+            npsJobName = item.ProdDescription;
+        }
 
 
         string styleT1 = getValuefromDict(item.Task1);
@@ -139,13 +144,16 @@
         <td>
             <p>  @Html.DisplayFor(modelItem => item.CustomerName)</p>
         </td>
-        <p>
-            @Html.DisplayFor(modelItem => item.ProdDescription)
-        </p>
+        <td>
+            <p>
+                @npsJobName
+            </p>
+        </td>
+
         <td style="@styleT1;" onclick="location.href=@editlink1">
             @Html.DisplayFor(modelItem => item.Task1)
         </td>
-        <td style="@styleT2" onclick="location.href=@editlink2"  class="T2">
+        <td style="@styleT2" onclick="location.href=@editlink2" class="T2">
             @Html.DisplayFor(modelItem => item.Task2)
         </td>
         <td style="@styleT3" onclick="location.href=@editlink3">

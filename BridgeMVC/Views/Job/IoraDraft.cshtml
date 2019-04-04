@@ -25,6 +25,7 @@
     @Html.HiddenFor(model => model.Tag)
     @Html.HiddenFor(model => model.BridgeModule)
     @Html.HiddenFor(model => model.Id)
+    @Html.HiddenFor(model => model.NpsJobName)
     @Html.HiddenFor(model => model.NpsJobId)
     @Html.HiddenFor(model => model.TaskHandler)
     @Html.HiddenFor(model => model.Task1)
@@ -111,7 +112,7 @@
         <tr>
             <td>
                 <h3>Scope of work: </h3>
-                @Html.TextAreaFor(model => model.IoraSoW, new { @style = "height:150px; width:100%;", id = "DpSoW01", @class = "form-control" })
+                @Html.TextAreaFor(model => model.IoraSoW, new { @style = "height:300px; width:100%;", id = "DpSoW01", @class = "form-control" })
                 @Html.ValidationMessageFor(model => model.IoraSoW, "", new { @class = "text-danger" })
             </td>
         </tr>
@@ -232,31 +233,38 @@
     function updateSoW() {
         var sowStr = "";
         sowStr += readApplicableChapter("SoW starting line");
-
-        if (Job.SerialNo != null) {
-            sowStr += ", SN. " + Job.SerialNo;
-        };
-        if (Job.ExistingCertNo != null) {
-            sowStr += ", based on " + Job.ExistingCertNo;
-        };
-        if (Job.ExpireDate != null) {
-            sowStr += " with expire date: " + Job.ExpireDate;
-        };
-        sowStr += ". \r\n";
+        sowStr += ": \r\n";
 
 
-        sowStr += "List of products: \r\n"
+        sowStr += "\r\nList of product(s): \r\n"
+        if (Job.SubProdType + "x" != "x"){
+            sowStr += "- " + Job.SubProdType + ": " + Job.ProdDescription;
+            if (Job.SerialNo != null) {
+                sowStr += ", SN. " + Job.SerialNo;
+            };
+            if (Job.ExistingCertNo != null) {
+                sowStr += ", based on " + Job.ExistingCertNo;
+            };
+            if (Job.ExpireDate != null) {
+                sowStr += " with expire date: " + Job.ExpireDate;
+            };
+
+            sowStr += ". \r\n";
+
+        }
+
+
         $.each(Products, function (key, data) {
             sowStr += "-  " + data.SubProdType + ": " + data.ProdDescription + "\r\n";
         });
 
-        sowStr += "Applicable Rules: \r\n"
+        sowStr += "\r\nApplicable Rules: \r\n"
         $.each(Rules, function (key, data) {
             sowStr += "-  " + data.RuleName + "\r\n";
         });
 
 
-        sowStr += "Approval conditions: \r\n"
+        sowStr += "\r\nApproval conditions: \r\n"
         $.each(DocReqs, function (key, data) {
             sowStr += "-  " + data.DocReqItem + "\r\n";
         });
