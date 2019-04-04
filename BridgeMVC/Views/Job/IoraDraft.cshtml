@@ -376,5 +376,33 @@
     }
 
 
+    function getStartingWord() {
+
+        if (Job.CertType == "MED-B" || Job.CertType == "TA") {
+            switch (Job.CertAction) {
+                case "Initial":
+                    return "Initial ";
+                case "Renewal":
+                    return "Renewal of ";
+                case "Modification":
+                    return "Update of ";
+                case "Renewal with modification":
+                    return "Renewal and update of ";
+                case "Initial with reference":
+                    return "Initial ";
+                default:
+                    return "";
+
+            }
+
+
+        } else {
+            return "";
+        }
+
+
+    }
+
+    console.log(getStartingWord())
 
 </script>

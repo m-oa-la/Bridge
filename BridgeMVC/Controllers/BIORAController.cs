@@ -86,7 +86,7 @@ namespace BridgeMVC.Controllers
             }
 
             BIORA item = await DocumentDBRepository.GetItemAsync<BIORA>(id);
-            var j = await DocumentDBRepository.GetItemAsync<Job>("93ffbdaa-72bd-4df8-a154-d140a73ef700");
+            var j = await DocumentDBRepository.GetItemAsync<Job>("baa3ba82-0829-4a27-bafc-d93c1a243699");
             ViewBag.Job = j;
             //var i = await DocumentDBRepository.GetItemAsync<IORA>("38ea1592-88d9-4c53-a6d9-b571b1c37532");
             //ViewBag.IORA = i;
