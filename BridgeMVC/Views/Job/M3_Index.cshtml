@@ -6,6 +6,10 @@
     string BridgeLastUsed = (string)Session["BridgeModule"];
     string UserSignature = (string)Session["UserSignature"];
 
+    var LUser = ViewBag.LUser;
+    var US = ViewBag.userSig;
+
+
     IDictionary<string, string> styleDict = new Dictionary<string, string>();
     styleDict.Add("Y", "background-color:seagreen; color:transparent;; cursor: pointer; ");
     styleDict.Add("N", "background-color:LightPink; color:transparent;; cursor: pointer; ");
@@ -23,13 +27,7 @@
         {
             return styleDict[taskVal];
         }
-
-
     }
-
-
-    var LUser = ViewBag.LUser;
-    var US = ViewBag.userSig;
 
 }
 <style>
@@ -92,11 +90,11 @@
         <col span="1" style="width: 20%;">
         <col span="1" style="width: 20%;">
         <col span="1" style="width: 20%;">
-        <col span="1" style="width: 50px;">
-        <col span="1" style="width: 50px;">
-        <col span="1" style="width: 50px;">
-        <col span="1" style="width: 50px;">
-        <col span="1" style="width: 20%;">
+        <col span="1" style="max-width: 50px; width:49px">
+        <col span="1" style="max-width: 50px; width:49px">
+        <col span="1" style="max-width: 50px; width:49px">
+        <col span="1" style="max-width: 50px; width:49px">
+        <col span="1" style="width: 30%;">
     </colgroup>
     <tr>
         <th style="border-top:none">           JOB ID       </th>
@@ -113,55 +111,43 @@
 
     @foreach (var item in Model)
     {
+        string npsJobName = item.NpsJobName;
+        if (string.IsNullOrEmpty(npsJobName))
+        {
+            npsJobName = item.ProdDescription;
+        }
 
 
-        string styleT1 = "";
-        styleT1 = item.Task1 == "Y" ? colorY : styleT1;
-        styleT1 = item.Task1 == "N" ? colorN : styleT1;
-        styleT1 = item.Task1 == "TASK" ? colorTask : styleT1;
-
-
-        string styleT2 = "";
-        styleT2 = item.Task2 == "Y" ? colorY : styleT2;
-        styleT2 = item.Task2 == "N" ? colorN : styleT2;
-        styleT2 = item.Task2 == "TASK" ? colorTask : styleT2;
-
-        string styleT3 = "";
-        styleT3 = item.Task3 == "Y" ? colorY : styleT3;
-        styleT3 = item.Task3 == "N" ? colorN : styleT3;
-        styleT3 = item.Task3 == "TASK" ? colorTask : styleT3;
-
-        string styleT4 = "";
-        styleT4 = item.Task4 == "Y" ? colorY : styleT4;
-        styleT4 = item.Task4 == "N" ? colorN : styleT4;
-        styleT4 = item.Task4 == "TASK" ? colorTask : styleT4;
-
-        styleT1 = styleT1 + "; cursor: pointer;";
-        styleT2 = styleT2 + "; cursor: pointer;";
-        styleT3 = styleT3 + "; cursor: pointer;";
-        styleT4 = styleT4 + "; cursor: pointer;";
+        string styleT1 = getValuefromDict(item.Task1);
+        string styleT2 = getValuefromDict(item.Task2);
+        string styleT3 = getValuefromDict(item.Task3);
+        string styleT4 = getValuefromDict(item.Task4);
 
         string editlink1 = "'/Job/CommonTask1/" + item.Id + "'";
         string editlink2 = "'/Job/IsIORAExisting/" + item.Id + "'";
-        //string editlink2 = "'/Job/M1_Task2/" + item.Id + "?npsid=" + item.NpsJobId + "&fee=" + item.Fee + "'";
-
 
         string editlink3 = "'/Job/CommonTask3/" + item.Id + "'";
         string editlink4 = "'/Job/CommonTask4/" + item.Id + "'";
+
+        string t2tag = "T2TAG" + item.Task2 + "T2TAG";
         <tr>
             <td>
-                @Html.DisplayFor(modelItem => item.NpsJobId)
+                <p>
+                    @Html.DisplayFor(modelItem => item.NpsJobId)
+                </p>
             </td>
             <td>
                 <p>  @Html.DisplayFor(modelItem => item.CustomerName)</p>
             </td>
             <td>
-                @Html.DisplayFor(modelItem => item.ProdDescription)
+                <p>
+                    @npsJobName
+                </p>
             </td>
             <td style="@styleT1;" onclick="location.href=@editlink1">
                 @Html.DisplayFor(modelItem => item.Task1)
             </td>
-            <td style="@styleT2" onclick="location.href=@editlink2"  class="T2">
+            <td style="@styleT2" onclick="location.href=@editlink2" tag="@t2tag">
                 @Html.DisplayFor(modelItem => item.Task2)
             </td>
             <td style="@styleT3" onclick="location.href=@editlink3">

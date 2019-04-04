@@ -121,6 +121,13 @@
     
     @foreach (var item in Model)
     {
+        string npsJobName = item.NpsJobName;
+        if (string.IsNullOrEmpty(npsJobName))
+        {
+            npsJobName = item.ProdDescription;
+        }
+
+
         string styleT1 = getValuefromDict(item.Task1);
         string styleT2 = getValuefromDict(item.Task2);
         string styleT3 = getValuefromDict(item.Task3);
@@ -132,7 +139,7 @@
         string editlink3 = "'/Job/CommonTask3/" + item.Id + "'";
         string editlink4 = "'/Job/CommonTask4/" + item.Id + "'";
 
-        string t2tag = "T2TAG" + item.Task2 + "T2TAG"; 
+        string t2tag = "T2TAG" + item.Task2 + "T2TAG";
     <tr>
         <td>
             <p>
@@ -144,7 +151,7 @@
 </td>
         <td>
             <p>
-                @Html.DisplayFor(modelItem => item.ProdDescription)
+                @npsJobName
             </p>
         </td>
         <td style="@styleT1;" onclick="location.href=@editlink1">
