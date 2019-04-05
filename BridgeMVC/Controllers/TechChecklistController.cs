@@ -8,12 +8,23 @@ using System.Threading.Tasks;
 using BridgeMVC.Models;
 using System.Diagnostics;
 using Newtonsoft.Json;
+using Microsoft.CodeDom.Providers.DotNetCompilerPlatform;
+using System.CodeDom.Compiler;
+using System.Text;
+using System.Reflection;
+using System.Web.UI;
 
 namespace BridgeMVC.Controllers
 {
+
+
+
+
     [Authorize]
     public class TechChecklistController : Controller
     {
+
+
         // GET: TechChecklist
         [ActionName("Index")]
         public async Task<ActionResult> IndexAsync()
@@ -23,38 +34,71 @@ namespace BridgeMVC.Controllers
 
             if (items.Count() == 0)
             {
-                Job j = await DocumentDBRepository.GetItemAsync<Job>(jid);
-                var btcs = await DocumentDBRepository.GetItemsAsync<BTechChecklist>(d => d.Tag == "BTechChecklist" &&
-                d.MainProdType == j.MainProdType && d.SubProdType == j.SubProdType);
+                Job Job = await DocumentDBRepository.GetItemAsync<Job>(jid);
 
-                if(btcs.Count() > 0)
+                var btcs = await DocumentDBRepository.GetItemsAsync<BTechChecklist>(d => d.Tag == "BTechChecklist" && d.BridgeModule == Job.BridgeModule);
+
+
+                if (Job.BridgeModule =="M1" && (Job.CertAction.ToLower().Contains("renewal") || Job.CertAction.ToLower().Contains("modification")))
+                {
+                    btcs  = btcs.Where(d =>  (d.Condition + "x").ToLower().Contains("renewal") || (d.Condition + "x").ToLower().Contains("modification"));
+
+                }
+                else
+                {
+                    btcs = btcs.Where(d => d.MainProdType == Job.MainProdType && d.SubProdType == Job.SubProdType && !(d.Condition + "x").ToLower().Contains("renewal") && !(d.Condition + "x").ToLower().Contains("modification"));
+                }
+                    
+
+                if (btcs.Count() > 0)
                 {
                     foreach(BTechChecklist btc in btcs)
                     {
-                        TechChecklist tc = new TechChecklist
+                        
                         {
-                            Tag = "TechChecklist",
-                            DbJobId = j.Id,
-                            TCGuidance = btc.GudianceNote,
-                            TCNo = btc.ItemNo,
-                            TCRuleRef = btc.RuleRef,
-                            TCSubject = btc.Subject,
-                        };
+                            TechChecklist tc = new TechChecklist
+                            {
+                                Tag = "TechChecklist",
+                                DbJobId = Job.Id,
+                                TCGuidance = btc.GudianceNote,
+                                TCNo = btc.ItemNo,
+                                TCRuleRef = btc.RuleRef,
+                                TCSubject = btc.Subject,
+                                BridgeModule = Job.BridgeModule
+                            };
 
-                        await DocumentDBRepository.CreateItemAsync<TechChecklist>(tc);
-                       
+                            await DocumentDBRepository.CreateItemAsync<TechChecklist>(tc);
+                        }
 
                     }
+
                     items = await DocumentDBRepository.GetItemsAsync<TechChecklist>(d => d.Tag == "TechChecklist" && d.DbJobId == jid);
                 }
 
             }
 
-
-             
-
             return View(items);
         }
+
+
+        [ActionName("UpdateTCAPI")]
+        public async Task<string> UpdateTCAPI(string tcID = "", Boolean tcOKValue = true, Boolean tcNAValue = true)
+        {
+            if (!string.IsNullOrEmpty(tcID))
+            {
+                TechChecklist tc = await DocumentDBRepository.GetItemAsync<TechChecklist>(tcID);
+                tc.TCNA = tcNAValue;
+                tc.TCOK = tcOKValue;
+
+                await DocumentDBRepository.UpdateItemAsync<TechChecklist>(tc.Id, tc);
+            }
+            return "done";
+        }
+
+
+
+
+
         [ActionName("IndexReadOnly")]
         public async Task<ActionResult> IndexReadOnlyAsync()
         {

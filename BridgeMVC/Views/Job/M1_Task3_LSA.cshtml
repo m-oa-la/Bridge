@@ -61,7 +61,7 @@
     @Html.HiddenFor(model => model.JobCompletedTime)
     @*@Html.HiddenFor(model => model.CustomerName)
         @Html.HiddenFor(model => model.CustomerId)*@
-    @*@Html.HiddenFor(model => model.Fee)*@
+    @Html.HiddenFor(model => model.Fee)
     @*@Html.HiddenFor(model => model.FeeSetter)
         @Html.HiddenFor(model => model.FeeVerifier)*@
     @Html.HiddenFor(model => model.JobVerifier)
@@ -123,7 +123,7 @@
         @Html.EditorFor(model => model.CustomerName, new { htmlAttributes = new { @class = "form-control", @readonly = "readonly" } })
         @Html.ValidationMessageFor(model => model.CustomerName, "", new { @class = "text-danger" })
     </div>
-    <div class="bing col-lg-6">
+    <div class="bing col-lg-6" hidden>
         <p>Sales Order:</p>
         @Html.EditorFor(model => model.SalesOrderNo, new { htmlAttributes = new { @class = "form-control", @readonly = "readonly" } })
         @Html.ValidationMessageFor(model => model.SalesOrderNo, "", new { @class = "text-danger" })
@@ -135,7 +135,7 @@
         @Html.ValidationMessageFor(model => model.ProdDescription, "", new { @class = "text-danger" })
     </div>
     <div class="bing col-lg-6">
-        <p>Certificate type:</p>
+        <p>Deliverable:</p>
         @Html.EditorFor(model => model.CertType, new { htmlAttributes = new { @class = "form-control", @readonly = "readonly" } })
         @Html.ValidationMessageFor(model => model.CertType, "", new { @class = "text-danger" })
     </div>
@@ -202,17 +202,12 @@
 
     <iframe id="iframe" frameborder="0" src="@Url.Content("~/Rule/IndexReadOnly")" style="width: 100%; height: 100px;"></iframe>
 
-
+    <h4>LSA Tech.Checklist</h4>
     <iframe id="iframe" frameborder="0" src="@Url.Content("~/TechChecklist/Index")" style="width: 100%; height: 360px;"></iframe>
 
 
 
 
-    <div class="bing col-lg-6">
-        Fee (External, incl. TSA/MSA):
-        @Html.EditorFor(model => model.Fee, new { htmlAttributes = new { @class = "form-control", @readonly = "readonly" } })
-        @Html.ValidationMessageFor(model => model.Fee, "", new { @class = "text-danger" })
-    </div>
     <div class="bing col-lg-6" hidden>
         Fee setter
         @Html.EditorFor(model => model.FeeSetter, new { htmlAttributes = new { @class = "form-control", id = "feeSetter" } })
