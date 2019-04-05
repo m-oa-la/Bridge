@@ -88,7 +88,7 @@
     @Html.HiddenFor(model => model.NoOfCert)
     @Html.HiddenFor(model => model.FeeSet)
     @Html.HiddenFor(model => model.VesselID)
-    @Html.HiddenFor(model => model.DocReqNote)
+    @*@Html.HiddenFor(model => model.DocReqNote)*@
     @Html.HiddenFor(model => model.NpsDbId)
     @Html.HiddenFor(model => model.ExeDoneBy)
     @Html.HiddenFor(model => model.ExeDoneTime)
@@ -141,14 +141,20 @@
         </div>*@
 
     <div class=" col-lg-12 ">
-        <h4 style="clear:both;">Internal approval note:</h4>
+        <h4 style="clear:both;">IORA SoW note: (Auto-included in IORA SoW chapter)</h4>
+        @Html.EditorFor(model => model.DocReqNote, new { htmlAttributes = new { @class = "form-control", style = "height:100px" } })
+        @Html.ValidationMessageFor(model => model.DocReqNote, "", new { @class = "text-danger" })
+    </div>
+
+    <div class=" col-lg-12 ">
+        <h4 style="clear:both;">Internal approval note: (Not auto-included in IORA)</h4>
         @Html.EditorFor(model => model.ApprNote, new { htmlAttributes = new { @class = "form-control", style = "height:100px" } })
         @Html.ValidationMessageFor(model => model.ApprNote, "", new { @class = "text-danger" })
     </div>
 
+    
 
-
-    <input type="submit" value="Update IORA" class="btn btn-default" readonly />
+    < input type = "submit" value = "Update IORA" class="btn btn-default" readonly />
 
 }
 @section Scripts {
@@ -265,9 +271,16 @@
 
 
         sowStr += "\r\nApproval conditions: \r\n"
-        $.each(DocReqs, function (key, data) {
-            sowStr += "-  " + data.DocReqItem + "\r\n";
-        });
+
+        if (Job.BridgeModule == "M1") {
+            $.each(DocReqs, function (key, data) {
+                sowStr += "-  " + data.DocReqItem + "\r\n";
+            });
+        } else {
+            sowStr += $("#DocReqNote").val();
+        }
+
+
 
         sowStr += readApplicableChapter("SoW ending line");
 

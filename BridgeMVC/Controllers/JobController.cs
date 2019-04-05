@@ -103,6 +103,7 @@ namespace BridgeMVC.Controllers
             Job item = await DocumentDBRepository.GetItemAsync<Job>(id);
 
             item.StatusNote = "";
+            item.SendingFlag = "-";
             Session["newHandler"] = "-";
             Session["newTask"] = "-";
 
@@ -220,6 +221,7 @@ namespace BridgeMVC.Controllers
         {
             if (ModelState.IsValid)
             {
+
                 string NewTaskNo = NewTask[0].ToString();
 
                 if (!(NewTask + NewHandler).Contains("-"))
@@ -227,9 +229,18 @@ namespace BridgeMVC.Controllers
                     Session["SendingFlag"] = NewTaskNo;
                     item.TaskHandler = NewHandler;
                     item.GetType().GetProperty("Task" + NewTaskNo).SetValue(item, "TASK");
+
                     await DocumentDBRepository.UpdateItemAsync<Job>(item.Id, item);
 
                     return Redirect(Url.Content("~/Job/SendJob/" + item.Id));
+                }
+
+                if (item.SendingFlag == "M2DraftIORA")
+                {
+                    item.Task1 = "Y";
+                    item.Task2 = "TASK";
+                    await DocumentDBRepository.UpdateItemAsync<Job>(item.Id, item);
+                    return Redirect(Url.Content("~/Job/IoraDraft/" + item.Id));
                 }
             }
 
@@ -359,38 +370,6 @@ namespace BridgeMVC.Controllers
         }
 
 
-
-
-
-        [ActionName("SendJobAPI")]
-        public async Task<ActionResult> SendJobAPIAsync(string id, string newHandler, string sendingFlag)
-        {
-            if (id == null)
-            {
-                return new HttpStatusCodeResult(HttpStatusCode.BadRequest);
-            }
-
-            Job item = await DocumentDBRepository.GetItemAsync<Job>(id);
-            if (item == null)
-            {
-                return HttpNotFound();
-            }
-            string sf = sendingFlag;
-            Session["DbJobId"] = id;
-            Session["NpsJobId"] = item.NpsJobId;
-           
-            await SetViewBags();
-            ViewBag.bEmail = await DocumentDBRepository.GetItemsAsync<BEmail>(d => d.Tag == "BEmail" && d.BridgeModule == item.BridgeModule && d.TemplateName == ("TASK" + sf));
-            ViewBag.bUser = await DocumentDBRepository.GetItemsAsync<BUser>(d => d.Tag == "BUser" && d.Signature.ToLower() == item.TaskHandler.ToLower());
-            ViewBag.iIORA = await DocumentDBRepository.GetItemsAsync<IORA>(d => d.Tag == "IORA" && d.DbJobId == item.Id);
-
-            Session["SendingFlag"] = "";
-            return View(item);
-        }
-
-
-
-
         [ActionName("SendJob")]
         public async Task<ActionResult> SendJobAsync(string id)
         {
@@ -501,28 +480,28 @@ namespace BridgeMVC.Controllers
                 await DocumentDBRepository.UpdateItemAsync<Job>(j.Id, j);
             }
 
-            var myModel = await DocumentDBRepository.GetItemsAsync<Job>(d => d.Tag == "Job" && d.BridgeModule == bm && d.IsComplete == false);
+            var myModel = await DocumentDBRepository.GetItemsAsync<Job>(d => d.Tag == "Job" && d.BridgeModule == bm && d.IsComplete == false && !string.IsNullOrEmpty(d.RAE));
 
             switch (wbTab)
             {
                 case "wb_dist":
-                    myModel = myModel.Where(d => d.TaskHandler == "WHITEBOARD");
+                    myModel = myModel.Where(d => d.RAE == "WHITEBOARD");
                     break;
                 case "wb_v":
-                    myModel = myModel.Where(d => d.TaskHandler == "WHITEBOARD");
+                    myModel = myModel.Where(d => !string.IsNullOrEmpty(d.JobVerifier));
                     break;
                 case "wb_oh":
-                    myModel = myModel.Where(d => d.IsHold == true && d.Task4=="TASK");
+                    myModel = myModel.Where(d => d.IsHold == true);
                     break;
                 case "wb_og":
-                    myModel = myModel.Where(d => d.TaskHandler !="WHITEBOARD");
+                    myModel = myModel.Where(d => d.RAE !="WHITEBOARD");
                     //myModel = myModel.Where(d => d.IsHold == false && d.Task4 == "TASK");
                     break;
                 case "wb_done":
                     myModel = myModel.Where(d => d.IsComplete == true && d.JobCompletedTime > DateTime.Today.AddDays(-7));
                     break;
                 default:
-                    myModel = myModel.Where(d => d.TaskHandler == "WHITEBOARD");
+                    myModel = myModel.Where(d => d.RAE == "WHITEBOARD");
                     break;
             }
 
