@@ -133,7 +133,7 @@ namespace BridgeMVC.Controllers
 
 
 
-            if(item.BridgeModule == "M1" && item.MainProdType.ToLower() == "life-saving appliances")
+            if(item.BridgeModule == "M1" && item.MainProdType.ToLower() == "life-saving appliances" && item.CertType != "MED-F")
             {
                 return View("M1_Task3_LSA", item);
             }
@@ -370,6 +370,35 @@ namespace BridgeMVC.Controllers
         }
 
 
+
+        [ActionName("SendJobAPI")]
+        public async Task<ActionResult> SendJobAPIAsync(string id, string newHandler, string sendingFlag)
+        {
+            if (id == null)
+            {
+                return new HttpStatusCodeResult(HttpStatusCode.BadRequest);
+            }
+
+            Job item = await DocumentDBRepository.GetItemAsync<Job>(id);
+            if (item == null)
+            {
+                return HttpNotFound();
+            }
+            string sf = sendingFlag;
+            Session["DbJobId"] = id;
+            Session["NpsJobId"] = item.NpsJobId;
+
+            await SetViewBags();
+            ViewBag.bEmail = await DocumentDBRepository.GetItemsAsync<BEmail>(d => d.Tag == "BEmail" && d.BridgeModule == item.BridgeModule && d.TemplateName == ("TASK" + sf));
+            ViewBag.bUser = await DocumentDBRepository.GetItemsAsync<BUser>(d => d.Tag == "BUser" && d.Signature.ToLower() == item.TaskHandler.ToLower());
+            ViewBag.iIORA = await DocumentDBRepository.GetItemsAsync<IORA>(d => d.Tag == "IORA" && d.DbJobId == item.Id);
+
+            Session["SendingFlag"] = "";
+            return View(item);
+        }
+
+
+
         [ActionName("SendJob")]
         public async Task<ActionResult> SendJobAsync(string id)
         {
@@ -582,7 +611,7 @@ namespace BridgeMVC.Controllers
         [HttpPost]
         [ActionName("M1_Task3_LSA")]
         [ValidateAntiForgeryToken]
-        public async Task<ActionResult> M1_Task3_LSAPost(Job item, string NewTask, string NewHandler)
+        public async Task<ActionResult> M1_Task3_LSAPost(Job item, string NewTask, string NewHandler, string tcID, string tcName, Boolean tcValue)
         {
             if (ModelState.IsValid)
             {
@@ -597,6 +626,9 @@ namespace BridgeMVC.Controllers
 
                     return Redirect(Url.Content("~/Job/SendJob/" + item.Id));
                 }
+
+
+
             }
 
             await DocumentDBRepository.UpdateItemAsync<Job>(item.Id, item);

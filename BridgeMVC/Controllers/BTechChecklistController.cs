@@ -33,6 +33,9 @@ namespace BridgeMVC.Controllers
             return View(S);
         }
 
+      
+
+
 
         [HttpPost]
         [ActionName("Create")]
