@@ -18,13 +18,15 @@ namespace BridgeMVC.Controllers
         {
             string bm = (string)Session["BridgeModule"];
             var s = await DocumentDBRepository.GetItemsAsync<BFinancial>(d => d.Tag == "BFinancial" && d.BridgeModule == bm);
-            return View(s);
+            return View(s.OrderBy(s1 => s1.CertType));
         }
 
         [ActionName("Create")]
         public ActionResult Create()
         {
+            string bm = (string)Session["BridgeModule"];
             var S = new BFinancial();
+            S.BridgeModule = bm;
             return View(S);
         }
 

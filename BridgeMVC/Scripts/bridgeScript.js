@@ -48,6 +48,11 @@ function taskComplete(taskCompleteStr) {
      dt = getTodayDate();
      $("#" + taskCompleteDate).val(dt);
 
+    if ($("#BridgeModule").val() === "M2") {
+        $("#SendingFlag").val("M2DraftIORA");
+        console.log("m2draftiora");
+    }
+
     taskStatus = taskCompleteStr + userSignature + " on " + dt;
     $("#" + taskStatusFlag).val(userSignature);
     $("#TaskStatus").html(taskStatus);
@@ -55,6 +60,9 @@ function taskComplete(taskCompleteStr) {
     $("#ReOpenTask").show();
     $("#TaskComplete").hide();
     $("#saveButton").hide();
+
+  
+
 
     if (taskStatusFlag === "IORASentBy")
     {
