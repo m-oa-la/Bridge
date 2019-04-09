@@ -265,7 +265,7 @@
     var taskNo = 1;
     var taskStatusFlag = "feeSetter"; //who completed the task
     var taskCompleteDate = "feeSetTime";
-    var taskCompleteStr = "The fee is set by ";
+    var taskCompleteStr = "The draft IORA is prepared by ";
 
     renderTaskShowHide();
     renderTaskHandling();
@@ -361,13 +361,10 @@
 
 
 
-
-
-    //console.log(getTodayDate());
-
     //set up select list
     $.each(LCertType, function (key, data) {
-        $("#selectCertType").append(new Option(data.ListItem, data.ListItem));
+
+        $("#selectCertType").append(new Option(data.CertType, data.CertType));
     });
 
     $.each(LCertAction, function (key, data) {
@@ -379,13 +376,13 @@
     });
 
     var mval = $("#selectMainProdType :selected").text();
-      $.each(LSubProdType, function (key, data) {
+    $.each(LSubProdType, function (key, data) {
         if (data.UpperLvl == mval) {
             $("#selectSubProdType").append(new Option(data.ListItem, data.ListItem));
         }
     });
 
-//When main prodtype changes, refesh the sub prod type.
+    //When main prodtype changes, refesh the sub prod type.
     $("#selectMainProdType").on("change", function () {
         var mval = $("#selectMainProdType :selected").text();
 
@@ -405,10 +402,11 @@
 
     function budgetHourCalc() {
 
-        ct1 = $("#selectCertType").val();
-        console.log(ct1);
+        if ($("#selectCertType").val() + "x" == "x") {
+            alert('The Certitication Type has to be selected first.');
+        } else {
+            ct1 = $("#selectCertType").val();
 
-        if (ct1 != null) {
             return $.ajax({
                 type: 'GET',
                 url: '/Job/M1_Task1_BudgetHourCalc',
@@ -417,13 +415,11 @@
                 success: calcBudgetHour
             });
         }
-        else {
-            alert('The Certitication Type has to be selected');
-        }
 
     }
 
     function calcBudgetHour(data) {
+
         var f = jQuery.parseJSON(data);
         var dis = (1 - f.allocationFee) * (1 - f.tsa - f.msa);
         var feee = document.getElementById("Fee").value;;
@@ -437,6 +433,8 @@
             ";\nInternal Fee: " + internalFee +
             ";\nBudgetHour = InternalFee * 0,74 / 1200 = " + bh);
     }
+
+
 
 
 </script>

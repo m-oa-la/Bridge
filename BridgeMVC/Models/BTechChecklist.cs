@@ -11,7 +11,7 @@ namespace BridgeMVC.Models
         [Required]
         [JsonProperty(PropertyName = "bridgeModule")]
         public string BridgeModule { get; set; }
-        [Required]
+ 
         [StringLength(50)]
         [JsonProperty(PropertyName = "bookMarkName")]
         public string BookMarkName { get; set; }
@@ -38,8 +38,8 @@ namespace BridgeMVC.Models
         public string SubProdType { get; set; }
         
         [JsonProperty(PropertyName = "uniqueKey")]
-        public string Uk => $"{MainProdType}{SubProdType}{TemplateName}{ItemNo}";
-
+        public string Uk => $"{MainProdType}{SubProdType}{Subject}";
+        [Required]
         [JsonProperty(PropertyName = "subject")]
         public string Subject { get; set; }
 
