@@ -7,7 +7,7 @@
     <tr>
 
         <th>
-            @Html.DisplayNameFor(model => model.TemplateName)
+            @Html.DisplayNameFor(model => model.Subject)
         </th>
         <th>
             @Html.DisplayNameFor(model => model.MainProdType)
@@ -16,10 +16,10 @@
             @Html.DisplayNameFor(model => model.SubProdType)
         </th>
         <th>
-            @Html.DisplayNameFor(model => model.ItemNo)
+            @Html.DisplayNameFor(model => model.GudianceNote)
         </th>
         <th>
-            @Html.DisplayNameFor(model => model.Subject)
+            @Html.DisplayNameFor(model => model.RuleRef)
         </th>
         <th>
             @Html.DisplayNameFor(model => model.Condition)
@@ -30,7 +30,7 @@
 @foreach (var item in Model) {
     <tr>
         <td>
-            @Html.DisplayFor(modelItem => item.TemplateName)
+            @Html.DisplayFor(modelItem => item.Subject)
         </td>
         <td>
             @Html.DisplayFor(modelItem => item.MainProdType)
@@ -39,10 +39,10 @@
             @Html.DisplayFor(modelItem => item.SubProdType)
         </td>
         <td>
-            @Html.DisplayFor(modelItem => item.ItemNo)
+            @Html.DisplayFor(modelItem => item.GudianceNote)
         </td>
         <td>
-            @Html.DisplayFor(modelItem => item.Subject)
+            @Html.DisplayFor(modelItem => item.RuleRef)
         </td>
         <td>
             @Html.DisplayFor(modelItem => item.Condition)

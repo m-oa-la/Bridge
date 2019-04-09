@@ -270,12 +270,26 @@
 
         sowStr += "\r\nApproval conditions: \r\n"
 
-        if (Job.BridgeModule == "M1") {
+        if (Job.BridgeModule == "M1") { //DocReq is used as approval conditions for M1
+
+            var hoopCondition = true;
+
             $.each(DocReqs, function (key, data) {
                 sowStr += "-  " + data.DocReqItem + "\r\n";
+
+                if (data.DocReqItem.indexOf("to calculate the hoop stresses") > 0) {
+                    hoopCondition = false;
+                }
+
             });
+
+            if (hoopCondition && Job.MainProdType == "Winches") {
+                sowStr += "-  In order to calculate the hoop stresses on the barrel; the maximum static pulling force with the C factor corresponding to the maximum number of layers will be taken into account to calculate these stresses.\r\n";
+            }
+
+
         } else {
-            sowStr += $("#DocReqNote").val();
+            sowStr += $("#DocReqNote").val(); // docreqnote is used as external approval note for M2
         }
 
 

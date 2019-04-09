@@ -185,11 +185,25 @@ namespace BridgeMVC.Controllers
         public async Task<string> SetViewBags()
         {
             var bm = (string)Session["BridgeModule"];
-            ViewBag.LCertType = await DocumentDBRepository.GetItemsAsync<BFinancial>(d => d.Tag == "BFinancial" && d.BridgeModule == bm);
-            ViewBag.LCertAction = await DocumentDBRepository.GetItemsAsync<BList>(d => d.Tag == "BList" && d.BridgeModule == bm && d.ListType == "CertAction");
-            ViewBag.LMainProdType = await DocumentDBRepository.GetItemsAsync<BList>(d => d.Tag == "BList" && d.BridgeModule == bm && d.ListType == "MainProdType");
-            ViewBag.LSubProdType = await DocumentDBRepository.GetItemsAsync<BList>(d => d.Tag == "BList" && d.BridgeModule == bm && d.ListType == "SubProdType");
-            ViewBag.LUser = await DocumentDBRepository.GetItemsAsync<BUser>(d => d.Tag == "BUser" && (d.BridgesGranted).Contains(bm));
+            var lct = await DocumentDBRepository.GetItemsAsync<BFinancial>(d => d.Tag == "BFinancial" && d.BridgeModule == bm);
+            lct = lct.OrderBy(d => d.CertType);
+            ViewBag.LCertType = lct;
+
+            var lca = await DocumentDBRepository.GetItemsAsync<BList>(d => d.Tag == "BList" && d.BridgeModule == bm && d.ListType == "CertAction");
+            lca = lca.OrderBy(d => d.ListItem);
+            ViewBag.LCertAction = lca;
+
+            var lmp = await DocumentDBRepository.GetItemsAsync<BList>(d => d.Tag == "BList" && d.BridgeModule == bm && d.ListType == "MainProdType");
+            lmp = lmp.OrderBy(d => d.ListItem);
+            ViewBag.LMainProdType = lmp;
+
+            var lsp = await DocumentDBRepository.GetItemsAsync<BList>(d => d.Tag == "BList" && d.BridgeModule == bm && d.ListType == "SubProdType");
+            lsp = lsp.OrderBy(d => d.ListItem);
+            ViewBag.LSubProdType = lsp;
+
+            var lu = await DocumentDBRepository.GetItemsAsync<BUser>(d => d.Tag == "BUser" && (d.BridgesGranted).Contains(bm));
+            lu = lu.OrderBy(d => d.Signature);
+            ViewBag.LUser = lu;
 
             return ("");
         }
@@ -497,7 +511,7 @@ namespace BridgeMVC.Controllers
 
 
         [ActionName("Whiteboard")]
-        public async Task<ActionResult> Whiteboard(string wbTab)
+        public async Task<ActionResult> Whiteboard(string wbTab = "wb_dist")
         {
             var bm = (string)Session["BridgeModule"];
 
@@ -509,7 +523,7 @@ namespace BridgeMVC.Controllers
                 await DocumentDBRepository.UpdateItemAsync<Job>(j.Id, j);
             }
 
-            var myModel = await DocumentDBRepository.GetItemsAsync<Job>(d => d.Tag == "Job" && d.BridgeModule == bm && d.IsComplete == false && !string.IsNullOrEmpty(d.RAE));
+            var myModel = await DocumentDBRepository.GetItemsAsync<Job>(d => d.Tag == "Job" && d.BridgeModule == bm && d.IsComplete == false && (d.RAE + "x") != "x");
 
             switch (wbTab)
             {
