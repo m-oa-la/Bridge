@@ -347,6 +347,40 @@ namespace BridgeMVC.Controllers
             return null;
         }
 
+        [ActionName("GetProdDesc")]
+        public async Task<string> GetProdType(string id)
+        {
+            Job j = await DocumentDBRepository.GetItemAsync<Job>(id);
+            if (!string.IsNullOrEmpty(j.ProdDescription))
+            {
+                return j.SubProdType + "-" + j.ProdDescription; 
+            }
+            else
+            {
+                var products = await DocumentDBRepository.GetItemsAsync<Product>(d => d.Tag == "Product" && d.DbJobId == id);
+                if(products.Count() > 0)
+                {
+                    Product p = products.FirstOrDefault();
+                    return p.SubProdType + "-" + p.ProdDescription ;
+                }
+            }
+            return "";
+        }
+
+
+        [ActionName("ChangeJobRAE")]
+        public async Task<string> ChangeJobRAE(string id, string newRAE)
+        {
+            Job j = await DocumentDBRepository.GetItemAsync<Job>(id);
+            if (j != null)
+            {
+                j.RAE = newRAE;
+                await DocumentDBRepository.UpdateItemAsync<Job>(j.Id, j);
+            }
+            return ("OK");
+        }
+
+
         [ActionName("IoraDraft")]
         public async Task<ActionResult> IoraDraftAsync(string id)
         {
@@ -548,9 +582,8 @@ namespace BridgeMVC.Controllers
                     break;
             }
 
-
             ViewBag.WBT = wbTab;
-
+            
             await SetViewBags();
             return View(myModel);
 

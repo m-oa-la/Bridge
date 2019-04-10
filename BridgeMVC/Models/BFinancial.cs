@@ -64,7 +64,10 @@ namespace BridgeMVC.Models
         public string CertAction3 { get; set; }
 
         [JsonProperty(PropertyName = "CertAction4")]
-        public string CertAction4 { get; set; } 
+        public string CertAction4 { get; set; }
+
+        [JsonProperty(PropertyName = "colorCode")]
+        public string ColorCode { get; set; }
 
     }
 }
