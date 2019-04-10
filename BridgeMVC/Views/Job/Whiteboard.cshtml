@@ -3,8 +3,7 @@
     string UserSignature = (string)Session["UserSignature"];
     string bridgeModule = (string)Session["BridgeModule"];
     //string SF = (string)Session["SendingFlag"];
-
-    //var LCertType = ViewBag.LCertType;
+    var BFlist = (IEnumerable<BridgeMVC.Models.BFinancial>)ViewBag.LCertType;
     //var LCertAction = ViewBag.LCertAction;
     //var LMainProdType = ViewBag.LMainProdType;
     //var LSubProdType = ViewBag.LSubProdType;
@@ -14,12 +13,65 @@
     ViewBag.Title = "Whiteboard";
     var users = ViewBag.users;
 
-    //var nodeCopy = 0;
-}
+    var sn = 0;
+    string getColorCode(string ct)
+    {
+        string c = "";
+        foreach (BridgeMVC.Models.BFinancial bf in BFlist)
+        {
+            if (bf.CertType == ct)
+            {
+                c = bf.ColorCode;
+            }
+        }
 
+        return c;
+    }
+
+
+
+
+}
+<script>
+
+    function getProdDesc(id) {
+        $.ajax(
+            {
+                type: 'GET',
+                url: '/Job/GetProdDesc',
+                data: { id: id },
+
+                success: function (data) {
+                    $("#proddesc" + id).html(data);
+                    //console.log(data);
+                },
+                error: function (e) {
+                    alert('Error: ' + e);
+                    return "";
+                }
+            });
+    }
+</script>
 <style>
-    .userImage{
-        padding: 3px;
+    table tr:hover td {
+       
+        color: black;
+    }
+
+    #people {
+
+    
+        position: fixed;
+        bottom: 3%;
+        width: 100%;
+
+        opacity: 1;
+    }
+
+
+
+    .userImage {
+        padding: 6px;
     }
 
 
@@ -27,19 +79,15 @@
     .dropBox {
         width: 72px;
         height: 72px;
-        padding:   0px;
+        padding: 0px;
         border: 1px solid #aaaaaa;
     }
 
-    .ct1 {
-        background-color: #0094ff;
-        color: aliceblue;
+    .jobCard {
+        box-shadow: 5px 10px 8px #888888;
+        margin:12px;
     }
 
-    .ct2 {
-        background-color: #064579;
-        color: aliceblue;
-    }
 
 
     .wbTab {
@@ -87,7 +135,7 @@
         display: none;
     }
 
- 
+
 
 
 
@@ -151,43 +199,54 @@
 
 @*<h3>Due in 5 days</h3>*@
 
-    @foreach (var item in Model)
-    {
+@foreach (var item in Model)
+{
+    //sn += 1;
+    string proddesc = "proddesc" + item.Id;
+    string ctcolor = getColorCode(item.CertType);
+    string raePicSrc = "/Content/pictures/M2Profiles/" + item.RAE + ".png";
 
-<table class="ct1" style="table-layout:fixed;width:auto">
-    <colgroup>
-        <col style="width:200px" />
-        <col style="width:72px" />
-    </colgroup>
-    <tbody>
-        <tr>
-            <td >
-                @Html.DisplayFor(modelItem => item.NpsJobId)
-                <br />
-                @Html.DisplayFor(modelItem => item.ProdDescription)
-                <br /> Budget:
-                @Html.DisplayFor(modelItem => item.BudgetHour) hours
-                <br />
-                @Html.DisplayFor(modelItem => item.TaskHandler)
-            </td>
-            <td class="dropBox" ondrop="drop(event)" ondragover="allowDrop(event)" id="@item.Id"></td>
-        </tr>
-    </tbody>
-</table>
+    <table style="table-layout:fixed; width:auto;background-color:@ctcolor" class="jobCard col-lg-3">
+        <colgroup>
+            <col style="width:360px" />
+            <col style="width:180px" />
+        </colgroup>
+        <tbody>
+            <tr style="height:180px">
+                <td>
+                    @Html.DisplayFor(modelItem => item.NpsJobId)
+                    <br />
+                    <p class="h2" id="@proddesc"></p>
+                    <script>getProdDesc("@item.Id")</script>
+
+                    <br /> Budget:
+                    @Html.DisplayFor(modelItem => item.BudgetHour) hours
+                    <br />
+                    @*@Html.DisplayFor(modelItem => item.TaskHandler)*@
+                </td>
+                <td class="dropBox" ondrop="drop(event)" ondragover="allowDrop(event)" id="@item.Id">
+                    <img class="userImage" id="WHITEBOARD_X" src="@raePicSrc" draggable="true" ondragstart="drag(event)" width="180" height="180">
+
+                </td>
+            </tr>
+        </tbody>
+    </table>
 
 
 
-    }
+}
 
 
 <br /><br /><br />
-<hr />
+
 
 <div id="people">
+    <hr />
+    <img class="userImage" id="WHITEBOARD" src="~/Content/pictures/M2Profiles/WHITEBOARD.png" draggable="true" ondragstart="drag(event)" width="180" height="180">
 
-    <img class="userImage" id="KERE" src="~/Content/pictures/M2Profiles/KERE.png" draggable="true" ondragstart="drag(event)" width="72" height="72">
- 
 </div>
+
+
 
 
 
@@ -197,9 +256,9 @@
     var item2 = document.getElementById("people");
     var cln = document.getElementById("people");
 
-    var users = ["BAY", "HDR", "JPOUL", "MAKV", "MASP", "MOMOH", "RATSI", "ROME", "SADEL", "SINSE", "SXL", "TWOE"];
+    var users = ["KERE", "BAY", "HDR", "JPOUL", "MAKV", "MASP", "MOMOH", "RATSI", "ROME", "SADEL", "SINSE", "TWOE", "VIDI", "VMRR", "ZEINA"];
 
-    var ima = document.getElementById("KERE");
+    var ima = document.getElementById("WHITEBOARD");
 
 
     for (var i = 0, j = users.length; i < j; i++) {
@@ -220,7 +279,7 @@
         newNodeId = newNodeId + 1;
         var item = document.getElementById(ev.target.id);
         cln = item.cloneNode(true);
-        cln.id = ev.target.id + "_" + newNodeId;
+        cln.id = ev.target.id + "__" + newNodeId;
     }
 
     function drop(ev) {
@@ -239,33 +298,38 @@
         dropobj.appendChild(cln);
         cln.draggable = false;
 
+        console.log(dropobj.id);
+        var myStr = cln.outerHTML;
+        var subStr = myStr.match("id=\"(.*)__");
+
+        $.ajax(
+            {
+                type: 'GET',
+                url: '/Job/ChangeJobRAE',
+                data: { id: dropobj.id, newRAE: subStr[1] },
+
+                success: function (data) {
+                   
+                    console.log(data);
+                },
+                error: function (e) {
+                    alert('Error: ' + e);
+                    
+                }
+            });
 
 
-        console.log(cln.id + dropobj.id)
     }
 
-
-
-
-
-    var users = @Html.Raw(Json.Encode(users));
-
-</script>
-<script>
 
     var jobdbid = "";
     var newHandler = "";
     var bm = "@bridgeModule";
     var wbt = "@wbt";
 
-        var LUser = @Html.Raw(Json.Encode(LUser));
+    var LUser = @Html.Raw(Json.Encode(LUser));
 
-    function myFunction(x, iid) {
-        i = x;
-        document.getElementById("myDropdown" + x).classList.toggle("show");
-        jobdbid = iid;
-        console.log(iid);
-    }
+
 
     // Close the dropdown if the user clicks outside of it
 
@@ -297,36 +361,10 @@
     })
 
 
-
-    $("#selectListHandler").append(new Option("-- Please select --", null));
-    $.each(LUser, function (key, data) {
-        $("#selectListHandler").append(new Option(data.Signature, data.Signature));
-    });
-
-
-    $.each(["-- Please select --", "1.FEE", "2.VER", "3.AGR"], function (index, value) {
-        $("#selectListTask").append(new Option(value, value));
-    });
-
-    $("#selectListHandler").on('click', function (event) {
-        newHandler = $("#selectListHandler").val();
-        $('#wbTab').val(jobdbid + "," + newHandler);
-        console.log(newHandler);
-        $('#tabFilter').submit();
-    });
-
-    console.log("wbt" + wbt);
     if (wbt != null && wbt != "") {
         document.getElementById(wbt).style.backgroundColor = "lightblue";
         document.getElementById(wbt).style.color = "black";
     }
-
-
-
-
-
-
-
 
 
 </script>

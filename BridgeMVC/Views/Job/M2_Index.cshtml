@@ -1,6 +1,7 @@
 ﻿@model IEnumerable<BridgeMVC.Models.Job>
 
 @{
+
     /**/
 
     ViewBag.Title = "Index";
@@ -9,6 +10,9 @@
 
     var LUser = ViewBag.LUser;
     var US = ViewBag.userSig;
+    var BFlist = (IEnumerable<BridgeMVC.Models.BFinancial>)ViewBag.LCertType;
+
+
 
     IDictionary<string, string> styleDict = new Dictionary<string, string>();
     styleDict.Add("Y", "background-color:seagreen; color:transparent;; cursor: pointer; ");
@@ -27,9 +31,22 @@
         {
             return styleDict[taskVal];
         }
-
-
     }
+
+    string getColorCode(string ct)
+    {
+        string c = "";
+        foreach (BridgeMVC.Models.BFinancial bf in BFlist)
+        {
+            if(bf.CertType == ct)
+            {
+                c = bf.ColorCode;
+            }
+        }
+
+        return "background-color:" + c ;
+    }
+
 
 }
 
@@ -107,7 +124,7 @@
     <tr>
         <th style="border-top:none">           JOB ID       </th>
         <th style="border-top:none">            CUSTOMER        </th>
-        <th style="border-top:none">            DESIGNATION     </th>
+        <th style="border-top:none">            Project Name     </th>
         <th style="border-top:none">           FEE      </th>
         <th style="border-top:none">           VERI       </th>
         <th style="border-top:none">           W.B.        </th>
@@ -126,6 +143,7 @@
             npsJobName = item.ProdDescription;
         }
 
+        string ctColorCode = getColorCode(item.CertType);
 
         string styleT1 = getValuefromDict(item.Task1);
         string styleT2 = getValuefromDict(item.Task2);
@@ -138,7 +156,7 @@
         string editlink3 = "'/Job/CommonTask3/" + item.Id + "'";
         string editlink4 = "'/Job/CommonTask4/" + item.Id + "'";
     <tr>
-        <td>
+        <td style="@ctColorCode">
             @Html.DisplayFor(modelItem => item.NpsJobId)
         </td>
         <td>
