@@ -380,6 +380,36 @@ namespace BridgeMVC.Controllers
             return ("OK");
         }
 
+        [ActionName("UpdateOnHoldNote")]
+        public async Task<string> UpdateOnHoldNote(string id, string newNote)
+        {
+            Job j = await DocumentDBRepository.GetItemAsync<Job>(id);
+            if (j != null)
+            {
+                if (newNote.Contains("OH_from"))
+                {
+                    j.IsHold = true;
+                }
+                else
+                {
+                    j.IsHold = false;
+                }
+
+                j.OnHoldNote = newNote + j.OnHoldNote;
+                await DocumentDBRepository.UpdateItemAsync<Job>(j.Id, j);
+            }
+
+            if (string.IsNullOrEmpty(j.IoraDbId))
+            {
+                return "NoIORA";
+            }
+            else
+            {
+                return j.IoraDbId;
+            }
+
+        }
+
 
         [ActionName("IoraDraft")]
         public async Task<ActionResult> IoraDraftAsync(string id)

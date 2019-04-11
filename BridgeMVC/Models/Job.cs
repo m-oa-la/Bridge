@@ -204,6 +204,7 @@ namespace BridgeMVC.Models
         [JsonProperty(PropertyName = "modificationDesc")]
         public string ModificationDesc { get; set; }
 
+        [DataType(DataType.MultilineText)]
         [JsonProperty(PropertyName = "onHoldNote")]
         public string OnHoldNote { get; set; }
 
