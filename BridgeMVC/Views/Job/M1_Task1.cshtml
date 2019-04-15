@@ -409,7 +409,7 @@
 
     function budgetHourCalc() {
 
-        if ($("#selectCertType").val() + "x" == "x") {
+        if (!$("#selectCertType").val()) {
             alert('The Certitication Type has to be selected first.');
         } else {
             ct1 = $("#selectCertType").val();

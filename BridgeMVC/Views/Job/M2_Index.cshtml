@@ -188,7 +188,7 @@
             <p >
                 @if (!string.IsNullOrEmpty(item.OnHoldNote) && item.IsHold)
                 {
-                    @Html.DisplayFor(modelItem => item.OnHoldNote)
+                    @item.OnHoldNote.ToUpper().Split(new[] { ';' })[0]
 
                 }
                 else

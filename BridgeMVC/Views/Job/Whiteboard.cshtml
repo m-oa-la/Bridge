@@ -28,10 +28,9 @@
         return c;
     }
 
-
-
-
 }
+@*<script src="scripts/DragDropTouch.js"></script>*@
+
 <script>
 
     function getProdDesc(id) {
@@ -77,11 +76,29 @@
 
 
     .dropBox {
-        width: 72px;
-        height: 72px;
+
         padding: 0px;
         border: 1px solid #aaaaaa;
     }
+
+    .dropBoxSub {
+        position: absolute;
+        top: 100px;
+        left: 280px;
+        height: 72px;
+        width: 72px;
+        padding: 0px;
+        border: 1px solid #aaaaaa;
+        background-color:white;
+        color:red;
+        font-size:larger;
+        font-weight:600;
+        align-content:center;
+
+       
+    }
+
+
 
     .jobCard {
         box-shadow: 5px 10px 8px #888888;
@@ -201,10 +218,26 @@
 
 @foreach (var item in Model)
 {
-    //sn += 1;
+    sn += 1;
+    string raeId = "Rae_" + sn;
+    string verId = "Ver_" + sn;
     string proddesc = "proddesc" + item.Id;
     string ctcolor = getColorCode(item.CertType);
     string raePicSrc = "/Content/pictures/M2Profiles/" + item.RAE + ".png";
+    string verifierPicSrc = "";
+
+    if (!string.IsNullOrEmpty(item.JobVerifier))
+    {
+        verifierPicSrc = "/Content/pictures/M2Profiles/" + item.JobVerifier + ".png";
+    }
+    else
+    {
+        verifierPicSrc = "/Content/pictures/M2Profiles/VERIFIER.png";
+    }
+
+
+
+
 
     <table style="table-layout:fixed; width:auto;background-color:@ctcolor" class="jobCard col-lg-3">
         <colgroup>
@@ -224,8 +257,13 @@
                     <br />
                     @*@Html.DisplayFor(modelItem => item.TaskHandler)*@
                 </td>
-                <td class="dropBox" ondrop="drop(event)" ondragover="allowDrop(event)" id="@item.Id">
-                    <img class="userImage" id="WHITEBOARD_X" src="@raePicSrc" draggable="true" ondragstart="drag(event)" width="180" height="180">
+                <td class="dropBox" ondrop="drop(event)" ondragover="allowDrop(event)" id="@item.Id" >
+                    <img class="userImage" id="@raeId" src="@raePicSrc" draggable="false" ondragstart="drag(event)" width="180" height="180">
+
+                    @if(wbt != "wb_dist" && wbt != "wb_oh") { 
+                    <img class="dropBoxSub" id="@verId" src="@verifierPicSrc" draggable="false" ondragstart="drag(event)">
+                    }
+
 
                 </td>
             </tr>
@@ -242,7 +280,7 @@
 
 <div id="people">
     <hr />
-    <img class="userImage" id="WHITEBOARD" src="~/Content/pictures/M2Profiles/WHITEBOARD.png" draggable="true" ondragstart="drag(event)" width="180" height="180">
+    <img class="userImage" id="WHITEBOARD" src="~/Content/pictures/M2Profiles/WHITEBOARD.png" draggable="true" ondragstart="drag(event)" width="81" height="81">
 
 </div>
 
@@ -252,11 +290,20 @@
 
 <script>
 
+    
+    var jobdbid = "";
+    var newHandler = "";
+    var bm = "@bridgeModule";
+    var wbt = "@wbt";
+
+    var LUser = @Html.Raw(Json.Encode(LUser));
+
+
     var newNodeId = 0;
     var item2 = document.getElementById("people");
     var cln = document.getElementById("people");
 
-    var users = ["KERE", "BAY", "HDR", "JPOUL", "MAKV", "MASP", "MOMOH", "RATSI", "ROME", "SADEL", "SINSE", "TWOE", "VIDI", "VMRR", "ZEINA"];
+    var users = ["KERE", "BAY", "HDR", "JPOUL", "MAKV", "MASP", "MOMOH", "RATSI", "ROME", "SADEL", "SINSE", "TWOE", "VINDI", "VMRR", "ZEINA"];
 
     var ima = document.getElementById("WHITEBOARD");
 
@@ -280,54 +327,81 @@
         var item = document.getElementById(ev.target.id);
         cln = item.cloneNode(true);
         cln.id = ev.target.id + "__" + newNodeId;
+        
     }
 
     function drop(ev) {
+        ev.preventDefault();
         var dropobj = document.getElementById(ev.target.id);
         if (dropobj.className != "dropBox") {
             dropobj = dropobj.parentNode;
         }
 
 
-        while (dropobj.firstChild) {
-            dropobj.removeChild(dropobj.firstChild);
-        }
 
-        item2.appendChild(cln);
-        ev.preventDefault();
-        dropobj.appendChild(cln);
-        cln.draggable = false;
 
         console.log(dropobj.id);
         var myStr = cln.outerHTML;
         var subStr = myStr.match("id=\"(.*)__");
 
-        $.ajax(
-            {
-                type: 'GET',
-                url: '/Job/ChangeJobRAE',
-                data: { id: dropobj.id, newRAE: subStr[1] },
+        if ((ev.target.id).substring(0, 3) == "Rae") {
 
-                success: function (data) {
-                   
-                    console.log(data);
-                },
-                error: function (e) {
-                    alert('Error: ' + e);
-                    
-                }
-            });
+
+            cln.style.height = "180px";
+            cln.style.width = "180px";
+
+
+            $.ajax(
+                {
+                    type: 'GET',
+                    url: '/Job/ChangeJobRAE',
+                    data: { id: dropobj.id, newRAE: subStr[1] },
+
+                    success: function (data) {
+
+                        console.log(data);
+                    },
+                    error: function (e) {
+                        alert('Error: ' + e);
+
+                    }
+                });
+            item2.appendChild(cln);
+            ev.preventDefault();
+            dropobj.appendChild(cln);
+            cln.draggable = false;
+
+
+        } else {
+            cln.className = "dropBoxSub";
+            item2.appendChild(cln);
+            ev.preventDefault();
+            dropobj.appendChild(cln);
+            cln.draggable = false;
+
+            $.ajax(
+                {
+                    type: 'GET',
+                    url: '/Job/ChangeJobVerifier',
+                    data: { id: dropobj.id, newVerifier: subStr[1] },
+
+                    success: function (data) {
+
+                        console.log(data);
+                    },
+                    error: function (e) {
+                        alert('Error: ' + e);
+
+                    }
+                });
+
+
+        }
+
 
 
     }
 
-
-    var jobdbid = "";
-    var newHandler = "";
-    var bm = "@bridgeModule";
-    var wbt = "@wbt";
-
-    var LUser = @Html.Raw(Json.Encode(LUser));
 
 
 
