@@ -78,7 +78,7 @@ namespace BridgeMVC.Controllers
 
             string bm = (string)Session["BridgeModule"];
             var myModel = await DocumentDBRepository.GetItemsAsync<Job>(d => d.Tag == "Job" && d.BridgeModule.ToUpper() == bm && d.TaskHandler.ToUpper() == userSig && d.IsComplete == false);
-
+    
             if (!String.IsNullOrEmpty(searchString))
             {
                 searchString.Replace(" ", "");
@@ -272,6 +272,13 @@ namespace BridgeMVC.Controllers
             {
                 string NewTaskNo = NewTask[0].ToString();
 
+                if((item.RAE+"X") == "WHITEBOARDX")
+                {
+                    item.TaskHandler = "WHITEBOARD";
+                }
+
+
+
                 if (!(NewTask + NewHandler).Contains("-"))
                 {
                     Session["SendingFlag"] = NewTaskNo;
@@ -282,6 +289,7 @@ namespace BridgeMVC.Controllers
                     return Redirect(Url.Content("~/Job/SendJob/" + item.Id));
                 }
             }
+
 
             await DocumentDBRepository.UpdateItemAsync<Job>(item.Id, item);
             await SetViewBags();
@@ -375,6 +383,17 @@ namespace BridgeMVC.Controllers
             if (j != null)
             {
                 j.RAE = newRAE;
+                await DocumentDBRepository.UpdateItemAsync<Job>(j.Id, j);
+            }
+            return ("OK");
+        }
+        [ActionName("ChangeJobVerifier")]
+        public async Task<string> ChangeJobVerifier(string id, string newVerifier)
+        {
+            Job j = await DocumentDBRepository.GetItemAsync<Job>(id);
+            if (j != null)
+            {
+                j.JobVerifier = newVerifier;
                 await DocumentDBRepository.UpdateItemAsync<Job>(j.Id, j);
             }
             return ("OK");
@@ -601,7 +620,7 @@ namespace BridgeMVC.Controllers
                     myModel = myModel.Where(d => d.IsHold == true);
                     break;
                 case "wb_og":
-                    myModel = myModel.Where(d => d.RAE !="WHITEBOARD");
+                    myModel = myModel.Where(d => d.RAE !="WHITEBOARD" && string.IsNullOrEmpty(d.JobVerifier) && d.IsHold == false);
                     //myModel = myModel.Where(d => d.IsHold == false && d.Task4 == "TASK");
                     break;
                 case "wb_done":

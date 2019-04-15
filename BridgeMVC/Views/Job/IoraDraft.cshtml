@@ -140,11 +140,11 @@
             @Html.ValidationMessageFor(model => model.DocReqNote, "", new { @class = "text-danger" })
         </div>*@
 
-    <div class=" col-lg-12 ">
+    @*<div class=" col-lg-12 ">
         <h4 style="clear:both;">IORA SoW note: (Auto-included in IORA SoW chapter)</h4>
         @Html.EditorFor(model => model.DocReqNote, new { htmlAttributes = new { @class = "form-control", style = "height:100px" } })
         @Html.ValidationMessageFor(model => model.DocReqNote, "", new { @class = "text-danger" })
-    </div>
+    </div>*@
 
     <div class=" col-lg-12 ">
         <h4 style="clear:both;">Internal approval note: (Not auto-included in IORA)</h4>
@@ -241,7 +241,8 @@
 
 
         sowStr += "\r\nList of product(s): \r\n"
-        if (Job.SubProdType + "x" != "x"){
+        if (Job.SubProdType) {
+
             sowStr += "- " + Job.SubProdType + ": " + Job.ProdDescription;
             if (Job.SerialNo != null) {
                 sowStr += ", SN. " + Job.SerialNo;
