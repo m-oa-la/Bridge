@@ -68,7 +68,7 @@
     @Html.HiddenFor(model => model.JobVerifier)
     @*@Html.HiddenFor(model => model.RAE)*@
     @*@Html.HiddenFor(model => model.MWL)*@
-    @*@Html.HiddenFor(model => model.ExistingCertNo)*@
+    @Html.HiddenFor(model => model.ExistingCertNo)
     @Html.HiddenFor(model => model.CertNo)
     @*@Html.HiddenFor(model => model.SerialNo)*@
     @*@Html.HiddenFor(model => model.MEDItemNo)*@
@@ -148,7 +148,7 @@
         @Html.ValidationMessageFor(model => model.SubOrderNo, "", new { @class = "text-danger" })
     </div>
 
-    <div class="bing col-lg-6">
+    <div class="bing col-lg-6" hidden>
         <p>RAE:<img style="cursor:pointer" src="~/Content/pictures/magic.png" onclick="SetWBasRAE()" class="magicWand"></p>
         @Html.EditorFor(model => model.RAE, new { htmlAttributes = new { @class = "form-control" } })
         @Html.ValidationMessageFor(model => model.RAE, "", new { @class = "text-danger" })
@@ -224,16 +224,20 @@
         @Html.EditorFor(model => model.ApprNote, new { htmlAttributes = new { @class = "form-control", style = "height:100px" } })
         @Html.ValidationMessageFor(model => model.ApprNote, "", new { @class = "text-danger" })
     </div>
-    @{
-        Html.RenderPartial("_SaveCompleteReopen");
-        Html.RenderPartial("_TaskSending");
-    }
+    <hr />
+    <div class="form-group" style="clear:both;">
+        <br />
+        <div class="col-md-12">
+            <input name="submit" type="submit" value="Save" class="btn btn-default" id="saveButton1" readonly />
 
+            <input name="submit" value="Send to WHITEBOARD" class="btn btn-primary" style="float:right" type="submit" id="TaskComplete1" readonly />
+        </div>
+    </div>
 
 </div>
 
 }
-<hr />
+
 
 @section Scripts {
     @Scripts.Render("~/bundles/jqueryval")
@@ -258,13 +262,16 @@
     var taskStatus;
 
     //Set task parameter
-    var taskNo = 2;
+    var taskNo = 3;
     var taskStatusFlag = "FeeVerifier"; //who completed the task
     var taskCompleteDate = "FeeVerifyTime";
     var taskCompleteStr = "The fee is verified by ";
 
     renderTaskShowHide();
     renderTaskHandling();
+
+    $("#selectListHandler").val("WHITEBOARD");
+
 
     //show hide fields
     showHideFields();
@@ -289,35 +296,35 @@
                 //$("#SubProdType").val("Module F certification");
                 break;
             case "MED-G":
-                toShow += "SerialNo,MWL,MEDItemNo,SurveyStation,SurveyDate,";
+                toShow += "";
                 break;
             case "MED-B":
-                toShow += "SerialNo,MWL,MEDItemNo,SurveyStation,SurveyDate,";
+                toShow += "";
                 break;
             case "TA":
-                toShow += "MWL,SurveyStation,SurveyDate,";
+                toShow += "";
                 break;
             case "DVR":
-                toShow += "SerialNo,MWL,";
+                toShow += "";
                 break;
             case "MED-D":
-                toShow += "MWL,SurveyStation,SurveyDate,";
+                toShow += "";
                 break;
             default:
                 toShow += "";
         }
         switch ($("#selectCertAction").val()) {
             case "Modification":
-                toShow += "ExistingCertNo,";
+                toShow += "";
                 break;
             case "Initial with reference":
-                toShow += "ExistingCertNo,";
+                toShow += "";
                 break;
             case "Renewal with modification":
-                toShow += "ExistingCertNo,";
+                toShow += "";
                 break;
             case "Renewal":
-                toShow += "ExistingCertNo,";
+                toShow += "";
                 break;
             default:
                 toShow += "";
@@ -327,16 +334,17 @@
         if (toShow) {
             var splitS = toShow.split(',');
             splitS.forEach(showElement);
-
         }
      }
 
     function showElement(value) {
+        console.log("show" + value);
         if (value) {
             document.getElementById(value).parentNode.style.display = "block";
         }
     }
     function hideElement(value) {
+        console.log("hide" + value);
         if (value) {
             document.getElementById(value).parentNode.style.display = "none";
         }
