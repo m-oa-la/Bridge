@@ -69,22 +69,29 @@
 
 
 
-    .userImage {
-        padding: 6px;
+    .userImage1 {
+       
+        height:180px;
+        width:180px;
     }
-
+    .userImage2 {
+       
+        height: 72px;
+        width: 72px;
+    }
 
 
     .dropBox {
 
-        padding: 0px;
+        padding: 6px;
         border: 1px solid #aaaaaa;
+        /*padding-left:12px;*/
     }
 
     .dropBoxSub {
         position: absolute;
-        top: 100px;
-        left: 280px;
+        top: 114px;
+        left: 300px;
         height: 72px;
         width: 72px;
         padding: 0px;
@@ -225,6 +232,8 @@
     string ctcolor = getColorCode(item.CertType);
     string raePicSrc = "/Content/pictures/M2Profiles/" + item.RAE + ".png";
     string verifierPicSrc = "";
+    string raePicJobId = "Rae_" + item.Id;
+    string verPicJobId = "Ver_" + item.Id;
 
     if (!string.IsNullOrEmpty(item.JobVerifier))
     {
@@ -232,7 +241,7 @@
     }
     else
     {
-        verifierPicSrc = "/Content/pictures/M2Profiles/VERIFIER.png";
+        verifierPicSrc = "/Content/pictures/M2Profiles/WHITEBOARD.png";
     }
 
 
@@ -249,6 +258,10 @@
                 <td>
                     @Html.DisplayFor(modelItem => item.NpsJobId)
                     <br />
+
+                    @Html.DisplayFor(modelItem => item.CustomerName) 
+                    <br />
+
                     <p class="h2" id="@proddesc"></p>
                     <script>getProdDesc("@item.Id")</script>
 
@@ -257,15 +270,20 @@
                     <br />
                     @*@Html.DisplayFor(modelItem => item.TaskHandler)*@
                 </td>
-                <td class="dropBox" ondrop="drop(event)" ondragover="allowDrop(event)" id="@item.Id" >
-                    <img class="userImage" id="@raeId" src="@raePicSrc" draggable="false" ondragstart="drag(event)" width="180" height="180">
-
+                <td  style="padding-right:0;padding-bottom:0">
+                    <div class="dropBox" ondrop="drop(event)" ondragover="allowDrop(event)" id="@raePicJobId">
+                        <img class="userImage1" id="@raeId" src="@raePicSrc" draggable="false" ondragstart="drag(event)" >
+                    </div>
                     @if(wbt != "wb_dist" && wbt != "wb_oh") { 
-                    <img class="dropBoxSub" id="@verId" src="@verifierPicSrc" draggable="false" ondragstart="drag(event)">
+                    <div class="dropBoxSub" ondrop="drop(event)" ondragover="allowDrop(event)" id="@verPicJobId">
+                        <img class="userImage2" id="@verId" src="@verifierPicSrc" draggable="false" ondragstart="drag(event)">
+                    </div>
                     }
-
-
                 </td>
+
+
+
+
             </tr>
         </tbody>
     </table>
@@ -280,7 +298,7 @@
 
 <div id="people">
     <hr />
-    <img class="userImage" id="WHITEBOARD" src="~/Content/pictures/M2Profiles/WHITEBOARD.png" draggable="true" ondragstart="drag(event)" width="81" height="81">
+    <img class="userImage2" id="WHITEBOARD" src="~/Content/pictures/M2Profiles/WHITEBOARD.png" draggable="true" ondragstart="drag(event)" >
 
 </div>
 
@@ -300,23 +318,18 @@
 
 
     var newNodeId = 0;
-    var item2 = document.getElementById("people");
-    var cln = document.getElementById("people");
-
+    var peoplePool = document.getElementById("people");
+    var cln = document.getElementById("people"); //Just decalre a public var
+    var clnOri = cln;
     var users = ["KERE", "BAY", "HDR", "JPOUL", "MAKV", "MASP", "MOMOH", "RATSI", "ROME", "SADEL", "SINSE", "TWOE", "VINDI", "VMRR", "ZEINA"];
-
     var ima = document.getElementById("WHITEBOARD");
 
-
     for (var i = 0, j = users.length; i < j; i++) {
-    var imacln = ima.cloneNode(true);
-    imacln.id = users[i];
-    imacln.src = "/Content/pictures/M2Profiles/" + users[i] + ".png";
-    item2.appendChild(imacln);
+        var imacln = ima.cloneNode(true);
+        imacln.id = users[i];
+        imacln.src = "/Content/pictures/M2Profiles/" + users[i] + ".png";
+        peoplePool.appendChild(imacln);
     }
-
-
-
 
     function allowDrop(ev) {
         ev.preventDefault();
@@ -326,83 +339,66 @@
         newNodeId = newNodeId + 1;
         var item = document.getElementById(ev.target.id);
         cln = item.cloneNode(true);
+        clnOri = cln;
         cln.id = ev.target.id + "__" + newNodeId;
-        
-    }
+     }
 
-    function drop(ev) {
+    function drop(ev)
+    {
         ev.preventDefault();
         var dropobj = document.getElementById(ev.target.id);
-        if (dropobj.className != "dropBox") {
-            dropobj = dropobj.parentNode;
+        var parentobj = dropobj.parentNode;
+        var jobdbid = parentobj.id.split('_')[1];
+
+        console.log(parentobj.id + '---' + jobdbid);
+
+        while (parentobj.firstChild)
+        {
+            parentobj.removeChild(parentobj.firstChild);
         }
 
-
-
-
-        console.log(dropobj.id);
         var myStr = cln.outerHTML;
         var subStr = myStr.match("id=\"(.*)__");
-
-        if ((ev.target.id).substring(0, 3) == "Rae") {
-
-
-            cln.style.height = "180px";
-            cln.style.width = "180px";
-
-
-            $.ajax(
-                {
-                    type: 'GET',
-                    url: '/Job/ChangeJobRAE',
-                    data: { id: dropobj.id, newRAE: subStr[1] },
-
-                    success: function (data) {
-
-                        console.log(data);
-                    },
-                    error: function (e) {
-                        alert('Error: ' + e);
-
-                    }
-                });
-            item2.appendChild(cln);
-            ev.preventDefault();
-            dropobj.appendChild(cln);
-            cln.draggable = false;
-
-
-        } else {
-            cln.className = "dropBoxSub";
-            item2.appendChild(cln);
-            ev.preventDefault();
-            dropobj.appendChild(cln);
-            cln.draggable = false;
-
-            $.ajax(
-                {
-                    type: 'GET',
-                    url: '/Job/ChangeJobVerifier',
-                    data: { id: dropobj.id, newVerifier: subStr[1] },
-
-                    success: function (data) {
-
-                        console.log(data);
-                    },
-                    error: function (e) {
-                        alert('Error: ' + e);
-
-                    }
-                });
-
-
+        var newJobHandler = subStr[1];
+        var apiUrl = "/Job/";
+        
+        if ((ev.target.id).substring(0, 3) == "Rae")
+        {
+            cln.className = "userImage1"
+            apiUrl = apiUrl + 'ChangeJobRAE';
+            peoplePool.appendChild(clnOri);
         }
+        else if ((ev.target.id).substring(0, 3) == "Ver")
+        {
+            cln.className = "userImage2"
+            apiUrl = apiUrl + 'ChangeJobVerifier';
+            peoplePool.appendChild(clnOri);
+        }
+ 
+        parentobj.appendChild(cln);
+        cln.draggable = false;
 
-
-
+        callApi(jobdbid, apiUrl, newJobHandler);
+        console.log(jobdbid + '+' + apiUrl + '+' + newJobHandler);
     }
 
+    function callApi(jobdbid, apiUrl, newJobHandler) {
+        $.ajax(
+            {
+                type: 'GET',
+                url: apiUrl,
+                data: { id: jobdbid, newJobHandler: newJobHandler },
 
+                success: function (data) {
+
+                    console.log(data);
+                },
+                error: function (e) {
+                    alert('Error: ' + e);
+
+                }
+            });
+    }
 
 
     // Close the dropdown if the user clicks outside of it

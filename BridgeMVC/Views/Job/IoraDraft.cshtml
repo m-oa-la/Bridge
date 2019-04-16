@@ -33,7 +33,7 @@
     @Html.HiddenFor(model => model.Task3)
     @Html.HiddenFor(model => model.CustomerName)
     @Html.HiddenFor(model => model.ProdDescription)
-    @Html.HiddenFor(model => model.ApprNote)
+    @*@Html.HiddenFor(model => model.ApprNote)*@
     @Html.HiddenFor(model => model.IsComplete)
     @Html.HiddenFor(model => model.SalesOrderNo)
     @Html.HiddenFor(model => model.SubOrderNo)
@@ -88,7 +88,7 @@
     @Html.HiddenFor(model => model.NoOfCert)
     @Html.HiddenFor(model => model.FeeSet)
     @Html.HiddenFor(model => model.VesselID)
-    @*@Html.HiddenFor(model => model.DocReqNote)*@
+    @Html.HiddenFor(model => model.DocReqNote)
     @Html.HiddenFor(model => model.NpsDbId)
     @Html.HiddenFor(model => model.ExeDoneBy)
     @Html.HiddenFor(model => model.ExeDoneTime)
@@ -145,14 +145,14 @@
         @Html.EditorFor(model => model.DocReqNote, new { htmlAttributes = new { @class = "form-control", style = "height:100px" } })
         @Html.ValidationMessageFor(model => model.DocReqNote, "", new { @class = "text-danger" })
     </div>*@
-
+<hr />
     <div class=" col-lg-12 ">
         <h4 style="clear:both;">Internal approval note: (Not auto-included in IORA)</h4>
         @Html.EditorFor(model => model.ApprNote, new { htmlAttributes = new { @class = "form-control", style = "height:100px" } })
         @Html.ValidationMessageFor(model => model.ApprNote, "", new { @class = "text-danger" })
     </div>
-
-    <input type="submit" value="Update IORA" class="btn btn-default" readonly />
+    <hr />
+    <input type="submit" value="Create/Update IORA" class="btn btn-default" readonly />
 
 }
 @section Scripts {
@@ -290,12 +290,19 @@
 
 
         } else {
-            sowStr += $("#DocReqNote").val(); // docreqnote is used as external approval note for M2
+            sowStr += "-  " + $("#DocReqNote").val() + "\r\n"; // docreqnote is used as external approval note for M2
+            
+            sowStr += "\r\nDocumentation requirement: \r\n"
+
+            $.each(DocReqs, function (key, data) {
+                sowStr += "-  " + data.DocReqItem + "\r\n";
+            });
+
         }
 
 
 
-        sowStr += readApplicableChapter("SoW ending line");
+        sowStr += "\r\n" + readApplicableChapter("SoW ending line");
 
         $("#DpSoW01").val(sowStr);
 
@@ -351,30 +358,6 @@
 
     }
 
-
-
-
-    //function getSowConditions() {
-    //    var chapter = "Scope of work";
-    //    var chBIORA = getObject(BIORA, "Chapter", chapter);
-    //    var s = "";
-    //    $.each(chBIORA, function (key, data) {
-    //            s = s + eval(data.Formula) + "\r\n";
-    //    });
-    //    console.log("s:" + s);
-    //    return s;
-    //}
-
-    //function getDocReq() {
-    //    var chapter = "Scope of work";
-    //    var chBIORA = getObject(BIORA, "Chapter", chapter);
-    //    var s = "";
-    //    $.each(chBIORA, function (key, data) {
-    //        s = s + eval(data.Formula) + "\r\n";
-    //    });
-    //    console.log("s:" + s);
-    //    return s;
-    //}
 
 
 
