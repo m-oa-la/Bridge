@@ -541,7 +541,7 @@ namespace BridgeMVC.Controllers
             {
                 string  NewTaskNo = "1";
 
-                if (!(NewTask + NewHandler).Contains("-"))
+                if (!NewHandler.Contains("-"))
                 {
                     Session["SendingFlag"] = NewTaskNo;
                     item.TaskHandler = NewHandler;
