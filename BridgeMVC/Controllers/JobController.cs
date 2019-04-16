@@ -235,7 +235,6 @@ namespace BridgeMVC.Controllers
         {
             if (ModelState.IsValid)
             {
-
                 string NewTaskNo = NewTask[0].ToString();
 
                 if (!(NewTask + NewHandler).Contains("-"))
@@ -255,7 +254,17 @@ namespace BridgeMVC.Controllers
                     item.Task2 = "TASK";
                     await DocumentDBRepository.UpdateItemAsync<Job>(item.Id, item);
                     return Redirect(Url.Content("~/Job/IoraDraft/" + item.Id));
+                }else if(item.SendingFlag == "TSAtoWB")
+                {
+                    item.RAE = "WHITEBOARD";
+                    item.TaskHandler = "WHITEBOARD";
+                    await DocumentDBRepository.UpdateItemAsync<Job>(item.Id, item);
+                    return Redirect(Url.Content("~/Job/_Index"));
                 }
+
+
+
+
             }
 
             await DocumentDBRepository.UpdateItemAsync<Job>(item.Id, item);
@@ -377,23 +386,23 @@ namespace BridgeMVC.Controllers
 
 
         [ActionName("ChangeJobRAE")]
-        public async Task<string> ChangeJobRAE(string id, string newRAE)
+        public async Task<string> ChangeJobRAE(string id, string newJobHandler)
         {
             Job j = await DocumentDBRepository.GetItemAsync<Job>(id);
             if (j != null)
             {
-                j.RAE = newRAE;
+                j.RAE = newJobHandler;
                 await DocumentDBRepository.UpdateItemAsync<Job>(j.Id, j);
             }
             return ("OK");
         }
         [ActionName("ChangeJobVerifier")]
-        public async Task<string> ChangeJobVerifier(string id, string newVerifier)
+        public async Task<string> ChangeJobVerifier(string id, string newJobHandler)
         {
             Job j = await DocumentDBRepository.GetItemAsync<Job>(id);
             if (j != null)
             {
-                j.JobVerifier = newVerifier;
+                j.JobVerifier = newJobHandler;
                 await DocumentDBRepository.UpdateItemAsync<Job>(j.Id, j);
             }
             return ("OK");
@@ -530,7 +539,7 @@ namespace BridgeMVC.Controllers
         {
             if (ModelState.IsValid)
             {
-                string  NewTaskNo = NewTask[0].ToString();
+                string  NewTaskNo = "1";
 
                 if (!(NewTask + NewHandler).Contains("-"))
                 {
@@ -538,8 +547,11 @@ namespace BridgeMVC.Controllers
                     item.TaskHandler = NewHandler;
                     item.GetType().GetProperty("Task" + NewTaskNo).SetValue(item, "TASK");
                     await DocumentDBRepository.UpdateItemAsync<Job>(item.Id, item);
-
                     return Redirect(Url.Content("~/Job/SendJob/" + item.Id));
+                }
+                else
+                {
+                   await DocumentDBRepository.UpdateItemAsync<Job>(item.Id, item);
                 }
             }
 
@@ -614,13 +626,13 @@ namespace BridgeMVC.Controllers
                     myModel = myModel.Where(d => d.RAE == "WHITEBOARD");
                     break;
                 case "wb_v":
-                    myModel = myModel.Where(d => !string.IsNullOrEmpty(d.JobVerifier));
+                    myModel = myModel.Where(d => !string.IsNullOrEmpty(d.JobVerifier) && d.JobVerifier!= "WHITEBOARD");
                     break;
                 case "wb_oh":
                     myModel = myModel.Where(d => d.IsHold == true);
                     break;
                 case "wb_og":
-                    myModel = myModel.Where(d => d.RAE !="WHITEBOARD" && string.IsNullOrEmpty(d.JobVerifier) && d.IsHold == false);
+                    myModel = myModel.Where(d => d.RAE !="WHITEBOARD" && (string.IsNullOrEmpty(d.JobVerifier)||d.JobVerifier == "WHITEBOARD") && d.IsHold == false);
                     //myModel = myModel.Where(d => d.IsHold == false && d.Task4 == "TASK");
                     break;
                 case "wb_done":

@@ -48,9 +48,19 @@ function taskComplete(taskCompleteStr) {
      dt = getTodayDate();
      $("#" + taskCompleteDate).val(dt);
 
+    console.log($("#selectCertType").val());
+
     if ($("#BridgeModule").val() === "M2") {
-        $("#SendingFlag").val("M2DraftIORA");
-        console.log("m2draftiora");
+
+        if ($("#selectCertType").val() === "PA - TSA-funded") {
+            $("#SendingFlag").val("TSAtoWB");
+            console.log("TSAtoWB");
+        } else {
+            $("#SendingFlag").val("M2DraftIORA");
+            console.log("m2draftiora");
+        }
+
+
     }
 
     taskStatus = taskCompleteStr + userSignature + " on " + dt;
