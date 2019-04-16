@@ -1,9 +1,8 @@
 ﻿@model IEnumerable<BridgeMVC.Models.DocReq>
-
 @{
     Layout = null;
+    string bridgeModule = (string)Session["BridgeModule"];
 }
-
 
 <head>
     <meta charset="utf-8" />
@@ -13,28 +12,29 @@
     @Scripts.Render("~/bundles/modernizr")
     <script language="JavaScript" type="text/javascript" src="~/Scripts/jquery-3.3.1.min.js"></script>
     <script language="JavaScript" type="text/javascript" src="~/Scripts/bridgeScript.js"></script>
-
     <style>
+
         body {
             font: Avenir Next;
         }
     </style>
 </head>
-
-<h4 style="margin-top:1px">Applicable DocReqs </h4>
-
-<table class="table">
-
+y<table class="table">
     @foreach (var item in Model)
     {
         <tr>
-
             <td>
                 @Html.DisplayFor(modelItem => item.DocReqItem)
             </td>
 
-
         </tr>
     }
-
 </table>
+ <script>
+    var bm = "@bridgeModule";
+    if (bm == "M2") {
+        $("#listTitle").html("Required Documentation")
+    }
+
+
+ </script>
