@@ -23,6 +23,12 @@ namespace BridgeMVC.Controllers
     [Authorize]
     public class TechChecklistController : Controller
     {
+        [ActionName("IndexDeletingEnabled")]
+        public async Task<ActionResult> IndexDeletingEnabled()
+        {
+            var items = await DocumentDBRepository.GetItemsAsync<TechChecklist>(d => d.Tag == "TechChecklist");
+            return View(items);
+        }
 
 
         // GET: TechChecklist
@@ -46,7 +52,7 @@ namespace BridgeMVC.Controllers
                 }
                 else
                 {
-                    btcs = btcs.Where(d => d.MainProdType == Job.MainProdType && d.SubProdType == Job.SubProdType && !(d.Condition + "x").ToLower().Contains("renewal") && !(d.Condition + "x").ToLower().Contains("modification"));
+                    btcs = btcs.Where(d => (d.SubProdType =="All" || (d.MainProdType == Job.MainProdType && d.SubProdType == Job.SubProdType)) && !(d.Condition + "x").ToLower().Contains("renewal") && !(d.Condition + "x").ToLower().Contains("modification"));
                 }
                     
 
@@ -117,31 +123,25 @@ namespace BridgeMVC.Controllers
             return View(items);
         }
 
-        public async Task<ActionResult> Delete(string id)
+        [ActionName("DeleteTc")]
+        public async Task<ActionResult> DeleteTcV(string id)
         {
-            if (id == null)
-            {
-                return new HttpStatusCodeResult(HttpStatusCode.BadRequest);
-            }
 
-            TechChecklist r = await DocumentDBRepository.GetItemAsync<TechChecklist>(id);
-
-            if (r == null)
-            {
-                return HttpNotFound();
-            }
-
-            return View(r);
+            var items = await DocumentDBRepository.GetItemAsync<TechChecklist>(id);
+            //Session["BridgeModule"] = items.FirstOrDefault().BridgeModule;
+            return View(items);
         }
 
-        [HttpPost, ActionName("Delete")]
+
+        [HttpPost]
+        [ActionName("DeleteTc")]
         [ValidateAntiForgeryToken]
-        public async Task<ActionResult> DeleteConfirmed(string id)
+        public async Task<ActionResult> DeleteTc(TechChecklist r)
         {
-            TechChecklist r = await DocumentDBRepository.GetItemAsync<TechChecklist>(id);
+            //TechChecklist r = await DocumentDBRepository.GetItemAsync<TechChecklist>(id);
             await DocumentDBRepository.DeleteItemAsync(r.Id);
 
-            return RedirectToAction("Index");
+            return RedirectToAction("IndexDeletingEnabled");
         }
 
 

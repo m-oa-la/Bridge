@@ -14,9 +14,22 @@ namespace BridgeMVC.Controllers
     {
 
         [ActionName("Index")]
-        public async Task<ActionResult> IndexAsync()
+        public async Task<ActionResult> IndexAsync(string searchString)
         {
             var s = await DocumentDBRepository.GetItemsAsync<BTechChecklist>(d => d.Tag == "BTechChecklist");
+           
+            if (!String.IsNullOrEmpty(searchString))
+            {
+                searchString = searchString.ToLower();
+
+                if(searchString != "all") { 
+                   
+
+                s = s.Where(x => (x.SubProdType + " " + x.Subject + " " + x.Condition).ToLower().Contains(searchString));
+                }
+            }
+
+
             return View(s);
         }
 
@@ -29,11 +42,27 @@ namespace BridgeMVC.Controllers
             var j = await DocumentDBRepository.GetItemAsync<Job>("891fb8cc-1ec0-499f-b2c7-d21f318c90f5");
             ViewBag.Job = j;
             var S = new BTechChecklist();
+
             S.BridgeModule = bm;
+            S.MainProdType = "Life-Saving appliances";
+
             return View(S);
         }
 
-      
+      [ActionName("SaveBTCItem")]
+      public async Task<string> SaveBTCItem(string itemId, string Subject, string SubProdType, string GudianceNote, string RuleRef, string Condition)
+        {
+            BTechChecklist btc = await DocumentDBRepository.GetItemAsync<BTechChecklist>(itemId);
+
+            btc.Subject = Subject;
+            btc.SubProdType = SubProdType;
+            btc.GudianceNote = GudianceNote;
+            btc.RuleRef = RuleRef;
+            btc.Condition = Condition;
+
+            await DocumentDBRepository.UpdateItemAsync<BTechChecklist>(btc.Id, btc);
+            return "Saved";
+        }
 
 
 

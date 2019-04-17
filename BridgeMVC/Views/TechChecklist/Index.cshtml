@@ -1,6 +1,7 @@
 ﻿@model IEnumerable<BridgeMVC.Models.TechChecklist>
 @{
     Layout = null;
+    var sn = 0;
 }
 
 <head>
@@ -40,7 +41,7 @@
     <colgroup>
         <col span="1" style="width: 5%;">
         <col span="1" style="width: 20%;">
-        <col span="1" style="width: 40%;">
+        <col span="1" style="width: 20%;">
         <col span="1" style="width: 45%;">
 
         <col span="1" style="width: 5%;">
@@ -49,7 +50,7 @@
     </colgroup>
     <tr>
         <th>
-            Item No.
+            No.
         </th>
         <th>
             Subject
@@ -71,13 +72,13 @@
 
     @foreach (var item in Model)
     {
-        
+        sn += 1;
         string fOK = "fOK(\"" + item.Id + "\")";
         string fNA = "fNA(\"" + item.Id + "\")";
 
         <tr>
             <td>
-                @Html.DisplayFor(modelItem => item.TCNo)
+                @sn
             </td>
             <td>
                 @Html.DisplayFor(modelItem => item.TCSubject)
