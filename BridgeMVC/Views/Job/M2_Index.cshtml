@@ -16,10 +16,9 @@
 
     IDictionary<string, string> styleDict = new Dictionary<string, string>();
     styleDict.Add("Y", "background-color:seagreen; color:transparent;; cursor: pointer; ");
-    styleDict.Add("N", "background-color:LightPink; color:transparent;; cursor: pointer; ");
-    styleDict.Add("TASK", "background-color:lightgreen; color:transparent;; cursor: pointer; ");
-    styleDict.Add("Default", "background-color:LightPink; color:transparent;; cursor: pointer; ");
-
+    styleDict.Add("N", "background-color:gainsboro; color:transparent;; cursor: pointer; ");
+    styleDict.Add("TASK", "background-color:DodgerBlue; color:transparent;; cursor: pointer; ");
+    styleDict.Add("Default", "background-color:gainsboro; color:transparent;; cursor: pointer; ");
 
     string getValuefromDict(string taskVal)
     {
@@ -38,13 +37,13 @@
         string c = "";
         foreach (BridgeMVC.Models.BFinancial bf in BFlist)
         {
-            if(bf.CertType == ct)
+            if (bf.CertType == ct)
             {
                 c = bf.ColorCode;
             }
         }
 
-        return "background-color:" + c ;
+        return "background-color:" + c;
     }
 
 
@@ -68,6 +67,12 @@
     .table th, td {
         border-radius: 25px;
         border: 3px solid white;
+    }
+    footer {
+        position: absolute;
+        bottom: 0;
+        width: 100%;
+        left: 0;
     }
 </style>
 
@@ -161,65 +166,104 @@
 
         string editlink3 = "'/Job/CommonTask3/" + item.Id + "'";
         string editlink4 = "'/Job/CommonTask4/" + item.Id + "'";
-    <tr>
-        <td style="@ctColorCode">
-            <p>  @Html.DisplayFor(modelItem => item.NpsJobId)</p>
-        </td>
-        <td>
-            <p>  @Html.DisplayFor(modelItem => item.CustomerName)</p>
-        </td>
-        <td>
-            <p>
-                @npsJobName
-            </p>
-        </td>
+        <tr>
+            <td style="@ctColorCode">
+                <p>  @Html.DisplayFor(modelItem => item.NpsJobId)</p>
+            </td>
+            <td>
+                <p>  @Html.DisplayFor(modelItem => item.CustomerName)</p>
+            </td>
+            <td>
+                <p>
+                    @npsJobName
+                </p>
+            </td>
 
-        <td style="@styleT1;" onclick="location.href=@editlink1">
-            @Html.DisplayFor(modelItem => item.Task1)
-        </td>
-        <td style="@styleT2" onclick="location.href=@editlink2" class="T2">
-            @Html.DisplayFor(modelItem => item.Task2)
-        </td>
-        <td style="@styleT3" onclick="location.href=@editlink3">
-            @Html.DisplayFor(modelItem => item.Task3)
-        </td>
-        <td></td>
-        <td id="@statusId">
-            <p >
-                @if (!string.IsNullOrEmpty(item.OnHoldNote) && item.IsHold)
+            <td style="@styleT1;" onclick="location.href=@editlink1">
+                @Html.DisplayFor(modelItem => item.Task1)
+            </td>
+            <td style="@styleT2" onclick="location.href=@editlink2" class="T2">
+                @Html.DisplayFor(modelItem => item.Task2)
+            </td>
+            <td style="@styleT3" onclick="location.href=@editlink3">
+                @Html.DisplayFor(modelItem => item.Task3)
+            </td>
+            <td></td>
+            <td id="@statusId">
+                <p>
+                    @if (!string.IsNullOrEmpty(item.OnHoldNote) && item.IsHold)
+                    {
+                        @item.OnHoldNote.ToUpper().Split(new[] { ';' })[0]
+
+                    }
+                    else
+                    {
+                        @Html.DisplayFor(modelItem => item.IoraDbId)
+
+                    }
+
+                </p>
+
+
+            </td>
+            <td>
+
+                @if (item.IsHold)
                 {
-                    @item.OnHoldNote.ToUpper().Split(new[] { ';' })[0]
-
+                    <img id="@startIconId" src="~/Content/pictures/Start.png" height="24" width="24" onclick="startPause(this.id)" />
                 }
                 else
                 {
-                   @Html.DisplayFor(modelItem => item.IoraDbId)
-        
+                    <img id="@pauseIconId" src="~/Content/pictures/Pause.png" height="24" width="24" onclick="startPause(this.id)" />
                 }
 
-            </p>
-
-            
-        </td>
-        <td>
-
-            @if (item.IsHold)
-            {
-                <img id="@startIconId" src="~/Content/pictures/Start.png" height="24" width="24" onclick="startPause(this.id)" />
-             }
-            else
-            {
-                <img id="@pauseIconId" src="~/Content/pictures/Pause.png" height="24" width="24" onclick="startPause(this.id)"/>
-            }
 
 
+            </td>
 
-        </td>
-
-    </tr>
+        </tr>
     }
 
 </table>
+
+
+<footer>
+    @{
+        string colorY = styleDict["Y"] + "width:40px;";
+        string colorN = "background-color:pink; color:transparent; cursor: pointer;" + "width:40px";
+        string colorTASK = styleDict["TASK"] + "width:40px";
+        string colorYellow = "background-color:gold; color:transparent; cursor: pointer;" + "width:40px";
+        string colorDefault = styleDict["Default"] + "width:40px";
+        string styleTxt = "border-radius: 0; border: none";
+
+    }
+    <table class="table table-mid-align-rows hoverRow" style="table-layout:fixed;">
+
+        <tr>
+            <td style="@colorY"></td>
+            <td style="@styleTxt">Task is completed</td>
+            <td style="@colorTASK"></td>
+            <td style="@styleTxt">Task is assigned to you (ongoing)</td>
+            <td style="@colorN"></td>
+            <td style="@styleTxt">IORA pending verification</td>
+            <td style="@colorYellow"></td>
+            <td style="@styleTxt">IORA pending approval / HO job</td>
+            <td style="@colorDefault"></td>
+            <td style="@styleTxt">Task is not assigned</td>
+        </tr>
+    </table>
+</footer>
+
+
+
+
+
+
+
+
+
+
+
 <script>
     var LUser = @Html.Raw(Json.Encode(LUser));
     var us = @Html.Raw(Json.Encode(US));
@@ -243,7 +287,7 @@
             newNote = "Resumed_on:" + formateDateNow() + " by " + us + ";";
         }
         else if (clickedItem == "pause")
-        {   
+        {
             newNote = "OH_from:" + formateDateNow() + " by " + us + ";";
         }
         updateOhNote(jid, newNote)

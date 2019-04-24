@@ -12,10 +12,10 @@
 
 
     IDictionary<string, string> styleDict = new Dictionary<string, string>();
-    styleDict.Add("Y", "background-color:seagreen; color:transparent;; cursor: pointer; ");
-    styleDict.Add("N", "background-color:LightPink; color:transparent;; cursor: pointer; ");
-    styleDict.Add("TASK", "background-color:lightgreen; color:transparent;; cursor: pointer; ");
-    styleDict.Add("Default", "background-color:LightPink; color:transparent;; cursor: pointer; ");
+    styleDict.Add("Y", "background-color:seagreen; color:transparent; cursor: pointer; ");
+    styleDict.Add("N", "background-color:gainsboro; color:transparent; cursor: pointer; ");
+    styleDict.Add("TASK", "background-color:DodgerBlue; color:transparent; cursor: pointer; ");
+    styleDict.Add("Default", "background-color:gainsboro; color:transparent; cursor: pointer; ");
 
 
     string getValuefromDict(string taskVal)
@@ -50,9 +50,14 @@
 
     .table th, td {
         border-radius: 25px;
-        border: 3px solid white;
+        border: 1px solid white;
     }
-
+    footer {
+        position: absolute;
+        bottom: 0;
+        width: 100%;
+        left: 0;
+    }
 
 </style>
 
@@ -179,6 +184,34 @@
     }
 
 </table>
+
+
+<footer>
+    @{
+        string colorY = styleDict["Y"] + "width:40px;";
+        string colorN = "background-color:pink; color:transparent; cursor: pointer;" + "width:40px";
+        string colorTASK = styleDict["TASK"] + "width:40px";
+        string colorYellow= "background-color:gold; color:transparent; cursor: pointer;" + "width:40px";
+        string colorDefault = styleDict["Default"] + "width:40px";
+        string styleTxt = "border-radius: 0; border: none";
+
+    }
+    <table class="table table-mid-align-rows hoverRow" style="table-layout:fixed;">
+  
+        <tr>
+            <td style="@colorY"></td>
+            <td style="@styleTxt">Task is completed</td>
+            <td style="@colorTASK"></td>
+            <td style="@styleTxt">Task is assigned to you (ongoing)</td>
+            <td style="@colorN"></td>
+            <td style="@styleTxt">IORA pending verification</td>
+            <td style="@colorYellow"></td>
+            <td style="@styleTxt">IORA pending approval / HO job</td>
+            <td style="@colorDefault"></td>
+            <td style="@styleTxt">Task is not assigned</td>
+        </tr>
+    </table>
+</footer>
 
 <script>
     var LUser = @Html.Raw(Json.Encode(LUser));
