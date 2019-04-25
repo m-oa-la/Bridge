@@ -12,25 +12,8 @@
     var US = ViewBag.userSig;
     var BFlist = (IEnumerable<BridgeMVC.Models.BFinancial>)ViewBag.LCertType;
 
+    string styleTxt = "border-radius: 0; border: none";
 
-
-    IDictionary<string, string> styleDict = new Dictionary<string, string>();
-    styleDict.Add("Y", "background-color:seagreen; color:transparent;; cursor: pointer; ");
-    styleDict.Add("N", "background-color:gainsboro; color:transparent;; cursor: pointer; ");
-    styleDict.Add("TASK", "background-color:DodgerBlue; color:transparent;; cursor: pointer; ");
-    styleDict.Add("Default", "background-color:gainsboro; color:transparent;; cursor: pointer; ");
-
-    string getValuefromDict(string taskVal)
-    {
-        if (string.IsNullOrEmpty(taskVal))
-        {
-            return styleDict["Default"];
-        }
-        else
-        {
-            return styleDict[taskVal];
-        }
-    }
 
     string getColorCode(string ct)
     {
@@ -68,6 +51,57 @@
         border-radius: 25px;
         border: 3px solid white;
     }
+
+    .classTY {
+        background-color: seagreen;
+        color: transparent;
+        cursor: pointer;
+        width: 40px;
+        border-style: none;
+    }
+
+    .classTN {
+        background-color: gainsboro;
+        color: transparent;
+        cursor: pointer;
+        width: 40px;
+        border-style: none;
+    }
+
+    .classTTASK {
+        background-color: DodgerBlue;
+        color: transparent;
+        cursor: pointer;
+        width: 40px;
+        border-style: none;
+    }
+
+    .classTTASKIORA {
+        background-color: DodgerBlue;
+        color: transparent;
+        cursor: pointer;
+        width: 40px;
+        border-style: none;
+    }
+
+    .classTPENDING {
+        background-color: gold;
+        color: black;
+        cursor: pointer;
+        width: 40px;
+        border-style: none;
+        font-size: large;
+        font-weight: bold;
+    }
+
+    .classT {
+        background-color: gainsboro;
+        color: transparent;
+        cursor: pointer;
+        width: 40px;
+        border-style: none;
+    }
+
 </style>
 
 <h2>
@@ -143,6 +177,17 @@
         string startIconId = "start_" + item.Id;
         string statusId = "status_" + item.Id;
 
+        string classT1 = "classT" + item.Task1;
+        string classT2 = "classT" + item.Task2;
+
+        if (classT2 == "classTTASK")
+        {
+            classT2 = "classTTASKIORA";
+        }
+
+
+        string classT3 = "classT" + item.Task3;
+        string classT4 = "classT" + item.Task4;
         if (string.IsNullOrEmpty(npsJobName))
         {
             npsJobName = item.ProdDescription;
@@ -150,11 +195,7 @@
 
         string ctColorCode = getColorCode(item.CertType);
 
-        string styleT1 = getValuefromDict(item.Task1);
-        string styleT2 = getValuefromDict(item.Task2);
-        string styleT3 = getValuefromDict(item.Task3);
-        string styleT4 = getValuefromDict(item.Task4);
-
+ 
         string editlink1 = "'/Job/CommonTask1/" + item.Id + "'";
         string editlink2 = "'/Job/IsIORAExisting/" + item.Id + "'";
 
@@ -173,13 +214,13 @@
                 </p>
             </td>
 
-            <td style="@styleT1;" onclick="location.href=@editlink1">
+            <td class="@classT1" onclick="location.href=@editlink1">
                 @Html.DisplayFor(modelItem => item.Task1)
             </td>
-            <td style="@styleT2" onclick="location.href=@editlink2" class="T2">
+            <td class="T2 @classT2" onclick="location.href=@editlink2">
                 @Html.DisplayFor(modelItem => item.Task2)
             </td>
-            <td style="@styleT3" onclick="location.href=@editlink3">
+            <td class="@classT3" onclick="location.href=@editlink3">
                 @Html.DisplayFor(modelItem => item.Task3)
             </td>
             <td></td>
@@ -221,34 +262,25 @@
 </table>
 
 <br /><br /><br />
+<hr />
 <footer>
-    @{
-        string colorY = styleDict["Y"] + "width:40px;";
-        string colorN = "background-color:pink; color:transparent; cursor: pointer;" + "width:40px";
-        string colorTASK = styleDict["TASK"] + "width:40px";
-        string colorYellow = "background-color:gold; color:transparent; cursor: pointer;" + "width:40px";
-        string colorDefault = styleDict["Default"] + "width:40px";
-        string styleTxt = "border-radius: 0; border: none";
 
-    }
     <table class="table table-mid-align-rows hoverRow" style="table-layout:fixed;">
-
+  
         <tr>
-            <td style="@colorY"></td>
+            <td class="classTY"></td>
             <td style="@styleTxt">Task is completed</td>
-            <td style="@colorTASK"></td>
+            <td class="classTTASK"></td>
             <td style="@styleTxt">Task is assigned to you (ongoing)</td>
-            <td style="@colorN"></td>
-            <td style="@styleTxt">IORA pending verification</td>
-            <td style="@colorYellow"></td>
-            <td style="@styleTxt">IORA pending approval / HO job</td>
-            <td style="@colorDefault"></td>
+            @*<td class="classT"></td>
+            <td style="@styleTxt">IORA pending verification</td>*@
+            <td class="classTPENDING" align="center">X</td>
+            <td style="@styleTxt">IORA pending approval / HO job for X days</td>
+            <td class="classT"></td>
             <td style="@styleTxt">Task is not assigned</td>
         </tr>
     </table>
 </footer>
-
-
 
 
 
