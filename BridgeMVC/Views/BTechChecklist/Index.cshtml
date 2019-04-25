@@ -3,6 +3,11 @@
  
     var sn = 0;
 }
+<style>
+    table, tr {
+        border-style: hidden;
+    }
+</style>
 <p>
     @Html.ActionLink("Create New", "Create")
 </p>
@@ -53,7 +58,7 @@
                 @Html.EditorFor(modelItem => item.Subject, new { htmlAttributes = new { @class = "form-control" } })
             </td>
             <td class="form-group" id="SubProdType_@item.Id">
-                @Html.DropDownListFor(modelItem => item.SubProdType, new List<SelectListItem> { new SelectListItem { Text = item.SubProdType, Value = item.SubProdType } }, new { @class = "form-control", id = "selectSupProdType" + sn })
+                @Html.DropDownListFor(modelItem => item.SubProdType, new List<SelectListItem> { new SelectListItem { Text = item.SubProdType, Value = item.SubProdType } }, new { @class = "form-control", id = "selectSubProdType" + sn })
 
                 @*@Html.EditorFor(modelItem => item.SubProdType, new { htmlAttributes = new { @class = "form-control" } })*@
             </td>
@@ -117,14 +122,26 @@
     }
 
 
-    for (var i = 1; i < sn; i += 1) {
-        $("#selectSupProdType" + i).append(new Option("All", "All"));
-        $("#selectSupProdType" + i).append(new Option("Winch for life saving", "Winch for life saving"));
-        $("#selectSupProdType" + i).append(new Option("Release mechanism for life saving", "Release mechanism for life saving"));
-        $("#selectSupProdType" + i).append(new Option("Launching appliance for life saving", "Launching appliance for life saving"));
-        //$("#selectCondition" + i).append(new Option("-", ""));
-        //$("#selectCondition" + i).append(new Option("Renewal or Modification", ""));
-    }
+    var subProdDropdowns = $('*[id^="selectSubProdType"]');
+
+    for (index = 0; index < subProdDropdowns.length; ++index) {
+        subProdDropdowns[index].append(new Option("All", "All"));
+        subProdDropdowns[index].append(new Option("Winch for life saving", "Winch for life saving"));
+        subProdDropdowns[index].append(new Option("Release mechanism for life saving", "Release mechanism for life saving"));
+        subProdDropdowns[index].append(new Option("Launching appliance for life saving", "Launching appliance for life saving"));
+    };
+
+
+
+
+    //for (var i = 1; i < sn; i += 1) {
+    //    $("#selectSupProdType" + i).append(new Option("All", "All"));
+    //    $("#selectSupProdType" + i).append(new Option("Winch for life saving", "Winch for life saving"));
+    //    $("#selectSupProdType" + i).append(new Option("Release mechanism for life saving", "Release mechanism for life saving"));
+    //    $("#selectSupProdType" + i).append(new Option("Launching appliance for life saving", "Launching appliance for life saving"));
+    //    //$("#selectCondition" + i).append(new Option("-", ""));
+    //    //$("#selectCondition" + i).append(new Option("Renewal or Modification", ""));
+    //}
 
 
 </script>

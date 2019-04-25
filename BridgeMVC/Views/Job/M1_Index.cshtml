@@ -52,12 +52,7 @@
         border-radius: 25px;
         border: 1px solid white;
     }
-    footer {
-        position: absolute;
-        bottom: 0;
-        width: 100%;
-        left: 0;
-    }
+
 
 </style>
 
@@ -185,14 +180,15 @@
 
 </table>
 
-
+<br /><br /><br />
+<hr />
 <footer>
     @{
-        string colorY = styleDict["Y"] + "width:40px;";
-        string colorN = "background-color:pink; color:transparent; cursor: pointer;" + "width:40px";
-        string colorTASK = styleDict["TASK"] + "width:40px";
-        string colorYellow= "background-color:gold; color:transparent; cursor: pointer;" + "width:40px";
-        string colorDefault = styleDict["Default"] + "width:40px";
+        string colorY = styleDict["Y"] + "width:40px;border: none";
+        string colorN = "background-color:pink; color:transparent; cursor: pointer;" + "width:40px;border: none";
+        string colorTASK = styleDict["TASK"] + "width:40px; border: none";
+        string colorYellow= "background-color:gold; color:transparent; cursor: pointer;" + "width:40px;border: none";
+        string colorDefault = styleDict["Default"] + "width:40px; border: none";
         string styleTxt = "border-radius: 0; border: none";
 
     }

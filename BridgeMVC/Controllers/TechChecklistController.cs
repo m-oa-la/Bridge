@@ -13,6 +13,7 @@ using System.CodeDom.Compiler;
 using System.Text;
 using System.Reflection;
 using System.Web.UI;
+using Microsoft.CodeAnalysis.CSharp.Scripting;
 
 namespace BridgeMVC.Controllers
 {
@@ -35,7 +36,9 @@ namespace BridgeMVC.Controllers
         [ActionName("Index")]
         public async Task<ActionResult> IndexAsync()
         {
+
             string jid = (string)Session["DbJobId"];
+
             var items = await DocumentDBRepository.GetItemsAsync<TechChecklist>(d => d.Tag == "TechChecklist" && d.DbJobId == jid);
 
             if (items.Count() == 0)
