@@ -36,28 +36,21 @@ namespace BridgeMVC.Controllers
         [ActionName("Index")]
         public async Task<ActionResult> IndexAsync()
         {
+            ViewBag.NewTC = false; // To be modified after testing
 
             string jid = (string)Session["DbJobId"];
+            Job Job = await DocumentDBRepository.GetItemAsync<Job>(jid);
+            ViewBag.Job = Job;
 
             var items = await DocumentDBRepository.GetItemsAsync<TechChecklist>(d => d.Tag == "TechChecklist" && d.DbJobId == jid);
 
             if (items.Count() == 0)
             {
-                Job Job = await DocumentDBRepository.GetItemAsync<Job>(jid);
+                ViewBag.NewTC = true;
 
-                var btcs = await DocumentDBRepository.GetItemsAsync<BTechChecklist>(d => d.Tag == "BTechChecklist" && d.BridgeModule == Job.BridgeModule);
+                var btcs = await DocumentDBRepository.GetItemsAsync<BTechChecklist>(d => d.Tag == "BTechChecklist" && d.BridgeModule == Job.BridgeModule && d.MainProdType == Job.MainProdType);
 
-
-                if (Job.BridgeModule =="M1" && (Job.CertAction.ToLower().Contains("renewal") || Job.CertAction.ToLower().Contains("modification")))
-                {
-                    btcs  = btcs.Where(d =>  (d.Condition + "x").ToLower().Contains("renewal") || (d.Condition + "x").ToLower().Contains("modification"));
-
-                }
-                else
-                {
-                    btcs = btcs.Where(d => (d.SubProdType =="All" || (d.MainProdType == Job.MainProdType && d.SubProdType == Job.SubProdType)) && !(d.Condition + "x").ToLower().Contains("renewal") && !(d.Condition + "x").ToLower().Contains("modification"));
-                }
-                    
+                    btcs = btcs.Where(d => (d.SubProdType =="All" ||  d.SubProdType == Job.SubProdType) );
 
                 if (btcs.Count() > 0)
                 {
@@ -73,7 +66,8 @@ namespace BridgeMVC.Controllers
                                 TCNo = btc.ItemNo,
                                 TCRuleRef = btc.RuleRef,
                                 TCSubject = btc.Subject,
-                                BridgeModule = Job.BridgeModule
+                                BridgeModule = Job.BridgeModule,
+                                TCCondition = btc.Condition,
                             };
 
                             await DocumentDBRepository.CreateItemAsync<TechChecklist>(tc);
@@ -126,32 +120,17 @@ namespace BridgeMVC.Controllers
             return View(items);
         }
 
-        [ActionName("DeleteTc")]
-        public async Task<ActionResult> DeleteTcV(string id)
+        [ActionName("DeleteTC")]
+        public async Task<ActionResult> DeleteTCV(string id)
         {
+            TechChecklist tc = await DocumentDBRepository.GetItemAsync<TechChecklist>(id);
 
-            var items = await DocumentDBRepository.GetItemAsync<TechChecklist>(id);
-            //Session["BridgeModule"] = items.FirstOrDefault().BridgeModule;
-            return View(items);
+            if (tc.DbJobId == (string)Session["DbJobId"])
+            {
+                await DocumentDBRepository.DeleteItemAsync(id);
+            }
+            return View();
         }
-
-
-        [HttpPost]
-        [ActionName("DeleteTc")]
-        [ValidateAntiForgeryToken]
-        public async Task<ActionResult> DeleteTc(TechChecklist r)
-        {
-            //TechChecklist r = await DocumentDBRepository.GetItemAsync<TechChecklist>(id);
-            await DocumentDBRepository.DeleteItemAsync(r.Id);
-
-            return RedirectToAction("IndexDeletingEnabled");
-        }
-
-
-
-
-
-
 
 
 

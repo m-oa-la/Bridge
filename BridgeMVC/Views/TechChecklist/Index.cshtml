@@ -2,7 +2,10 @@
 @{
     Layout = null;
     var sn = 0;
+    var NewTC = ViewBag.NewTC;
+    var Job = ViewBag.Job;
 }
+
 
 <head>
     <meta charset="utf-8" />
@@ -35,6 +38,7 @@
         }
     </style>
 </head>
+
 
 
 <table class="table">
@@ -72,11 +76,12 @@
 
     @foreach (var item in Model)
     {
+
         sn += 1;
         string fOK = "fOK(\"" + item.Id + "\")";
         string fNA = "fNA(\"" + item.Id + "\")";
 
-        <tr>
+        <tr id="@item.Id">
             <td>
                 @sn
             </td>
@@ -89,9 +94,8 @@
             <td>
                 @Html.DisplayFor(modelItem => item.TCGuidance)
             </td>
-            @*<td>
-                    @Html.EditorFor(modelItem => item.TCNote, new { htmlAttributes = new { @class = "form-control" } })
-                </td>*@
+    
+
             <td>
                 @Html.EditorFor(modelItem => item.TCOK, new { htmlAttributes = new { @id = item.Id + "OK", @onclick = @fOK } })
 
@@ -104,9 +108,40 @@
     }
 </table>
 <script>
+    var NewTC = @Html.Raw(Json.Encode(NewTC));
+       var Job = @Html.Raw(Json.Encode(Job));
+    console.log(Job);
+    var Model = @Html.Raw(Json.Encode(Model));
+    if (NewTC) {
+        for (index = 0; index < Model.length; ++index) {
+            var m = Model[index];
+            //console.log(m.Id);
+            //$('#' + m.Id).hide();
+            if (m.TCCondition != null && !eval(m.TCCondition)) {
+                deleteTC(m.Id);
+                $('#' + m.Id).hide();
+            }
+        }
+    }
 
 
+    function deleteTC(id) {
+        $.ajax(
+            {
+                type: 'GET',
+                url: "/TechChecklist/DeleteTC",
+                data: { id: id },
 
+                success: function (data) {
+
+                    console.log(id + " is deleted");
+                },
+                error: function (e) {
+                    alert('Error: ' + e);
+
+                }
+            });
+    }
 
 
 
@@ -174,8 +209,6 @@
     //    });
     //}
     //}
-
- 
 
  
 

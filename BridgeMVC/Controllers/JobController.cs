@@ -49,9 +49,30 @@ namespace BridgeMVC.Controllers
          }
 
         [ActionName("Search")]
-        public async Task<ActionResult> SearchAsync(string SearchString)
+        public async Task<ActionResult> SearchAsync(string SearchString, string terminateJobId = "NONE")
         {
             string bm = (string)Session["BridgeModule"];
+            if (terminateJobId != "NONE")
+            {
+                Job j = await DocumentDBRepository.GetItemAsync<Job>(terminateJobId);
+                if (j != null)
+                {
+                    j.IsComplete = true;
+                    if (!j.NpsJobId.Contains("Terminated"))
+                    {
+                        j.NpsJobId = "Terminated" + j.NpsJobId;
+                    }
+                    j.CompletedBy = (string)Session["UserDbId"];
+                    await DocumentDBRepository.UpdateItemAsync<Job>(j.Id, j);
+
+                }
+
+
+                var myModel = await DocumentDBRepository.GetItemsAsync<Job>(d=> d.Id == terminateJobId);
+                   return View(myModel.Take(20));
+            }
+
+
             if (!string.IsNullOrEmpty(SearchString))
             {
                 SearchString = SearchString.ToLower().Replace(" ", "");
@@ -65,6 +86,10 @@ namespace BridgeMVC.Controllers
 
                 return View(myModel);
             }
+
+
+
+
         }
 
         [ActionName("CommonIndex")]
@@ -413,6 +438,8 @@ namespace BridgeMVC.Controllers
             }
             return ("OK");
         }
+
+   
 
         [ActionName("UpdateOnHoldNote")]
         public async Task<string> UpdateOnHoldNote(string id, string newNote)

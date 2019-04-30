@@ -13,9 +13,17 @@ namespace BridgeMVC.Controllers
     public class BTechChecklistController : Controller
     {
 
+        public string JobInstanceId = "891fb8cc-1ec0-499f-b2c7-d21f318c90f5";
+
         [ActionName("Index")]
         public async Task<ActionResult> IndexAsync(string searchString)
         {
+            string bm = (string)Session["BridgeModule"];
+
+            ViewBag.LMainProdType = await DocumentDBRepository.GetItemsAsync<BList>(d => d.Tag == "BList" && d.BridgeModule == bm && d.ListType == "MainProdType");
+            ViewBag.LSubProdType = await DocumentDBRepository.GetItemsAsync<BList>(d => d.Tag == "BList" && d.BridgeModule == bm && d.ListType == "SubProdType");
+            ViewBag.Job = await DocumentDBRepository.GetItemAsync<Job>(JobInstanceId);
+
             var s = await DocumentDBRepository.GetItemsAsync<BTechChecklist>(d => d.Tag == "BTechChecklist");
            
             if (!String.IsNullOrEmpty(searchString))
@@ -23,8 +31,7 @@ namespace BridgeMVC.Controllers
                 searchString = searchString.ToLower();
 
                 if(searchString != "all") { 
-                   
-
+           
                 s = s.Where(x => (x.SubProdType + " " + x.Subject + " " + x.Condition).ToLower().Contains(searchString));
                 }
             }
@@ -39,8 +46,8 @@ namespace BridgeMVC.Controllers
             string bm = (string)Session["BridgeModule"];
             ViewBag.LMainProdType = await DocumentDBRepository.GetItemsAsync<BList>(d => d.Tag == "BList" && d.BridgeModule == bm && d.ListType == "MainProdType");
             ViewBag.LSubProdType = await DocumentDBRepository.GetItemsAsync<BList>(d => d.Tag == "BList" && d.BridgeModule == bm && d.ListType == "SubProdType");
-            var j = await DocumentDBRepository.GetItemAsync<Job>("891fb8cc-1ec0-499f-b2c7-d21f318c90f5");
-            ViewBag.Job = j;
+            ViewBag.Job = await DocumentDBRepository.GetItemAsync<Job>(JobInstanceId);
+     
             var S = new BTechChecklist();
 
             S.BridgeModule = bm;
@@ -105,7 +112,7 @@ namespace BridgeMVC.Controllers
             }
 
             BTechChecklist item = await DocumentDBRepository.GetItemAsync<BTechChecklist>(id);
-            var j = await DocumentDBRepository.GetItemAsync<Job>("891fb8cc-1ec0-499f-b2c7-d21f318c90f5");
+            var j = await DocumentDBRepository.GetItemAsync<Job>(JobInstanceId);
             ViewBag.Job = j;
 
             string bm = (string)Session["BridgeModule"];

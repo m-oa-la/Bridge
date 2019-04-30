@@ -529,7 +529,6 @@
     <Content Include="Views\Job\M1_Task3_LSA.cshtml" />
     <Content Include="Views\TechChecklist\DeleteTc.cshtml" />
     <Content Include="Views\TechChecklist\IndexDeletingEnabled.cshtml" />
-    <Content Include="Views\Job\TerminateJob.cshtml" />
   </ItemGroup>
   <ItemGroup>
     <Folder Include="App_Data\M1\Projects\" />
