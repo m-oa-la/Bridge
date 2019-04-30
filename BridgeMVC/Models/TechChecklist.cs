@@ -44,6 +44,9 @@ namespace BridgeMVC.Models
 
         [JsonProperty(PropertyName = "tcNote")]
         public string TCNote { get; set; }
+
+        [JsonProperty(PropertyName = "tcCondition")]
+        public string TCCondition { get; set; }
     }
 
   

@@ -125,8 +125,14 @@
     </div>
 </div>
 }
+
 <div>
     @Html.ActionLink("Back to List", "Index")
+</div>
+
+<div>
+    One instance of <span class="h3">Job</span>.
+    <pre id="jsonJob"></pre>
 </div>
 <script>
     var LMainProdType = @Html.Raw(Json.Encode(LMainProdType));
@@ -160,4 +166,9 @@
             }
         });
     });
+
+    $("#selectSubProdType").append(new Option("All", "All"));
+
+    document.getElementById("jsonJob").innerHTML = JSON.stringify(Job, undefined, 2);
+
 </script>

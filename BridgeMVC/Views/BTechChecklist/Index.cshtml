@@ -1,86 +1,111 @@
 ﻿@model IEnumerable<BridgeMVC.Models.BTechChecklist>
-@{ 
- 
+@{
+
     var sn = 0;
+    var Job = ViewBag.Job;
+    var LMainProdType = ViewBag.LMainProdType;
+    var LSubProdType = ViewBag.LSubProdType;
+
 }
 <style>
     table, tr {
         border-style: hidden;
     }
+
+    .control-label{
+        font-weight:bold;
+    }
+
 </style>
 <p>
     @Html.ActionLink("Create New", "Create")
 </p>
 @using (Html.BeginForm())
 {
-<p>
-    <button type="submit" name="searchString" value="Winch for life saving">Winch</button>
-    <button type="submit" name="searchString" value="Launching appliance for life saving">Davit</button>
-    <button type="submit" name="searchString" value="Release mechanism for life saving">Release mechanism</button>
-    <button type="submit" name="searchString" value="renewal">Renewal/Modification</button>
-    <button type="submit" name="searchString" value="all" class="btn-default">All</button>
+    <p>
+        <button type="submit" name="searchString" value="Winch for life saving">Winch</button>
+        <button type="submit" name="searchString" value="Launching appliance for life saving">Davit</button>
+        <button type="submit" name="searchString" value="Release mechanism for life saving">Release mechanism</button>
+        <button type="submit" name="searchString" value="enewal">Renewal/Modification</button>
+        <button type="submit" name="searchString" value="all" class="btn-default">All</button>
 
-</p>
+    </p>
 }
-<table class="table">
-    <colgroup>
-        <col span="1" style="width: 10%;">
-        <col span="1" style="width: 10%;">
-        <col span="1" style="width: 60%;">
-        <col span="1" style="width: 10%">
-        <col span="1" style="width: 10%">
-        <col span="1" style="width: 20px;">
-    </colgroup>
-    <tr>
 
-        <th>
-            @Html.DisplayNameFor(model => model.Subject)
-        </th>
-        <th>
-            @Html.DisplayNameFor(model => model.SubProdType)
-        </th>
-        <th>
-            @Html.DisplayNameFor(model => model.GudianceNote)
-        </th>
-        <th>
-            @Html.DisplayNameFor(model => model.RuleRef)
-        </th>
-        <th>
-            @Html.DisplayNameFor(model => model.Condition)
-        </th>
-        <th></th>
-    </tr>
-    @foreach (var item in Model)
-    {
-        sn += 1;
+<tr></tr>
+@foreach (var item in Model)
+{
+    sn += 1;
+<div style="border:groove;border-color:aliceblue;padding:12px">
+    <table>
+        <colgroup>
+            <col span="1" style="width: 5%;">
+            <col span="1" style="width: 20%;">
+            <col span="1" style="width: 5%;">
+            <col span="1" style="width: 30%;">
+            <col span="1" style="width: 10%;">
+            <col span="1" style="width: 20%;">
+            <col span="1" style="width: 10%;">
+
+        </colgroup>
         <tr>
-            <td class="form-group" id="Subject_@item.Id">
+            <td class="control-label ">Subject</td>
+            <td class="form-group col-lg-3" id="Subject_@item.Id">
+
                 @Html.EditorFor(modelItem => item.Subject, new { htmlAttributes = new { @class = "form-control" } })
             </td>
+            <td class="control-label "> SubProdType</td>
             <td class="form-group" id="SubProdType_@item.Id">
+
                 @Html.DropDownListFor(modelItem => item.SubProdType, new List<SelectListItem> { new SelectListItem { Text = item.SubProdType, Value = item.SubProdType } }, new { @class = "form-control", id = "selectSubProdType" + sn })
 
                 @*@Html.EditorFor(modelItem => item.SubProdType, new { htmlAttributes = new { @class = "form-control" } })*@
             </td>
-            <td class="form-group" id="GN_@item.Id">
-                @Html.EditorFor(modelItem => item.GudianceNote, new { htmlAttributes = new { @class = "form-control" } })
-            </td>
+            <td class="control-label ">Ref. Rule</td>
             <td class="form-group" id="RuleRef_@item.Id">
+
                 @Html.EditorFor(modelItem => item.RuleRef, new { htmlAttributes = new { @class = "form-control" } })
             </td>
-            <td class="form-group" id="Condition_@item.Id">
-                @Html.EditorFor(modelItem => item.Condition, new { htmlAttributes = new { @class = "form-control" } })
-                @*@Html.DropDownListFor(modelItem => item.Condition, new List<SelectListItem> { new SelectListItem { Text = item.Condition, Value = item.Condition } }, new { @class = "form-control", id = "selectCondition" + sn })*@
-
-            </td>
             <td>
-                <button onclick="saveTCItem('@item.Id')"> Save </button>
-
+                <button class="btn-default" onclick="saveTCItem('@item.Id')"> Save </button>
             </td>
+
         </tr>
+
+    </table>
+
+
+    <span class="control-label col-md-2"> Guidance Note</span>
+    <div class="form-group col-lg-10" id="GN_@item.Id">
+        @Html.EditorFor(modelItem => item.GudianceNote, new { htmlAttributes = new { @class = "form-control" } })
+        @Html.ValidationMessageFor(modelItem => item.GudianceNote, "", new { @class = "text-danger" })
+    </div>
+
+
+    <span class="control-label col-md-2"> Condition</span>
+
+    <div class="form-group col-lg-8" id="Condition_@item.Id">
+        @Html.EditorFor(modelItem => item.Condition, new { htmlAttributes = new { @class = "form-control" } })
+        @*@Html.DropDownListFor(modelItem => item.Condition, new List<SelectListItem> { new SelectListItem { Text = item.Condition, Value = item.Condition } }, new { @class = "form-control", id = "selectCondition" + sn })*@
+
+    </div>
+    <button onclick="testCondition('@item.Id')"> Test Condition </button>
+</div>
+
     }
-</table>
+
+<br />
+
+    <div>
+        One instance of <span class="h3">Job</span>.
+        <pre id="jsonJob"></pre>
+    </div>
+
 <script>
+
+    var LMainProdType = @Html.Raw(Json.Encode(LMainProdType));
+    var LSubProdType = @Html.Raw(Json.Encode(LSubProdType));
+    var Job = @Html.Raw(Json.Encode(Job));
     var sn = @sn;
     console.log(sn);
 
@@ -111,7 +136,7 @@
                 data: { itemId: itemId, Subject: Subject, SubProdType: SubProdType, GudianceNote: GudianceNote, RuleRef: RuleRef, Condition: Condition },
 
                 success: function (data) {
-                    alert(data);
+
                     console.log(data);
                 },
                 error: function (e) {
@@ -121,18 +146,27 @@
             });
     }
 
+    function testCondition(itemId) {
+        var cond = $("#Condition_" + itemId).children().eq(0).val();
+        alert(eval(cond));
+    }
 
     var subProdDropdowns = $('*[id^="selectSubProdType"]');
 
     for (index = 0; index < subProdDropdowns.length; ++index) {
+
+        $.each(LSubProdType, function (key, data) {
+            if (data.UpperLvl == "LifeLife-Saving appliances") {
+                subProdDropdowns[index].append(new Option(data.ListItem, data.ListItem));
+            }
+        });
+
         subProdDropdowns[index].append(new Option("All", "All"));
-        subProdDropdowns[index].append(new Option("Winch for life saving", "Winch for life saving"));
-        subProdDropdowns[index].append(new Option("Release mechanism for life saving", "Release mechanism for life saving"));
-        subProdDropdowns[index].append(new Option("Launching appliance for life saving", "Launching appliance for life saving"));
+
     };
 
 
-
+    document.getElementById("jsonJob").innerHTML = JSON.stringify(Job, undefined, 2);
 
     //for (var i = 1; i < sn; i += 1) {
     //    $("#selectSupProdType" + i).append(new Option("All", "All"));
