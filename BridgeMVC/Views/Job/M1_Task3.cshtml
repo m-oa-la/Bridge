@@ -68,7 +68,7 @@
     @Html.HiddenFor(model => model.RAE)
     @*@Html.HiddenFor(model => model.MWL)*@
     @*@Html.HiddenFor(model => model.ExistingCertNo)*@
-    @Html.HiddenFor(model => model.CertNo)
+    @*@Html.HiddenFor(model => model.CertNo)*@
     @*@Html.HiddenFor(model => model.SerialNo)*@
     @*@Html.HiddenFor(model => model.MEDItemNo)*@
     @Html.HiddenFor(model => model.DeliveryWeek)
@@ -188,6 +188,11 @@
         <p> Serial no.: </p>
         @Html.EditorFor(model => model.SerialNo, new { htmlAttributes = new { @class = "form-control", @readonly = "readonly" } })
         @Html.ValidationMessageFor(model => model.SerialNo, "", new { @class = "text-danger" })
+    </div>
+    <div class="bing col-lg-6">
+        <p> New ceritificate No. </p>
+        @Html.EditorFor(model => model.CertNo, new { htmlAttributes = new { @class = "form-control" } })
+        @Html.ValidationMessageFor(model => model.CertNo, "", new { @class = "text-danger" })
     </div>
     <div class="bing col-lg-6">
         <p> Survey station </p>
