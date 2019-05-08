@@ -200,7 +200,7 @@ namespace BridgeMVC.Models
 
         [JsonProperty(PropertyName = "ioraSpentTime")]
         public int? IORASpentTime { get; set; }
-
+        [DataType(DataType.MultilineText)]
         [JsonProperty(PropertyName = "modificationDesc")]
         public string ModificationDesc { get; set; }
 

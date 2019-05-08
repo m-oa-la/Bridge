@@ -160,6 +160,9 @@ namespace BridgeMVC.Controllers
 
             if(item.BridgeModule == "M1" && item.MainProdType.ToLower() == "life-saving appliances" && item.CertType != "MED-F")
             {
+
+                var tcs = await DocumentDBRepository.GetItemsAsync<TechChecklist>(d => d.Tag == "TechChecklist" && d.DbJobId == id);
+                Session["TCNo"] = tcs.Count();
                 return View("M1_Task3_LSA", item);
             }
 
@@ -266,8 +269,10 @@ namespace BridgeMVC.Controllers
                 {
                     Session["SendingFlag"] = NewTaskNo;
                     item.TaskHandler = NewHandler;
-                    item.GetType().GetProperty("Task" + NewTaskNo).SetValue(item, "TASK");
-
+                    string targetTaskStatus = (string)item.GetType().GetProperty("Task" + NewTaskNo).GetValue(item,null);
+                    if(targetTaskStatus != "Y") { 
+                        item.GetType().GetProperty("Task" + NewTaskNo).SetValue(item, "TASK");
+                    }
                     await DocumentDBRepository.UpdateItemAsync<Job>(item.Id, item);
 
                     return Redirect(Url.Content("~/Job/SendJob/" + item.Id));
@@ -735,7 +740,6 @@ namespace BridgeMVC.Controllers
             item.StatusNote = "";
             Session["newHandler"] = "-";
             Session["newTask"] = "-";
-
 
             if (item == null)
             {

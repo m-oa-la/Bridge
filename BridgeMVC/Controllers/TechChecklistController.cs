@@ -79,6 +79,7 @@ namespace BridgeMVC.Controllers
                 }
 
             }
+            Session["TCNo"] = items.Count();
 
             return View(items);
         }
