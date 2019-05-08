@@ -64,7 +64,7 @@
     @Html.HiddenFor(model => model.CertAction)
     @Html.HiddenFor(model => model.MainProdType)
     @Html.HiddenFor(model => model.SubProdType)
-    @*@Html.HiddenFor(model => model.ReceivedTime)*@
+    @Html.HiddenFor(model => model.ReceivedTime)
     @Html.HiddenFor(model => model.FeeSetTime)
     @Html.HiddenFor(model => model.IoraSentTime)
     @Html.HiddenFor(model => model.IoraReturnedTime)
@@ -144,10 +144,12 @@
     </div>
 
     <div class="bing col-lg-6">
-        Job received time: (dd-MM-yyyy HH:mm:ss)
-        @{ Html.EnableClientValidation(false); }
-        @Html.EditorFor(model => model.ReceivedTime, new { htmlAttributes = new { @class = "form-control", @Value = Model.ReceivedTime?.ToString("dd-MM-yyyy HH:mm:ss") } })
-        @{ Html.EnableClientValidation(true); }
+        <p>
+            Job received time: (DD/MM/YYYY)
+            <img onclick="viewCalendar('jcalendar_parent', 'ReceivedTime')" style="margin-top: 5px;" width="20" height="20" src="~/Content/pictures/calendar-32x32.png" alt="CAL" border="0">
+        </p>
+        <div id="jcalendar_parent" class="jcalendar_parent" style="z-index: 999"></div>
+        <input class="form-control" name="ReceivedTime_Input" value="@Model.ReceivedTime" id="ReceivedTime_Input" readonly />
     </div>
 
 

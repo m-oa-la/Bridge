@@ -579,7 +579,7 @@ namespace BridgeMVC.Controllers
             {
                 string  NewTaskNo = "1";
 
-                if (!NewHandler.Contains("-"))
+                if (!NewHandler.Contains("-") && !string.IsNullOrEmpty(NewHandler) && NewHandler.ToLower() != "null")
                 {
                     Session["SendingFlag"] = NewTaskNo;
                     item.TaskHandler = NewHandler;

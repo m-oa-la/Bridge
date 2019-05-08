@@ -200,10 +200,15 @@
         @Html.ValidationMessageFor(model => model.SurveyStation, "", new { @class = "text-danger" })
     </div>
     <div class="bing col-lg-6">
-        <p> Survey date: (DD-MM-YYYY) </p>
-        @{ Html.EnableClientValidation(false); }
-        @Html.EditorFor(model => model.SurveyDate, new { htmlAttributes = new { @class = "form-control", @Value = Model.ReceivedTime?.ToString("dd-MM-yyyy HH:mm:ss") } })
-        @{ Html.EnableClientValidation(true); }
+        <p>
+            Survey date: (DD/MM/YYYY)
+            <img onclick="viewCalendar('jcalendar_parent', 'SurveyDate')" style="margin-top: 5px;" width="20" height="20" src="~/Content/pictures/calendar-32x32.png" alt="CAL" border="0">
+        </p>
+        <div id="jcalendar_parent" class="jcalendar_parent" style="z-index: 999"></div>
+
+        <input class="form-control" name="SurveyDate_Input" value="@Model.SurveyDate" id="SurveyDate_Input" readonly />
+
+
     </div>
 
     <iframe id="iframe" frameborder="0" src="@Url.Content("~/Rule/IndexReadOnly")" style="width: 100%; height: 200px;"></iframe>
@@ -348,59 +353,9 @@
 
     //$("#selectCertType").change();
 
-    $("#selectCertType").on("change", function () {
-        showHideFields()
-    });
-    $("#selectCertAction").on("change", function () {
-        showHideFields()
-    });
 
 
 
-
-
-
-
-
-    //console.log(getTodayDate());
-
-    //set up select list
-    $.each(LCertType, function (key, data) {
-        $("#selectCertType").append(new Option(data.ListItem, data.ListItem));
-    });
-
-    $.each(LCertAction, function (key, data) {
-        $("#selectCertAction").append(new Option(data.ListItem, data.ListItem));
-    });
-
-    $.each(LMainProdType, function (key, data) {
-        $("#selectMainProdType").append(new Option(data.ListItem, data.ListItem));
-    });
-
-    var mval = $("#selectMainProdType :selected").text();
-      $.each(LSubProdType, function (key, data) {
-        if (data.UpperLvl == mval) {
-            $("#selectSubProdType").append(new Option(data.ListItem, data.ListItem));
-        }
-    });
-
-//When main prodtype changes, refesh the sub prod type.
-    $("#selectMainProdType").on("change", function () {
-        var mval = $("#selectMainProdType :selected").text();
-
-        $('#selectSubProdType option').each(function () {
-            if ($(this).val() != 'X') {
-                $(this).remove();
-            }
-        });
-
-        $("#selectSubProdType option").remove();
-        $.each(LSubProdType, function (key, data) {
-            if (data.UpperLvl == mval) {
-                $("#selectSubProdType").append(new Option(data.ListItem, data.ListItem));
-            }
-        });
-    });
 
 
 

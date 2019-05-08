@@ -184,9 +184,15 @@
         @Html.ValidationMessageFor(model => model.SurveyStation, "", new { @class = "text-danger" })
     </div>
     <div class="bing col-lg-6">
-        <p> Survey date: ((DD-MM-YYYY))</p>
-        @Html.EditorFor(model => model.SurveyDate, new { htmlAttributes = new { @class = "form-control" } })
-        @Html.ValidationMessageFor(model => model.SurveyDate, "", new { @class = "text-danger" })
+        <p>
+            Survey date: (DD/MM/YYYY)
+            <img onclick="viewCalendar('jcalendar_parent', 'SurveyDate')" style="margin-top: 5px;" width="20" height="20" src="~/Content/pictures/calendar-32x32.png" alt="CAL" border="0">
+        </p>
+        <div id="jcalendar_parent" class="jcalendar_parent" style="z-index: 999"></div>
+
+        <input class="form-control" name="SurveyDate_Input" value="@Model.SurveyDate" id="SurveyDate_Input" readonly />
+
+
     </div>
     <div style="clear:both" ; class=" col-lg-12 ">
         <h4 style="clear:both;">Scope of modification:</h4>
@@ -219,7 +225,7 @@
         @Html.EditorFor(model => model.FeeSetTime, new { htmlAttributes = new { @class = "form-control", id = "feeSetTime", @Value = Model.FeeSetTime?.ToString("dd-MM-yyyy HH:mm:ss") } })
         @Html.EditorFor(model => model.TaskHandler, new { htmlAttributes = new { @class = "form-control" } })
     </div>
-    <h4 style="clear:both;">External note to be shown on IORA/Sow:</h4>
+    <h4 style="clear:both;">External note, to be shown at chapter 'SoW' of IORA:</h4>
     <div class=" col-lg-12 ">
 
         @Html.EditorFor(model => model.DocReqNote, new { htmlAttributes = new { @class = "form-control", style = "height:100px" } })

@@ -15,7 +15,9 @@
 }
 <script language="JavaScript" type="text/javascript" src="~/Scripts/jquery-3.3.1.min.js"></script>
 <script language="JavaScript" type="text/javascript" src="~/Scripts/bridgeScript.js"></script>
-<script language="JavaScript" type="text/javascript" src="~/Scripts/jquery-ui-1.12.1.js"></script>
+<script language="JavaScript" type="text/javascript" src="~/Scripts/jquery-ui.min.js"></script>
+
+
 <style>
 
     .bing {
@@ -31,55 +33,56 @@
     }
 </style>
 <h2>FEE SETTING</h2>
+
 @using (Html.BeginForm(null, null, FormMethod.Post, new { id = "jobForm" }))
 {
     @Html.AntiForgeryToken()
 
-    <div>
-        @Html.HiddenFor(model => model.Tag)
-        @Html.HiddenFor(model => model.BridgeModule)
-        @Html.HiddenFor(model => model.Id)
-        @Html.HiddenFor(model => model.NpsJobName)
-        @*@Html.HiddenFor(model => model.NpsJobId)*@
-        @*@Html.HiddenFor(model => model.TaskHandler)*@
-        @Html.HiddenFor(model => model.Task1)
-        @Html.HiddenFor(model => model.Task2)
-        @Html.HiddenFor(model => model.Task3)
-        @*@Html.HiddenFor(model => model.CustomerName)*@
-        @*@Html.HiddenFor(model => model.ProdDescription)*@
-        @*@Html.HiddenFor(model => model.ApprNote)*@
-        @Html.HiddenFor(model => model.IsComplete)
-        @*@Html.HiddenFor(model => model.SalesOrderNo)*@
-        @Html.HiddenFor(model => model.SubOrderNo)
-        @*@Html.HiddenFor(model => model.CertType)*@
-        @*@Html.HiddenFor(model => model.CertAction)*@
-        @*@Html.HiddenFor(model => model.MainProdType)*@
-        @*@Html.HiddenFor(model => model.SubProdType)*@
-        @Html.HiddenFor(model => model.ReceivedTime)
-        @*@Html.HiddenFor(model => model.FeeSetTime)*@
-        @Html.HiddenFor(model => model.IoraSentTime)
-        @Html.HiddenFor(model => model.IoraReturnedTime)
-        @Html.HiddenFor(model => model.JobCompletedTime)
-        @*@Html.HiddenFor(model => model.CustomerName)
-            @Html.HiddenFor(model => model.CustomerId)*@
-        @*@Html.HiddenFor(model => model.Fee)*@
-        @*@Html.HiddenFor(model => model.FeeSetter)
-            @Html.HiddenFor(model => model.FeeVerifier)*@
-        @Html.HiddenFor(model => model.JobVerifier)
-        @Html.HiddenFor(model => model.RAE)
-        @*@Html.HiddenFor(model => model.MWL)*@
-        @*@Html.HiddenFor(model => model.ExistingCertNo)*@
-        @Html.HiddenFor(model => model.CertNo)
-        @*@Html.HiddenFor(model => model.SerialNo)*@
-        @*@Html.HiddenFor(model => model.MEDItemNo)*@
-        @*@Html.HiddenFor(model => model.DeliveryWeek)*@
-        @Html.HiddenFor(model => model.LocalUnit)
-        @Html.HiddenFor(model => model.ArchiveFolder)
-        @Html.HiddenFor(model => model.IsHold)
-        @Html.HiddenFor(model => model.StatusNote)
-        @Html.HiddenFor(model => model.VerifyLvl)
-        @*@Html.HiddenFor(model => model.SurveyDate)
-            @Html.HiddenFor(model => model.SurveyStation)*@
+<div>
+    @Html.HiddenFor(model => model.Tag)
+    @Html.HiddenFor(model => model.BridgeModule)
+    @Html.HiddenFor(model => model.Id)
+    @Html.HiddenFor(model => model.NpsJobName)
+    @*@Html.HiddenFor(model => model.NpsJobId)*@
+    @*@Html.HiddenFor(model => model.TaskHandler)*@
+    @Html.HiddenFor(model => model.Task1)
+    @Html.HiddenFor(model => model.Task2)
+    @Html.HiddenFor(model => model.Task3)
+    @*@Html.HiddenFor(model => model.CustomerName)*@
+    @*@Html.HiddenFor(model => model.ProdDescription)*@
+    @*@Html.HiddenFor(model => model.ApprNote)*@
+    @Html.HiddenFor(model => model.IsComplete)
+    @*@Html.HiddenFor(model => model.SalesOrderNo)*@
+    @Html.HiddenFor(model => model.SubOrderNo)
+    @*@Html.HiddenFor(model => model.CertType)*@
+    @*@Html.HiddenFor(model => model.CertAction)*@
+    @*@Html.HiddenFor(model => model.MainProdType)*@
+    @*@Html.HiddenFor(model => model.SubProdType)*@
+    @Html.HiddenFor(model => model.ReceivedTime)
+    @*@Html.HiddenFor(model => model.FeeSetTime)*@
+    @Html.HiddenFor(model => model.IoraSentTime)
+    @Html.HiddenFor(model => model.IoraReturnedTime)
+    @Html.HiddenFor(model => model.JobCompletedTime)
+    @*@Html.HiddenFor(model => model.CustomerName)
+        @Html.HiddenFor(model => model.CustomerId)*@
+    @*@Html.HiddenFor(model => model.Fee)*@
+    @*@Html.HiddenFor(model => model.FeeSetter)
+        @Html.HiddenFor(model => model.FeeVerifier)*@
+    @Html.HiddenFor(model => model.JobVerifier)
+    @Html.HiddenFor(model => model.RAE)
+    @*@Html.HiddenFor(model => model.MWL)*@
+    @*@Html.HiddenFor(model => model.ExistingCertNo)*@
+    @Html.HiddenFor(model => model.CertNo)
+    @*@Html.HiddenFor(model => model.SerialNo)*@
+    @*@Html.HiddenFor(model => model.MEDItemNo)*@
+    @*@Html.HiddenFor(model => model.DeliveryWeek)*@
+    @Html.HiddenFor(model => model.LocalUnit)
+    @Html.HiddenFor(model => model.ArchiveFolder)
+    @Html.HiddenFor(model => model.IsHold)
+    @Html.HiddenFor(model => model.StatusNote)
+    @Html.HiddenFor(model => model.VerifyLvl)
+    @Html.HiddenFor(model => model.SurveyDate)
+        @*@Html.HiddenFor(model => model.SurveyStation)*@
         @Html.HiddenFor(model => model.TechPara1)
         @Html.HiddenFor(model => model.TechPara2)
         @Html.HiddenFor(model => model.TechPara3)
@@ -192,9 +195,15 @@
             @Html.ValidationMessageFor(model => model.SurveyStation, "", new { @class = "text-danger" })
         </div>
         <div class="bing col-lg-6">
-            <p> Survey date: ((DD-MM-YYYY))</p>
-            @Html.EditorFor(model => model.SurveyDate, new { htmlAttributes = new { @class = "form-control" } })
-            @Html.ValidationMessageFor(model => model.SurveyDate, "", new { @class = "text-danger" })
+            <p>
+                Survey date: (DD/MM/YYYY)
+                <img onclick="viewCalendar('jcalendar_parent', 'SurveyDate')" style="margin-top: 5px;" width="20" height="20" src="~/Content/pictures/calendar-32x32.png" alt="CAL" border="0">
+            </p>
+                <div id="jcalendar_parent" class="jcalendar_parent" style="z-index: 999"></div>
+
+            <input class="form-control" name="SurveyDate_Input" value="@Model.SurveyDate" id="SurveyDate_Input" readonly />
+
+          
         </div>
 
         <div style="clear:both" ; class=" col-lg-12 ">
