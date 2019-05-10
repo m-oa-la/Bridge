@@ -36,40 +36,49 @@
             font-size: 110%;
             display: inline;
         }
+
+        td{
+            border:solid;
+            border-width:thin;
+            border-color:grey;
+        }
+
+  
+
     </style>
 </head>
 
 
-
-<table class="table">
+<h4>LSA Tech.Checklist</h4>
+<table class="table" style="font-size:medium;" border="1" >
     <colgroup>
         <col span="1" style="width: 5%;">
-        <col span="1" style="width: 20%;">
-        <col span="1" style="width: 20%;">
-        <col span="1" style="width: 45%;">
+        <col span="1" style="width: 25%;">
+        <col span="1" style="width: 10%;">
+        <col span="1" style="width: 50%;">
 
         <col span="1" style="width: 5%;">
         <col span="1" style="width: 5%;">
 
     </colgroup>
-    <tr>
-        <th>
+    <tr >
+        <th style="background-color:lightgray">
             No.
         </th>
-        <th>
+        <th style="background-color:lightgray">
             Subject
         </th>
-        <th>
-            Rule reference
+        <th style="background-color:lightgray">
+            Rule ref.
         </th>
-        <th>
+        <th style="background-color:lightgray">
             Guidance
         </th>
 
-        <th>
+        <th style="background-color:lightgray">
             YES
         </th>
-        <th>
+        <th style="background-color:lightgray">
             NA
         </th>
     </tr>
@@ -81,8 +90,8 @@
         string fOK = "fOK(\"" + item.Id + "\")";
         string fNA = "fNA(\"" + item.Id + "\")";
 
-        <tr id="@item.Id">
-            <td>
+        <tr id="@item.Id" >
+            <td >
                 @sn
             </td>
             <td>
@@ -94,7 +103,7 @@
             <td>
                 @Html.DisplayFor(modelItem => item.TCGuidance)
             </td>
-    
+
 
             <td>
                 @Html.EditorFor(modelItem => item.TCOK, new { htmlAttributes = new { @id = item.Id + "OK", @onclick = @fOK } })
@@ -161,7 +170,7 @@
 
 
        updateTC(id, tcokvalue, tcnavalue);
-    } 
+    }
 
     function fNA(id) {
         var cOK = id + "OK";
@@ -175,7 +184,7 @@
         var tcnavalue = document.getElementById(cNA).checked;
 
         updateTC(id, tcokvalue, tcnavalue);
-    } 
+    }
 
 
     function updateTC(tcid, tcokvalue, tcnavalue) {
@@ -210,7 +219,7 @@
     //}
     //}
 
- 
+
 
 
 

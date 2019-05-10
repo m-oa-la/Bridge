@@ -158,7 +158,7 @@ namespace BridgeMVC.Controllers
 
 
 
-            if(item.BridgeModule == "M1" && item.MainProdType.ToLower() == "life-saving appliances" && item.CertType != "MED-F")
+            if(item.BridgeModule == "M1" && item.MainProdType.ToLower() == "life-saving appliances" )
             {
 
                 var tcs = await DocumentDBRepository.GetItemsAsync<TechChecklist>(d => d.Tag == "TechChecklist" && d.DbJobId == id);
@@ -176,9 +176,6 @@ namespace BridgeMVC.Controllers
                 return HttpNotFound();
             }
             //ViewBag.SelectList = await DocumentDBRepository<BRule>.GetItemsAsync(d => d.Tag == "BRule" && d.BridgeModule == item.BridgeModule);
-
-
-
             await SetViewBags();
             return View((string)Session["BridgeModule"] + "_Task3", item);
         }
@@ -302,44 +299,142 @@ namespace BridgeMVC.Controllers
             return View((string)Session["BridgeModule"] + "_Task1", item);
         }
 
+
         [HttpPost]
         [ActionName("CommonTask3")]
         [ValidateAntiForgeryToken]
-        public async Task<ActionResult> CommonTask3Post(Job item, string NewTask, string NewHandler, string submit="")
+        public async Task<ActionResult> CommonTask3Post(Job item, string NewTask, string NewHandler)
         {
+            string taskPath = (string)Session["BridgeModule"];
+            if (item.MainProdType.ToLower().Contains("life-saving appliances"))
+            {
+                taskPath += "_Task3_LSA";
+            }
+            else
+            {
+                taskPath += "_Task3";
+            }
+
             if (ModelState.IsValid)
             {
-                
-                switch (submit)
-                {
-                    case "Save":
-                        await SetViewBags();
-                        await DocumentDBRepository.UpdateItemAsync<Job>(item.Id, item);
-                        return View((string)Session["BridgeModule"] + "_Task3", item);
-                    case "Send to WHITEBOARD":
-                        item.RAE = "WHITEBOARD";
-                        item.TaskHandler = "WHITEBOARD";
-                        await DocumentDBRepository.UpdateItemAsync<Job>(item.Id, item);
-                        return Redirect(Url.Content("~/Job/_Index/"));
-                    default:
-                        break;
-                }
-
                 string NewTaskNo = NewTask[0].ToString();
+
                 if (!(NewTask + NewHandler).Contains("-"))
                 {
                     Session["SendingFlag"] = NewTaskNo;
                     item.TaskHandler = NewHandler;
-                    item.GetType().GetProperty("Task" + NewTaskNo).SetValue(item, "TASK");
+                    string targetTaskStatus = (string)item.GetType().GetProperty("Task" + NewTaskNo).GetValue(item, null);
+                    if (targetTaskStatus != "Y")
+                    {
+                        item.GetType().GetProperty("Task" + NewTaskNo).SetValue(item, "TASK");
+                    }
                     await DocumentDBRepository.UpdateItemAsync<Job>(item.Id, item);
+
                     return Redirect(Url.Content("~/Job/SendJob/" + item.Id));
                 }
+
+                if (item.SendingFlag == "M2DraftIORA")
+                {
+                    item.Task1 = "Y";
+                    item.Task2 = "TASK";
+                    await DocumentDBRepository.UpdateItemAsync<Job>(item.Id, item);
+                    return Redirect(Url.Content("~/Job/IoraDraft/" + item.Id));
+                }
+                else if (item.SendingFlag == "TSAtoWB")
+                {
+                    item.RAE = "WHITEBOARD";
+                    item.TaskHandler = "WHITEBOARD";
+                    await DocumentDBRepository.UpdateItemAsync<Job>(item.Id, item);
+                    return Redirect(Url.Content("~/Job/_Index"));
+                }
+
+
+                await DocumentDBRepository.UpdateItemAsync<Job>(item.Id, item);
+
             }
 
-            await DocumentDBRepository.UpdateItemAsync<Job>(item.Id, item);
+         
             await SetViewBags();
-            return View((string)Session["BridgeModule"] + "_Task3", item);
+            return View(taskPath, item);
         }
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+        //[HttpPost]
+        //[ActionName("CommonTask3")]
+        //[ValidateAntiForgeryToken]
+        //public async Task<ActionResult> CommonTask3Post(Job item, string NewTask, string NewHandler, string submit="")
+        //{
+        //    string taskPath = (string)Session["BridgeModule"];
+        //    if (item.MainProdType.ToLower().Contains("lefe-saving appliances")){
+        //        taskPath += "_Task3_LSA";
+        //    }
+        //    else
+        //    {
+        //        taskPath += "_Task3";
+        //    }
+
+
+        //    if (ModelState.IsValid)
+        //    {
+
+        //        switch (submit)
+        //        {
+        //            case "Save":
+        //                await DocumentDBRepository.UpdateItemAsync<Job>(item.Id, item);
+        //                await SetViewBags();
+        //                return View("CommonTask3", item);
+        //            case "Send to WHITEBOARD":
+        //                item.RAE = "WHITEBOARD";
+        //                item.TaskHandler = "WHITEBOARD";
+        //                await DocumentDBRepository.UpdateItemAsync<Job>(item.Id, item);
+        //                return Redirect(Url.Content("~/Job/_Index/"));
+        //            default:
+        //                break;
+        //        }
+
+
+
+
+        //        string NewTaskNo = NewTask[0].ToString();
+        //        if (!(NewTask + NewHandler).Contains("-"))
+        //        {
+        //            Session["SendingFlag"] = NewTaskNo;
+        //            item.TaskHandler = NewHandler;
+        //            item.GetType().GetProperty("Task" + NewTaskNo).SetValue(item, "TASK");
+        //            await DocumentDBRepository.UpdateItemAsync<Job>(item.Id, item);
+        //            return Redirect(Url.Content("~/Job/SendJob/" + item.Id));
+        //        }
+        //    }
+
+
+        //    await SetViewBags();
+        //    return View(taskPath, item);
+        //}
 
 
         [HttpPost]
@@ -753,33 +848,33 @@ namespace BridgeMVC.Controllers
             await SetViewBags();
             return View("M1_Task3_LSA", item);
         }
-        [HttpPost]
-        [ActionName("M1_Task3_LSA")]
-        [ValidateAntiForgeryToken]
-        public async Task<ActionResult> M1_Task3_LSAPost(Job item, string NewTask, string NewHandler, string tcID, string tcName, Boolean tcValue)
-        {
-            if (ModelState.IsValid)
-            {
-                string NewTaskNo = NewTask[0].ToString();
+        //[HttpPost]
+        //[ActionName("M1_Task3_LSA")]
+        //[ValidateAntiForgeryToken]
+        //public async Task<ActionResult> M1_Task3_LSAPost(Job item, string NewTask, string NewHandler, string tcID, string tcName, Boolean tcValue)
+        //{
+        //    if (ModelState.IsValid)
+        //    {
+        //        string NewTaskNo = NewTask[0].ToString();
 
-                if (!(NewTask + NewHandler).Contains("-"))
-                {
-                    Session["SendingFlag"] = NewTaskNo;
-                    item.TaskHandler = NewHandler;
-                    item.GetType().GetProperty("Task" + NewTaskNo).SetValue(item, "TASK");
-                    await DocumentDBRepository.UpdateItemAsync<Job>(item.Id, item);
+        //        if (!(NewTask + NewHandler).Contains("-"))
+        //        {
+        //            Session["SendingFlag"] = NewTaskNo;
+        //            item.TaskHandler = NewHandler;
+        //            item.GetType().GetProperty("Task" + NewTaskNo).SetValue(item, "TASK");
+        //            await DocumentDBRepository.UpdateItemAsync<Job>(item.Id, item);
 
-                    return Redirect(Url.Content("~/Job/SendJob/" + item.Id));
-                }
+        //            return Redirect(Url.Content("~/Job/SendJob/" + item.Id));
+        //        }
 
 
 
-            }
+        //    }
 
-            await DocumentDBRepository.UpdateItemAsync<Job>(item.Id, item);
-            await SetViewBags();
-            return View("M1_Task3_LSA", item);
-        }
+        //    await DocumentDBRepository.UpdateItemAsync<Job>(item.Id, item);
+        //    await SetViewBags();
+        //    return View("M1_Task3_LSA", item);
+        //}
 
     }
 }

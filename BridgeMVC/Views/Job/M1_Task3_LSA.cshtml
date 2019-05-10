@@ -1,6 +1,88 @@
 ﻿@model BridgeMVC.Models.Job
+<head>
+    <meta http-equiv="X-UA-Compatible" content="IE=edge" />
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Bridge</title>
+    @Styles.Render("~/Content/css")
+    @Scripts.Render("~/bundles/modernizr")
+    <script language="JavaScript" type="text/javascript" src="~/Scripts/jquery-3.3.1.min.js"></script>
+    <script language="JavaScript" type="text/javascript" src="~/Scripts/jquery-ui.min.js"></script>
+    <script language="JavaScript" type="text/javascript" src="~/Scripts/bridgeScript.js"></script>
+    <link href="~/Content/jCalendar.css" type="text/css" rel="stylesheet">
+    <script type="text/javascript" src="~/Scripts/jCalendar.js"></script>
+    @{
+        ViewBag.Title = "Bridge_M1";
+        string BridgeLastUsed = (string)Session["BridgeModule"];
+    }
+    <style>
 
+        body {
+            font: Avenir Next;
+            margin-left: 60px;
+            margin-right: 60px;
+            /*min-width:1600px;*/
+        }
+
+        .navbar {
+            background-color: white;
+            font-size: 16px;
+        }
+
+            .navbar a {
+                color: black;
+            }
+
+
+        .navbar-collapse {
+            background-color: cadetblue;
+            color: white;
+        }
+
+        .dropbtn {
+            background-color: white;
+            color: #000000;
+            padding: 16px;
+            font-size: 16px;
+            border: none;
+        }
+
+        .dropdown {
+            position: relative;
+            display: inline-block;
+        }
+
+        .dropdown-content {
+            display: none;
+            position: absolute;
+            background-color: #f1f1f1;
+            min-width: 160px;
+            box-shadow: 0px 8px 16px 0px rgba(0,0,0,0.2);
+            z-index: 1;
+        }
+
+            .dropdown-content a {
+                color: black;
+                padding: 12px 16px;
+                text-decoration: none;
+                display: block;
+            }
+
+                .dropdown-content a:hover {
+                    background-color: #ddd;
+                }
+
+        .dropdown:hover .dropdown-content {
+            display: block;
+        }
+
+        .dropdown:hover .dropbtn {
+            background-color: #3e8e41;
+        }
+    </style>
+</head>
 @{
+    Layout = null;
     ViewBag.Title = "M1_Task1";
     string UserSignature = (string)Session["UserSignature"];
     string bridgeModule = (string)Session["BridgeModule"];
@@ -12,25 +94,28 @@
     var LSubProdType = ViewBag.LSubProdType;
     var LUser = ViewBag.LUser;
     int TCNo = (int)Session["TCNo"];
-    var TCHeight =( (TCNo +1) * 50 + 100) + "px";
+    var TCHeight = ((TCNo + 1) * 50 + 100) + "px";
 
 }
 
+
+
 <style>
     body {
-        height: 297mm;
+        /*height: 297mm;*/
         width: 210mm;
         margin-left: auto;
         margin-right: auto;
         background: rgb(204,204,204);
     }
 
+
     .bName {
-   
         /*min-width: 300px;*/
         font-weight: bold;
         /*margin-bottom:2em;*/
     }
+
     .bValue {
         font-weight: 100;
         /*margin-bottom: 2em;*/
@@ -41,21 +126,36 @@
         color: steelblue;
     }
 
-    span{
-        padding-top:0.1em;
+    span {
+        padding-top: 0.1em;
+        padding-left: 0;
+        margin-left: 0;
     }
+
+
+
     page[size="A4"] {
         background: white;
         width: 21cm;
         /*height: 29.7cm;*/
         display: block;
-        margin: 0 auto;
-        padding:2cm;
+        margin: 0 0;
+        padding: 1cm ;
         margin-bottom: 0.5cm;
         box-shadow: 0 0 0.5cm rgba(0,0,0,0.5);
     }
-
+    p{
+        height:auto;
+    }
+    div {
+        height: auto;
+    }
     @@media print {
+
+        .no-print, .no-print * {
+            display: none !important;
+        }
+
         body, page[size="A4"] {
             margin: 0;
             box-shadow: 0;
@@ -269,12 +369,12 @@
             margin-left: 0%;
         }
     }
-}
-
-
-
+    
 </style>
 <page size="A4">
+
+    <div href="/"><img style="width:690px" src="~/Content/pictures/DNVGLLogo.PNG"></div>
+
     <h2>LSA Launching Appliances Checklist</h2>
 
     @using (Html.BeginForm(null, null, FormMethod.Post, new { id = "jobForm" }))
@@ -323,8 +423,8 @@
             @Html.HiddenFor(model => model.IsHold)
             @Html.HiddenFor(model => model.StatusNote)
             @Html.HiddenFor(model => model.VerifyLvl)
-            @*@Html.HiddenFor(model => model.SurveyDate)
-                @Html.HiddenFor(model => model.SurveyStation)*@
+            @Html.HiddenFor(model => model.SurveyDate)
+                @*@Html.HiddenFor(model => model.SurveyStation)*@
             @Html.HiddenFor(model => model.TechPara1)
             @Html.HiddenFor(model => model.TechPara2)
             @Html.HiddenFor(model => model.TechPara3)
@@ -356,51 +456,82 @@
             @Html.HiddenFor(model => model.IoraDbId)
             @Html.HiddenFor(model => model.InternalFee)
         </div>
-        <div class="form-horizontal">
+        <div>
             <hr />
 
             <p class="col-lg-12">
                 <span class="col-lg-4 bName"> NPS Job ID: </span>
-                <span class="col-lg-8 bValue">@Model.NpsJobId</span>
+                <span class="col-lg-8">
+                    @Html.EditorFor(model => model.NpsJobId, new { htmlAttributes = new { @class = "form-control", @readonly = "readonly" } })
+                </span>
             </p>
             <p class="col-lg-12">
                 <span class="col-lg-4 bName"> Customer Name: </span>
-                <span class="col-lg-8 bValue">@Model.CustomerName</span>
+                <span class="col-lg-8">
+                    @Html.EditorFor(model => model.CustomerName, new { htmlAttributes = new { @class = "form-control", @readonly = "readonly" } })
+                </span>
             </p>
             <p class="col-lg-12">
                 <span class="col-lg-4 bName"> Sales Order No.: </span>
-                <span class="col-lg-9 bValue">@Model.SalesOrderNo</span>
+                <span class="col-lg-8">
+                    @Html.EditorFor(model => model.SalesOrderNo, new { htmlAttributes = new { @class = "form-control", @readonly = "readonly" } })
+                </span>
             </p>
             <p class="col-lg-12">
                 <span class="col-lg-4 bName"> Designation: </span>
-                <span class="col-lg-8 bValue">@Model.ProdDescription</span>
+                <span class="col-lg-8">
+                    @Html.EditorFor(model => model.ProdDescription, new { htmlAttributes = new { @class = "form-control", @readonly = "readonly" } })
+                </span>
             </p>
             <p class="col-lg-12">
                 <span class="col-lg-4 bName"> Deliverable: </span>
-                <span class="col-lg-8 bValue">@Model.CertType</span>
+                <span class="col-lg-8">
+                    @Html.EditorFor(model => model.CertType, new { htmlAttributes = new { @class = "form-control", @readonly = "readonly" } })
+                </span>
             </p>
             <p class="col-lg-12">
                 <span class="col-lg-4 bName"> Issuance Type: </span>
-                <span class="col-lg-8 bValue">@Model.CertAction</span>
+                <span class="col-lg-8">
+                    @Html.EditorFor(model => model.CertAction, new { htmlAttributes = new { @class = "form-control", @readonly = "readonly" } })
+                </span>
             </p>
-            <p class="col-lg-12">
-                <span class="col-lg-4 bName"> Ref. certificate no.: </span>
-                <span class="col-lg-8 bValue">@Model.ExistingCertNo</span>
-            </p>
-            <p class="col-lg-12">
-                <span class="col-lg-4 bName"> Ref. certificate due date: </span>
-                <span class="col-lg-8 bValue">@Model.MEDFBDue</span>
-            </p>
+
+   
             <p class="col-lg-12">
                 <span class="col-lg-4 bName"> Equipment main-category: </span>
-                <span class="col-lg-8 bValue">@Model.MainProdType</span>
+                <span class="col-lg-8">
+                    @Html.EditorFor(model => model.MainProdType, new { htmlAttributes = new { @class = "form-control", @readonly = "readonly" } })
+                </span>
             </p>
             <p class="col-lg-12">
                 <span class="col-lg-4 bName"> Equipment sub-category: </span>
-                <span class="col-lg-8 bValue">@Model.SubProdType</span>
+                <span class="col-lg-8">
+                    @Html.EditorFor(model => model.SubProdType, new { htmlAttributes = new { @class = "form-control", @readonly = "readonly" } })
+                </span>
                 @*<input class="col-lg-8 bValue" readonly="readonly" value=@Model.SubProdType>*@
             </p>
+            <p class="col-lg-12">
+                <span class="col-lg-4 bName"> Ref. Cert. No.: </span>
+                <span class="col-lg-8">
+                    @Html.EditorFor(model => model.MEDFBNo, new { htmlAttributes = new { @class = "form-control" } })
+                    @Html.ValidationMessageFor(model => model.MEDFBNo, "", new { @class = "text-danger" })
+                </span>
+            </p>
+            <p class="col-lg-12">
+                <span class="col-lg-4 bName"> Ref. deliverable no.: </span>
+                <span class="col-lg-8">
+                    @Html.EditorFor(model => model.ExistingCertNo, new { htmlAttributes = new { @class = "form-control" } })
+                    @Html.ValidationMessageFor(model => model.ExistingCertNo, "", new { @class = "text-danger" })
+                </span>
+            </p>
 
+            <p class="col-lg-12">
+                <span class="col-lg-4 bName"> Ref. cert. expire date.: </span>
+                <span class="col-lg-8">
+                    @Html.EditorFor(model => model.MEDFBDue, new { htmlAttributes = new { @class = "form-control" } })
+                    @Html.ValidationMessageFor(model => model.MEDFBDue, "", new { @class = "text-danger" })
+                </span>
+            </p>
 
             <p class="col-lg-12">
                 <span class="col-lg-4 bName"> MWL: </span>
@@ -431,7 +562,7 @@
                     @Html.ValidationMessageFor(model => model.SerialNo, "", new { @class = "text-danger" })
                 </span>
             </p>
-            <hr style="clear:both;" />
+            <hr />
             <p class="col-lg-12">
                 <span class="col-lg-4 bName"> New ceritificate No.: </span>
                 <span class="col-lg-8">
@@ -446,30 +577,50 @@
                     @Html.ValidationMessageFor(model => model.SurveyStation, "", new { @class = "text-danger" })
                 </span>
             </p>
-            <div class="bing col-lg-12">
-                <p>
+            <p class=" col-lg-12">
+                <span class="bName col-lg-4">
                     Survey date: (DD/MM/YYYY)
-                    <img onclick="viewCalendar('jcalendar_parent', 'SurveyDate')" style="margin-top: 5px;" width="20" height="20" src="~/Content/pictures/calendar-32x32.png" alt="CAL" border="0">
-                </p>
-                <div id="jcalendar_parent" class="jcalendar_parent" style="z-index: 999"></div>
+                    <img onclick="viewCalendar('jcalendar_parent', 'SurveyDate')" style="margin-top: 5px;" width="20" height="20" src="~/Content/pictures/calendar-32x32.png" alt="CAL" border="0" class="no-print">
+                </span>
+                <span id="jcalendar_parent" class="jcalendar_parent" style="z-index: 999"></span>
+                <span class="col-lg-8">
+                    <input class="form-control" name="SurveyDate_Input" value="@Model.SurveyDate" id="SurveyDate_Input" readonly />
+                </span>
+            </p>
 
-                <input class="form-control" name="SurveyDate_Input" value="@Model.SurveyDate" id="SurveyDate_Input" readonly />
+            <p class="col-lg-12">
+                <span class="bName col-lg-4">
+                    Scope of modification:
+                </span>
+                <span>
+                    @Html.EditorFor(model => model.ModificationDesc, new { htmlAttributes = new { @class = "form-control", style = "height:60px" } })
+                    @Html.ValidationMessageFor(model => model.ModificationDesc, "", new { @class = "text-danger" })
+
+                </span>
+            </p>
+
+            <p class="col-lg-12">
+                <span class="bName col-lg-4">
+                    Internal approval note:
+                </span>
+                <span>
+                    @Html.EditorFor(model => model.ApprNote, new { htmlAttributes = new { @class = "form-control", style = "height:auto" } })
+                    @Html.ValidationMessageFor(model => model.ApprNote, "", new { @class = "text-danger" })
+                </span>
+            </p>
 
 
+              <div></div>
+
+            <iframe id="iframe" frameborder="0" src="@Url.Content("~/Rule/IndexReadOnly")" style="width: 100%; height: 100px;" height: 100px;" scrolling="no" onload="resizeIframe(this)"></iframe>
+            <div></div>
+            <iframe id="iframe" frameborder="0" src="@Url.Content("~/TechChecklist/Index")" style="width: 100%; height: 100px;" scrolling="no" onload="resizeIframe(this)"></iframe>
+
+            <div>
+                <hr />
+
+                <p class="bName"> RAE: _____________  &nbsp  Date:________________ &nbsp&nbsp&nbsp&nbsp&nbsp&nbsp Verifier : _____________  &nbsp  Date:________________</p>
             </div>
-
-
-            <div style="clear:both" ; class=" col-lg-12 ">
-                <h4 style="clear:both;">Scope of modification:</h4>
-                @Html.EditorFor(model => model.ModificationDesc, new { htmlAttributes = new { @class = "form-control", style = "height:60px" } })
-                @Html.ValidationMessageFor(model => model.ModificationDesc, "", new { @class = "text-danger" })
-            </div>
-            <iframe id="iframe" frameborder="0" src="@Url.Content("~/Rule/IndexReadOnly")" style="width: 100%; height: 100px;"></iframe>
-
-            <h4>LSA Tech.Checklist</h4>
-            <iframe id="iframe" frameborder="0" src="@Url.Content("~/TechChecklist/Index")" style="width: 100%; height: @TCHeight"></iframe>
-
-
 
 
             <div class="bing col-lg-6" hidden>
@@ -482,16 +633,13 @@
             </div>
 
 
-            <div class=" col-lg-12 ">
-                <h4 style="clear:both;">Internal approval note:</h4>
-                @Html.EditorFor(model => model.ApprNote, new { htmlAttributes = new { @class = "form-control", style = "height:100px" } })
-                @Html.ValidationMessageFor(model => model.ApprNote, "", new { @class = "text-danger" })
-            </div>
-            @{
-                Html.RenderPartial("_SaveCompleteReopen");
-                Html.RenderPartial("_TaskSending");
-            }
 
+            <div class="no-print">
+                @{
+                    Html.RenderPartial("_SaveCompleteReopen");
+                    Html.RenderPartial("_TaskSending");
+                }
+            </div>
         </div>
 
 
@@ -502,6 +650,8 @@
         @Scripts.Render("~/bundles/jqueryval")
     }
 </page>
+
+@Html.ValidationSummary()
 <script>
 
     //read viewbag's info.
@@ -534,16 +684,16 @@
     function showHideFields()
     {
 
-        var defaultHiddenList = "MEDFBNo,MEDFBDue,SerialNo,CertAmount,MWL,MEDItemNo,ExistingCertNo,SurveyStation,SurveyDate,ModificationDesc".split(',');
+        var defaultHiddenList = "MEDFBNo,MEDFBDue,SerialNo,CertAmount,MWL,MEDItemNo,ExistingCertNo,SurveyStation,SurveyDate_Input,ModificationDesc".split(',');
         defaultHiddenList.forEach(hideElement);
 
         var toShow = "";
         console.log(Job.CertType);
 
         switch (Job.CertType) {
-            
+
             case "MED-F":
-                toShow += "MEDFBNo,MEDFBDue,SerialNo,CertAmount,MEDItemNo,SurveyStation,SurveyDate,";
+                toShow += "MEDFBNo,MEDFBDue,SerialNo,CertAmount,MEDItemNo,SurveyStation,SurveyDate_Input,";
                 $("#pMEDFBNo").html("Ref. MED-B certificate No.");
                 $("#selectCertAction").val("Initial");
                 $("#selectMainProdType").val("Life-Saving appliances");
@@ -552,24 +702,24 @@
                 //$("#SubProdType").val("Module F certification");
                 break;
             case "MED-G":
-                toShow += "SerialNo,MWL,MEDItemNo,SurveyStation,SurveyDate,";
+                toShow += "SerialNo,MWL,MEDItemNo,SurveyStation,SurveyDate_Input,";
                 break;
             case "MED-B":
-                toShow += "MWL,MEDItemNo,SurveyStation,SurveyDate,";
+                 toShow += "MWL,MEDItemNo,SurveyStation,SurveyDate_Input,";
                 break;
             case "TA":
-                toShow += "MWL,SurveyStation,SurveyDate,";
+                toShow += "MWL,SurveyStation,SurveyDate_Input,";
                 break;
             case "DVR":
                 toShow += "SerialNo,MWL,";
                 break;
             case "MED-D":
-                toShow += "MWL,SurveyStation,SurveyDate,";
+                toShow += "MWL,SurveyStation,SurveyDate_Input,";
                 break;
             default:
                 toShow += "";
         }
-        switch ($("#selectCertAction").val()) {
+        switch (Job.CertAction) {
             case "Modification":
                 toShow += "ExistingCertNo,ModificationDesc,";
                 break;
@@ -596,12 +746,13 @@
 
     function showElement(value) {
         if (value) {
-            document.getElementById(value).parentNode.style.display = "block";
+            document.getElementById(value).parentNode.parentNode.style.display = "block";
         }
     }
     function hideElement(value) {
         if (value) {
-            document.getElementById(value).parentNode.style.display = "none";
+            console.log(value);
+            document.getElementById(value).parentNode.parentNode.style.display = "none";
         }
     }
 
@@ -661,9 +812,10 @@
         });
     });
 
-
+    function resizeIframe(obj) {
+        obj.style.height = obj.contentWindow.document.body.scrollHeight + 'px';
+    }
 
 
 </script>
-
 

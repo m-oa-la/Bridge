@@ -1,5 +1,5 @@
 ﻿@model IEnumerable<BridgeMVC.Models.TechChecklist>
-
+<h4>LSA Tech.Checklist</h4>
 <p>
     @Html.ActionLink("Create New", "Create")
 </p>
@@ -23,37 +23,36 @@
         <th>
             @Html.DisplayNameFor(model => model.SubProdType)
         </th>
-        
+
         <th></th>
     </tr>
+    @foreach (var item in Model)
+    {
+        <tr>
+            <td>
+                @Html.DisplayFor(modelItem => item.Tag)
+            </td>
+            <td>
+                @Html.DisplayFor(modelItem => item.BridgeModule)
+            </td>
+            <td>
+                @Html.DisplayFor(modelItem => item.DbJobId)
+            </td>
+            <td>
+                @Html.DisplayFor(modelItem => item.NpsJobId)
+            </td>
+            <td>
+                @Html.DisplayFor(modelItem => item.MainProdType)
+            </td>
+            <td>
+                @Html.DisplayFor(modelItem => item.SubProdType)
+            </td>
 
-@foreach (var item in Model) {
-    <tr>
-        <td>
-            @Html.DisplayFor(modelItem => item.Tag)
-        </td>
-        <td>
-            @Html.DisplayFor(modelItem => item.BridgeModule)
-        </td>
-        <td>
-            @Html.DisplayFor(modelItem => item.DbJobId)
-        </td>
-        <td>
-            @Html.DisplayFor(modelItem => item.NpsJobId)
-        </td>
-        <td>
-            @Html.DisplayFor(modelItem => item.MainProdType)
-        </td>
-        <td>
-            @Html.DisplayFor(modelItem => item.SubProdType)
-        </td>
-        
-        <td>
-            @Html.ActionLink("Edit", "Edit", new { id=item.Id }) |
-            @Html.ActionLink("Details", "Details", new { id=item.Id }) |
-            @Html.ActionLink("Delete", "Delete", new { id=item.Id })
-        </td>
-    </tr>
-}
-
+            <td>
+                @Html.ActionLink("Edit", "Edit", new { id = item.Id }) |
+                @Html.ActionLink("Details", "Details", new { id = item.Id }) |
+                @Html.ActionLink("Delete", "Delete", new { id = item.Id })
+            </td>
+        </tr>
+    }
 </table>
