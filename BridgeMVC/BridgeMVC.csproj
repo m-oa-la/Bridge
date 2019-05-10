@@ -323,6 +323,7 @@
     <Content Include="Content\jCalendar.css" />
     <Content Include="Content\jquery-ui.css" />
     <Content Include="Content\pictures\calendar-32x32.png" />
+    <Content Include="Content\pictures\DNVGLLogo.PNG" />
     <Content Include="Content\pictures\M2Profiles\BAY.png" />
     <Content Include="Content\pictures\M2Profiles\HDR.png" />
     <Content Include="Content\pictures\M2Profiles\JPOUL.png" />
