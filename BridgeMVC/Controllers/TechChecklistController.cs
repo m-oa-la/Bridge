@@ -121,6 +121,14 @@ namespace BridgeMVC.Controllers
             return View(items);
         }
 
+        [ActionName("Blank")]
+        public  Task<ActionResult> Blank()
+        {
+            return null;
+
+        }
+
+
         [ActionName("DeleteTC")]
         public async Task<ActionResult> DeleteTCV(string id)
         {
