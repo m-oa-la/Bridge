@@ -158,11 +158,10 @@ namespace BridgeMVC.Controllers
 
 
 
-            if(item.BridgeModule == "M1" && item.MainProdType.ToLower() == "life-saving appliances" )
+            if (item.MainProdType.ToLower().Contains("life-saving appliances") && !item.CertType.ToLower().Contains("med-f"))
             {
 
                 var tcs = await DocumentDBRepository.GetItemsAsync<TechChecklist>(d => d.Tag == "TechChecklist" && d.DbJobId == id);
-                Session["TCNo"] = tcs.Count();
                 return View("M1_Task3_LSA", item);
             }
 
@@ -306,7 +305,7 @@ namespace BridgeMVC.Controllers
         public async Task<ActionResult> CommonTask3Post(Job item, string NewTask, string NewHandler)
         {
             string taskPath = (string)Session["BridgeModule"];
-            if (item.MainProdType.ToLower().Contains("life-saving appliances"))
+            if (item.MainProdType.ToLower().Contains("life-saving appliances") && !item.CertType.ToLower().Contains("med-f"))
             {
                 taskPath += "_Task3_LSA";
             }
