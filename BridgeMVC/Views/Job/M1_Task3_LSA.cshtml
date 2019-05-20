@@ -1,4 +1,19 @@
 ﻿@model BridgeMVC.Models.Job
+@{
+    Layout = null;
+    ViewBag.Title = "M1_Task1";
+    string UserSignature = (string)Session["UserSignature"];
+    string bridgeModule = (string)Session["BridgeModule"];
+    string SF = (string)Session["SendingFlag"];
+
+    var LCertType = ViewBag.LCertType;
+    var LCertAction = ViewBag.LCertAction;
+    var LMainProdType = ViewBag.LMainProdType;
+    var LSubProdType = ViewBag.LSubProdType;
+    var LUser = ViewBag.LUser;
+
+
+}
 <head>
     <meta http-equiv="X-UA-Compatible" content="IE=edge" />
     <meta charset="utf-8" />
@@ -81,21 +96,7 @@
         }
     </style>
 </head>
-@{
-    Layout = null;
-    ViewBag.Title = "M1_Task1";
-    string UserSignature = (string)Session["UserSignature"];
-    string bridgeModule = (string)Session["BridgeModule"];
-    string SF = (string)Session["SendingFlag"];
 
-    var LCertType = ViewBag.LCertType;
-    var LCertAction = ViewBag.LCertAction;
-    var LMainProdType = ViewBag.LMainProdType;
-    var LSubProdType = ViewBag.LSubProdType;
-    var LUser = ViewBag.LUser;
-
-
-}
 
 
 
@@ -139,16 +140,19 @@
         /*height: 29.7cm;*/
         display: block;
         margin: 0 0;
-        padding: 1cm ;
+        padding: 1cm;
         margin-bottom: 0.5cm;
         box-shadow: 0 0 0.5cm rgba(0,0,0,0.5);
     }
-    p{
-        height:auto;
+
+    p {
+        height: auto;
     }
+
     div {
         height: auto;
     }
+
     @@media print {
 
         .no-print, .no-print * {
@@ -368,7 +372,6 @@
             margin-left: 0%;
         }
     }
-    
 </style>
 <page size="A4">
 
@@ -379,83 +382,83 @@
     @using (Html.BeginForm(null, null, FormMethod.Post, new { id = "jobForm" }))
     {
         @Html.AntiForgeryToken()
-    <div>
-        @Html.HiddenFor(model => model.Tag)
-        @Html.HiddenFor(model => model.BridgeModule)
-        @Html.HiddenFor(model => model.Id)
-        @Html.HiddenFor(model => model.NpsJobName)
-        @*@Html.HiddenFor(model => model.NpsJobId)*@
-        @*@Html.HiddenFor(model => model.TaskHandler)*@
-        @Html.HiddenFor(model => model.Task1)
-        @Html.HiddenFor(model => model.Task2)
-        @Html.HiddenFor(model => model.Task3)
-        @*@Html.HiddenFor(model => model.CustomerName)*@
-        @*@Html.HiddenFor(model => model.ProdDescription)*@
-        @*@Html.HiddenFor(model => model.ApprNote)*@
-        @Html.HiddenFor(model => model.IsComplete)
-        @*@Html.HiddenFor(model => model.SalesOrderNo)*@
-        @Html.HiddenFor(model => model.SubOrderNo)
-        @*@Html.HiddenFor(model => model.CertType)*@
-        @*@Html.HiddenFor(model => model.CertAction)*@
-        @*@Html.HiddenFor(model => model.MainProdType)*@
-        @*@Html.HiddenFor(model => model.SubProdType)*@
-        @Html.HiddenFor(model => model.ReceivedTime)
-        @*@Html.HiddenFor(model => model.FeeSetTime)*@
-        @Html.HiddenFor(model => model.IoraSentTime)
-        @Html.HiddenFor(model => model.IoraReturnedTime)
-        @Html.HiddenFor(model => model.JobCompletedTime)
-        @*@Html.HiddenFor(model => model.CustomerName)
-        @Html.HiddenFor(model => model.CustomerId)*@
-        @Html.HiddenFor(model => model.Fee)
-        @Html.HiddenFor(model => model.BudgetHour)
-        @*@Html.HiddenFor(model => model.FeeSetter)
-        @Html.HiddenFor(model => model.FeeVerifier)*@
-        @Html.HiddenFor(model => model.JobVerifier)
-        @Html.HiddenFor(model => model.RAE)
-        @*@Html.HiddenFor(model => model.MWL)*@
-        @*@Html.HiddenFor(model => model.ExistingCertNo)*@
-        @*@Html.HiddenFor(model => model.CertNo)*@
-        @*@Html.HiddenFor(model => model.SerialNo)*@
-        @*@Html.HiddenFor(model => model.MEDItemNo)*@
-        @Html.HiddenFor(model => model.DeliveryWeek)
-        @Html.HiddenFor(model => model.LocalUnit)
-        @Html.HiddenFor(model => model.ArchiveFolder)
-        @Html.HiddenFor(model => model.IsHold)
-        @Html.HiddenFor(model => model.StatusNote)
-        @Html.HiddenFor(model => model.VerifyLvl)
-        @Html.HiddenFor(model => model.SurveyDate)
-        @*@Html.HiddenFor(model => model.SurveyStation)*@
-        @Html.HiddenFor(model => model.TechPara1)
-        @Html.HiddenFor(model => model.TechPara2)
-        @Html.HiddenFor(model => model.TechPara3)
-        @Html.HiddenFor(model => model.TechPara4)
-        @Html.HiddenFor(model => model.MEDFactory)
-        @*@Html.HiddenFor(model => model.MEDFBNo)*@
-        @*@Html.HiddenFor(model => model.MEDFBDue)*@
-        @Html.HiddenFor(model => model.AnyDesignChange)
-        @Html.HiddenFor(model => model.ChecklistUsed)
-        @Html.HiddenFor(model => model.DesignFolder)
-        @Html.HiddenFor(model => model.IsDocQualityGood)
-        @Html.HiddenFor(model => model.IsDocSufficient)
-        @Html.HiddenFor(model => model.SetHoldTime)
-        @Html.HiddenFor(model => model.IORASpentTime)
-        @*@Html.HiddenFor(model => model.ModificationDesc)*@
-        @Html.HiddenFor(model => model.OnHoldNote)
-        @Html.HiddenFor(model => model.FeeVerifyTime)
-        @Html.HiddenFor(model => model.RegisterTime)
-        @Html.HiddenFor(model => model.DocReq)
-        @Html.HiddenFor(model => model.NoOfCert)
-        @Html.HiddenFor(model => model.FeeSet)
-        @Html.HiddenFor(model => model.VesselID)
-        @Html.HiddenFor(model => model.DocReqNote)
-        @Html.HiddenFor(model => model.NpsDbId)
-        @*@Html.HiddenFor(model => model.ExeDoneBy)
-        @Html.HiddenFor(model => model.ExeDoneTime)*@
-        @Html.HiddenFor(model => model.CompletedBy)
-        @Html.HiddenFor(model => model.SendingFlag)
-        @Html.HiddenFor(model => model.IoraDbId)
-        @Html.HiddenFor(model => model.InternalFee)
-    </div>
+        <div>
+            @Html.HiddenFor(model => model.Tag)
+            @Html.HiddenFor(model => model.BridgeModule)
+            @Html.HiddenFor(model => model.Id)
+            @Html.HiddenFor(model => model.NpsJobName)
+            @*@Html.HiddenFor(model => model.NpsJobId)*@
+            @*@Html.HiddenFor(model => model.TaskHandler)*@
+            @Html.HiddenFor(model => model.Task1)
+            @Html.HiddenFor(model => model.Task2)
+            @Html.HiddenFor(model => model.Task3)
+            @*@Html.HiddenFor(model => model.CustomerName)*@
+            @*@Html.HiddenFor(model => model.ProdDescription)*@
+            @*@Html.HiddenFor(model => model.ApprNote)*@
+            @Html.HiddenFor(model => model.IsComplete)
+            @*@Html.HiddenFor(model => model.SalesOrderNo)*@
+            @Html.HiddenFor(model => model.SubOrderNo)
+            @*@Html.HiddenFor(model => model.CertType)*@
+            @*@Html.HiddenFor(model => model.CertAction)*@
+            @*@Html.HiddenFor(model => model.MainProdType)*@
+            @*@Html.HiddenFor(model => model.SubProdType)*@
+            @Html.HiddenFor(model => model.ReceivedTime)
+            @*@Html.HiddenFor(model => model.FeeSetTime)*@
+            @Html.HiddenFor(model => model.IoraSentTime)
+            @Html.HiddenFor(model => model.IoraReturnedTime)
+            @Html.HiddenFor(model => model.JobCompletedTime)
+            @*@Html.HiddenFor(model => model.CustomerName)
+                @Html.HiddenFor(model => model.CustomerId)*@
+            @Html.HiddenFor(model => model.Fee)
+            @Html.HiddenFor(model => model.BudgetHour)
+            @*@Html.HiddenFor(model => model.FeeSetter)
+                @Html.HiddenFor(model => model.FeeVerifier)*@
+            @Html.HiddenFor(model => model.JobVerifier)
+            @Html.HiddenFor(model => model.RAE)
+            @*@Html.HiddenFor(model => model.MWL)*@
+            @*@Html.HiddenFor(model => model.ExistingCertNo)*@
+            @*@Html.HiddenFor(model => model.CertNo)*@
+            @*@Html.HiddenFor(model => model.SerialNo)*@
+            @*@Html.HiddenFor(model => model.MEDItemNo)*@
+            @Html.HiddenFor(model => model.DeliveryWeek)
+            @Html.HiddenFor(model => model.LocalUnit)
+            @Html.HiddenFor(model => model.ArchiveFolder)
+            @Html.HiddenFor(model => model.IsHold)
+            @Html.HiddenFor(model => model.StatusNote)
+            @Html.HiddenFor(model => model.VerifyLvl)
+            @Html.HiddenFor(model => model.SurveyDate)
+            @*@Html.HiddenFor(model => model.SurveyStation)*@
+            @Html.HiddenFor(model => model.TechPara1)
+            @Html.HiddenFor(model => model.TechPara2)
+            @Html.HiddenFor(model => model.TechPara3)
+            @Html.HiddenFor(model => model.TechPara4)
+            @Html.HiddenFor(model => model.MEDFactory)
+            @*@Html.HiddenFor(model => model.MEDFBNo)*@
+            @*@Html.HiddenFor(model => model.MEDFBDue)*@
+            @Html.HiddenFor(model => model.AnyDesignChange)
+            @Html.HiddenFor(model => model.ChecklistUsed)
+            @Html.HiddenFor(model => model.DesignFolder)
+            @Html.HiddenFor(model => model.IsDocQualityGood)
+            @Html.HiddenFor(model => model.IsDocSufficient)
+            @Html.HiddenFor(model => model.SetHoldTime)
+            @Html.HiddenFor(model => model.IORASpentTime)
+            @*@Html.HiddenFor(model => model.ModificationDesc)*@
+            @Html.HiddenFor(model => model.OnHoldNote)
+            @Html.HiddenFor(model => model.FeeVerifyTime)
+            @Html.HiddenFor(model => model.RegisterTime)
+            @Html.HiddenFor(model => model.DocReq)
+            @Html.HiddenFor(model => model.NoOfCert)
+            @Html.HiddenFor(model => model.FeeSet)
+            @Html.HiddenFor(model => model.VesselID)
+            @Html.HiddenFor(model => model.DocReqNote)
+            @Html.HiddenFor(model => model.NpsDbId)
+            @*@Html.HiddenFor(model => model.ExeDoneBy)
+                @Html.HiddenFor(model => model.ExeDoneTime)*@
+            @Html.HiddenFor(model => model.CompletedBy)
+            @Html.HiddenFor(model => model.SendingFlag)
+            @Html.HiddenFor(model => model.IoraDbId)
+            @Html.HiddenFor(model => model.InternalFee)
+        </div>
         <div>
             <hr />
 
@@ -496,7 +499,7 @@
                 </span>
             </p>
 
-   
+
             <p class="col-lg-12">
                 <span class="col-lg-4 bName"> Equipment main-category: </span>
                 <span class="col-lg-8">
@@ -610,7 +613,7 @@
             </p>
 
 
-              <div></div>
+            <div></div>
 
             <iframe id="iframe1" frameborder="0" src="@Url.Content("~/Rule/IndexReadOnly")" style="width: 100%; height: 100px;" height: 100px;" scrolling="no" onload="resizeIframe(this)"></iframe>
             <div></div>
@@ -664,7 +667,7 @@
     var LUser = @Html.Raw(Json.Encode(LUser));
     var LCertAction = @Html.Raw(Json.Encode(LCertAction));
     var LCertType = @Html.Raw(Json.Encode(LCertType));
-
+    console.log("User......" + LUser);
     var TargetUser;
     var BEmail;
     var taskStatus;
