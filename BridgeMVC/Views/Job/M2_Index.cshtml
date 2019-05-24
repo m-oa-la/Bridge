@@ -12,7 +12,12 @@
     var US = ViewBag.userSig;
     var BFlist = (IEnumerable<BridgeMVC.Models.BFinancial>)ViewBag.LCertType;
 
+    BridgeMVC.Models.BBridge bridge = (BridgeMVC.Models.BBridge)ViewBag.bridge;
+
     string styleTxt = "border-radius: 0; border: none";
+
+    string bridgeLongName = bridge.BridgeLongName;
+    List<string> taskNames = bridge.TaskName.Split(';').ToList<string>();
 
 
     string getColorCode(string ct)
@@ -48,8 +53,9 @@
     }
 
     .table th, td {
-        border-radius: 25px;
-        border: 3px solid white;
+        border-radius:20px;
+
+        border: 0.1px solid white;
     }
 
     .classTY {
@@ -73,7 +79,7 @@
         color: transparent;
         cursor: pointer;
         width: 40px;
-        border-style: none;
+        border-style: solid;
     }
 
     .classTTASKIORA {
@@ -102,10 +108,11 @@
         border-style: none;
     }
 
+ 
 </style>
 
 <h2>
-    MY BRIDGE JOBLIST
+    MY BRIDGE JOBLIST - @bridgeLongName
     <p style="float:right" class="btn btn-secondary">
         @Html.ActionLink("Whiteboard", "Whiteboard")
     </p>
@@ -148,10 +155,10 @@
         <col span="1" style="width: 20%;">
         <col span="1" style="width: 20%;">
         <col span="1" style="width: 20%;">
-        <col span="1" style="width: 50px;">
-        <col span="1" style="width: 50px;">
-        <col span="1" style="width: 50px;">
-        <col span="1" style="width: 50px;">
+        <col span="1" style="width: 40px;">
+        <col span="1" style="width: 40px;">
+        <col span="1" style="width: 40px;">
+        <col span="1" style="width: 40px;">
         <col span="1" style="width: 30%;">
         <col span="1" style="width: 50px;">
     </colgroup>
@@ -159,14 +166,16 @@
         <th style="border-top:none">           JOB ID       </th>
         <th style="border-top:none">            CUSTOMER        </th>
         <th style="border-top:none">           PROJECT NAME     </th>
-        <th style="border-top:none">           FEE      </th>
-        <th style="border-top:none">           VERI       </th>
-        <th style="border-top:none">           W.B.        </th>
+        @foreach (string taskname in taskNames)
+        {
+            <th style="border-top:none">           @taskname     </th>
+        }
+
         <th style="border-top:none">                  </th>
         <th style="border-top:none">          IORA STATUS    </th>
         <th></th>
         @*<th>            @Html.DisplayNameFor(model => model.TaskHandler)        </th>
-            <th>            @Html.DisplayNameFor(model => model.Completed)        </th>*@
+        <th>            @Html.DisplayNameFor(model => model.Completed)        </th>*@
 
     </tr>
 
@@ -252,8 +261,6 @@
                     <img id="@pauseIconId" src="~/Content/pictures/Pause.png" height="24" width="24" onclick="startPause(this.id)" />
                 }
 
-
-
             </td>
 
         </tr>
@@ -271,7 +278,7 @@
             <td class="classTY"></td>
             <td style="@styleTxt">Task is completed</td>
             <td class="classTTASK"></td>
-            <td style="@styleTxt">Task is assigned to you (ongoing)</td>
+            <td style="@styleTxt"><p>Task is assigned to you (ongoing)</p></td>
             @*<td class="classT"></td>
         <td style="@styleTxt">IORA pending verification</td>*@
             <td class="classTPENDING" align="center">X</td>
