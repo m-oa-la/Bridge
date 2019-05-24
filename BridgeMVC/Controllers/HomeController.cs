@@ -32,6 +32,8 @@ namespace BridgeMVC.Controllers
                     id = u.Id;
                     Session["BridgeModule"] = u.BridgeLastUsed;
                     Session["UserSignature"] = u.Signature;
+                    var lbb = await DocumentDBRepository.GetItemsAsync<BBridge>(d => d.Tag == "BBridge");
+                    ViewBag.bridges = lbb;
                 }
 
             }

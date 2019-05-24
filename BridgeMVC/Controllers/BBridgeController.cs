@@ -1,8 +1,10 @@
-﻿using BridgeMVC.Models;
+﻿using BridgeMVC.Extensions;
+using BridgeMVC.Models;
 using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Net;
+using System.Security.Claims;
 using System.Threading.Tasks;
 using System.Web;
 using System.Web.Mvc;
@@ -12,11 +14,33 @@ namespace BridgeMVC.Controllers
     [Authorize]
     public class BBridgeController : Controller
     {
+        public Boolean IsAdmin()
+        {
+            var user = User as ClaimsPrincipal;
+            string userEmail = user.Email().ToLower();
+            if (userEmail.ToLower() == "eric.song@dnvgl.com")
+            {
+                return true;
+            }
+            else
+            {
+                return false;
+            }
+        }
+
+
         [ActionName("Index")]
         public async Task<ActionResult> IndexAsync()
         {
-            var s = await DocumentDBRepository.GetItemsAsync<BBridge>(d => d.Tag == "BBridge");
-            return View(s);
+            if (IsAdmin())
+            {
+                var s = await DocumentDBRepository.GetItemsAsync<BBridge>(d => d.Tag == "BBridge");
+                return View(s);
+            }
+            else
+            {
+                return null;
+            }
         }
 
         [ActionName("Create")]
@@ -30,28 +54,32 @@ namespace BridgeMVC.Controllers
         [HttpPost]
         [ActionName("Create")]
         [ValidateAntiForgeryToken]
-        public async Task<ActionResult> CreateAsync([Bind(Include = "Tag,Id,bridgeName,templatePath,archivePath")] BBridge item)
+        public async Task<ActionResult> CreateAsync([Bind(Include = "Tag,Id,BridgeName,BridgeLongName,TemplatePath,ArchivePath,TaskName")] BBridge item)
         {
-            if (ModelState.IsValid)
+            if (IsAdmin())
             {
-                await DocumentDBRepository.CreateItemAsync<BBridge>(item);
-                return RedirectToAction("Index");
+                if (ModelState.IsValid)
+                {
+                    await DocumentDBRepository.CreateItemAsync<BBridge>(item);
+                    return RedirectToAction("Index");
+                }
             }
-
             return View(item);
         }
 
         [HttpPost]
         [ActionName("Edit")]
         [ValidateAntiForgeryToken]
-        public async Task<ActionResult> EditAsync([Bind(Include = "Tag,Id,bridgeName,templatePath,archivePath")] BBridge item)
+        public async Task<ActionResult> EditAsync([Bind(Include = "Tag,Id,BridgeName,BridgeLongName,TemplatePath,ArchivePath,TaskName")] BBridge item)
         {
-            if (ModelState.IsValid)
+            if (IsAdmin())
             {
-                await DocumentDBRepository.UpdateItemAsync<BBridge>(item.Id, item);
-                return RedirectToAction("Index");
+                if (ModelState.IsValid)
+                {
+                    await DocumentDBRepository.UpdateItemAsync<BBridge>(item.Id, item);
+                    return RedirectToAction("Index");
+                }
             }
-
             return View(item);
         }
 

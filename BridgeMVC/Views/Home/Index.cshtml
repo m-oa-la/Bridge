@@ -1,8 +1,5 @@
 ﻿@model BridgeMVC.Models.BUser
 
-
-
-
 @{
 
     ViewBag.Title = "Index";
@@ -11,16 +8,17 @@
     string ListModule = "";
 
     List<string> result = Model.BridgesGranted.Split(';').ToList();
+    List<BridgeMVC.Models.BBridge> bridges = ViewBag.bridges;
 
 
     List<SelectListItem> listItems = new List<SelectListItem>();
-    foreach (var r in result)
+    foreach (var b in bridges)
     {
-        ListModule = ListModule + r + ": " + (r.Replace("M1", "MOALA")).Replace("M2", "MOAPE").Replace("M3","HOUSTON") + ";  ";
+        ListModule = ListModule + b.BridgeName + ": " + b.BridgeLongName + ";  ";
         listItems.Add(new SelectListItem
         {
-            Text = r,
-            Value = r,
+            Text = b.BridgeName,
+            Value = b.BridgeName,
 
         });
     }

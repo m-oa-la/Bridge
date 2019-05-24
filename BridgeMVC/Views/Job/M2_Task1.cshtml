@@ -106,6 +106,8 @@
     @Html.HiddenFor(model => model.SendingFlag)
     @Html.HiddenFor(model => model.IoraDbId)
     @Html.HiddenFor(model => model.InternalFee)
+    @Html.HiddenFor(model => model.SurveyDate)
+    @Html.HiddenFor(model => model.SurveyStation)
 </div>
 
 <div class="form-horizontal">
@@ -127,7 +129,7 @@
     </div>
 
     <div class="bing col-lg-6" hidden>
-        <p>Designation:</p>
+        <p>Product name:</p>
         @Html.EditorFor(model => model.ProdDescription, new { htmlAttributes = new { @class = "form-control" } })
         @Html.ValidationMessageFor(model => model.ProdDescription, "", new { @class = "text-danger" })
     </div>
@@ -178,12 +180,12 @@
         @Html.EditorFor(model => model.SerialNo, new { htmlAttributes = new { @class = "form-control" } })
         @Html.ValidationMessageFor(model => model.SerialNo, "", new { @class = "text-danger" })
     </div>
-    <div class="bing col-lg-6">
+    @*<div class="bing col-lg-6">
         <p> Survey station </p>
         @Html.EditorFor(model => model.SurveyStation, new { htmlAttributes = new { @class = "form-control" } })
         @Html.ValidationMessageFor(model => model.SurveyStation, "", new { @class = "text-danger" })
-    </div>
-    <div class="bing col-lg-6">
+    </div>*@
+    @*<div class="bing col-lg-6">
         <p>
             Survey date: (DD/MM/YYYY)
             <img onclick="viewCalendar('jcalendar_parent', 'SurveyDate')" style="margin-top: 5px;" width="20" height="20" src="~/Content/pictures/calendar-32x32.png" alt="CAL" border="0">
@@ -192,8 +194,7 @@
 
         <input class="form-control" name="SurveyDate_Input" value="@Model.SurveyDate" id="SurveyDate_Input" readonly />
 
-
-    </div>
+    </div>*@
     <div style="clear:both" ; class=" col-lg-12 ">
         <h4 style="clear:both;">Scope of modification:</h4>
         @Html.EditorFor(model => model.ModificationDesc, new { htmlAttributes = new { @class = "form-control", style = "height:60px" } })
@@ -287,14 +288,17 @@
     renderTaskHandling();
 
     //show hide fields
+    //try { showHideFields(); }
+    //catch (e) { }
     showHideFields();
+
     function showHideFields()
     {
         
         $("#TaskComplete").val("Confirm input and Draft IORA");
         document.getElementById("TaskComplete").style.width = "400px";
 
-        var defaultHiddenList = "MEDFBNo,MEDFBDue,SerialNo,CertAmount,MWL,MEDItemNo,ExistingCertNo,SurveyStation,SurveyDate,ModificationDesc".split(',');
+        var defaultHiddenList = "MEDFBNo,MEDFBDue,SerialNo,CertAmount,MWL,MEDItemNo,ExistingCertNo,ModificationDesc".split(',');
         defaultHiddenList.forEach(hideElement);
 
         var toShow = "";
@@ -366,6 +370,7 @@
     }
     function hideElement(value) {
         if (value) {
+            console.log(value);
             document.getElementById(value).parentNode.style.display = "none";
         }
     }

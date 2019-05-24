@@ -22,8 +22,6 @@ namespace BridgeMVC.Controllers
             var user = User as ClaimsPrincipal;
             string userName =  user.Email().ToLower();
 
-            //if (userName.Contains("dnvgl.com"))
-            //{
                 var users = await DocumentDBRepository.GetItemsAsync<BUser>(d => d.Tag == "BUser" && d.Email.ToLower() == userName);
 
             if (users != null)
@@ -86,11 +84,38 @@ namespace BridgeMVC.Controllers
 
                 return View(myModel);
             }
-
-
-
-
         }
+
+        public async Task<string> SetViewBags()
+        {
+            var bm = (string)Session["BridgeModule"];
+
+            var lbb = await DocumentDBRepository.GetItemsAsync<BBridge>(d => d.Tag == "BBridge" && d.BridgeName == bm);
+             ViewBag.bridge = lbb.FirstOrDefault();
+
+            var lct = await DocumentDBRepository.GetItemsAsync<BFinancial>(d => d.Tag == "BFinancial" && d.BridgeModule == bm);
+            lct = lct.OrderBy(d => d.CertType);
+            ViewBag.LCertType = lct;
+
+            var lca = await DocumentDBRepository.GetItemsAsync<BList>(d => d.Tag == "BList" && d.BridgeModule == bm && d.ListType == "CertAction");
+            lca = lca.OrderBy(d => d.ListItem);
+            ViewBag.LCertAction = lca;
+
+            var lmp = await DocumentDBRepository.GetItemsAsync<BList>(d => d.Tag == "BList" && d.BridgeModule == bm && d.ListType == "MainProdType");
+            lmp = lmp.OrderBy(d => d.ListItem);
+            ViewBag.LMainProdType = lmp;
+
+            var lsp = await DocumentDBRepository.GetItemsAsync<BList>(d => d.Tag == "BList" && d.BridgeModule == bm && d.ListType == "SubProdType");
+            lsp = lsp.OrderBy(d => d.ListItem);
+            ViewBag.LSubProdType = lsp;
+
+            var lu = await DocumentDBRepository.GetItemsAsync<BUser>(d => d.Tag == "BUser" && (d.BridgesGranted).Contains(bm));
+            lu = lu.OrderBy(d => d.Signature);
+            ViewBag.LUser = lu;
+
+            return ("");
+        }
+
 
         [ActionName("CommonIndex")]
         public async Task<ActionResult> CommonIndex(string searchString, string userSig)
@@ -209,35 +234,6 @@ namespace BridgeMVC.Controllers
             await SetViewBags();
             return View((string)Session["BridgeModule"] + "_Task4", item);
         }
-
-
-        public async Task<string> SetViewBags()
-        {
-            var bm = (string)Session["BridgeModule"];
-            var lct = await DocumentDBRepository.GetItemsAsync<BFinancial>(d => d.Tag == "BFinancial" && d.BridgeModule == bm);
-            lct = lct.OrderBy(d => d.CertType);
-            ViewBag.LCertType = lct;
-
-            var lca = await DocumentDBRepository.GetItemsAsync<BList>(d => d.Tag == "BList" && d.BridgeModule == bm && d.ListType == "CertAction");
-            lca = lca.OrderBy(d => d.ListItem);
-            ViewBag.LCertAction = lca;
-
-            var lmp = await DocumentDBRepository.GetItemsAsync<BList>(d => d.Tag == "BList" && d.BridgeModule == bm && d.ListType == "MainProdType");
-            lmp = lmp.OrderBy(d => d.ListItem);
-            ViewBag.LMainProdType = lmp;
-
-            var lsp = await DocumentDBRepository.GetItemsAsync<BList>(d => d.Tag == "BList" && d.BridgeModule == bm && d.ListType == "SubProdType");
-            lsp = lsp.OrderBy(d => d.ListItem);
-            ViewBag.LSubProdType = lsp;
-
-            var lu = await DocumentDBRepository.GetItemsAsync<BUser>(d => d.Tag == "BUser" && (d.BridgesGranted).Contains(bm));
-            lu = lu.OrderBy(d => d.Signature);
-            ViewBag.LUser = lu;
-
-            return ("");
-        }
-
-
 
         [HttpPost]
         [ActionName("CreateNewJob")]

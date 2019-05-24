@@ -10,12 +10,12 @@
     var LUser = ViewBag.LUser;
     var US = ViewBag.userSig;
 
-
-
+    BridgeMVC.Models.BBridge bridge =(BridgeMVC.Models.BBridge)ViewBag.bridge;
 
     string styleTxt = "border-radius: 0; border: none";
 
-
+    string bridgeLongName = bridge.BridgeLongName;
+    List<string> taskNames = bridge.TaskName.Split(';').ToList<string>();
 }
 
 <style>
@@ -102,10 +102,8 @@
 </style>
 
 <div class="title">
-    MY BRIDGE JOBLIST
-    @*<p class="btn btn-subtle" style="float:right; border:none" hidden>
-            @Html.ActionLink("Create New", "Create")
-        </p>*@
+    MY BRIDGE JOBLIST - @bridgeLongName
+
 </div>
 <hr />
 
@@ -154,14 +152,14 @@
         <th style="border-top:none">           JOB ID       </th>
         <th style="border-top:none">            CUSTOMER        </th>
         <th style="border-top:none">            PROJECT NAME    </th>
-        <th style="border-top:none">           FEE       </th>
-        <th style="border-top:none">           AGR       </th>
-        <th style="border-top:none">           EXE        </th>
-        <th style="border-top:none">           FNL        </th>
+        @foreach (string taskname in taskNames)
+        {
+            <th style="border-top:none">           @taskname     </th>
+        }
+
         <th style="border-top:none">          IORA STATUS    </th>
         @*<th>            @Html.DisplayNameFor(model => model.TaskHandler)        </th>
-            <th>            @Html.DisplayNameFor(model => model.Completed)        </th>*@
-
+        <th>            @Html.DisplayNameFor(model => model.Completed)        </th>*@
     </tr>
     
     @foreach (var item in Model)
@@ -257,7 +255,6 @@
     var LUser = @Html.Raw(Json.Encode(LUser));
     var us = @Html.Raw(Json.Encode(US));
 
-    console.log(LUser);
 
     $("#userSig").append(new Option(us, us));
 

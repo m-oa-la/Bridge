@@ -1,5 +1,6 @@
 ﻿using Newtonsoft.Json;
 using System;
+using System.Collections;
 using System.Collections.Generic;
 using System.Linq;
 using System.Web;
@@ -23,6 +24,15 @@ namespace BridgeMVC.Models
 
         [JsonProperty(PropertyName = "archivePath")]
         public string ArchivePath { get; set; }
+
+        [JsonProperty(PropertyName = "taskName")]
+        public string TaskName { get; set; }
+
+        [JsonProperty(PropertyName = "bridgeLongName")]
+        public string BridgeLongName { get; set; }
+
+    
+
 
     }
 
