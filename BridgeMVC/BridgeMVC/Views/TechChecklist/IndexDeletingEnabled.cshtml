@@ -1,0 +1,44 @@
+﻿@model IEnumerable<BridgeMVC.Models.TechChecklist>
+
+@{
+    ViewBag.Title = "IndexDeletingEnabled";
+}
+
+<h2>IndexDeletingEnabled</h2>
+
+<p>
+    @Html.ActionLink("Create New", "Create")
+</p>
+<table class="table">
+    <tr>
+
+        <th>
+            @Html.DisplayNameFor(model => model.DbJobId)
+        </th>
+
+        <th>
+            @Html.DisplayNameFor(model => model.TCSubject)
+        </th>
+
+        <th></th>
+    </tr>
+
+@foreach (var item in Model) {
+    <tr>
+
+        <td>
+            @Html.DisplayFor(modelItem => item.DbJobId)
+        </td>
+  
+        <td>
+            @Html.DisplayFor(modelItem => item.TCSubject)
+        </td>
+     
+        <td>
+            @Html.ActionLink("Edit", "Edit", new { id=item.Id }) |
+            @Html.ActionLink("Delete", "DeleteTc", new { id=item.Id })
+        </td>
+    </tr>
+}
+
+</table>

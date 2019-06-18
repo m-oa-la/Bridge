@@ -1,0 +1,231 @@
+﻿@model IEnumerable<BridgeMVC.Models.Job>
+
+<p>
+    @Html.ActionLink("Create New", "Create")
+</p>
+<table class="table">
+    <tr>
+        <th>
+            @Html.DisplayNameFor(model => model.Tag)
+        </th>
+        <th>
+            @Html.DisplayNameFor(model => model.BridgeModule)
+        </th>
+        <th>
+            @Html.DisplayNameFor(model => model.NpsJobId)
+        </th>
+        <th>
+            @Html.DisplayNameFor(model => model.Task1)
+        </th>
+        <th>
+            @Html.DisplayNameFor(model => model.Task2)
+        </th>
+        <th>
+            @Html.DisplayNameFor(model => model.Task3)
+        </th>
+        <th>
+            @Html.DisplayNameFor(model => model.Task4)
+        </th>
+        <th>
+            @Html.DisplayNameFor(model => model.Task5)
+        </th>
+        <th>
+            @Html.DisplayNameFor(model => model.CertType)
+        </th>
+        <th>
+            @Html.DisplayNameFor(model => model.CertAction)
+        </th>
+        <th>
+            @Html.DisplayNameFor(model => model.MainProdType)
+        </th>
+        <th>
+            @Html.DisplayNameFor(model => model.SubProdType)
+        </th>
+        <th>
+            @Html.DisplayNameFor(model => model.TaskHandler)
+        </th>
+        <th>
+            @Html.DisplayNameFor(model => model.Completed)
+        </th>
+        <th>
+            @Html.DisplayNameFor(model => model.OrderNo)
+        </th>
+        <th>
+            @Html.DisplayNameFor(model => model.ReceivedTime)
+        </th>
+        <th>
+            @Html.DisplayNameFor(model => model.Fee)
+        </th>
+        <th>
+            @Html.DisplayNameFor(model => model.FeeSetTime)
+        </th>
+        <th>
+            @Html.DisplayNameFor(model => model.IoraSentTime)
+        </th>
+        <th>
+            @Html.DisplayNameFor(model => model.IoraReturnedTime)
+        </th>
+        <th>
+            @Html.DisplayNameFor(model => model.JobCompletedTime)
+        </th>
+        <th>
+            @Html.DisplayNameFor(model => model.CustomerName)
+        </th>
+        <th>
+            @Html.DisplayNameFor(model => model.CustomerDbId)
+        </th>
+        <th>
+            @Html.DisplayNameFor(model => model.ProdDescription)
+        </th>
+        <th>
+            @Html.DisplayNameFor(model => model.ApprNote)
+        </th>
+        <th>
+            @Html.DisplayNameFor(model => model.FeeSetter)
+        </th>
+        <th>
+            @Html.DisplayNameFor(model => model.FeeVerifier)
+        </th>
+        <th>
+            @Html.DisplayNameFor(model => model.JobVerifier)
+        </th>
+        <th>
+            @Html.DisplayNameFor(model => model.RAE)
+        </th>
+        <th>
+            @Html.DisplayNameFor(model => model.MWL)
+        </th>
+        <th>
+            @Html.DisplayNameFor(model => model.ExistingCertNo)
+        </th>
+        <th>
+            @Html.DisplayNameFor(model => model.CertNo)
+        </th>
+        <th>
+            @Html.DisplayNameFor(model => model.SerialNo)
+        </th>
+        <th>
+            @Html.DisplayNameFor(model => model.MEDItemNo)
+        </th>
+        <th>
+            @Html.DisplayNameFor(model => model.ExpireDate)
+        </th>
+        <th></th>
+    </tr>
+
+@foreach (var item in Model) {
+    <tr>
+        <td>
+            @Html.DisplayFor(modelItem => item.Tag)
+        </td>
+        <td>
+            @Html.DisplayFor(modelItem => item.BridgeModule)
+        </td>
+        <td>
+            @Html.DisplayFor(modelItem => item.NpsJobId)
+        </td>
+        <td>
+            @Html.DisplayFor(modelItem => item.Task1)
+        </td>
+        <td>
+            @Html.DisplayFor(modelItem => item.Task2)
+        </td>
+        <td>
+            @Html.DisplayFor(modelItem => item.Task3)
+        </td>
+        <td>
+            @Html.DisplayFor(modelItem => item.Task4)
+        </td>
+        <td>
+            @Html.DisplayFor(modelItem => item.Task5)
+        </td>
+        <td>
+            @Html.DisplayFor(modelItem => item.CertType)
+        </td>
+        <td>
+            @Html.DisplayFor(modelItem => item.CertAction)
+        </td>
+        <td>
+            @Html.DisplayFor(modelItem => item.MainProdType)
+        </td>
+        <td>
+            @Html.DisplayFor(modelItem => item.SubProdType)
+        </td>
+        <td>
+            @Html.DisplayFor(modelItem => item.TaskHandler)
+        </td>
+        <td>
+            @Html.DisplayFor(modelItem => item.Completed)
+        </td>
+        <td>
+            @Html.DisplayFor(modelItem => item.OrderNo)
+        </td>
+        <td>
+            @Html.DisplayFor(modelItem => item.ReceivedTime)
+        </td>
+        <td>
+            @Html.DisplayFor(modelItem => item.Fee)
+        </td>
+        <td>
+            @Html.DisplayFor(modelItem => item.FeeSetTime)
+        </td>
+        <td>
+            @Html.DisplayFor(modelItem => item.IoraSentTime)
+        </td>
+        <td>
+            @Html.DisplayFor(modelItem => item.IoraReturnedTime)
+        </td>
+        <td>
+            @Html.DisplayFor(modelItem => item.JobCompletedTime)
+        </td>
+        <td>
+            @Html.DisplayFor(modelItem => item.CustomerName)
+        </td>
+        <td>
+            @Html.DisplayFor(modelItem => item.CustomerDbId)
+        </td>
+        <td>
+            @Html.DisplayFor(modelItem => item.ProdDescription)
+        </td>
+        <td>
+            @Html.DisplayFor(modelItem => item.ApprNote)
+        </td>
+        <td>
+            @Html.DisplayFor(modelItem => item.FeeSetter)
+        </td>
+        <td>
+            @Html.DisplayFor(modelItem => item.FeeVerifier)
+        </td>
+        <td>
+            @Html.DisplayFor(modelItem => item.JobVerifier)
+        </td>
+        <td>
+            @Html.DisplayFor(modelItem => item.RAE)
+        </td>
+        <td>
+            @Html.DisplayFor(modelItem => item.MWL)
+        </td>
+        <td>
+            @Html.DisplayFor(modelItem => item.ExistingCertNo)
+        </td>
+        <td>
+            @Html.DisplayFor(modelItem => item.CertNo)
+        </td>
+        <td>
+            @Html.DisplayFor(modelItem => item.SerialNo)
+        </td>
+        <td>
+            @Html.DisplayFor(modelItem => item.MEDItemNo)
+        </td>
+        <td>
+            @Html.DisplayFor(modelItem => item.ExpireDate)
+        </td>
+        <td>
+            @Html.ActionLink("Edit", "Edit", new { id=item.Id }) |
+            @Html.ActionLink("Details", "Details", new { id=item.Id }) |
+            @Html.ActionLink("Delete", "Delete", new { id=item.Id })
+        </td>
+    </tr>
+}
+
+</table>
