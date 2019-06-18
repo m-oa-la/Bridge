@@ -1,1 +1,19 @@
+# Ignore sensitive information
 Web.config
+
+# Ignore NuGet Packages
+*.nupkg
+
+# Ignore the packages folder
+**/[Pp]ackages/*
+
+# except build
+!**/[Pp]ackages/build/
+
+# Ignore NuGet v3's files
+*.nuget.props
+*.nuget.targets
+
+# Ignore other intermediate files created by NuGet
+project.lock.json
+project.assets.json
