@@ -413,8 +413,39 @@ namespace BridgeMVC.Controllers
         {
             Job j = await DocumentDBRepository.GetItemAsync<Job>(id);
 
-            return null;
+            return View(j);
         }
+
+        [ActionName("NCertReporting")]
+        public async Task<ActionResult> NCertReporting(string id)
+        {
+            Job j = await DocumentDBRepository.GetItemAsync<Job>(id);
+
+            return View(j);
+        }
+
+        [ActionName("InputApprOrderId")]
+        public async Task<ActionResult> InputApprOrderId(string id)
+        {
+            Job j = await DocumentDBRepository.GetItemAsync<Job>(id);
+            return View(j);
+        }
+
+
+        [HttpPost]
+        [ActionName("InputApprOrderId")]
+        public async Task<ActionResult> InputApprOrderIdPost(string id, string apprOrderId)
+        {
+            Job j = await DocumentDBRepository.GetItemAsync<Job>(id);
+            if(!string.IsNullOrEmpty(apprOrderId) && apprOrderId.Length > 7)
+            {
+                j.SubOrderNo = apprOrderId;
+                await DocumentDBRepository.UpdateItemAsync<Job>(j.Id, j);
+            }
+            return Redirect(Url.Content("~/Job/NCertReporting/" + j.Id));
+        }
+
+
 
         [ActionName("GetProdDesc")]
         public async Task<string> GetProdType(string id)
