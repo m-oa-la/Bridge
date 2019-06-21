@@ -1,0 +1,98 @@
+﻿@model BridgeMVC.Models.BUser
+
+@{
+
+    ViewBag.Title = "Index";
+    Layout = "~/Views/Shared/_Layout.cshtml";
+    string LastUsedBridge = Model.BridgeLastUsed;
+    string ListModule = "";
+
+    List<string> result = Model.BridgesGranted.Split(';').ToList();
+    List<BridgeMVC.Models.BBridge> bridges = ViewBag.bridges;
+
+
+    List<SelectListItem> listItems = new List<SelectListItem>();
+    foreach (var b in bridges)
+    {
+        ListModule = ListModule + b.BridgeName + ": " + b.BridgeLongName + ";  ";
+        listItems.Add(new SelectListItem
+        {
+            Text = b.BridgeName,
+            Value = b.BridgeName,
+
+        });
+    }
+}
+
+
+
+@using (Html.BeginForm())
+{
+    @Html.AntiForgeryToken()
+
+    <div class="form-horizontal">
+
+        <hr />
+        @Html.ValidationSummary(true, "", new { @class = "text-danger" })
+
+
+        @Html.HiddenFor(model => model.Id)
+        @Html.HiddenFor(model => model.EmployeeID)
+        @Html.HiddenFor(model => model.Tag)
+        @Html.HiddenFor(model => model.EmployeeID)
+        @Html.HiddenFor(model => model.Email)
+        @Html.HiddenFor(model => model.FirstName)
+        @Html.HiddenFor(model => model.LastName)
+        @Html.HiddenFor(model => model.Signature)
+
+        <h2>Dear @Model.Signature : </h2>
+
+        <h3>You have the following Bridge modules:</h3>
+        <div class="form-group">
+
+            <div class="col-md-3">
+                @Html.EditorFor(model => model.BridgesGranted, new { htmlAttributes = new { @class = "form-control", @readonly = "readonly" } })
+            </div>
+            @ListModule
+        </div>
+
+
+        <h3> Please select the bridge module to use: </h3>
+
+
+        <div class="form-group">
+            <div class="col-md-3">
+                @Html.DropDownListFor(model => model.BridgeLastUsed, listItems, LastUsedBridge, new { @class = "form-control" })
+                <input type="submit" value="SELECT" class="btn btn-info " style="font-size:medium; height:22px; padding:0 6px 0 6px; " />
+            </div>
+
+        </div>
+    </div>
+
+}
+
+
+
+@*<div>
+        <a href="@Url.Action("Get", "Blob")" style="color:green; font-size:14pt;">View Data</a>
+    </div>
+    <div>
+        @using (Html.BeginForm("Index", "Blob", FormMethod.Post, new { enctype = "multipart/form-data" }))
+        {
+            @Html.AntiForgeryToken()
+            <fieldset>
+                <legend>Upload File</legend>
+                <ol>
+                    <li>
+                        <label style="margin-right:15px;">Select file </label>
+                        <input type="file" name="FilePath" value="" />
+                    </li>
+                </ol>
+                <input type="submit" value="Submit" />
+            </fieldset>
+        }
+    </div>*@
+
+
+
+
