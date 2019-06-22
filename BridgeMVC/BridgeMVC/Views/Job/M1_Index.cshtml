@@ -140,15 +140,15 @@
 
 <table class="table table-mid-align-rows hoverRow" style="table-layout:fixed;">
     <colgroup>
-        <col span="1" style="width: 9%;">
-        <col span="1" style="width: 100px;">
+        <col span="1" style="width: 21%;">
+        <col span="1" style="width: 120px;">
         <col span="1" style="width: 24%;">
         <col span="1" style="width: 24%;">
         <col span="1" style="max-width: 50px; width:49px">
         <col span="1" style="max-width: 50px; width:49px">
         <col span="1" style="max-width: 50px; width:49px">
         <col span="1" style="max-width: 50px; width:49px">
-        <col span="1" style="width: 33%;">
+        <col span="1" style="width: 24%;">
     </colgroup>
     <tr>
         <th style="border-top:none">           JOB ID       </th>
@@ -191,6 +191,7 @@
 
         string editlink3 = "'/Job/CommonTask3/" + item.Id + "'";
         string editlink4 = "'/Job/CommonTask4/" + item.Id + "'";
+        string linkNcertReporting = "'/Job/NCertReporting/" + item.Id + "'";
 
         string t2tag = "T2TAG" + item.Task2 + "T2TAG";
     <tr>
@@ -200,7 +201,7 @@
             </p>
         </td>
         <td >
-            <div style="background-color:lightgray;cursor: pointer;text-align:center;height:25px" onclick="location.href='ncertreporting'">
+            <div style="background-color:lightgray;cursor: pointer;text-align:center;height:25px" onclick="location.href=@linkNcertReporting">
                 
                 <div style="background-color:green;width:66.66%;position:relative;top:0px;height:24px">
                     <div style="color:white" >
