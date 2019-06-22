@@ -1,0 +1,442 @@
+﻿@model BridgeMVC.Models.Job
+@{
+    Layout = null;
+    ViewBag.Title = "M1_Task1";
+    string UserSignature = (string)Session["UserSignature"];
+    string bridgeModule = (string)Session["BridgeModule"];
+    //var LCertType = ViewBag.LCertType;
+    //var LCertAction = ViewBag.LCertAction;
+    //var LMainProdType = ViewBag.LMainProdType;
+    //var LSubProdType = ViewBag.LSubProdType;
+    //var LUser = ViewBag.LUser;
+    var BLSACert = ViewBag.BLSACert;
+    var bcolor = "#03C5EA";
+
+}
+<head>
+    <meta http-equiv="X-UA-Compatible" content="IE=edge" />
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Bridge</title>
+    @Styles.Render("~/Content/css")
+    @Scripts.Render("~/bundles/modernizr")
+    <script language="JavaScript" type="text/javascript" src="~/Scripts/jquery-3.3.1.min.js"></script>
+    <script language="JavaScript" type="text/javascript" src="~/Scripts/jquery-ui.min.js"></script>
+    <script language="JavaScript" type="text/javascript" src="~/Scripts/bridgeScript.js"></script>
+    <link href="~/Content/jCalendar.css" type="text/css" rel="stylesheet">
+    <script type="text/javascript" src="~/Scripts/jCalendar.js"></script>
+</head>
+<style>
+
+    /* Might want to wrap a span around your checkbox text */
+    .checkboxtext {
+        /* Checkbox text */
+        font-size: 110%;
+        display: inline;
+    }
+
+    .thinTB {
+        border: solid;
+        border-width: thin;
+        border-color: gray;
+    }
+
+        .thinTB tr td {
+            border: solid;
+            border-width: thin;
+            border-color: gray;
+        }
+
+    td {
+        height: 36px;
+    }
+
+    h2 {
+        zoom: 1;
+        font-family: Verdana;
+        font-size: 14.5px;
+        color: black;
+    }
+
+    .autotxt {
+        zoom: 1;
+        font-family: Verdana;
+        font-size: 12px;
+        color: black;
+    }
+
+    body {
+        /*height: 297mm;*/
+        width: 210mm;
+        margin-left: auto;
+        margin-right: auto;
+        background: rgb(204,204,204);
+    }
+
+
+    .bName {
+        /*min-width: 300px;*/
+        font-weight: bold;
+        /*margin-bottom:2em;*/
+    }
+
+    .bValue {
+        font-weight: 100;
+        /*margin-bottom: 2em;*/
+    }
+
+    .form-control {
+        font-weight: bold;
+        color: steelblue;
+    }
+
+    span {
+        padding-top: 0.1em;
+        padding-left: 0;
+        margin-left: 0;
+    }
+
+
+
+    page[size="A4"] {
+        background: white;
+        width: 21cm;
+        /*height: 29.7cm;*/
+        display: block;
+        margin: 0 0;
+        padding: 2.5cm;
+        margin-bottom: 0.5cm;
+        box-shadow: 0 0 0.5cm rgba(0,0,0,0.5);
+    }
+
+    p {
+        height: auto;
+    }
+
+    div {
+        height: auto;
+    }
+
+    @@media print {
+
+        .no-print, .no-print * {
+            display: none !important;
+        }
+
+        body, page[size="A4"] {
+            margin: 0;
+            box-shadow: 0;
+        }
+
+        .col-lg-1, .col-lg-2, .col-lg-3, .col-lg-4, .col-lg-5, .col-lg-6, .col-lg-7, .col-lg-8, .col-lg-9, .col-lg-10, .col-lg-11, .col-lg-12 {
+            float: left;
+        }
+
+        .col-lg-12 {
+            width: 100%;
+        }
+
+        .col-lg-11 {
+            width: 91.66666667%;
+        }
+
+        .col-lg-10 {
+            width: 83.33333333%;
+        }
+
+        .col-lg-9 {
+            width: 75%;
+        }
+
+        .col-lg-8 {
+            width: 66.66666667%;
+        }
+
+        .col-lg-7 {
+            width: 58.33333333%;
+        }
+
+        .col-lg-6 {
+            width: 50%;
+        }
+
+        .col-lg-5 {
+            width: 41.66666667%;
+        }
+
+        .col-lg-4 {
+            width: 33.33333333%;
+        }
+
+        .col-lg-3 {
+            width: 25%;
+        }
+
+        .col-lg-2 {
+            width: 16.66666667%;
+        }
+
+        .col-lg-1 {
+            width: 8.33333333%;
+        }
+
+        .col-lg-pull-12 {
+            right: 100%;
+        }
+
+        .col-lg-pull-11 {
+            right: 91.66666667%;
+        }
+
+        .col-lg-pull-10 {
+            right: 83.33333333%;
+        }
+
+        .col-lg-pull-9 {
+            right: 75%;
+        }
+
+        .col-lg-pull-8 {
+            right: 66.66666667%;
+        }
+
+        .col-lg-pull-7 {
+            right: 58.33333333%;
+        }
+
+        .col-lg-pull-6 {
+            right: 50%;
+        }
+
+        .col-lg-pull-5 {
+            right: 41.66666667%;
+        }
+
+        .col-lg-pull-4 {
+            right: 33.33333333%;
+        }
+
+        .col-lg-pull-3 {
+            right: 25%;
+        }
+
+        .col-lg-pull-2 {
+            right: 16.66666667%;
+        }
+
+        .col-lg-pull-1 {
+            right: 8.33333333%;
+        }
+
+        .col-lg-pull-0 {
+            right: auto;
+        }
+
+        .col-lg-push-12 {
+            left: 100%;
+        }
+
+        .col-lg-push-11 {
+            left: 91.66666667%;
+        }
+
+        .col-lg-push-10 {
+            left: 83.33333333%;
+        }
+
+        .col-lg-push-9 {
+            left: 75%;
+        }
+
+        .col-lg-push-8 {
+            left: 66.66666667%;
+        }
+
+        .col-lg-push-7 {
+            left: 58.33333333%;
+        }
+
+        .col-lg-push-6 {
+            left: 50%;
+        }
+
+        .col-lg-push-5 {
+            left: 41.66666667%;
+        }
+
+        .col-lg-push-4 {
+            left: 33.33333333%;
+        }
+
+        .col-lg-push-3 {
+            left: 25%;
+        }
+
+        .col-lg-push-2 {
+            left: 16.66666667%;
+        }
+
+        .col-lg-push-1 {
+            left: 8.33333333%;
+        }
+
+        .col-lg-push-0 {
+            left: auto;
+        }
+
+        .col-lg-offset-12 {
+            margin-left: 100%;
+        }
+
+        .col-lg-offset-11 {
+            margin-left: 91.66666667%;
+        }
+
+        .col-lg-offset-10 {
+            margin-left: 83.33333333%;
+        }
+
+        .col-lg-offset-9 {
+            margin-left: 75%;
+        }
+
+        .col-lg-offset-8 {
+            margin-left: 66.66666667%;
+        }
+
+        .col-lg-offset-7 {
+            margin-left: 58.33333333%;
+        }
+
+        .col-lg-offset-6 {
+            margin-left: 50%;
+        }
+
+        .col-lg-offset-5 {
+            margin-left: 41.66666667%;
+        }
+
+        .col-lg-offset-4 {
+            margin-left: 33.33333333%;
+        }
+
+        .col-lg-offset-3 {
+            margin-left: 25%;
+        }
+
+        .col-lg-offset-2 {
+            margin-left: 16.66666667%;
+        }
+
+        .col-lg-offset-1 {
+            margin-left: 8.33333333%;
+        }
+
+        .col-lg-offset-0 {
+            margin-left: 0%;
+        }
+    }
+</style>
+
+<page size="A4">
+    <h1>
+        <font face="Broader View" size="4" color=@bcolor>
+            MED LSA CERTIFICATE AUTO-TEXT
+        </font>
+    </h1>
+    <h2>Product description</h2>
+    <div class="autotxt" id="prodDesp">
+    </div>
+    <h2>Application/Limitation</h2>
+    <div class="autotxt" id="appLimit">
+    </div>
+
+    <h2>Type Examination documentation </h2>
+    <table>
+        <tr>
+            <td><u><i>Drawing No.</i></u></td>
+            <td><u><i>Rev.</i></u></td>
+            <td><u><i>Title(s)</i></u></td>
+        </tr>
+        <tr>
+            <td>xxxx-xxx-xx</td>
+            <td>0</td>
+            <td>General Arrangement</td>
+        </tr>
+    </table>
+
+    <h2>Tests carried out </h2>
+    <div class="autotxt" id="tests">
+    </div>
+    <table>
+        <tr>
+            <td><u><i>Description</i></u></td>
+            <td><u><i>Report</i></u></td>
+            <td><u><i>Date(s)</i></u></td>
+            <td><u><i>Witnessed by</i></u></td>
+        </tr>
+        <tr>
+            <td>GA-xxxxx Rev.1</td>
+            <td>xxxx-xxx-xx</td>
+            <td>xxxx-xxx-xx</td>
+            <td>DNV GL xxxxxx, Norway</td>
+        </tr>
+    </table>
+    <h2>Marking of product</h2>
+    <div class="autotxt" id="marking">
+    </div>
+    <h2 id="retentionTitle"></h2>
+    <div class="autotxt" id="retention">
+    </div>
+    <h2>END OF CERTIFICATE </h2>
+</page>
+
+
+
+
+
+
+
+
+
+
+
+
+<script>
+    var TargetUser;
+    var BEmail;
+    var taskStatus;
+    var taskNo = 1;
+    //read viewbag's info.
+    var userSignature = "@UserSignature";
+    var bm = "@bridgeModule";
+    var Job = @Html.Raw(Json.Encode(Model));
+
+    var BLSACert = @Html.Raw(Json.Encode(BLSACert));
+
+    var B = eval("true");
+
+    console.log(Job);
+    console.log(BLSACert);
+
+    $.each(BLSACert, function (key, data) {
+        var condition;
+        var bookMarkName = data.BookMarkName;
+        var chName = bookMarkName.split("_")[0]
+
+        if (data.Condition != null) {
+            condition = eval(data.Condition);
+        } else {
+            condition = true;
+        }
+        if (condition) {
+           $("#" + chName).append(eval(data.Formula) + "<br/>");
+        }
+    });
+
+
+
+
+
+
+</script>
