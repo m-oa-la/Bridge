@@ -349,5 +349,4 @@ healthchecksdb
 MigrationBackup/
 
 # Ignore sensitive information
-Web.config
-
+*/BridgeMVC/Web.config
