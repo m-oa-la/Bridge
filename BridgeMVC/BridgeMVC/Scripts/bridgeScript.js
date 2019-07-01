@@ -146,39 +146,40 @@ function renderTaskHandling() {
             $("#selectListTask").append(new Option(value, value));
         });
     }
- 
-    //$.validator.methods.date = function (value, element) {
-    //    return this.optional(element) || Globalize.parseDate(value);
-    //}; 
 
-    //$("#selectListHandler").on('change', function () {
-    //    UpdateSendingInfo();
-    //});
+    /*
+    $.validator.methods.date = function (value, element) {
+        return this.optional(element) || Globalize.parseDate(value);
+    };
 
-
-    //$("#selectListTask").on('change', function () {
-    //    UpdateSendingInfo();
-    // });
-
-    //function UpdateSendingInfo() {
-    //    var vtask = $("#selectListTask").val();
-    //    var vhandler = $("#selectListHandler").val();
-
-    //    var newTaskNo = vtask.slice(0, 1);
-    //    $("#Task" + newTaskNo).val("TASK");
+    $("#selectListHandler").on('change', function () {
+        UpdateSendingInfo();
+    });
 
 
+    $("#selectListTask").on('change', function () {
+        UpdateSendingInfo();
+    });
 
-    //    if (vtask !== null) {
-    //        return $.ajax({
-    //            type: 'GET',
-    //            url: '/Job/SetTaskSendingFlag',
-    //            data: { newHandler: vhandler, newTask: newTaskNo },
-    //            cache: false,
-    //            success: console.log(vhandler + " " + newTaskNo)
-    //        });
-    //    }
-    //}
+    function UpdateSendingInfo() {
+        var vtask = $("#selectListTask").val();
+        var vhandler = $("#selectListHandler").val();
 
+        var newTaskNo = vtask.slice(0, 1);
+        $("#Task" + newTaskNo).val("TASK");
+
+
+
+        if (vtask !== null) {
+            return $.ajax({
+                type: 'GET',
+                url: '/Job/SetTaskSendingFlag',
+                data: { newHandler: vhandler, newTask: newTaskNo },
+                cache: false,
+                success: console.log(vhandler + " " + newTaskNo)
+            });
+        }
+    }
+    */
 
 }

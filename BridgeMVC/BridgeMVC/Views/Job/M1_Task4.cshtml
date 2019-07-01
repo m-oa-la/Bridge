@@ -1,4 +1,5 @@
 ﻿@model BridgeMVC.Models.Job
+
 @{
     ViewBag.Title = "M1_Task1";
     string UserSignature = (string)Session["UserSignature"];
@@ -8,10 +9,9 @@
     var LMainProdType = ViewBag.LMainProdType;
     var LSubProdType = ViewBag.LSubProdType;
     var LUser = ViewBag.LUser;
-
 }
-<style>
 
+<style>
     .bing {
         float: left;
         /*width: 450px;*/
@@ -38,15 +38,25 @@
         /* Checkbox text */
         font-size: 110%;
         display: inline;
+    }
 </style>
+
 <h2>
     JOB COMPLETION
-
     <br />
-
 </h2>
+
+<!-- Html.BeginForm("Action", "Controller", FormMethod.Post, new { id = "my-form" }) -->
 @using (Html.BeginForm(null, null, FormMethod.Post, new { id = "jobForm" }))
 {
+    <!--
+        Html.BeginForm - Starts a form
+        Html.AntiForgeryToken - Generates a hidden form that is validated when the form is submitted
+        Html.HiddenFor - Generates a hidden input element
+        Html.EditorFor - Generates a input element
+        Html.ValidationMessageFor - Generates a display with a warning if there is an error
+        Html.RenderPartial - Renders the specified partial view
+    -->
     @Html.AntiForgeryToken()
 
     @Html.HiddenFor(model => model.Tag)
@@ -127,19 +137,23 @@
 
     <div class="form-horizontal">
         <hr />
+
         <div class="bing col-lg-6 ">
             Job ID:
             @Html.EditorFor(model => model.NpsJobId, new { htmlAttributes = new { @class = "form-control", @readonly = "readonly" } })
 
         </div>
+
         <div class="bing col-lg-6 ">
             Customer Name:
             @Html.EditorFor(model => model.CustomerName, new { htmlAttributes = new { @class = "form-control", @readonly = "readonly" } })
         </div>
+
         <div class="bing col-lg-6 ">
             Equipment type:
             @Html.EditorFor(model => model.SubProdType, new { htmlAttributes = new { @class = "form-control", @readonly = "readonly" } })
         </div>
+
         <div class="bing col-lg-6 ">
             Product Name:
             @Html.EditorFor(model => model.ProdDescription, new { htmlAttributes = new { @class = "form-control", @readonly = "readonly" } })
@@ -151,40 +165,40 @@
             @Html.ValidationMessageFor(model => model.ApprNote, "", new { @class = "text-danger" })
         </div>
 
-
         <div class="bing col-lg-6 h4">
             The job is ready to be completed: &nbsp;
             @Html.EditorFor(model => model.IsComplete)
             @Html.ValidationMessageFor(model => model.IsComplete, "", new { @class = "text-danger" })
             <br />
         </div>
+
         <div class="bing col-lg-6" hidden>
             @Html.EditorFor(model => model.JobCompletedTime, new { htmlAttributes = new { @class = "form-control" } })
             @Html.ValidationMessageFor(model => model.JobCompletedTime, "", new { @class = "text-danger" })
         </div>
+
         <div class="bing col-lg-6" hidden>
             @Html.EditorFor(model => model.CompletedBy, new { htmlAttributes = new { @class = "form-control" } })
             @Html.ValidationMessageFor(model => model.CompletedBy, "", new { @class = "text-danger" })
         </div>
-
 
         <div class="form-group">
             <div class="col-md-12">
                 <input type="submit" value="Complete job in Bridge" class="btn btn-danger" id="saveButton" readonly />
             </div>
         </div>
-        @{
 
+        @{
             Html.RenderPartial("_TaskSending");
         }
     </div>
-
-
 }
 <hr />
+
 @section Scripts {
     @Scripts.Render("~/bundles/jqueryval")
 }
+
 <script>
 
     //read viewbag's info.
@@ -212,9 +226,5 @@
     renderTaskHandling();
 
     //console.log(getTodayDate());
-
-
-
-
 </script>
 

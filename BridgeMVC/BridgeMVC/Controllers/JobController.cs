@@ -22,7 +22,7 @@ namespace BridgeMVC.Controllers
             var user = User as ClaimsPrincipal;
             string userName =  user.Email().ToLower();
 
-                var users = await DocumentDBRepository.GetItemsAsync<BUser>(d => d.Tag == "BUser" && d.Email.ToLower() == userName);
+            var users = await DocumentDBRepository.GetItemsAsync<BUser>(d => d.Tag == "BUser" && d.Email.ToLower() == userName);
 
             if (users != null)
             {
@@ -53,6 +53,7 @@ namespace BridgeMVC.Controllers
             if (terminateJobId != "NONE")
             {
                 Job j = await DocumentDBRepository.GetItemAsync<Job>(terminateJobId);
+
                 if (j != null)
                 {
                     j.IsComplete = true;
@@ -65,11 +66,9 @@ namespace BridgeMVC.Controllers
 
                 }
 
-
                 var myModel = await DocumentDBRepository.GetItemsAsync<Job>(d=> d.Id == terminateJobId);
                    return View(myModel.Take(20));
             }
-
 
             if (!string.IsNullOrEmpty(SearchString))
             {
@@ -115,7 +114,6 @@ namespace BridgeMVC.Controllers
 
             return ("");
         }
-
 
         [ActionName("CommonIndex")]
         public async Task<ActionResult> CommonIndex(string searchString, string userSig)
@@ -187,12 +185,11 @@ namespace BridgeMVC.Controllers
             Job item = await DocumentDBRepository.GetItemAsync<Job>(id);
             Session["DbJobId"] = item.Id;
             Session["NpsJobId"] = item.NpsJobId;
+
             if (id == null)
             {
                 return new HttpStatusCodeResult(HttpStatusCode.BadRequest);
             }
-
-
 
             if (item.MainProdType.ToLower().Contains("life-saving appliances") && !item.CertType.ToLower().Contains("med-f"))
             {
@@ -206,7 +203,6 @@ namespace BridgeMVC.Controllers
                 return View("M1_Task3_LSA", item);
             }
 
-
             item.StatusNote = "";
             //Session["newHandler"] = "-";
             //Session["newTask"] = "-";
@@ -215,10 +211,12 @@ namespace BridgeMVC.Controllers
             {
                 return HttpNotFound();
             }
+
             //ViewBag.SelectList = await DocumentDBRepository<BRule>.GetItemsAsync(d => d.Tag == "BRule" && d.BridgeModule == item.BridgeModule);
             await SetViewBags();
             return View((string)Session["BridgeModule"] + "_Task3", item);
         }
+
         [ActionName("CommonTask4")]
         public async Task<ActionResult> CommonTask4(string id)
         {
@@ -300,9 +298,6 @@ namespace BridgeMVC.Controllers
                     return Redirect(Url.Content("~/Job/_Index"));
                 }
 
-
-
-
             }
 
             await DocumentDBRepository.UpdateItemAsync<Job>(item.Id, item);
@@ -310,13 +305,13 @@ namespace BridgeMVC.Controllers
             return View((string)Session["BridgeModule"] + "_Task1", item);
         }
 
-
         [HttpPost]
         [ActionName("CommonTask3")]
         [ValidateAntiForgeryToken]
         public async Task<ActionResult> CommonTask3Post(Job item, string NewTask="-", string NewHandler="-")
         {
             string taskPath = (string)Session["BridgeModule"];
+
             if (item.MainProdType.ToLower().Contains("life-saving appliances") && !item.CertType.ToLower().Contains("med-f"))
             {
                 taskPath += "_Task3_LSA";
@@ -359,12 +354,9 @@ namespace BridgeMVC.Controllers
                     return Redirect(Url.Content("~/Job/_Index"));
                 }
 
-
                 await DocumentDBRepository.UpdateItemAsync<Job>(item.Id, item);
-
             }
 
-         
             await SetViewBags();
             return View(taskPath, item);
         }
@@ -394,8 +386,6 @@ namespace BridgeMVC.Controllers
             return Redirect(Url.Content("~/Job/_Index/"));
         }
 
-
-
         [HttpGet]
         [ActionName("SetTaskSendingFlag")]
         public  string SetTaskSendingFlag(string newHandler, string newTask)
@@ -404,9 +394,6 @@ namespace BridgeMVC.Controllers
             Session["newTask"] = newTask;
             return "Done";
         }
-
-
-
 
         [HttpGet]
         [ActionName("M1_Task1_BudgetHourCalc")]
@@ -417,13 +404,10 @@ namespace BridgeMVC.Controllers
             return JsonConvert.SerializeObject(f.FirstOrDefault());
         }
 
-
-
         [ActionName("IsIORAExisting")]
         public async Task<ActionResult> IsIORAExisting(string id)
         {
             Job j = await DocumentDBRepository.GetItemAsync<Job>(id);
-
             return View(j);
         }
 
@@ -431,7 +415,6 @@ namespace BridgeMVC.Controllers
         public async Task<ActionResult> NCertReporting(string id)
         {
             Job j = await DocumentDBRepository.GetItemAsync<Job>(id);
-
             return View(j);
         }
 
@@ -441,7 +424,6 @@ namespace BridgeMVC.Controllers
             Job j = await DocumentDBRepository.GetItemAsync<Job>(id);
             return View(j);
         }
-
 
         [HttpPost]
         [ActionName("InputApprOrderId")]
@@ -456,12 +438,11 @@ namespace BridgeMVC.Controllers
             return Redirect(Url.Content("~/Job/NCertReporting/" + j.Id));
         }
 
-
-
         [ActionName("GetProdDesc")]
         public async Task<string> GetProdType(string id)
         {
             Job j = await DocumentDBRepository.GetItemAsync<Job>(id);
+
             if (!string.IsNullOrEmpty(j.ProdDescription))
             {
                 return j.SubProdType + "-" + j.ProdDescription; 
@@ -478,11 +459,11 @@ namespace BridgeMVC.Controllers
             return "";
         }
 
-
         [ActionName("ChangeJobRAE")]
         public async Task<string> ChangeJobRAE(string id, string newJobHandler)
         {
             Job j = await DocumentDBRepository.GetItemAsync<Job>(id);
+
             if (j != null)
             {
                 j.RAE = newJobHandler;
@@ -490,10 +471,12 @@ namespace BridgeMVC.Controllers
             }
             return ("OK");
         }
+
         [ActionName("ChangeJobVerifier")]
         public async Task<string> ChangeJobVerifier(string id, string newJobHandler)
         {
             Job j = await DocumentDBRepository.GetItemAsync<Job>(id);
+
             if (j != null)
             {
                 j.JobVerifier = newJobHandler;
@@ -502,12 +485,11 @@ namespace BridgeMVC.Controllers
             return ("OK");
         }
 
-   
-
         [ActionName("UpdateOnHoldNote")]
         public async Task<string> UpdateOnHoldNote(string id, string newNote)
         {
             Job j = await DocumentDBRepository.GetItemAsync<Job>(id);
+
             if (j != null)
             {
                 if (newNote.Contains("OH_from"))
@@ -531,7 +513,6 @@ namespace BridgeMVC.Controllers
             {
                 return j.IoraDbId;
             }
-
         }
 
 
@@ -556,9 +537,7 @@ namespace BridgeMVC.Controllers
         [ActionName("IoraDraft")]
         public async Task<ActionResult> IoraDraftPost(Job item)
         {
-    
-                await DocumentDBRepository.UpdateItemAsync<Job>(item.Id, item);
-         
+            await DocumentDBRepository.UpdateItemAsync<Job>(item.Id, item);
             return Redirect(Url.Content("~/Job/CreateIora/" + item.Id));
         }
 
@@ -586,6 +565,7 @@ namespace BridgeMVC.Controllers
             {
                 return HttpNotFound();
             }
+
             string sf = sendingFlag;
             Session["DbJobId"] = id;
             Session["NpsJobId"] = item.NpsJobId;
@@ -668,6 +648,7 @@ namespace BridgeMVC.Controllers
             {
                 return HttpNotFound();
             }
+
             //ViewBag.SelectList = await DocumentDBRepository<BRule>.GetItemsAsync(d => d.Tag == "BRule" && d.BridgeModule == item.BridgeModule);
             Session["DbJobId"] = item.Id;
             Session["NpsJobId"] = item.NpsJobId;
@@ -698,9 +679,6 @@ namespace BridgeMVC.Controllers
             await SetViewBags();
             return View(item);
         }
-
-
-
 
         [ActionName("Whiteboard")]
         public async Task<ActionResult> Whiteboard(string wbTab = "wb_dist")
@@ -744,7 +722,6 @@ namespace BridgeMVC.Controllers
             
             await SetViewBags();
             return View(myModel);
-
         }
 
         [ActionName("SubViews/WB_SV1")]
@@ -753,7 +730,6 @@ namespace BridgeMVC.Controllers
             Session["BridgeModule"] = "M2";
             var bm = (string)Session["BridgeModule"];
             var myModel = await DocumentDBRepository.GetItemsAsync<Job>(d => d.Tag == "Job" && d.BridgeModule == bm);
-
             return View(myModel);
         }
 
@@ -783,7 +759,6 @@ namespace BridgeMVC.Controllers
             s = s.Replace("<div>", "");
             s = s.Replace("</div>", "");
             return s;
-
         }
 
         [ActionName("M1_Task3_LSA")]
@@ -806,16 +781,12 @@ namespace BridgeMVC.Controllers
                 return HttpNotFound();
             }
 
-
-
             var lu = await DocumentDBRepository.GetItemsAsync<BUser>(d => d.Tag == "BUser" && (d.BridgesGranted).Contains(item.BridgeModule));
             lu = lu.OrderBy(d => d.Signature);
             ViewBag.LUser = lu;
 
             return View("M1_Task3_LSA", item);
         }
-       
-
     }
 }
 

@@ -11,9 +11,8 @@
     var LMainProdType = ViewBag.LMainProdType;
     var LSubProdType = ViewBag.LSubProdType;
     var LUser = ViewBag.LUser;
-
-
 }
+
 <head>
     <meta http-equiv="X-UA-Compatible" content="IE=edge" />
     <meta charset="utf-8" />
@@ -109,7 +108,6 @@
         background: rgb(204,204,204);
     }
 
-
     .bName {
         /*min-width: 300px;*/
         font-weight: bold;
@@ -132,8 +130,6 @@
         margin-left: 0;
     }
 
-
-
     page[size="A4"] {
         background: white;
         width: 21cm;
@@ -154,7 +150,6 @@
     }
 
     @@media print {
-
         .no-print, .no-print * {
             display: none !important;
         }
@@ -377,7 +372,7 @@
 
     <div href="/"><img style="width:690px" src="~/Content/pictures/DNVGLLogo.PNG"></div>
 
-    <h2>LSA Launching Appliances Checklist</h2>
+    <h2>LSA Launching Appliances Checklistgddg</h2>
 
     @using (Html.BeginForm(null, null, FormMethod.Post, new { id = "jobForm" }))
     {
@@ -459,6 +454,7 @@
             @Html.HiddenFor(model => model.IoraDbId)
             @Html.HiddenFor(model => model.InternalFee)
         </div>
+
         <div>
             <hr />
 
@@ -661,13 +657,13 @@
     var userSignature = "@UserSignature";
     var bm = "@bridgeModule";
     var Job = @Html.Raw(Json.Encode(Model));
-
     var LMainProdType = @Html.Raw(Json.Encode(LMainProdType));
     var LSubProdType = @Html.Raw(Json.Encode(LSubProdType));
     var LUser = @Html.Raw(Json.Encode(LUser));
     var LCertAction = @Html.Raw(Json.Encode(LCertAction));
     var LCertType = @Html.Raw(Json.Encode(LCertType));
     console.log("User......" + LUser);
+
     var TargetUser;
     var BEmail;
     var taskStatus;
