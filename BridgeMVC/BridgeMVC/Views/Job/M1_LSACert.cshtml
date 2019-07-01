@@ -11,8 +11,8 @@
     //var LUser = ViewBag.LUser;
     var BLSACert = ViewBag.BLSACert;
     var bcolor = "#03C5EA";
-
 }
+
 <head>
     <meta http-equiv="X-UA-Compatible" content="IE=edge" />
     <meta charset="utf-8" />
@@ -26,8 +26,8 @@
     <link href="~/Content/jCalendar.css" type="text/css" rel="stylesheet">
     <script type="text/javascript" src="~/Scripts/jCalendar.js"></script>
 </head>
-<style>
 
+<style>
     /* Might want to wrap a span around your checkbox text */
     .checkboxtext {
         /* Checkbox text */
@@ -41,11 +41,11 @@
         border-color: gray;
     }
 
-        .thinTB tr td {
-            border: solid;
-            border-width: thin;
-            border-color: gray;
-        }
+    .thinTB tr td {
+        border: solid;
+        border-width: thin;
+        border-color: gray;
+    }
 
     td {
         height: 36px;
@@ -54,7 +54,14 @@
     h2 {
         zoom: 1;
         font-family: Verdana;
-        font-size: 14.5px;
+        font-size: 14px;
+        color: black;
+    }
+
+    h3 {
+        zoom: 1;
+        font-family: Verdana;
+        font-size: 12px;
         color: black;
     }
 
@@ -72,7 +79,6 @@
         margin-right: auto;
         background: rgb(204,204,204);
     }
-
 
     .bName {
         /*min-width: 300px;*/
@@ -95,8 +101,6 @@
         padding-left: 0;
         margin-left: 0;
     }
-
-
 
     page[size="A4"] {
         background: white;
@@ -344,15 +348,17 @@
             MED LSA CERTIFICATE AUTO-TEXT
         </font>
     </h1>
+
     <h2>Product description</h2>
     <div class="autotxt" id="prodDesp">
     </div>
+
     <h2>Application/Limitation</h2>
     <div class="autotxt" id="appLimit">
     </div>
 
-    <h2>Type Examination documentation </h2>
-    <table>
+    <h2>Type Examination documentation</h2>
+    <table style="margin-left:32px">
         <tr>
             <td><u><i>Drawing No.</i></u></td>
             <td><u><i>Rev.</i></u></td>
@@ -368,7 +374,7 @@
     <h2>Tests carried out </h2>
     <div class="autotxt" id="tests">
     </div>
-    <table>
+    <table style="margin-left:32px">
         <tr>
             <td><u><i>Description</i></u></td>
             <td><u><i>Report</i></u></td>
@@ -382,61 +388,135 @@
             <td>DNV GL xxxxxx, Norway</td>
         </tr>
     </table>
+
     <h2>Marking of product</h2>
     <div class="autotxt" id="marking">
     </div>
+
     <h2 id="retentionTitle"></h2>
     <div class="autotxt" id="retention">
     </div>
-    <h2>END OF CERTIFICATE </h2>
+
+    <h3>END OF CERTIFICATE</h3>
 </page>
 
-
-
-
-
-
-
-
-
-
-
-
 <script>
-    var TargetUser;
-    var BEmail;
-    var taskStatus;
-    var taskNo = 1;
-    //read viewbag's info.
+    // Read viewbag's info.
     var userSignature = "@UserSignature";
     var bm = "@bridgeModule";
     var Job = @Html.Raw(Json.Encode(Model));
+    var blsaCert = @Html.Raw(Json.Encode(BLSACert));
 
-    var BLSACert = @Html.Raw(Json.Encode(BLSACert));
+    readBLSACert(Job, blsaCert);
 
-    var B = eval("true");
+    function readBLSACert(Job, cert) {
+        /*
+        Reads the information from a BLSACert and formates it into
+        HTML paragraphs.
 
-    console.log(Job);
-    console.log(BLSACert);
+        :arg job: object
+        :arg cert: array of objects
+        */
+        var bulletPoint = "	•	";
+        var entries = findValidEntries(Job, cert);
+        var chapters = Object.keys(entries);
+        var chapter;
+        var paragraphs;
+        var paragraph;
+        var priority;
+        var line;
 
-    $.each(BLSACert, function (key, data) {
-        var condition;
-        var bookMarkName = data.BookMarkName;
-        var chName = bookMarkName.split("_")[0]
+        for (var i = 0; i < chapters.length; i++) {
+            chapter = chapters[i];
+            paragraphs = entries[chapter];
+            (priorities = []).length = paragraphs.length;
+            priorities.fill(-1);
 
-        if (data.Condition != null) {
-            condition = eval(data.Condition);
-        } else {
-            condition = true;
+            // Find the paragraph priorities
+            for (var j = 0; j < paragraphs.length; j++) {
+                paragraph = paragraphs[j];
+                priority = Number(paragraph.BookMarkName.split("_")[1]);
+                priorities[j] = priority;
+            }
+
+            sortingIndices = findSortingIndices(priorities);
+
+            // Pick paragraph according to the sorting indices
+            for (var j = 0; j < sortingIndices.length; j++) {
+                k = sortingIndices[j];
+                paragraph = paragraphs[k];
+                line = eval(paragraph.Formula);
+
+                if (line.startsWith(bulletPoint)) {
+                    line = line.slice(bulletPoint.length);
+                    $("#" + chapter).append("<ul><li>" + line + "<br>");
+                } else {
+                    $("#" + chapter).append(line + "<br>");
+                }
+            }
         }
-        if (condition) {
-           $("#" + chName).append(eval(data.Formula) + "<br/>");
+    }
+
+    function findValidEntries(Job, cert) {
+        /*
+        Finds the number of chapter entries in a certificate.
+        
+        :arg cert: array of objects
+        :return: dictionary of string array pairs
+        */
+        var entries = {};
+
+        for (var i = 0; i < cert.length; i++) {
+            var entry = cert[i];
+            var isValid = false;
+
+            if (entry.hasOwnProperty("Chapter") && entry.hasOwnProperty("Condition")) {
+                var chapters = Object.keys(entries);
+                var chapter = entry.Chapter;
+                var condition = entry.Condition
+
+                if (condition != null) {
+                    isValid = eval(condition) // Job object is used here
+                } else {
+                    isValid = true;
+                }
+
+                if (isValid && chapters.includes(chapter)) {
+                    entries[chapter].push(entry);
+                } else if (isValid) {
+                    entries[chapter] = [entry];
+                }
+            }
         }
-    });
 
+        return entries;
+    }
 
+    function findSortingIndices(arr) {
+        /*
+        Finds the indices that sorts an array.
 
+        :arg arr: an array of numbers, the data
+        :return: an array of numbers, the sorting indices of the data
+        */
+        var arrWithIndex = [];
+        for (var i in arr) {
+            arrWithIndex.push([arr[i], Number(i)]);
+        }
 
+        // Overloading sort function
+        arrWithIndex.sort(function (left, right) {
+            return left[0] < right[0] ? -1 : 1;
+        });
 
+        var indices = [];
+        arr = [];
+        for (var i in arrWithIndex) {
+            arr.push(arrWithIndex[i][0]);
+            indices.push(arrWithIndex[i][1]);
+        }
+
+        return indices;
+    }
 
 </script>
