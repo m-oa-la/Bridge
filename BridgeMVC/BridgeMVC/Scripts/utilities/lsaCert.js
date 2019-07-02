@@ -1,8 +1,4 @@
-﻿function helloWorldLSA() {
-    console.log("Hello world from BLSA!");
-}
-
-function readLSACert(Job, cert) {
+﻿function readLSACert(Job, cert) {
     /*
     Reads the information from a BLSACert and formates it into
     HTML paragraphs.
