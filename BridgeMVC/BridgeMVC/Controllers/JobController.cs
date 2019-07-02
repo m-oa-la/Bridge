@@ -165,7 +165,18 @@ namespace BridgeMVC.Controllers
 
 
             await SetViewBags();
-            return View((string)Session["BridgeModule"] + "_Task1", item);
+            string bm = (string)Session["BridgeModule"];
+
+            if (bm == "M1")
+            {
+                var meditemnos = await DocumentDBRepository.GetItemsAsync<BList>(d => d.Tag == "BList" && d.BridgeModule == bm && d.ListType == "MEDItemNo");
+                meditemnos = meditemnos.OrderBy(d => d.ListItem);
+                ViewBag.Lmeditemnos = meditemnos;
+            }
+
+
+
+            return View(bm + "_Task1", item);
         }
 
         [ActionName("CommonTask3")]
