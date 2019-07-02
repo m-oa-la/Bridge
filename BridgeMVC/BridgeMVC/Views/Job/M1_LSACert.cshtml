@@ -1,8 +1,8 @@
 ﻿@model BridgeMVC.Models.Job
+
 @{
     Layout = null;
     ViewBag.Title = "M1_Task1";
-    string UserSignature = (string)Session["UserSignature"];
     string BridgeModule = (string)Session["BridgeModule"];
     var BLSACert = ViewBag.BLSACert;
     var headerColor = "#03C5EA";
@@ -15,12 +15,13 @@
     <title>Bridge</title>
 
     @* Importing styles *@
-    @Styles.Render("~/Content/css", "~/Content/m1_styles/lsaCert.css")
+    @Styles.Render("~/Content/css", 
+        "~/Content/M1/lsaCert.css")
 
     @* Importing scripts *@
-    <script language="JavaScript" type="text/javascript" src="~/Scripts/utilities/common.js"></script>
-    <script language="JavaScript" type="text/javascript" src="~/Scripts/utilities/lsaCert.js"></script>
-    <script language="JavaScript" type="text/javascript" src="~/Scripts/jquery-3.3.1.min.js"></script>
+    @Scripts.Render("~/Scripts/Common/utilities.js",
+        "~/Scripts/M1/lsaCert.js",
+        "~/Scripts/jquery-3.3.1.min.js")
 </head>
 
 <body>

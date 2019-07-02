@@ -78,7 +78,6 @@ function taskComplete(taskCompleteStr) {
     };
 }
 
-
 function renderTaskShowHide() {
     if ($("#" + taskStatusFlag).val().length !== 0) {
         console.log("taskcompletedate: " + taskCompleteDate);
@@ -97,6 +96,7 @@ function renderTaskShowHide() {
     $("#TaskComplete").click(function () {
         taskComplete(taskCompleteStr);
     });
+
     // actions when reopen the job
     $("#ReOpenTask").click(function () {
         $("#Task" + taskNo).val("TASK");
