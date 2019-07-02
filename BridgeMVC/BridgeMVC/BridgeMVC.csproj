@@ -409,6 +409,8 @@
     <Content Include="Scripts\moment-with-locales.min.js" />
     <Content Include="Scripts\moment.js" />
     <Content Include="Scripts\moment.min.js" />
+    <Content Include="Scripts\utilities\blsaCert.js" />
+    <Content Include="Scripts\utilities\common.js" />
     <Content Include="Web.config">
       <SubType>Designer</SubType>
     </Content>

@@ -9,13 +9,13 @@
             break;
         }
     }
+
     return object;
 }
 
 function hasDuplicates(array) {
     return (new Set(array)).size !== array.length;
 }
-
 
 function readBEmail(tn, bm) {
     return $.ajax({
@@ -59,8 +59,6 @@ function taskComplete(taskCompleteStr) {
             $("#SendingFlag").val("M2DraftIORA");
             console.log("m2draftiora");
         }
-
-
     }
 
     taskStatus = taskCompleteStr + userSignature + " on " + dt;
@@ -71,9 +69,6 @@ function taskComplete(taskCompleteStr) {
     $("#TaskComplete").hide();
     $("#saveButton").hide();
 
-  
-
-
     if (taskStatusFlag === "IORASentBy")
     {
         console.log("Send IORA to LU");
@@ -81,7 +76,6 @@ function taskComplete(taskCompleteStr) {
         console.log($("#TaskHandler").val());
         $('#jobForm').submit();
     };
-
 }
 
 
@@ -115,6 +109,7 @@ function renderTaskShowHide() {
         $("#TaskComplete").show();
     });
 }
+
 function readBUser(sig) {
     return $.ajax({
         type: 'GET',
@@ -130,7 +125,6 @@ function returnTargetUser(data) {
 }
 
 function renderTaskHandling() {
-
     $("#selectListHandler").append(new Option("-- Please select --", null));
     $.each(LUser, function (key, data) {
         $("#selectListHandler").append(new Option(data.Signature, data.Signature));
@@ -146,40 +140,4 @@ function renderTaskHandling() {
             $("#selectListTask").append(new Option(value, value));
         });
     }
-
-    /*
-    $.validator.methods.date = function (value, element) {
-        return this.optional(element) || Globalize.parseDate(value);
-    };
-
-    $("#selectListHandler").on('change', function () {
-        UpdateSendingInfo();
-    });
-
-
-    $("#selectListTask").on('change', function () {
-        UpdateSendingInfo();
-    });
-
-    function UpdateSendingInfo() {
-        var vtask = $("#selectListTask").val();
-        var vhandler = $("#selectListHandler").val();
-
-        var newTaskNo = vtask.slice(0, 1);
-        $("#Task" + newTaskNo).val("TASK");
-
-
-
-        if (vtask !== null) {
-            return $.ajax({
-                type: 'GET',
-                url: '/Job/SetTaskSendingFlag',
-                data: { newHandler: vhandler, newTask: newTaskNo },
-                cache: false,
-                success: console.log(vhandler + " " + newTaskNo)
-            });
-        }
-    }
-    */
-
 }

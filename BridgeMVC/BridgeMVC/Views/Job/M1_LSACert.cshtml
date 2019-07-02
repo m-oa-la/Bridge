@@ -3,14 +3,9 @@
     Layout = null;
     ViewBag.Title = "M1_Task1";
     string UserSignature = (string)Session["UserSignature"];
-    string bridgeModule = (string)Session["BridgeModule"];
-    //var LCertType = ViewBag.LCertType;
-    //var LCertAction = ViewBag.LCertAction;
-    //var LMainProdType = ViewBag.LMainProdType;
-    //var LSubProdType = ViewBag.LSubProdType;
-    //var LUser = ViewBag.LUser;
+    string BridgeModule = (string)Session["BridgeModule"];
     var BLSACert = ViewBag.BLSACert;
-    var bcolor = "#03C5EA";
+    var headerColor = "#03C5EA";
 }
 
 <head>
@@ -18,19 +13,23 @@
     <meta charset="utf-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Bridge</title>
+
+    @* Importing styles *@
     @Styles.Render("~/Content/css")
-    @Scripts.Render("~/bundles/modernizr")
+
+    @* Importing scripts *@
+    <script language="JavaScript" type="text/javascript" src="~/Scripts/utilities/common.js"></script>
+    <script language="JavaScript" type="text/javascript" src="~/Scripts/utilities/lsaCert.js"></script>
     <script language="JavaScript" type="text/javascript" src="~/Scripts/jquery-3.3.1.min.js"></script>
-    <script language="JavaScript" type="text/javascript" src="~/Scripts/jquery-ui.min.js"></script>
-    <script language="JavaScript" type="text/javascript" src="~/Scripts/bridgeScript.js"></script>
-    <link href="~/Content/jCalendar.css" type="text/css" rel="stylesheet">
-    <script type="text/javascript" src="~/Scripts/jCalendar.js"></script>
+    @*<script language="JavaScript" type="text/javascript" src="~/Scripts/jquery-ui.min.js"></script>*@
+    @*<script language="JavaScript" type="text/javascript" src="~/Scripts/bridgeScript.js"></script>*@
+    @*<link href="~/Content/jCalendar.css" type="text/css" rel="stylesheet">*@
+    @*<script type="text/javascript" src="~/Scripts/jCalendar.js"></script>*@
 </head>
 
 <style>
     /* Might want to wrap a span around your checkbox text */
     .checkboxtext {
-        /* Checkbox text */
         font-size: 110%;
         display: inline;
     }
@@ -41,11 +40,11 @@
         border-color: gray;
     }
 
-    .thinTB tr td {
-        border: solid;
-        border-width: thin;
-        border-color: gray;
-    }
+        .thinTB tr td {
+            border: solid;
+            border-width: thin;
+            border-color: gray;
+        }
 
     td {
         height: 36px;
@@ -73,7 +72,7 @@
     }
 
     body {
-        /*height: 297mm;*/
+        height: 297mm;
         width: 210mm;
         margin-left: auto;
         margin-right: auto;
@@ -344,7 +343,7 @@
 
 <page size="A4">
     <h1>
-        <font face="Broader View" size="4" color=@bcolor>
+        <font face="Broader View" size="4" color=@headerColor>
             MED LSA CERTIFICATE AUTO-TEXT
         </font>
     </h1>
@@ -401,122 +400,10 @@
 </page>
 
 <script>
-    // Read viewbag's info.
-    var userSignature = "@UserSignature";
-    var bm = "@bridgeModule";
+    // Read viewbag info
     var Job = @Html.Raw(Json.Encode(Model));
-    var blsaCert = @Html.Raw(Json.Encode(BLSACert));
+    var lsaCert = @Html.Raw(Json.Encode(BLSACert));
 
-    readBLSACert(Job, blsaCert);
-
-    function readBLSACert(Job, cert) {
-        /*
-        Reads the information from a BLSACert and formates it into
-        HTML paragraphs.
-
-        :arg job: object
-        :arg cert: array of objects
-        */
-        var bulletPoint = "	•	";
-        var entries = findValidEntries(Job, cert);
-        var chapters = Object.keys(entries);
-        var chapter;
-        var paragraphs;
-        var paragraph;
-        var priority;
-        var line;
-
-        for (var i = 0; i < chapters.length; i++) {
-            chapter = chapters[i];
-            paragraphs = entries[chapter];
-            (priorities = []).length = paragraphs.length;
-            priorities.fill(-1);
-
-            // Find the paragraph priorities
-            for (var j = 0; j < paragraphs.length; j++) {
-                paragraph = paragraphs[j];
-                priority = Number(paragraph.BookMarkName.split("_")[1]);
-                priorities[j] = priority;
-            }
-
-            sortingIndices = findSortingIndices(priorities);
-
-            // Pick paragraph according to the sorting indices
-            for (var j = 0; j < sortingIndices.length; j++) {
-                k = sortingIndices[j];
-                paragraph = paragraphs[k];
-                line = eval(paragraph.Formula);
-
-                if (line.startsWith(bulletPoint)) {
-                    line = line.slice(bulletPoint.length);
-                    $("#" + chapter).append("<ul><li>" + line + "<br>");
-                } else {
-                    $("#" + chapter).append(line + "<br>");
-                }
-            }
-        }
-    }
-
-    function findValidEntries(Job, cert) {
-        /*
-        Finds the number of chapter entries in a certificate.
-        
-        :arg cert: array of objects
-        :return: dictionary of string array pairs
-        */
-        var entries = {};
-
-        for (var i = 0; i < cert.length; i++) {
-            var entry = cert[i];
-            var isValid = false;
-
-            if (entry.hasOwnProperty("Chapter") && entry.hasOwnProperty("Condition")) {
-                var chapters = Object.keys(entries);
-                var chapter = entry.Chapter;
-                var condition = entry.Condition
-
-                if (condition != null) {
-                    isValid = eval(condition) // Job object is used here
-                } else {
-                    isValid = true;
-                }
-
-                if (isValid && chapters.includes(chapter)) {
-                    entries[chapter].push(entry);
-                } else if (isValid) {
-                    entries[chapter] = [entry];
-                }
-            }
-        }
-
-        return entries;
-    }
-
-    function findSortingIndices(arr) {
-        /*
-        Finds the indices that sorts an array.
-
-        :arg arr: an array of numbers, the data
-        :return: an array of numbers, the sorting indices of the data
-        */
-        var arrWithIndex = [];
-        for (var i in arr) {
-            arrWithIndex.push([arr[i], Number(i)]);
-        }
-
-        // Overloading sort function
-        arrWithIndex.sort(function (left, right) {
-            return left[0] < right[0] ? -1 : 1;
-        });
-
-        var indices = [];
-        arr = [];
-        for (var i in arrWithIndex) {
-            arr.push(arrWithIndex[i][0]);
-            indices.push(arrWithIndex[i][1]);
-        }
-
-        return indices;
-    }
+    readLSACert(Job, lsaCert);
 
 </script>
