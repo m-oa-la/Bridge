@@ -1,4 +1,4 @@
-﻿using System.Web;
+﻿using System;
 using System.Web.Optimization;
 
 namespace BridgeMVC
@@ -9,7 +9,6 @@ namespace BridgeMVC
         public static void RegisterBundles(BundleCollection bundles)
         {
             bundles.Add(new ScriptBundle("~/bundles/jquery").Include(
-                "~/Scripts/jquery-ui.min.js",
                         "~/Scripts/jquery-{version}.js"));
 
             bundles.Add(new ScriptBundle("~/bundles/jqueryval").Include(
@@ -24,9 +23,22 @@ namespace BridgeMVC
                       "~/Scripts/bootstrap.js"));
 
             bundles.Add(new StyleBundle("~/Content/css").Include(
-
                       "~/Content/bootstrap.css",
                       "~/Content/site.css"));
+
+            // Bundle for common functions.
+            bundles.Add(new ScriptBundle("~/bundles/scripts/common").Include(
+                "~/Scripts/Common/*.js"));
+
+            // Module bundles. Each modules has two bundles; one for scripts and one for styles.
+            bundles.Add(new ScriptBundle("~/bundles/scripts/m1").Include(
+                "~/Scripts/M1/*.js"));
+
+            bundles.Add(new StyleBundle("~/bundles/styles/m1").Include(
+                "~/Content/M1/*.css"));
+
+            // Enable optimizations, even when debug is disabled
+            BundleTable.EnableOptimizations = true;
         }
     }
 }
