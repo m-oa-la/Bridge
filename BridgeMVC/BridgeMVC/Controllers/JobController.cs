@@ -67,7 +67,7 @@ namespace BridgeMVC.Controllers
                 }
 
                 var myModel = await DocumentDBRepository.GetItemsAsync<Job>(d=> d.Id == terminateJobId);
-                   return View(myModel.Take(20));
+                return View(myModel.Take(20));
             }
 
             if (!string.IsNullOrEmpty(SearchString))
@@ -80,7 +80,6 @@ namespace BridgeMVC.Controllers
             else
             {
                 var myModel = await DocumentDBRepository.GetItemsAsync<Job>(d => d.Tag == "NotExisting" && d.BridgeModule.ToUpper() == bm);
-
                 return View(myModel);
             }
         }
@@ -163,8 +162,8 @@ namespace BridgeMVC.Controllers
             Session["DbJobId"] = item.Id;
             Session["NpsJobId"] = item.NpsJobId;
 
-
             await SetViewBags();
+
             return View((string)Session["BridgeModule"] + "_Task1", item);
         }
 
@@ -203,6 +202,7 @@ namespace BridgeMVC.Controllers
 
             //ViewBag.SelectList = await DocumentDBRepository<BRule>.GetItemsAsync(d => d.Tag == "BRule" && d.BridgeModule == item.BridgeModule);
             await SetViewBags();
+
             return View((string)Session["BridgeModule"] + "_Task3", item);
         }
 
@@ -504,7 +504,6 @@ namespace BridgeMVC.Controllers
             }
         }
 
-
         [ActionName("IoraDraft")]
         public async Task<ActionResult> IoraDraftAsync(string id)
         {
@@ -530,7 +529,6 @@ namespace BridgeMVC.Controllers
             return Redirect(Url.Content("~/Job/CreateIora/" + item.Id));
         }
 
-
         [ActionName("CreateIora")]
         public async Task<ActionResult> CreatIora(string id)
         {
@@ -538,8 +536,6 @@ namespace BridgeMVC.Controllers
             j.StatusNote = "";
             return View(j);
         }
-
-
 
         [ActionName("SendJobAPI")]
         public async Task<ActionResult> SendJobAPIAsync(string id, string newHandler = "-", string sendingFlag = "-")
@@ -568,8 +564,6 @@ namespace BridgeMVC.Controllers
             return View(item);
         }
 
-
-
         [ActionName("SendJob")]
         public async Task<ActionResult> SendJobAsync(string id)
         {
@@ -595,7 +589,6 @@ namespace BridgeMVC.Controllers
             Session["SendingFlag"] = "";
             return View(item);
         }
-
 
         [HttpPost]
         [ActionName("EditNew")]
@@ -646,7 +639,6 @@ namespace BridgeMVC.Controllers
             item.SendingFlag = "-";
             return View(item);
         }
-
 
         [ActionName("M1_LSACert")]
         public async Task<ActionResult> M1_LSACertAsync(string id)

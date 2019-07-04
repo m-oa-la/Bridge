@@ -1,20 +1,20 @@
 ﻿body {
-    /*height: 297mm;*/
+    height: 297mm;
     width: 210mm;
-    margin-left: auto;
-    margin-right: auto;
+    margin-left: 10mm;/*auto;*/
+    margin-right: 10mm; /*auto;*/
     background: rgb(204,204,204);
 }
 
 page[size="A4"] {
     background: white;
-    width: 21cm;
-    /*height: 29.7cm;*/
+    height: 297mm;
+    width: 210mm;
     display: block;
-    margin: 0 0;
-    padding: 1cm;
-    margin-bottom: 0.5cm;
-    box-shadow: 0 0 0.5cm rgba(0,0,0,0.5);
+    margin: 10mm 10mm;
+    padding: 10mm;
+    margin-bottom: 5mm;
+    box-shadow: 0 0 5mm rgba(0,0,0,0.5);
 }
 
 .bName {
@@ -264,4 +264,59 @@ div {
     .col-lg-offset-0 {
         margin-left: 0%;
     }
+}
+
+.navbar {
+    background-color: white;
+    font-size: 16px;
+}
+
+.navbar a {
+    color: black;
+}
+
+.navbar-collapse {
+    background-color: cadetblue;
+    color: white;
+}
+
+.dropbtn {
+    background-color: white;
+    color: #000000;
+    padding: 16px;
+    font-size: 16px;
+    border: none;
+}
+
+.dropdown {
+    position: relative;
+    display: inline-block;
+}
+
+.dropdown-content {
+    display: none;
+    position: absolute;
+    background-color: #f1f1f1;
+    min-width: 160px;
+    box-shadow: 0px 8px 16px 0px rgba(0,0,0,0.2);
+    z-index: 1;
+}
+
+.dropdown-content a {
+    color: black;
+    padding: 12px 16px;
+    text-decoration: none;
+    display: block;
+}
+
+.dropdown-content a:hover {
+    background-color: #ddd;
+}
+
+.dropdown:hover .dropdown-content {
+    display: block;
+}
+
+.dropdown:hover .dropbtn {
+    background-color: #3e8e41;
 }
