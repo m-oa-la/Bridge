@@ -33,6 +33,9 @@ function returnBEmail(data) {
 }
 
 function getTodayDate() {
+    /*
+    Returns the current date and time.
+    */
     var currentdate = new Date();
     var m = currentdate.getMonth() + 1;
     var dt = currentdate.getFullYear() + "." + m + "."
@@ -43,10 +46,17 @@ function getTodayDate() {
     return dt;
 }
 
-function taskComplete(taskCompleteStr) {
+function taskComplete(taskNo, taskStatusFlag, taskCompleteDate, taskCompleteStr, userSignature) {
+    /*
+    Add function description.
+
+    :arg taskCompleteDate:
+    :arg taskCompleteStr:
+    :arg userSignature:
+    */
     $("#Task" + taskNo).val("Y");
-     dt = getTodayDate();
-     $("#" + taskCompleteDate).val(dt);
+    var dt = getTodayDate();
+    $("#" + taskCompleteDate).val(dt);
 
     console.log($("#selectCertType").val());
 
@@ -61,7 +71,8 @@ function taskComplete(taskCompleteStr) {
         }
     }
 
-    taskStatus = taskCompleteStr + userSignature + " on " + dt;
+    var taskStatus = taskCompleteStr + userSignature + " on " + dt;
+
     $("#" + taskStatusFlag).val(userSignature);
     $("#TaskStatus").html(taskStatus);
     $("#saveButton").click();
@@ -78,9 +89,19 @@ function taskComplete(taskCompleteStr) {
     };
 }
 
-function renderTaskShowHide() {
+function renderTaskShowHide(taskNo, taskStatusFlag, taskCompleteDate, taskCompleteStr, userSignature) {
+    /*
+    Renders which elements to show and hide.
+
+    :arg taskNo:
+    :arg taskStatusFlag: string
+    :arg taskCompleteDate: string
+    :arg taskCompleteStr: string, 
+    :arg userSignature: string, the signature of the user
+    */
+    var taskStatus = null;
+
     if ($("#" + taskStatusFlag).val().length !== 0) {
-        console.log("taskcompletedate: " + taskCompleteDate);
         taskStatus = taskCompleteStr + $("#" + taskStatusFlag).val() + " on " + $("#" + taskCompleteDate).val();
         $("#TaskStatus").html(taskStatus);
         $("#saveButton").hide();
@@ -94,14 +115,13 @@ function renderTaskShowHide() {
 
     // actions when taskcomplete button is clicked
     $("#TaskComplete").click(function () {
-        taskComplete(taskCompleteStr);
+        taskComplete(taskNo, taskStatusFlag, taskCompleteDate, taskCompleteStr, userSignature);
     });
 
     // actions when reopen the job
     $("#ReOpenTask").click(function () {
         $("#Task" + taskNo).val("TASK");
         $("#" + taskCompleteDate).val(null);
-        taskStatus = null;
         $("#" + taskStatusFlag).val(null);
         $("#TaskStatus").html(taskStatus);
         $("#saveButton").show();
@@ -124,7 +144,11 @@ function returnTargetUser(data) {
     TargetUser = jQuery.parseJSON(data);
 }
 
-function renderTaskHandling() {
+function renderTaskHandling(LUser, bm) {
+    /*
+    :arg LUser: List of users(?).
+    :arg bm: The bridge module.
+    */
     $("#selectListHandler").append(new Option("-- Please select --", null));
     $.each(LUser, function (key, data) {
         $("#selectListHandler").append(new Option(data.Signature, data.Signature));
