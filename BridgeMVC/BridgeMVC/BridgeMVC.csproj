@@ -351,6 +351,7 @@
     <Content Include="Content\fonts\avenir-italics\533c52aa-9e8d-4596-a1bc-562d2acb72df.svg" />
     <Content Include="Content\fonts\avenir\8e46b6cb-85f2-4400-a9d8-7cbd8ed30dd8.svg" />
     <Content Include="Content\M1\lsaCert.css" />
+    <Content Include="Content\M1\m1_task3_lsa.css" />
     <Content Include="favicon.ico" />
     <Content Include="fonts\glyphicons-halflings-regular.svg" />
     <Content Include="Global.asax" />
@@ -382,6 +383,7 @@
     <None Include="Properties\PublishProfiles\MABridgeDev - Web Deploy.pubxml" />
     <None Include="Scripts\jquery-3.3.1.intellisense.js" />
     <Content Include="Scripts\Common\bridgeScript.js" />
+    <Content Include="Scripts\Common\utilities.js" />
     <Content Include="Scripts\cldr.js" />
     <Content Include="Scripts\cldr\event.js" />
     <Content Include="Scripts\cldr\supplemental.js" />
@@ -413,7 +415,7 @@
     <Content Include="Scripts\moment.js" />
     <Content Include="Scripts\moment.min.js" />
     <Content Include="Scripts\M1\lsaCert.js" />
-    <Content Include="Scripts\Common\utilities.js" />
+    <Content Include="Scripts\M1\m1_task3_lsa.js" />
     <Content Include="Web.config">
       <SubType>Designer</SubType>
     </Content>
