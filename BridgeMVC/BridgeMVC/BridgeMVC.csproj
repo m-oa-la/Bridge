@@ -322,6 +322,7 @@
     <Content Include="Content\bootstrap.min.css" />
     <Content Include="Content\jCalendar.css" />
     <Content Include="Content\jquery-ui.css" />
+    <Content Include="Content\M1\m1_task3_lsa.css" />
     <Content Include="Content\pictures\calendar-32x32.png" />
     <Content Include="Content\pictures\DNVGLLogo.PNG" />
     <Content Include="Content\pictures\M2Profiles\BAY.png" />
@@ -407,6 +408,7 @@
     <Content Include="Scripts\jquery.validate.min.js" />
     <Content Include="Scripts\jquery.validate.unobtrusive.js" />
     <Content Include="Scripts\jquery.validate.unobtrusive.min.js" />
+    <Content Include="Scripts\M1\m1_task3_lsa.js" />
     <Content Include="Scripts\modernizr-2.8.3.js" />
     <Content Include="Scripts\moment-with-locales.js" />
     <Content Include="Scripts\moment-with-locales.min.js" />
@@ -544,9 +546,11 @@
   </ItemGroup>
   <ItemGroup>
     <Folder Include="App_Data\M1\Projects\" />
-    <Folder Include="Views\Account\" />
-    <Folder Include="Views\API\" />
-    <Folder Include="Views\Customer\" />
+    <Folder Include="Content\Common\" />
+    <Folder Include="Content\M2\" />
+    <Folder Include="Content\M3\" />
+    <Folder Include="Scripts\M2\" />
+    <Folder Include="Scripts\M3\" />
   </ItemGroup>
   <ItemGroup>
     <Content Include="fonts\glyphicons-halflings-regular.woff2" />
