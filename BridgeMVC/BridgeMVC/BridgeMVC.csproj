@@ -381,7 +381,7 @@
     <None Include="Properties\PublishProfiles\FolderProfile.pubxml" />
     <None Include="Properties\PublishProfiles\MABridgeDev - Web Deploy.pubxml" />
     <None Include="Scripts\jquery-3.3.1.intellisense.js" />
-    <Content Include="Scripts\Common\bridgeScript.js" />
+    <Content Include="Scripts\Common\jquery_scripts.js" />
     <Content Include="Scripts\cldr.js" />
     <Content Include="Scripts\cldr\event.js" />
     <Content Include="Scripts\cldr\supplemental.js" />
@@ -541,6 +541,8 @@
     <Content Include="Views\TechChecklist\Blank.cshtml" />
     <Content Include="Views\Job\NCertReporting.cshtml" />
     <Content Include="Views\Job\InputApprOrderId.cshtml" />
+    <Content Include="Views\Shared\_LayoutM1TaskStandard.cshtml" />
+    <Content Include="Views\Shared\_LayoutM1TaskA4.cshtml" />
   </ItemGroup>
   <ItemGroup>
     <Folder Include="App_Data\M1\Projects\" />

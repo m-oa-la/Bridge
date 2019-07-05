@@ -31,3 +31,53 @@ function findSortingIndices(arr) {
 
     return indices;
 }
+
+function getObject(obj, key, value) {
+    /*
+    Returns every key-value pair from a nested object.
+
+    :arg obj: object, the object
+    :arg key: int, the key
+    :arg value: -, the value
+    */
+    var object = [];
+    for (var i in obj) {
+        if (!obj.hasOwnProperty(i)) {
+            continue;
+        } else {
+            if (typeof obj[i] === 'object') {
+                object = object.concat(getObject(obj[i], key, value));
+            } else if (i === key && obj[key] === value) {
+                object.push(obj);
+                break;
+            }
+        }
+    }
+
+    return object;
+}
+
+function hasDuplicates(arr) {
+    /*
+    Checks if an array has duplicate elements.
+
+    :arg arr: array
+    */
+    return (new Set(arr)).size !== arr.length;
+}
+
+function getTodayDate() {
+    /*
+    Returns the current date and time.
+
+    :return: string, the formatted date
+    */
+    var currentdate = new Date();
+    var m = currentdate.getMonth() + 1;
+    var dt = currentdate.getFullYear() + "." + m + "."
+        + currentdate.getDate() + " "
+        + currentdate.getHours() + ":"
+        + currentdate.getMinutes() + ":"
+        + currentdate.getSeconds();
+    return dt;
+}
