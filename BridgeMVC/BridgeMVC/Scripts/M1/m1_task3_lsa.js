@@ -14,7 +14,6 @@
             $("#selectSubProdType").append(new Option("Module F certification", "Module F certification"));
             $("#selectSubProdType").val("Module F certification");
             document.getElementById("signatures").style.display = "none";
-            //$("#SubProdType").val("Module F certification");
             break;
         case "MED-G":
             toShow += "SerialNo,MWL,MEDItemNo,SurveyStation,SurveyDate_Input,";
@@ -58,23 +57,7 @@
     }
 }
 
-// Possibly add to common
-function showElement(value) {
-    if (value) {
-        document.getElementById(value).parentNode.parentNode.style.display = "block";
-    }
-}
-
-// Possibly add to common
-function hideElement(value) {
-    if (value) {
-        document.getElementById(value).parentNode.parentNode.style.display = "none";
-    }
-}
-
-//$("#selectCertType").change();
-
-// Look into creating generalized version
+// Look into creating generalized
 $("#selectCertType").on("change", function () {
     showHideFields()
 });
