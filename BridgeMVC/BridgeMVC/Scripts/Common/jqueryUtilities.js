@@ -1,18 +1,4 @@
-﻿function readBEmail(tn, bm) {
-    return $.ajax({
-        type: 'GET',
-        url: '/API/ReadBEmail',
-        data: { templateName: tn, bridgeModule: bm },
-        cache: false,
-        success: returnBEmail
-    });
-}
-
-function returnBEmail(data) {
-    BEmail = jQuery.parseJSON(data);
-}
-
-function resizeIframe(obj) {
+﻿function resizeIframe(obj) {
     /*
     Resizes an <iframe> window.
     :arg obj: an <iframe> object
@@ -20,23 +6,116 @@ function resizeIframe(obj) {
     obj.style.height = obj.contentWindow.document.body.scrollHeight + 'px';
 }
 
-function showElement(id) {
-    /*
-    Shows a document element with a given id.
-    :arg id: string, the id of the element
-    */
+function showElement(id, lvl) {
     if (id) {
-        document.getElementById(id).parentNode.style.display = "block";
+        document.getElementById(id).style.display = "block";
     }
 }
 
-function hideElement(id) {
+function hideElement(id, lvl) {
     /*
-    Hides a document element with a given id.
-    :arg id: string, the id of the element
+    Hides a document element.
+    :arg id: string, the element id
     */
     if (id) {
-        document.getElementById(id).parentNode.style.display = "none";
+        document.getElementById(id).style.display = "none";
+    }
+}
+
+function setNode(id, value) {
+    if (id) {
+        document.getElementById(id).parentNode.style.display = value;
+    }
+}
+
+function getElementParent(id, lvl) {
+    /*
+    Gets the parent element n levels up the element tree.
+    :arg id: string, the element id
+    :arg lvl: int, the number of levels to ascend
+    :return: a html element
+    */
+    var elem = document.getElementById(id);
+
+    for (var i = 0; i < lvl; i++) {
+        if (typeof elem.parentElement !== 'undefined') {
+            elem = elem.parentElement;
+        } else {
+            return null;
+        }
+    }
+    return elem
+}
+
+function getElementChildren(id, lvl) {
+    /*
+    Gets the children elements n levels down the element tree.
+    :arg id: string, the element id
+    :arg lvl: int, the number of levels to descend
+    :return: a list of html elements
+    */
+    var elems = [document.getElementById(id)];
+    var elem = null;
+    var temp = [];
+
+    // Validity check
+    if (elems[0] == null) {
+        return [];
+    } else if (elems[0].children.length <= 0) {
+        return [];
+    }
+
+    // Traverse child tree for lvl steps
+    for (var i = 0; i > lvl; i--) {
+        for (var j = 0; j < elems.length; j++) {
+            elem = elems[j];
+            temp.push(elem.children);
+        }
+
+        temp = temp.filter(function (el) {
+            return el != null && el != undefined;
+        })
+
+        if (temp.length == 0) {
+            return [];
+        } else {
+            elems = temp;
+            temp = [];
+        }
+    }
+
+    return elems;
+}
+
+function setElementStyleDisplay(id, lvl, value) {
+    /*
+    Sets the style display of html elements equal to value.
+    Positive levels sets the value for parent elements, while
+    negative levels sets the value for children elements.
+    :arg id: string, the initial element id
+    :arg lvl: int, the number of levels to ascend/descend
+    :arg value: string, the style display value
+    */
+    if (id == null) {
+        return;
+    }
+
+    var elem = null;
+    var elems = null;
+
+    if (lvl >= 0) {
+        elem = getElementParent(id, lvl);
+        if (elem != null && elem != undefined) {
+            elem.style.display = value;
+        }
+    } else if (lvl < 0) {
+        elems = getElementChildren(id, lvl);
+        for (var i = 0; i < elems.length; i++) {
+            elem = elems[i];
+            if (elem != null && elem != undefined) {
+                elem.style.display = value;
+            }
+        }
     }
 }
 
@@ -101,20 +180,20 @@ function returnTargetUser(data) {
     TargetUser = jQuery.parseJSON(data);
 }
 
-function renderTaskShowHide(taskNo, taskStatusFlag, taskCompleteDate, taskCompleteStr, userSignature) {
+function renderTaskShowHide(taskNo, taskStatusFlagId, taskCompleteDateId, taskCompleteStr, userSignature) {
     /*
     Renders which elements to show and hide.
-    :arg taskNo:
-    :arg taskStatusFlag: string
-    :arg taskCompleteDate: string
-    :arg taskCompleteStr: string, 
+    :arg taskNo: int, the task number
+    :arg taskStatusFlagId: string, the id of the document taskStatusFlag
+    :arg taskCompleteDateId: string, the id of the document date element
+    :arg taskCompleteStr: string, task complete message
     :arg userSignature: string, the signature of the user
     */
     var taskStatus = null;
 
-    if ($("#" + taskStatusFlag).val().length > 0) {
-        taskStatus = taskCompleteStr + $("#" + taskStatusFlag).val()
-            + " on " + $("#" + taskCompleteDate).val();
+    if ($("#" + taskStatusFlagId).val().length > 0) {
+        taskStatus = taskCompleteStr + $("#" + taskStatusFlagId).val()
+            + " on " + $("#" + taskCompleteDateId).val();
         $("#TaskStatus").html(taskStatus);
         $("#saveButton").hide();
         $("#ReOpenTask").show();
@@ -127,14 +206,14 @@ function renderTaskShowHide(taskNo, taskStatusFlag, taskCompleteDate, taskComple
 
     // actions when taskcomplete button is clicked
     $("#TaskComplete").click(function () {
-        taskComplete(taskNo, taskStatusFlag, taskCompleteDate, taskCompleteStr, userSignature);
+        taskComplete(taskNo, taskStatusFlagId, taskCompleteDateId, taskCompleteStr, userSignature);
     });
 
     // actions when reopen the job
     $("#ReOpenTask").click(function () {
         $("#Task" + taskNo).val("TASK");
-        $("#" + taskCompleteDate).val(null);
-        $("#" + taskStatusFlag).val(null);
+        $("#" + taskCompleteDateId).val(null);
+        $("#" + taskStatusFlagId).val(null);
         $("#TaskStatus").html(taskStatus);
         $("#saveButton").show();
         $("#ReOpenTask").hide();
@@ -297,4 +376,18 @@ function appendElementOptions(id, obj) {
             }
         });
     }
+}
+
+function readBEmail(tn, bm) {
+    return $.ajax({
+        type: 'GET',
+        url: '/API/ReadBEmail',
+        data: { templateName: tn, bridgeModule: bm },
+        cache: false,
+        success: returnBEmail
+    });
+}
+
+function returnBEmail(data) {
+    BEmail = jQuery.parseJSON(data);
 }
