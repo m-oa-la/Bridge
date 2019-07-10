@@ -2,7 +2,6 @@
     /*
     Reads the information from a BLSACert and formates it into
     HTML paragraphs.
-
     :arg job: object
     :arg cert: array of objects
     */
@@ -49,7 +48,6 @@
 function findValidLSACertEntries(Job, cert) {
     /*
     Finds the number of chapter entries in a certificate.
-    
     :arg cert: array of objects
     :return: dictionary of string array pairs
     */

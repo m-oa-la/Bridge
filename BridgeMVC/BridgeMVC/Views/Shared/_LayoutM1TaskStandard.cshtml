@@ -10,27 +10,15 @@
     @Scripts.Render("~/bundles/modernizr")
 </head>
 <body>
-    <style>
-
-        .bing {
-            float: left;
-            /*width: 450px;*/
-            padding: 0.5em 1em 0.5em 1em;
-            min-width: 400px;
-            font-weight: bold;
-        }
-
-        .form-control {
-            font-weight: normal;
-        }
-    </style>
     <div>
         @RenderBody()
     </div>
     @Scripts.Render("~/bundles/jquery")
     @Scripts.Render("~/bundles/bootstrap")
-    @Scripts.Render("~/bundles/scripts/common") @* Include common javascripts *@
-    @Scripts.Render("~/bundles/scripts/m1") @* Include M1 javascripts *@
+    @Scripts.Render("~/bundles/scripts/common")
+    @Scripts.Render("~/bundles/scripts/m1")
     @RenderSection("scripts", required: false)
+    @Styles.Render("~/Content/M1/taskStandard.css")
+    @RenderSection("styles", required: false)
 </body>
 </html>

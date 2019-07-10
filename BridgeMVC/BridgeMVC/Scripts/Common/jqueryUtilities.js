@@ -12,6 +12,14 @@ function returnBEmail(data) {
     BEmail = jQuery.parseJSON(data);
 }
 
+function resizeIframe(obj) {
+    /*
+    Resizes an <iframe> window.
+    :arg obj: an <iframe> object
+    */
+    obj.style.height = obj.contentWindow.document.body.scrollHeight + 'px';
+}
+
 function showElement(id) {
     /*
     Shows a document element with a given id.
@@ -104,8 +112,9 @@ function renderTaskShowHide(taskNo, taskStatusFlag, taskCompleteDate, taskComple
     */
     var taskStatus = null;
 
-    if ($("#" + taskStatusFlag).val().length !== 0) {
-        taskStatus = taskCompleteStr + $("#" + taskStatusFlag).val() + " on " + $("#" + taskCompleteDate).val();
+    if ($("#" + taskStatusFlag).val().length > 0) {
+        taskStatus = taskCompleteStr + $("#" + taskStatusFlag).val()
+            + " on " + $("#" + taskCompleteDate).val();
         $("#TaskStatus").html(taskStatus);
         $("#saveButton").hide();
         $("#ReOpenTask").show();
@@ -160,6 +169,7 @@ function renderTaskInputFields(certType, certAction) {
     /*
     Renders input fields based on the type of certificate that is selected.
     :arg certType: string, the certificate type
+    :arg certAction: string, the certificate action
     */
     var defaultHiddenList = ("MEDFBNo,MEDFBDue,SerialNo,CertAmount,MWL,MEDItemNo," +
         "ExistingCertNo,SurveyStation,SurveyDate,ModificationDesc").split(',');
@@ -197,7 +207,6 @@ function renderTaskInputFields(certType, certAction) {
             toShow += "";
     }
 
-    // 
     switch (certAction) {
         case "Modification":
             toShow += "ExistingCertNo,ModificationDesc";
@@ -217,7 +226,6 @@ function renderTaskInputFields(certType, certAction) {
 
     if (toShow) {
         var splits = toShow.split(',');
-        // Shows displays
         splits.forEach(showElement);
     }
 }
@@ -271,4 +279,22 @@ function calcBudgetHour(data) {
         ";\nMSA: " + f.msa +
         ";\nInternal Fee: " + internalFee +
         ";\nBudgetHour = InternalFee * 0,74 / 1200 = " + bh);
+}
+
+function appendElementOptions(id, obj) {
+    /*
+    Adds options from a json object to a html element.
+    :arg id: the element id
+    :arg obj: a json object with key-value pairs
+    */
+    id = "#" + id;
+
+    if ($(id).length > 0) {
+        $.each(obj, function (key, value) {
+            if (value != null && value != "undefined") {
+                option = new Option(value, value);
+                $(id).append(option);
+            }
+        });
+    }
 }

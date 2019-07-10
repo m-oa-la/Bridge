@@ -233,8 +233,8 @@ namespace BridgeMVC.Controllers
             return View((string)Session["BridgeModule"] + "_Task4", item);
         }
 
-        [HttpPost]
-        [ActionName("CreateNewJob")]
+        [HttpPost] // Action verb
+        [ActionName("CreateNewJob")] // Action name
         [ValidateAntiForgeryToken]
         public async Task<string> CreateNewJob([Bind(Include = "Tag,BridgeModule,Id,NpsJobId,TaskHandler,Task1,Task2,Task3,Task4,CustomerName,ProdDescription,ApprNote," +
             "IsComplete,SalesOrderNo,SubOrderNo,CertType,CertAction,MainProdType, SubProdType,ReceivedTime,FeeSetTime,IoraSentTime,IoraReturnedTime,JobCompletedTime,CustomerName," +
@@ -734,6 +734,7 @@ namespace BridgeMVC.Controllers
             return Redirect(Url.Content("~/Job/_Index/"));
         }
 
+        /*
         public string CleanHtmlString (string s)
         {
             s = s.Replace("<br/>", "");
@@ -741,6 +742,7 @@ namespace BridgeMVC.Controllers
             s = s.Replace("</div>", "");
             return s;
         }
+        */
 
         [ActionName("M1_Task3_LSA")]
         public async Task<ActionResult> M1_Task3_LSA(string id)
@@ -770,4 +772,3 @@ namespace BridgeMVC.Controllers
         }
     }
 }
-

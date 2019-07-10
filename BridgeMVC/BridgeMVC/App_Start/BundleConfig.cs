@@ -34,9 +34,6 @@ namespace BridgeMVC
             bundles.Add(new ScriptBundle("~/bundles/scripts/m1").Include(
                 "~/Scripts/M1/*.js"));
 
-            bundles.Add(new StyleBundle("~/bundles/styles/m1").Include(
-                "~/Content/M1/*.css"));
-
             // Enable optimizations, even when debug is disabled
             BundleTable.EnableOptimizations = true;
         }

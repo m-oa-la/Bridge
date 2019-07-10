@@ -1,13 +1,6 @@
-﻿function helloWorld() {
+﻿function findSortingIndices(arr) {
     /*
-    Logs hello world to the console.
-    */
-    console.log("Hello World!");
-}
-
-function findSortingIndices(arr) {
-    /*
-    Finds the indices that sorts an array.
+    Finds the indices that sorts an 1D array of numbers.
 
     :arg arr: an array of numbers, the data
     :return: an array of numbers, the sorting indices of the data
