@@ -98,7 +98,7 @@
         @Html.HiddenFor(model => model.InternalFee)
     </div>
     <p class="col-lg-12">
-        <span class="col-lg-4 bName"> NPS Job ID: </span>
+        <span class="col-lg-4 bName">NPS Job ID:</span>
         <span class="col-lg-8">
             @Html.EditorFor(model => model.NpsJobId, new
             {
@@ -107,56 +107,56 @@
         </span>
     </p>
     <p class="col-lg-12">
-        <span class="col-lg-4 bName"> Customer Name: </span>
+        <span class="col-lg-4 bName">Customer Name:</span>
         <span class="col-lg-8">
             @Html.EditorFor(model => model.CustomerName,
                 new { htmlAttributes = new { @class = "form-control", @readonly = "readonly" } })
         </span>
     </p>
     <p class="col-lg-12">
-        <span class="col-lg-4 bName"> Sales Order No.: </span>
+        <span class="col-lg-4 bName">Sales Order No.:</span>
         <span class="col-lg-8">
             @Html.EditorFor(model => model.SalesOrderNo,
                 new { htmlAttributes = new { @class = "form-control", @readonly = "readonly" } })
         </span>
     </p>
     <p class="col-lg-12">
-        <span class="col-lg-4 bName"> Product name: </span>
+        <span class="col-lg-4 bName">Product Name:</span>
         <span class="col-lg-8">
             @Html.EditorFor(model => model.ProdDescription,
                 new { htmlAttributes = new { @class = "form-control", @readonly = "readonly" } })
         </span>
     </p>
     <p class="col-lg-12">
-        <span class="col-lg-4 bName"> Deliverable: </span>
+        <span class="col-lg-4 bName">Deliverable:</span>
         <span class="col-lg-8">
             @Html.EditorFor(model => model.CertType,
                 new { htmlAttributes = new { @class = "form-control", @readonly = "readonly" } })
         </span>
     </p>
     <p class="col-lg-12">
-        <span class="col-lg-4 bName"> Issuance Type: </span>
+        <span class="col-lg-4 bName">Issuance Type:</span>
         <span class="col-lg-8">
             @Html.EditorFor(model => model.CertAction,
                 new { htmlAttributes = new { @class = "form-control", @readonly = "readonly" } })
         </span>
     </p>
     <p class="col-lg-12">
-        <span class="col-lg-4 bName"> Equipment main-category: </span>
+        <span class="col-lg-4 bName">Equipment main-category:</span>
         <span class="col-lg-8">
             @Html.EditorFor(model => model.MainProdType,
                 new { htmlAttributes = new { @class = "form-control", @readonly = "readonly" } })
         </span>
     </p>
     <p class="col-lg-12">
-        <span class="col-lg-4 bName"> Equipment sub-category: </span>
+        <span class="col-lg-4 bName">Equipment sub-category:</span>
         <span class="col-lg-8">
             @Html.EditorFor(model => model.SubProdType,
                 new { htmlAttributes = new { @class = "form-control", @readonly = "readonly" } })
         </span>
     </p>
     <p class="col-lg-12">
-        <span class="col-lg-4 bName"> Ref.Cert.No.: </span>
+        <span class="col-lg-4 bName">Ref.Cert.No.:</span>
         <span class="col-lg-8">
             @Html.EditorFor(model => model.MEDFBNo,
                 new { htmlAttributes = new { @class = "form-control" } })
@@ -165,7 +165,7 @@
         </span>
     </p>
     <p class="col-lg-12">
-        <span class="col-lg-4 bName"> Ref.deliverable no.: </span>
+        <span class="col-lg-4 bName">Ref.Deliverable No.:</span>
         <span class="col-lg-8">
             @Html.EditorFor(model => model.ExistingCertNo,
                 new { htmlAttributes = new { @class = "form-control" } })
@@ -173,8 +173,8 @@
                 "", new { @class = "text-danger" })
         </span>
     </p>
-    <p class="col-lg-12">
-        <span class="col-lg-4 bName"> Ref.cert.expire date.: </span>
+    <p class="col-lg-12" >
+        <span class="col-lg-4 bName">Ref.Cert.Expire Date: </span>
         <span class="col-lg-8">
             @Html.EditorFor(model => model.MEDFBDue,
                 new { htmlAttributes = new { @class = "form-control" } })
@@ -325,7 +325,7 @@
 @Html.ValidationSummary()
 
 @section scripts{
-    <script>
+<script>
     // Read viewbag info
     var userSignature = "@UserSignature";
     var bm = "@bridgeModule";
@@ -345,36 +345,10 @@
     // Initial rendering
     renderTaskShowHide(taskNo, taskStatusFlag, taskCompleteDate, taskCompleteStr, userSignature);
     renderTaskHandling(LUser, bm);
-    renderTaskInputFields(Job.LCertType, Job.LCertAction);
+    renderTaskInputFields(Job.LCertType, Job.LCertAction, 1);
 
-    console.log(Job)
-
-    appendElementOptions("test", Job)
-
-    $.each(LSubProdType, function (key, data) {
-        if (data.UpperLvl == mval) {
-            $("#selectSubProdType").append(new Option(data.ListItem, data.ListItem));
-        }
-    });
-
-    // Event handlers
-    $("#selectMainProdType").on("change", function () {
-        var mval = $("#selectMainProdType :selected").text();
-
-        $('#selectSubProdType option').each(function () {
-            if ($(this).val() != 'X') {
-                $(this).remove();
-            }
-        });
-
-        $("#selectSubProdType option").remove();
-        $.each(LSubProdType, function (key, data) {
-            if (data.UpperLvl == mval) {
-                $("#selectSubProdType").append(new Option(data.ListItem, data.ListItem));
-            }
-        });
-    });
-    </script>
+    appendElementOptions("test", Job);
+</script>
 }
 
 @section Styles{

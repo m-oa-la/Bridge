@@ -22,24 +22,22 @@ function hideElement(id, lvl) {
     }
 }
 
-function setNode(id, value) {
-    if (id) {
-        document.getElementById(id).parentNode.style.display = value;
-    }
-}
-
 function getElementParent(id, lvl) {
     /*
     Gets the parent element n levels up the element tree.
-    :arg id: string, the element id
+    :arg id: string, the root element id
     :arg lvl: int, the number of levels to ascend
     :return: a html element
     */
     var elem = document.getElementById(id);
 
     for (var i = 0; i < lvl; i++) {
-        if (typeof elem.parentElement !== 'undefined') {
-            elem = elem.parentElement;
+        if (elem != null && typeof elem !== 'undefined') {
+            if (typeof elem.parentElement !== 'undefined') {
+                elem = elem.parentElement;
+            } else {
+                return null;
+            }
         } else {
             return null;
         }
@@ -50,7 +48,7 @@ function getElementParent(id, lvl) {
 function getElementChildren(id, lvl) {
     /*
     Gets the children elements n levels down the element tree.
-    :arg id: string, the element id
+    :arg id: string, the root element id
     :arg lvl: int, the number of levels to descend
     :return: a list of html elements
     */
@@ -92,7 +90,7 @@ function setElementStyleDisplay(id, lvl, value) {
     Sets the style display of html elements equal to value.
     Positive levels sets the value for parent elements, while
     negative levels sets the value for children elements.
-    :arg id: string, the initial element id
+    :arg id: string, the root element id
     :arg lvl: int, the number of levels to ascend/descend
     :arg value: string, the style display value
     */
@@ -106,14 +104,18 @@ function setElementStyleDisplay(id, lvl, value) {
     if (lvl >= 0) {
         elem = getElementParent(id, lvl);
         if (elem != null && elem != undefined) {
-            elem.style.display = value;
+            if (typeof elem.style !== 'undefined') {
+                elem.style.display = value;
+            }
         }
     } else if (lvl < 0) {
         elems = getElementChildren(id, lvl);
         for (var i = 0; i < elems.length; i++) {
             elem = elems[i];
             if (elem != null && elem != undefined) {
-                elem.style.display = value;
+                if (typeof elem.style !== 'undefined') {
+                    elem.style.display = value;
+                }
             }
         }
     }
@@ -244,17 +246,23 @@ function renderTaskHandling(LUser, bm) {
     }
 }
 
-function renderTaskInputFields(certType, certAction) {
+function renderTaskInputFields(certType, certAction, lvl=0) {
     /*
     Renders input fields based on the type of certificate that is selected.
     :arg certType: string, the certificate type
     :arg certAction: string, the certificate action
+    :arg lvl: int, the number of levels up or down the element tree in which
+    to adjust the style display value (default value 0)
     */
     var defaultHiddenList = ("MEDFBNo,MEDFBDue,SerialNo,CertAmount,MWL,MEDItemNo," +
         "ExistingCertNo,SurveyStation,SurveyDate,ModificationDesc").split(',');
 
     // Hides displays
-    defaultHiddenList.forEach(hideElement);
+    var id = "";
+    for (var i = 0; i < defaultHiddenList.length; i++) {
+        id = defaultHiddenList[i];
+        setElementStyleDisplay(id, lvl, "none");
+    }
 
     var toShow = "";
 
@@ -303,9 +311,10 @@ function renderTaskInputFields(certType, certAction) {
             toShow += "";
     }
 
-    if (toShow) {
-        var splits = toShow.split(',');
-        splits.forEach(showElement);
+    toShow = toShow.split(',');
+    for (var i = 0; i < toShow.length; i++) {
+        id = toShow[i];
+        setElementStyleDisplay(id, lvl, "block");
     }
 }
 
