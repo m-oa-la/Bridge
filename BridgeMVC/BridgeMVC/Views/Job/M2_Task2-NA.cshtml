@@ -256,6 +256,7 @@
 @{
     Html.RenderPartial("_TaskSending");
 }
+
 <script>
 
     //read viewbag's info.
@@ -279,11 +280,12 @@
     var taskCompleteDate = "FeeVerifyTime";
     var taskCompleteStr = "The fee is verified by ";
 
-    renderTaskShowHide();
-    renderTaskHandling();
+    renderTaskShowHide(taskNo, taskStatusFlag, taskCompleteDate, taskCompleteStr, userSignature);
+    renderTaskHandling(LUser, bm);
 
     //show hide fields
     showHideFields();
+
     function showHideFields()
     {
 
@@ -352,29 +354,20 @@
             document.getElementById(value).parentNode.style.display = "block";
         }
     }
+
     function hideElement(value) {
         if (value) {
             document.getElementById(value).parentNode.style.display = "none";
         }
     }
 
-    //$("#selectCertType").change();
-
     $("#selectCertType").on("change", function () {
         showHideFields()
     });
+
     $("#selectCertAction").on("change", function () {
         showHideFields()
     });
-
-
-
-
-
-
-
-
-    //console.log(getTodayDate());
 
     //set up select list
     $.each(LCertType, function (key, data) {
@@ -390,13 +383,13 @@
     });
 
     var mval = $("#selectMainProdType :selected").text();
-      $.each(LSubProdType, function (key, data) {
+    $.each(LSubProdType, function (key, data) {
         if (data.UpperLvl == mval) {
             $("#selectSubProdType").append(new Option(data.ListItem, data.ListItem));
         }
     });
 
-//When main prodtype changes, refesh the sub prod type.
+    //When main prodtype changes, refesh the sub prod type.
     $("#selectMainProdType").on("change", function () {
         var mval = $("#selectMainProdType :selected").text();
 
@@ -414,9 +407,4 @@
         });
     });
 
-
-
-
 </script>
-
-

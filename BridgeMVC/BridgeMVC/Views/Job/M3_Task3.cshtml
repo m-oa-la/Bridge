@@ -261,8 +261,8 @@
     var taskCompleteDate = "ExeDoneTime";
     var taskCompleteStr = "The job is executed by ";
 
-    renderTaskShowHide();
-    renderTaskHandling();
+    renderTaskShowHide(taskNo, taskStatusFlag, taskCompleteDate, taskCompleteStr, userSignature);
+    renderTaskHandling(LUser, bm);
 
     //show hide fields
     showHideFields();

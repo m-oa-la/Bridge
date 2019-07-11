@@ -1,21 +1,17 @@
 ﻿@model IEnumerable<BridgeMVC.Models.Job>
-@{
-    /**/
 
+@{
     ViewBag.Title = "Index";
     string BridgeLastUsed = (string)Session["BridgeModule"];
     string UserSignature = (string)Session["UserSignature"];
-
     var LUser = ViewBag.LUser;
     var US = ViewBag.userSig;
-
     BridgeMVC.Models.BBridge bridge = (BridgeMVC.Models.BBridge)ViewBag.bridge;
-
     string styleTxt = "border-radius: 0; border: none";
-
     string bridgeLongName = bridge.BridgeLongName;
     List<string> taskNames = bridge.TaskName.Split(';').ToList<string>();
 }
+
 <style>
 
     .classTY {

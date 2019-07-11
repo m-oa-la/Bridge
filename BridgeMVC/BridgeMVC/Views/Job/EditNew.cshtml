@@ -9,7 +9,6 @@
     var LMainProdType = ViewBag.LMainProdType;
     var LSubProdType = ViewBag.LSubProdType;
     var LUser = ViewBag.LUser;
-
 }
 
 <style>
@@ -42,8 +41,6 @@
 
 <div class="form-horizontal">
     <hr />
-
-
 
     @Html.HiddenFor(model => model.Tag)
     @Html.HiddenFor(model => model.BridgeModule)
@@ -197,81 +194,67 @@
 
 @Scripts.Render("~/bundles/jqueryval")
 
+@section Script{
 <script>
-    //Define global variables
+//read viewbag's info.
+var userSignature = "@UserSignature";
+var bm = "@bridgeModule";
+var Job = @Html.Raw(Json.Encode(Model));
 
-    //read viewbag's info.
-    var userSignature = "@UserSignature";
-    var bm = "@bridgeModule";
-    var Job = @Html.Raw(Json.Encode(Model));
+var LMainProdType = @Html.Raw(Json.Encode(LMainProdType));
+var LSubProdType = @Html.Raw(Json.Encode(LSubProdType));
+var LUser = @Html.Raw(Json.Encode(LUser));
+var LCertAction = @Html.Raw(Json.Encode(LCertAction));
+var LCertType = @Html.Raw(Json.Encode(LCertType));
+
+//Set task parameter
+var taskNo = 1;
+var taskStatusFlag = "FeeSetter";
+var taskCompleteDate = "FeeSetTime";
+var taskCompleteStr = "The fee is set by ";
+
+renderTaskShowHide(taskNo, taskStatusFlag, taskCompleteDate, taskCompleteStr, userSignature)
+renderTaskHandling(LUser, bm)
+
+//set up select list
+$.each(LCertType, function (key, data) {
+    $("#selectCertType").append(new Option(data.ListItem, data.ListItem));
+});
+
+$.each(LCertAction, function (key, data) {
+    $("#selectCertAction").append(new Option(data.ListItem, data.ListItem));
+});
+
+$.each(LMainProdType, function (key, data) {
+    $("#selectMainProdType").append(new Option(data.ListItem, data.ListItem));
+});
+
+var mval = $("#selectMainProdType :selected").text();
+$.each(LSubProdType, function (key, data) {
+    if (data.UpperLvl == mval) {
+        $("#selectSubProdType").append(new Option(data.ListItem, data.ListItem));
+    }
+});
 
 
-    var LMainProdType = @Html.Raw(Json.Encode(LMainProdType));
-    var LSubProdType = @Html.Raw(Json.Encode(LSubProdType));
-    var LUser = @Html.Raw(Json.Encode(LUser));
-    var LCertAction = @Html.Raw(Json.Encode(LCertAction));
-    var LCertType = @Html.Raw(Json.Encode(LCertType));
-
-    var TargetUser;
-    var BEmail;
-    var taskStatus;
-
-    //Set task parameter
-    var taskNo = 1;
-    var taskStatusFlag = "FeeSetter";
-    var taskCompleteDate = "FeeSetTime";
-    var taskCompleteStr = "The fee is set by ";
-
-    renderTaskShowHide();
-    renderTaskHandling();
-
-    //console.log(getTodayDate());
-
-    //$("#Task1").val("TASK");
-
-
-
-    //set up select list
-    $.each(LCertType, function (key, data) {
-        $("#selectCertType").append(new Option(data.ListItem, data.ListItem));
-    });
-
-    $.each(LCertAction, function (key, data) {
-        $("#selectCertAction").append(new Option(data.ListItem, data.ListItem));
-    });
-    $.each(LMainProdType, function (key, data) {
-        $("#selectMainProdType").append(new Option(data.ListItem, data.ListItem));
-    });
-
+$("#selectMainProdType").on("change", function () {
     var mval = $("#selectMainProdType :selected").text();
-      $.each(LSubProdType, function (key, data) {
+    //var sval = $("#selectSubProdType :selected").text();
+    //$("#selectSubProdType :selected").val(sval);
+
+    $('#selectSubProdType option').each(function () {
+
+        if ($(this).val() != 'X') {
+            $(this).remove();
+        }
+    });
+
+    $("selectSubProdType option").remove();
+    $.each(LSubProdType, function (key, data) {
         if (data.UpperLvl == mval) {
             $("#selectSubProdType").append(new Option(data.ListItem, data.ListItem));
         }
     });
-
-
-    $("#selectMainProdType").on("change", function () {
-        var mval = $("#selectMainProdType :selected").text();
-        //var sval = $("#selectSubProdType :selected").text();
-        //$("#selectSubProdType :selected").val(sval);
-
-        $('#selectSubProdType option').each(function () {
-
-            if ($(this).val() != 'X') {
-                $(this).remove();
-            }
-        });
-
-        $("selectSubProdType option").remove();
-        $.each(LSubProdType, function (key, data) {
-            if (data.UpperLvl == mval) {
-                $("#selectSubProdType").append(new Option(data.ListItem, data.ListItem));
-            }
-        });
-    });
-
-
+});
 </script>
-
-
+    }

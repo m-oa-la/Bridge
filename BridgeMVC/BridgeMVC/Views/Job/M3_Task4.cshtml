@@ -147,7 +147,6 @@
 }
 
 <script>
-
     //read viewbag's info.
     var userSignature = "@UserSignature";
     var bm = "@bridgeModule";
@@ -169,13 +168,7 @@
     var taskCompleteDate = "JobCompletedTime";
     var taskCompleteStr = "The job is completed by ";
 
-    renderTaskShowHide();
-    renderTaskHandling();
-
-    //console.log(getTodayDate());
-
-
-
-
+    renderTaskShowHide(taskNo, taskStatusFlag, taskCompleteDate, taskCompleteStr, userSignature);
+    renderTaskHandling(LUser, bm);
 </script>
 

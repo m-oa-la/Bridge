@@ -5,13 +5,11 @@
     string UserSignature = (string)Session["UserSignature"];
     string bridgeModule = (string)Session["BridgeModule"];
     string SF = (string)Session["SendingFlag"];
-
     var LCertType = ViewBag.LCertType;
     var LCertAction = ViewBag.LCertAction;
     var LMainProdType = ViewBag.LMainProdType;
     var LSubProdType = ViewBag.LSubProdType;
     var LUser = ViewBag.LUser;
-
 }
 
 <style>
@@ -268,8 +266,8 @@
     var taskCompleteDate = "FeeVerifyTime";
     var taskCompleteStr = "The fee is verified by ";
 
-    renderTaskShowHide();
-    renderTaskHandling();
+    renderTaskShowHide(taskNo, taskStatusFlag, taskCompleteDate, taskCompleteStr, userSignature);
+    renderTaskHandling(LUser, bm);
 
     $("#selectListHandler").val("WHITEBOARD");
 

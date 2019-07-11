@@ -4,7 +4,6 @@
     string UserSignature = (string)Session["UserSignature"];
     string bridgeModule = (string)Session["BridgeModule"];
     string SF = (string)Session["SendingFlag"];
-
     var LCertType = ViewBag.LCertType;
     var LCertAction = ViewBag.LCertAction;
     var LMainProdType = ViewBag.LMainProdType;
@@ -26,7 +25,9 @@
         font-weight: normal;
     }
 </style>
+
 <h2>FEE SETTING</h2>
+
 @using (Html.BeginForm(null, null, FormMethod.Post, new { id = "jobForm" }))
 {
     @Html.AntiForgeryToken()
@@ -284,12 +285,9 @@
     var taskCompleteDate = "feeSetTime";
     var taskCompleteStr = "The draft IORA is prepared by ";
 
-    renderTaskShowHide();
-    renderTaskHandling();
+    renderTaskShowHide(taskNo, taskStatusFlag, taskCompleteDate, taskCompleteStr, userSignature)
+    renderTaskHandling(LUser, bm)
 
-    //show hide fields
-    //try { showHideFields(); }
-    //catch (e) { }
     showHideFields();
 
     function showHideFields()
@@ -368,6 +366,7 @@
             document.getElementById(value).parentNode.style.display = "block";
         }
     }
+
     function hideElement(value) {
         if (value) {
             console.log(value);
@@ -375,19 +374,13 @@
         }
     }
 
-    //$("#selectCertType").change();
-
     $("#selectCertType").on("change", function () {
         showHideFields()
     });
+
     $("#selectCertAction").on("change", function () {
         showHideFields()
     });
-
-
-
-
-
 
     //set up select list
     $.each(LCertType, function (key, data) {
@@ -461,9 +454,6 @@
             ";\nInternal Fee: " + internalFee +
             ";\nBudgetHour = InternalFee * 0,74 / 1200 = " + bh);
     }
-
-
-
 
 </script>
 

@@ -4,7 +4,6 @@
     string UserSignature = (string)Session["UserSignature"];
     string bridgeModule = (string)Session["BridgeModule"];
     string SF = (string)Session["SendingFlag"];
-
     var LCertType = ViewBag.LCertType;
     var LCertAction = ViewBag.LCertAction;
     var LMainProdType = ViewBag.LMainProdType;
@@ -263,8 +262,8 @@
     var taskCompleteDate = "FeeSetTime";
     var taskCompleteStr = "The fee is set by ";
 
-    renderTaskShowHide();
-    renderTaskHandling();
+    renderTaskShowHide(taskNo, taskStatusFlag, taskCompleteDate, taskCompleteStr, userSignature);
+    renderTaskHandling(LUser, bm);
 
     //show hide fields
     showHideFields();

@@ -27,12 +27,10 @@
 
         return c;
     }
-
 }
-@*<script src="scripts/DragDropTouch.js"></script>*@
+
 
 <script>
-
     function getProdDesc(id) {
         $.ajax(
             {
@@ -80,9 +78,7 @@
         width: 72px;
     }
 
-
     .dropBox {
-
         padding: 6px;
         border: 1px solid #aaaaaa;
         /*padding-left:12px;*/
@@ -101,18 +97,12 @@
         font-size:larger;
         font-weight:600;
         align-content:center;
-
-       
     }
-
-
 
     .jobCard {
         box-shadow: 5px 10px 8px #888888;
         margin:12px;
     }
-
-
 
     .wbTab {
         /*width: 450px;*/
@@ -159,10 +149,6 @@
         display: none;
     }
 
-
-
-
-
     div.header {
         background-color: #4CAF50;
         color: white;
@@ -181,8 +167,6 @@
 
 @using (Html.BeginForm(null, null, FormMethod.Post, new { id = "tabFilter" }))
 {
-
-
     <table>
         <colgroup>
             <col span="1" style="width: 17%;">
@@ -213,8 +197,6 @@
             </td>
         </tr>
     </table>
-
-
 }
 
 
@@ -243,10 +225,6 @@
     {
         verifierPicSrc = "/Content/pictures/M2Profiles/WHITEBOARD.png";
     }
-
-
-
-
 
     <table style="table-layout:fixed; width:auto;background-color:@ctcolor" class="jobCard col-lg-3">
         <colgroup>
@@ -280,10 +258,6 @@
                     </div>
                     }
                 </td>
-
-
-
-
             </tr>
         </tbody>
     </table>
@@ -292,9 +266,7 @@
 
 }
 
-
 <br /><br /><br />
-
 
 <div id="people">
     <hr />
@@ -302,20 +274,13 @@
 
 </div>
 
-
-
-
-
 <script>
-
-    
     var jobdbid = "";
     var newHandler = "";
     var bm = "@bridgeModule";
     var wbt = "@wbt";
 
     var LUser = @Html.Raw(Json.Encode(LUser));
-
 
     var newNodeId = 0;
     var peoplePool = document.getElementById("people");
