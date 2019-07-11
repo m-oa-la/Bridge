@@ -1,6 +1,6 @@
 # Bridge
 
-## GitFlow
+## Git/GitHub conventions
 1. Collaboration on Git/GitHub shall follow the GitFlow working model.
 
 Resources:
