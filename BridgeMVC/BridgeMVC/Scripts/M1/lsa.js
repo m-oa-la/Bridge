@@ -1,9 +1,43 @@
-﻿function readLSACert(Job, cert) {
+﻿function findValidLSACertEntries(Job, cert) {
+    /*
+    Finds the number of chapter entries in a certificate.
+    :arg cert: array of objects
+    :return: dictionary of string array pairs
+    */
+    var entries = {};
+
+    for (var i = 0; i < cert.length; i++) {
+        var entry = cert[i];
+        var isValid = false;
+
+        if (entry.hasOwnProperty("Chapter") && entry.hasOwnProperty("Condition")) {
+            var chapters = Object.keys(entries);
+            var chapter = entry.Chapter;
+            var condition = entry.Condition;
+
+            if (condition != null) {
+                isValid = eval(condition); // Job object is used here
+            } else {
+                isValid = true;
+            }
+
+            if (isValid && chapters.includes(chapter)) {
+                entries[chapter].push(entry);
+            } else if (isValid) {
+                entries[chapter] = [entry];
+            }
+        }
+    }
+
+    return entries;
+}
+
+function readLSACert(Job, cert) {
     /*
     Reads the information from a BLSACert and formates it into
     HTML paragraphs.
-    :arg job: object
-    :arg cert: array of objects
+    :arg job: json object
+    :arg cert: array of json objects
     */
     var bulletPoint = "	•	";
     var entries = findValidLSACertEntries(Job, cert);
@@ -43,38 +77,4 @@
             }
         }
     }
-}
-
-function findValidLSACertEntries(Job, cert) {
-    /*
-    Finds the number of chapter entries in a certificate.
-    :arg cert: array of objects
-    :return: dictionary of string array pairs
-    */
-    var entries = {};
-
-    for (var i = 0; i < cert.length; i++) {
-        var entry = cert[i];
-        var isValid = false;
-
-        if (entry.hasOwnProperty("Chapter") && entry.hasOwnProperty("Condition")) {
-            var chapters = Object.keys(entries);
-            var chapter = entry.Chapter;
-            var condition = entry.Condition;
-
-            if (condition != null) {
-                isValid = eval(condition); // Job object is used here
-            } else {
-                isValid = true;
-            }
-
-            if (isValid && chapters.includes(chapter)) {
-                entries[chapter].push(entry);
-            } else if (isValid) {
-                entries[chapter] = [entry];
-            }
-        }
-    }
-
-    return entries;
 }

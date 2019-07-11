@@ -1,7 +1,6 @@
 ﻿function findSortingIndices(arr) {
     /*
     Finds the indices that sorts an 1D array of numbers.
-
     :arg arr: an array of numbers, the data
     :return: an array of numbers, the sorting indices of the data
     */
@@ -28,7 +27,6 @@
 function getObject(obj, key, value) {
     /*
     Returns every key-value pair from a nested object.
-
     :arg obj: object, the object
     :arg key: int, the key
     :arg value: -, the value
@@ -53,7 +51,6 @@ function getObject(obj, key, value) {
 function hasDuplicates(arr) {
     /*
     Checks if an array has duplicate elements.
-
     :arg arr: array
     */
     return (new Set(arr)).size !== arr.length;
@@ -62,7 +59,6 @@ function hasDuplicates(arr) {
 function getTodayDate() {
     /*
     Returns the current date and time.
-
     :return: string, the formatted date
     */
     var currentdate = new Date();
@@ -73,4 +69,17 @@ function getTodayDate() {
         + currentdate.getMinutes() + ":"
         + currentdate.getSeconds();
     return dt;
+}
+
+function filterArray(arr, toRemove) {
+    /*
+    Removes the elements that are contained in one array from the other.
+    :arg arr: list, the array
+    :arg toRemove: list, the elements to be removed
+    */
+    arr = arr.filter(function (el) {
+        return toRemove.indexOf(el) < 0;
+    })
+
+    return arr;
 }
