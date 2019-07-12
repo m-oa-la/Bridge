@@ -97,63 +97,63 @@
         @Html.HiddenFor(model => model.IoraDbId)
         @Html.HiddenFor(model => model.InternalFee)
     </div>
-    <p class="col-lg-12">
+    <p class="col-lg-12" id="NpsJobId">
         <span class="col-lg-4 bName">NPS Job ID:</span>
         <span class="col-lg-8">
             @Html.EditorFor(model => model.NpsJobId, 
                 new { htmlAttributes = new { @class = "form-control", @readonly = "readonly" } })
         </span>
     </p>
-    <p class="col-lg-12">
+    <p class="col-lg-12" id="CustomerName">
         <span class="col-lg-4 bName">Customer Name:</span>
         <span class="col-lg-8">
             @Html.EditorFor(model => model.CustomerName,
                 new { htmlAttributes = new { @class = "form-control", @readonly = "readonly" } })
         </span>
     </p>
-    <p class="col-lg-12">
+    <p class="col-lg-12" id="SalesOrderNo">
         <span class="col-lg-4 bName">Sales Order No.:</span>
         <span class="col-lg-8">
             @Html.EditorFor(model => model.SalesOrderNo,
                 new { htmlAttributes = new { @class = "form-control", @readonly = "readonly" } })
         </span>
     </p>
-    <p class="col-lg-12">
+    <p class="col-lg-12" id="ProdDescription">
         <span class="col-lg-4 bName">Product Name:</span>
         <span class="col-lg-8">
             @Html.EditorFor(model => model.ProdDescription,
                 new { htmlAttributes = new { @class = "form-control", @readonly = "readonly" } })
         </span>
     </p>
-    <p class="col-lg-12">
+    <p class="col-lg-12" id="CertType">
         <span class="col-lg-4 bName">Deliverable:</span>
         <span class="col-lg-8">
             @Html.EditorFor(model => model.CertType,
                 new { htmlAttributes = new { @class = "form-control", @readonly = "readonly" } })
         </span>
     </p>
-    <p class="col-lg-12">
+    <p class="col-lg-12" id="CertAction">
         <span class="col-lg-4 bName">Issuance Type:</span>
         <span class="col-lg-8">
             @Html.EditorFor(model => model.CertAction,
                 new { htmlAttributes = new { @class = "form-control", @readonly = "readonly" } })
         </span>
     </p>
-    <p class="col-lg-12">
+    <p class="col-lg-12" id="MainProdType">
         <span class="col-lg-4 bName">Equipment main-category:</span>
         <span class="col-lg-8">
             @Html.EditorFor(model => model.MainProdType,
                 new { htmlAttributes = new { @class = "form-control", @readonly = "readonly" } })
         </span>
     </p>
-    <p class="col-lg-12">
+    <p class="col-lg-12" id="SubProdType">
         <span class="col-lg-4 bName">Equipment sub-category:</span>
         <span class="col-lg-8">
             @Html.EditorFor(model => model.SubProdType,
                 new { htmlAttributes = new { @class = "form-control", @readonly = "readonly" } })
         </span>
     </p>
-    <p class="col-lg-12">
+    <p class="col-lg-12" id="MEDFBNo">
         <span class="col-lg-4 bName">Ref.Cert.No.:</span>
         <span class="col-lg-8">
             @Html.EditorFor(model => model.MEDFBNo,
@@ -162,7 +162,7 @@
                 "", new { @class = "text-danger" })
         </span>
     </p>
-    <p class="col-lg-12">
+    <p class="col-lg-12" id="ExistingCertNo">
         <span class="col-lg-4 bName">Ref.Deliverable No.:</span>
         <span class="col-lg-8">
             @Html.EditorFor(model => model.ExistingCertNo,
@@ -171,7 +171,7 @@
                 "", new { @class = "text-danger" })
         </span>
     </p>
-    <p class="col-lg-12" >
+    <p class="col-lg-12" id="MEDFBDue">
         <span class="col-lg-4 bName">Ref.Cert.Expire Date: </span>
         <span class="col-lg-8">
             @Html.EditorFor(model => model.MEDFBDue,
@@ -180,7 +180,7 @@
                 "", new { @class = "text-danger" })
         </span>
     </p>
-    <p class="col-lg-12">
+    <p class="col-lg-12" id="MWL">
         <span class="col-lg-4 bName"> MWL: </span>
         <span class="col-lg-8">
             @Html.EditorFor(model => model.MWL,
@@ -189,7 +189,7 @@
                 "", new { @class = "text-danger" })
         </span>
     </p>
-    <p class="col-lg-12">
+    <p class="col-lg-12" id="CertAmount">
         <span class="col-lg-4 bName"> Amount of Certificate: </span>
         <span class="col-lg-8">
             @Html.EditorFor(model => model.CertAmount,
@@ -198,7 +198,7 @@
                 "", new { @class = "text-danger" })
         </span>
     </p>
-    <p class="col-lg-12">
+    <p class="col-lg-12" id="MEDItemNo">
         <span class="col-lg-4 bName"> MED Item No: </span>
         <span class="col-lg-8">
             @Html.EditorFor(model => model.MEDItemNo,
@@ -207,7 +207,7 @@
                 "", new { @class = "text-danger" })
         </span>
     </p>
-    <p class="col-lg-12">
+    <p class="col-lg-12" id="SerialNo">
         <span class="col-lg-4 bName"> Serial No.: </span>
         <span class="col-lg-8">
             @Html.EditorFor(model => model.SerialNo,
@@ -216,7 +216,7 @@
                 "", new { @class = "text-danger" })
         </span>
     </p>
-    <p class="col-lg-12">
+    <p class="col-lg-12" id="CertNo">
         <span class="col-lg-4 bName"> New ceritificate No.: </span>
         <span class="col-lg-8">
             @Html.EditorFor(model => model.CertNo,
@@ -225,7 +225,7 @@
                 "", new { @class = "text-danger" })
         </span>
     </p>
-    <p class="col-lg-12">
+    <p class="col-lg-12" id="SurveyStation">
         <span class="col-lg-4 bName"> Survey station: </span>
         <span class="col-lg-8">
             @Html.EditorFor(model => model.SurveyStation,
@@ -244,7 +244,7 @@
             <input class="form-control" name="SurveyDate_Input" value="@Model.SurveyDate" id="SurveyDate_Input" readonly />
         </span>
     </p>
-    <p class="col-lg-12">
+    <p class="col-lg-12" id="ModificationDesc">
         <span class="bName col-lg-4">
             Scope of modification:
         </span>
@@ -255,7 +255,7 @@
                 "", new { @class = "text-danger" })
         </span>
     </p>
-    <p class="col-lg-12">
+    <p class="col-lg-12" id="ApprNote">
         <span class="bName col-lg-4">
             Internal approval note:
         </span>
