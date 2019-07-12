@@ -10,9 +10,11 @@ page[size="A4"] {
     width: 210mm;
     display: block;
     margin: 0 0;
-    padding: 25mm;
-    margin-top: 8mm;
-    margin-bottom: 8mm;
+    padding-top: 10mm;
+    padding-left: 25mm;
+    padding-right: 25mm;
+    padding-bottom: 20mm;
+    margin-bottom: 5mm;
     box-shadow: 0 0 5mm rgba(0,0,0,0.5);
 }
 
@@ -25,7 +27,8 @@ div {
 }
 
 table {
-    margin-left: 32px;
+    margin-left: 0px;
+    margin-right: 0px;
 }
 
 td {
@@ -35,7 +38,7 @@ td {
 h2 {
     zoom: 1;
     font-family: Verdana;
-    font-size: 14px;
+    font-size: 14.5px;
     color: black;
 }
 
@@ -75,6 +78,16 @@ span {
 @media print {
     .no-print, .no-print * {
         display: none !important;
+    }
+
+    /* Removes header from printout */
+    @page :header {
+        display: none
+    }
+
+    /* Removes footer from printout */
+    @page :footer {
+        display: none
     }
 
     body, page[size="A4"] {
