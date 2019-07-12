@@ -322,6 +322,7 @@
     <Content Include="Content\bootstrap.min.css" />
     <Content Include="Content\jCalendar.css" />
     <Content Include="Content\jquery-ui.css" />
+    <Content Include="Content\M1\index.css" />
     <Content Include="Content\M1\taskA4.css" />
     <Content Include="Content\M1\taskStandard.css" />
     <Content Include="Content\pictures\calendar-32x32.png" />
@@ -406,7 +407,7 @@
     <Content Include="Scripts\jquery.validate.min.js" />
     <Content Include="Scripts\jquery.validate.unobtrusive.js" />
     <Content Include="Scripts\jquery.validate.unobtrusive.min.js" />
-    <Content Include="Scripts\M1\common.js" />
+    <Content Include="Scripts\M1\M1Commons.js" />
     <Content Include="Scripts\modernizr-2.8.3.js" />
     <Content Include="Scripts\moment-with-locales.js" />
     <Content Include="Scripts\moment-with-locales.min.js" />

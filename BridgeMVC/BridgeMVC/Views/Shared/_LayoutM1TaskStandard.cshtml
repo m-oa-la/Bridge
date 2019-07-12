@@ -10,12 +10,20 @@
     @Scripts.Render("~/bundles/modernizr")
 </head>
 <body>
+    <header class="header">
+        <div class="navbar ">
+            <div style="float:right">
+                @Html.Partial("_LoginPartial")
+            </div>
+        </div>
+    </header>
     <div>
         @RenderBody()
     </div>
     @Scripts.Render("~/bundles/jquery")
     @Scripts.Render("~/bundles/bootstrap")
     @Scripts.Render("~/bundles/scripts/common")
+    @Scripts.Render("~/bundles/scripts/thirdParty")
     @Scripts.Render("~/bundles/scripts/m1")
     @RenderSection("scripts", required: false)
     @Styles.Render("~/Content/M1/taskStandard.css")
