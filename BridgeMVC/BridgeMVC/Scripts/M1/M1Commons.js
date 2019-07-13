@@ -136,13 +136,11 @@ function getDisplayElements(certType, certAction) {
     // Get display element ids based on certificate type
     extension = getCertificateTypeDisplayElements(certType);
     toShow.push.apply(toShow, extension);
-
     // Get display element ids based on certificate action
     extension = getCertificateActionDisplayElements(certAction);
     toShow.push.apply(toShow, extension);
 
     toHide = filterArray(toHide, toShow);
-
     return [toShow, toHide];
 }
 
@@ -193,16 +191,16 @@ function getCertificateActionDisplayElements(certAction) {
 
     switch(certAction) {
         case "Modification":
-            extension = ["ExistingCertNo", "ModificationDesc"];
+            elemIds = ["ExistingCertNo", "ModificationDesc"];
             break;
         case "Initial with reference":
-            extension = ["ExistingCertNo"];
+            elemIds = ["ExistingCertNo"];
             break;
         case "Renewal with modification":
-            extension = ["ExistingCertNo", "ModificationDesc"];
+            elemIds = ["ExistingCertNo", "ModificationDesc"];
             break;
         case "Renewal":
-            extension = ["ExistingCertNo"];
+            elemIds = ["ExistingCertNo"];
             break;
         default:
             break;

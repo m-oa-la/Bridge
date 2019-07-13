@@ -134,9 +134,11 @@ function displayElements(elemIds, show = true) {
         value = "none";
     }
 
-    for (var i = 0; i < elemIds.length; i++) {
+    for (var i = 0; i < elemIds.length - 0; i++) {
+        console.log(elemIds.length);
         id = elemIds[i];
-        setElementStyleDisplay(id, 0, value);
+        console.log(id + value);
+        setElementStyleDisplay(id, 2, value);
     }
 }
 

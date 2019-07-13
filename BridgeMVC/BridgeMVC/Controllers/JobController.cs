@@ -259,6 +259,7 @@ namespace BridgeMVC.Controllers
             if (ModelState.IsValid)
             {
                 string NewTaskNo = NewTask[0].ToString();
+                string s = item.SalesOrderNo;
 
                 if (!(NewTask + NewHandler).Contains("-"))
                 {

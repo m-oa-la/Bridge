@@ -214,24 +214,7 @@
 </table>
 <br /><br /><br />
 <hr />
-<footer>
 
-    <table class="table table-mid-align-rows hoverRow" style="table-layout:fixed;">
-
-        <tr>
-            <td class="classTY"></td>
-            <td style="@styleTxt"><p>Task is completed</p></td>
-            <td class="classTTASK"></td>
-            <td style="@styleTxt"><p>Task is assigned to you (ongoing)</p></td>
-            @*<td class="classT"></td>
-                <td style="@styleTxt">IORA pending verification</td>*@
-            <td class="classTPENDING" align="center">X</td>
-            <td style="@styleTxt"><p>Task is pending for X days</p></td>
-            <td class="classT"></td>
-            <td style="@styleTxt"><p>Task is not assigned</p></td>
-        </tr>
-    </table>
-</footer>
 <script>
     var LUser = @Html.Raw(Json.Encode(LUser));
     var us = @Html.Raw(Json.Encode(US));
@@ -242,11 +225,5 @@
     $.each(LUser, function (key, data) {
         $("#userSig").append(new Option(data.Signature, data.Signature));
     });
-
-    //$("#userSig").on("change", function () {
-    //    var mval = $("#selectMainProdType :selected").text();
-
-    //});
-
 
 </script>

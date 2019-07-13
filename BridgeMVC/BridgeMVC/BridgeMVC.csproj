@@ -269,6 +269,7 @@
     <Compile Include="Controllers\BListController.cs" />
     <Compile Include="Controllers\BlobsController.cs" />
     <Compile Include="Controllers\BLSACertController.cs" />
+    <Compile Include="Controllers\BProdTechParaController.cs" />
     <Compile Include="Controllers\BTechChecklistController.cs" />
     <Compile Include="Controllers\BUserController.cs" />
     <Compile Include="Controllers\CustomerController.cs" />
@@ -297,6 +298,7 @@
     <Compile Include="Models\BIORA.cs" />
     <Compile Include="Models\BList.cs" />
     <Compile Include="Models\BLSACert.cs" />
+    <Compile Include="Models\BProdTechPara.cs" />
     <Compile Include="Models\BProduct.cs" />
     <Compile Include="Models\BRule.cs" />
     <Compile Include="Models\BServiceType.cs" />
@@ -308,6 +310,7 @@
     <Compile Include="Models\Item.cs" />
     <Compile Include="Models\Job.cs" />
     <Compile Include="Models\Order.cs" />
+    <Compile Include="Models\ProdTechPara.cs" />
     <Compile Include="Models\Product.cs" />
     <Compile Include="Models\DocReq.cs" />
     <Compile Include="Models\Rule.cs" />
@@ -496,7 +499,6 @@
     <Content Include="Views\Job\M2_Task1.cshtml" />
     <Content Include="Views\Job\Whiteboard.cshtml" />
     <Content Include="Views\Job\SubViews\WB_SV1.cshtml" />
-    <Content Include="Views\Job\M2_Task2-NA.cshtml" />
     <Content Include="Views\Blob\CreateBlobContainer.cshtml" />
     <Content Include="Views\Blob\ListBlobs.cshtml" />
     <Content Include="Views\Blobs\Index.cshtml" />
@@ -512,7 +514,7 @@
     <Content Include="Views\Shared\_SaveCompleteReopen.cshtml" />
     <Content Include="Views\Job\M1_Task3.cshtml" />
     <Content Include="Views\Rule\IndexReadOnly.cshtml" />
-    <Content Include="Views\Shared\_HiddenJobProperties.cshtml" />
+    <Content Include="Views\Shared\_PartialM1JobHiddenAttributes.cshtml" />
     <Content Include="Views\DocReq\IndexReadOnly.cshtml" />
     <Content Include="Views\DocReq\Create.cshtml" />
     <Content Include="Views\DocReq\Delete.cshtml" />
@@ -545,6 +547,11 @@
     <Content Include="Views\Job\InputApprOrderId.cshtml" />
     <Content Include="Views\Shared\_LayoutM1TaskStandard.cshtml" />
     <Content Include="Views\Shared\_LayoutM1TaskA4.cshtml" />
+    <Content Include="Views\Job\M2_Task1_PED.cshtml" />
+    <Content Include="Views\Shared\_PartialM3JobHiddenAttributes.cshtml" />
+    <Content Include="Views\BProdTechPara\Index.cshtml" />
+    <Content Include="Views\BProdTechPara\Edit.cshtml" />
+    <Content Include="Views\BProdTechPara\Create.cshtml" />
   </ItemGroup>
   <ItemGroup>
     <Folder Include="App_Data\M1\Projects\" />
