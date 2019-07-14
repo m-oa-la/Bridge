@@ -93,7 +93,6 @@ namespace BridgeMVC.Controllers
             var r = new Product
             {
                 Tag = "Product",
-                NpsJobId = (string)Session["NpsJobId"],
                 DbJobId = (string)Session["DbJobId"],
                 BridgeModule = (string)Session["BridgeModule"]
 

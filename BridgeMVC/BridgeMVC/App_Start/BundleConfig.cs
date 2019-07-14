@@ -37,6 +37,10 @@ namespace BridgeMVC
             // Module bundles. Each modules has two bundles; one for scripts and one for styles.
             bundles.Add(new ScriptBundle("~/bundles/scripts/m1").Include(
                 "~/Scripts/M1/*.js"));
+            bundles.Add(new ScriptBundle("~/bundles/scripts/m2").Include(
+                "~/Scripts/M2/*.js"));
+            bundles.Add(new ScriptBundle("~/bundles/scripts/m3").Include(
+                "~/Scripts/M3/*.js"));
 
             // Enable optimizations, even when debug is disabled
             BundleTable.EnableOptimizations = true;

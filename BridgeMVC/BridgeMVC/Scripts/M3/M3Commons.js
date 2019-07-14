@@ -39,7 +39,7 @@ function taskComplete(taskNo, taskStatusFlag, taskCompleteDate, taskCompleteStr,
         $("#SendingFlag").val(9);
         console.log($("#TaskHandler").val());
         $('#jobForm').submit();
-    }
+    };
 }
 
 // TODO
@@ -53,7 +53,7 @@ function renderTaskShowHide(taskNo, taskStatusFlagId, taskCompleteDateId, taskCo
     :arg userSignature: string, the signature of the user
     */
     var taskStatus = null;
-    console.log("hh");
+    console.log("hi");
     if ($("#" + taskStatusFlagId).val().length > 0) {
         taskStatus = taskCompleteStr + $("#" + taskStatusFlagId).val()
             + " on " + $("#" + taskCompleteDateId).val();
@@ -105,6 +105,10 @@ function renderTaskHandling(LUser, bm) {
         $.each(["-- Please select --", "1.FEE", "2.VER", "3.AGR", "4.WHITEBOARD"], function (index, value) {
             $("#selectListTask").append(new Option(value, value));
         });
+    } else if (bm === "M3") {
+        $.each(["AutoCert"], function (index, value) {
+            $("#selectListTask").append(new Option(value, value));
+        });
     }
 }
 
@@ -128,8 +132,8 @@ function getDisplayElements(certType, certAction) {
     */
 
     // Default element ids to hide.
-    var toHide = ["MEDFBNo", "MEDFBDue", "SerialNo", "CertAmount", "MWL", "MEDItemNo",
-        "ExistingCertNo", "SurveyStation", "SurveyDate", "ModificationDesc"];
+    var toHide = ["MEDFBNo", "MEDFBDue", "SerialNo", "CertAmount", "MWL", "MEDItemNo","selectCertType",
+        "ExistingCertNo", "SurveyStation", "SurveyDate", "ModificationDesc",];
     var toShow = [];
     var extension = null;
 
@@ -154,24 +158,9 @@ function getCertificateTypeDisplayElements(certType) {
     var elemIds = [];
 
     switch (certType) {
-        case "MED-F":
-            elemIds = ["MEDFBNo", "MEDFBDue", "SerialNo", "CertAmount",
-                "MEDItemNo", "SurveyStation", "SurveyDate"];
-            break;
-        case "MED-G":
-            elemIds = ["SerialNo", "MWL", "MEDItemNo"];
-            break;
-        case "MED-B":
-            elemIds = ["MWL", "MEDItemNo"];
-            break;
-        case "TA":
-            elemIds = ["MWL"];
-            break;
-        case "DVR":
-            elemIds = ["SerialNo", "MWL"];
-            break;
-        case "MED-D":
-            elemIds = ["MWL"];
+   
+        case "MED":
+            elemIds = ["MEDItemNo"];
             break;
         default:
             break;

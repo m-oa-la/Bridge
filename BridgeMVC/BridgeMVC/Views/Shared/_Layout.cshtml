@@ -7,8 +7,15 @@
     <title>Bridge</title>
     @Styles.Render("~/Content/css")
     @Scripts.Render("~/bundles/modernizr")
-    @*@Scripts.Render("~/bundles/jquery")*@
+    @Scripts.Render("~/bundles/jquery")
     <style>
+        .bing {
+            float: left;
+            /*width: 450px;*/
+            padding: 0.5em 1em 0.5em 1em;
+            min-width: 400px;
+            font-weight: bold;
+        }
         body {
             font: Avenir Next;
             margin-left: 60px;
@@ -70,6 +77,16 @@
         .dropdown:hover .dropbtn {
             background-color: #3e8e41;
         }
+        .form-control {
+            font-weight: normal;
+        }
+
+        .hiddenBtn {
+            color: transparent;
+            background-color: transparent;
+            border: none;
+            float: right;
+        }
     </style>
 </head>
 <body>
@@ -83,7 +100,7 @@
     <div class="container body-content">
         @RenderBody()
     </div>
-    @Scripts.Render("~/bundles/jquery")
+    @*@Scripts.Render("~/bundles/jquery")*@
     @Scripts.Render("~/bundles/bootstrap")
     @RenderSection("scripts", required: false)
 </body>

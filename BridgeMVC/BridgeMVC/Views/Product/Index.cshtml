@@ -2,6 +2,10 @@
 
 @{
     Layout = null;
+    var sn = 0;
+    var Job = ViewBag.Job;
+    var LMainProdType = ViewBag.LMainProdType;
+    var LSubProdType = ViewBag.LSubProdType;
 }
 
 
@@ -11,12 +15,19 @@
     <title>Bridge</title>
     @Styles.Render("~/Content/css")
     @Scripts.Render("~/bundles/modernizr")
-    <script language="JavaScript" type="text/javascript" src="~/Scripts/jquery-3.3.1.min.js"></script>
-    <script language="JavaScript" type="text/javascript" src="~/Scripts/Common/bridgeScript.js"></script>
+    @Scripts.Render("~/bundles/jquery")
 
     <style>
         body {
             font: Avenir Next;
+        }
+
+        table, tr {
+            border-style: hidden;
+        }
+
+        .control-label {
+            font-weight: bold;
         }
     </style>
 </head>
@@ -25,70 +36,92 @@
 <h4 style="margin-top:1px">Products <span style="float:right; padding-right:4em"> @Html.ActionLink("Add New", "Create")</span></h4>
 
 
-<table class="table">
-    <colgroup>
-        <col span="1" style="width: 18%;">
-        <col span="1" style="width: 18%;">
-        <col span="1" style="width: 18%;">
-        <col span="1" style="width: 18%;">
-        <col span="1" style="width: 18%;">
-        <col span="1" style="width: 10%;">
+<tr></tr>
+@foreach (var item in Model)
+{
+    sn += 1;
+    <div style="border:groove;border-color:aliceblue;padding:12px">
+        <table>
+                <tr>
+                <td class="control-label ">Subject</td>
+                <td class="form-group col-lg-3" id="Subject_@item.Id">
 
-        <tr>
-            <th>
-                Main Type
-            </th>
-            <th>
-                Sub Type
-            </th>
-            <th>
-                Product name
-            </th>
-            <th>
-                Design Pressure
-            </th>
-            <th>
-                Design Temp.
-            </th>
-            <th>
-                Note
-            </th>
-        </tr>
+                    @Html.EditorFor(modelItem => item.DbJobId, new { htmlAttributes = new { @class = "form-control" } })
+                </td>
+            </tr>
 
-    </colgroup>
-    @foreach (var item in Model)
-    {
-        <tr>
-            <td>
-                @Html.DisplayFor(modelItem => item.MainProdType)
-            </td>
-            <td>
-                @Html.DisplayFor(modelItem => item.SubProdType)
-            </td>
-            <td>
-                @Html.DisplayFor(modelItem => item.ProdDescription)
-            </td>
-            <td>
-                @Html.DisplayFor(modelItem => item.DesignPara1)
-            </td>
-            <td>
-                @Html.DisplayFor(modelItem => item.DesignPara2)
-            </td>
-            <td>
-                @Html.DisplayFor(modelItem => item.Note)
-            </td>
+        </table>
+
+    </div>
+
+}
+
+<br />
 
 
-            <td>
-                @using (Html.BeginForm("Delete", "Product", new { id = item.Id }, FormMethod.Post, null))
-                {@Html.AntiForgeryToken()
-                <input type="submit" value="Delete" />
-            }
-            </td>
-            <td>
-                @Html.ActionLink("Edit", "Edit", new { id = item.Id })
-            </td>
 
-        </tr>
+<script>
+
+    var LMainProdType = @Html.Raw(Json.Encode(LMainProdType));
+    var LSubProdType = @Html.Raw(Json.Encode(LSubProdType));
+    var Job = @Html.Raw(Json.Encode(Job));
+    var sn = @sn;
+    console.log(sn);
+
+
+    function saveTCItem(itemId) {
+        console.log(itemId);
+        var Subject = $("#Subject_" + itemId).children().eq(0).val();
+        var SubProdType = $("#SubProdType_" + itemId).children().eq(0).val();
+        var GudianceNote = $("#GN_" + itemId).children().eq(0).val();
+        var RuleRef = $("#RuleRef_" + itemId).children().eq(0).val();
+        var Condition = $("#Condition_" + itemId).children().eq(0).val();
+
+        //console.log(Subject);
+        //console.log(SubProdType);
+        //console.log(GudianceNote);
+        //console.log(RuleRef);
+        //console.log(Condition);
+
+        callSaveBTCApi(itemId, Subject, SubProdType, GudianceNote, RuleRef, Condition)
+
     }
-</table>
+
+    function callSaveBTCApi(itemId, Subject, SubProdType, GudianceNote, RuleRef, Condition) {
+        $.ajax(
+            {
+                type: 'GET',
+                url: '/BTechChecklist/SaveBTCItem',
+                data: { itemId: itemId, Subject: Subject, SubProdType: SubProdType, GudianceNote: GudianceNote, RuleRef: RuleRef, Condition: Condition },
+
+                success: function (data) {
+
+                    console.log(data);
+                },
+                error: function (e) {
+                    alert('Error: ' + e);
+
+                }
+            });
+    }
+
+
+
+    var subProdDropdowns = $('*[id^="selectSubProdType"]');
+
+    for (index = 0; index < subProdDropdowns.length; ++index) {
+
+        $.each(LSubProdType, function (key, data) {
+            if (data.UpperLvl == "LifeLife-Saving appliances") {
+                subProdDropdowns[index].append(new Option(data.ListItem, data.ListItem));
+            }
+        });
+
+        subProdDropdowns[index].append(new Option("All", "All"));
+
+    };
+
+
+
+
+</script>

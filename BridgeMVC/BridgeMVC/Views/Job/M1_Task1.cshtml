@@ -2,7 +2,6 @@
 
 @{
     Layout = "~/Views/Shared/_LayoutM1TaskStandard.cshtml";
-    ViewBag.Title = "M1_Task1";
     string UserSignature = (string)Session["UserSignature"];
     string bridgeModule = (string)Session["BridgeModule"];
     string SF = (string)Session["SendingFlag"];
@@ -13,40 +12,7 @@
     var LUser = ViewBag.LUser;
     var FinancialSet = ViewBag.FinancialSet;
 }
-<style>
-    .bing {
-        float: left;
-        /*width: 450px;*/
-        padding: 0.5em 1em 0.5em 1em;
-        min-width: 400px;
-        font-weight: bold;
-    }
-    .form-control {
-        font-weight: bold;
-        color: steelblue;
-    }
-
-    .bName {
-        font-weight: bold;
-    }
-
-    .bValue {
-        font-weight: 100;
-    }
-
-    .form-control {
-        font-weight: bold;
-        color: steelblue;
-    }
-
-    body {
-        padding-left: 3em;
-        padding-right: 3em;
-    }
-
-</style>
 <h2>FEE SETTING</h2>
-
 @using (Html.BeginForm(null, null, FormMethod.Post, new { id = "jobForm" }))
 {
     @Html.AntiForgeryToken()
@@ -265,8 +231,6 @@ new { htmlAttributes = new { @class = "form-control" } })
     @Html.ValidationSummary();
 }
 <hr />
-
-
 
 @section Scripts{
     <script>
