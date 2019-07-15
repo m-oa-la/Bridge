@@ -8,6 +8,15 @@ using System.Web;
 
 namespace BridgeMVC.Models
 {
+    public class ProdTechPara
+    {
+        [JsonProperty(PropertyName = "techParaName")]
+        public string TechParaName { get; set; }
+
+        [JsonProperty(PropertyName = "techParaValue")]
+        public string TechParaValue { get; set; }
+
+    }
     public class Product
     {
         [Required]
@@ -38,9 +47,14 @@ namespace BridgeMVC.Models
         [JsonProperty(PropertyName = "dbJobId")]
         public string DbJobId { get; set; }
 
-        [JsonProperty(PropertyName = "note")]
-        public string Note { get; set; }
+        [JsonProperty(PropertyName = "prodName")]
+        public string ProdName { get; set; }
+
         [JsonProperty(PropertyName = "ncProdType")]
         public string NCProdType { get; set; }
+
+        public List<ProdTechPara> PTPs { get; set; }
     }
+
+
 }

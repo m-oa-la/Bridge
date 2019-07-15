@@ -166,7 +166,7 @@ namespace BridgeMVC.Controllers
             //ViewBag.SelectList = await DocumentDBRepository<BRule>.GetItemsAsync(d => d.Tag == "BRule" && d.BridgeModule == item.BridgeModule);
             Session["DbJobId"] = item.Id;
             Session["NpsJobId"] = item.NpsJobId;
-
+            Session["MEDItemNo"] = item.MEDItemNo;
             await SetViewBags();
 
             return View((string)Session["BridgeModule"] + "_Task1", item);

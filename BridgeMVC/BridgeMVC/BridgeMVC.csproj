@@ -311,7 +311,6 @@
     <Compile Include="Models\Item.cs" />
     <Compile Include="Models\Job.cs" />
     <Compile Include="Models\Order.cs" />
-    <Compile Include="Models\ProdTechPara.cs" />
     <Compile Include="Models\Product.cs" />
     <Compile Include="Models\DocReq.cs" />
     <Compile Include="Models\Rule.cs" />
@@ -526,7 +525,6 @@
     <Content Include="Views\Product\IndexReadOnly.cshtml" />
     <Content Include="Views\Product\Create.cshtml" />
     <Content Include="Views\Product\Delete.cshtml" />
-    <Content Include="Views\Product\Edit.cshtml" />
     <Content Include="Views\Product\FullList.cshtml" />
     <Content Include="Views\Product\Index.cshtml" />
     <Content Include="Views\Job\IsIORAExisting.cshtml" />
@@ -552,6 +550,7 @@
     <Content Include="Views\Job\AutoCert.cshtml" />
     <Content Include="Views\Shared\_LayoutAutoCertA4.cshtml" />
     <Content Include="Views\Shared\_LayoutM3TaskStandard.cshtml" />
+    <Content Include="Views\Product\Edit.cshtml" />
   </ItemGroup>
   <ItemGroup>
     <Folder Include="App_Data\M1\Projects\" />

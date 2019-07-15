@@ -41,11 +41,8 @@ namespace BridgeMVC.Models
         [JsonProperty(PropertyName = "defaultValue")]
         public string DefaultValue { get; set; }
 
-        [JsonProperty(PropertyName = "valueType")]
-        public string ValueType { get; set; }
-
         [JsonProperty(PropertyName = "viewSequence")]
-        public string ViewSequence { get; set; }
+        public int ViewSequence { get; set; }
     }
    
 }
