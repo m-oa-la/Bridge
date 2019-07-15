@@ -170,6 +170,7 @@ namespace BridgeMVC.Controllers
             await SetViewBags();
 
             return View((string)Session["BridgeModule"] + "_Task1", item);
+
         }
 
         [ActionName("CommonTask3")]

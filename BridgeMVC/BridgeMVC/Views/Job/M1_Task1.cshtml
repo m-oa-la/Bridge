@@ -11,6 +11,8 @@
     var LSubProdType = ViewBag.LSubProdType;
     var LUser = ViewBag.LUser;
     var FinancialSet = ViewBag.FinancialSet;
+    var Lmeditemnos = ViewBag.Lmeditemnos;
+
 }
 <h2>FEE SETTING</h2>
 @using (Html.BeginForm(null, null, FormMethod.Post, new { id = "jobForm" }))
@@ -98,6 +100,7 @@
     new { @class = "form-control", id = "selectSubProdType" })
         </p>
 
+
     </div>
     <div class="bing col-lg-6">
         <p>Maximum working load:</p>
@@ -179,6 +182,7 @@ new { htmlAttributes = new { @class = "form-control" } })
         </p>
 
     </div>
+
     <iframe id="iframe" frameborder="0" src="@Url.Content("~/Rule/Index")" style="width: 100%; height: 200px;"></iframe>
     <iframe id="iframe" frameborder="0" src="@Url.Content("~/DocReq/Index")" style="width: 100%; height: 200px;"></iframe>
 
@@ -212,10 +216,12 @@ new { htmlAttributes = new { @class = "form-control" } })
             new { htmlAttributes = new { @class = "form-control", @Value = Model.FeeSetTime?.ToString("dd-MM-yyyy HH:mm:ss") } })
         @Html.EditorFor(model => model.TaskHandler,
             new { htmlAttributes = new { @class = "form-control" } })
+
     </div>
     <br />
     <h4 style="clear:both;">Internal approval note:</h4>
     <div class=" col-lg-12 ">
+
         @Html.EditorFor(model => model.ApprNote,
             new { htmlAttributes = new { @class = "form-control", style = "height:100px" } })
         @Html.ValidationMessageFor(model => model.ApprNote,
@@ -228,6 +234,7 @@ new { htmlAttributes = new { @class = "form-control" } })
         Html.RenderPartial("_TaskSending");
     }
 </div>
+
     @Html.ValidationSummary();
 }
 <hr />
@@ -246,15 +253,18 @@ new { htmlAttributes = new { @class = "form-control" } })
     var LCertType = @Html.Raw(Json.Encode(LCertType));
 
     // Set task parameter
+
     var taskNo = 1;
     var taskStatusFlag = "FeeSetter"; //who completed the task
     var taskCompleteDate = "FeeSetTime";
     var taskCompleteStr = "The fee is set by ";
 
+
     // Initial rendering
     renderTaskShowHide(taskNo, taskStatusFlag, taskCompleteDate, taskCompleteStr, userSignature);
     renderTaskHandling(LUser, bm);
     renderTaskInputFields($("#selectCertType").val(), $("#selectCertAction").val());
+
 
     $.each(LCertType, function (key, data) {
         $("#selectCertType").append(new Option(data.CertType, data.CertType));
@@ -267,6 +277,13 @@ new { htmlAttributes = new { @class = "form-control" } })
     $.each(LMainProdType, function (key, data) {
         $("#selectMainProdType").append(new Option(data.ListItem, data.ListItem));
     });
+
+    $.each(Lmeditemnos, function (key, data) {
+        $("#selectMEDItemNo").append(new Option(data.ListItem, data.ListItem));
+    });
+
+
+
 
     var mval = $("#selectMainProdType :selected").text();
 
@@ -297,12 +314,14 @@ new { htmlAttributes = new { @class = "form-control" } })
         });
 
         $("#selectSubProdType option").remove();
+
         $.each(LSubProdType, function (key, data) {
             if (data.UpperLvl == mval) {
                 $("#selectSubProdType").append(new Option(data.ListItem, data.ListItem));
             }
         });
     });
+
 
     // Setting up jQuery click listener for budget hour button.
     // Not working 100 % correctly yet ?
@@ -311,6 +330,8 @@ new { htmlAttributes = new { @class = "form-control" } })
     })
     </script>
 }
+
+
 
 @section Styles{
 }
