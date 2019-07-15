@@ -53,7 +53,7 @@ function renderTaskShowHide(taskNo, taskStatusFlagId, taskCompleteDateId, taskCo
     :arg userSignature: string, the signature of the user
     */
     var taskStatus = null;
-    console.log("hh");
+
     if ($("#" + taskStatusFlagId).val().length > 0) {
         taskStatus = taskCompleteStr + $("#" + taskStatusFlagId).val()
             + " on " + $("#" + taskCompleteDateId).val();
@@ -209,7 +209,7 @@ function getCertificateActionDisplayElements(certAction) {
     return elemIds;
 }
 
-function addInputFieldEventHandler(id, event, fun=null, depIds=[], depFuns=[]) {
+function addInputFieldEventHandler(id, event, fun, depIds, depFuns) {
     /*
     CURRENTLY NOT USED.
     Sets up an event handler for a html element.
@@ -217,4 +217,11 @@ function addInputFieldEventHandler(id, event, fun=null, depIds=[], depFuns=[]) {
     var eventOptions = ["click", "dblclick", "mouseenter", "mouseleave",
         "keypress", "keydown", "keyup", "submit", "change", "focus",
         "blur", "load", "resize", "scroll", "unload"];
+}
+
+function renderM1Task1Paragraphs() {
+    /*
+    Add function description.
+    */
+    throw new Error("renderM1Task1Paragraphs is not implemented yet...")
 }

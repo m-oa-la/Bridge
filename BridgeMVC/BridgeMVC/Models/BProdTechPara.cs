@@ -44,5 +44,4 @@ namespace BridgeMVC.Models
         [JsonProperty(PropertyName = "viewSequence")]
         public int ViewSequence { get; set; }
     }
-   
 }

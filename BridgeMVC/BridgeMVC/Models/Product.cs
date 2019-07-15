@@ -17,6 +17,7 @@ namespace BridgeMVC.Models
         public string TechParaValue { get; set; }
 
     }
+
     public class Product
     {
         [Required]

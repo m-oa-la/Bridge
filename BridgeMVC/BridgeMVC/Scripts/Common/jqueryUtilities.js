@@ -137,7 +137,7 @@ function displayElements(elemIds, show) {
 
     for (var i = 0; i < elemIds.length; i++) {
         id = elemIds[i];
-        setElementStyleDisplay(id, 2, value);
+        setElementStyleDisplay(id, 0, value);
     }
 }
 

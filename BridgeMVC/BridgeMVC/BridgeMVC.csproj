@@ -422,9 +422,7 @@
     <Content Include="Scripts\moment-with-locales.min.js" />
     <Content Include="Scripts\moment.js" />
     <Content Include="Scripts\moment.min.js" />
-
-    <Content Include="Scripts\M1\lsaCert.js" />
-    <Content Include="Scripts\M1\m1_task3_lsa.js" />
+    <Content Include="Scripts\M1\lsa.js" />
     <Content Include="Web.config">
       <SubType>Designer</SubType>
     </Content>

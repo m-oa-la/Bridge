@@ -21,63 +21,63 @@
 {
     @Html.AntiForgeryToken()
 
-    <p class="col-lg-12" >
+    <p class="col-lg-12" id="paraNpsJobId">
         <span class="col-lg-4 bName">NPS Job ID:</span>
         <span class="col-lg-8">
             @Html.EditorFor(model => model.NpsJobId, 
                 new { htmlAttributes = new { @class = "form-control", @readonly = "readonly" } })
         </span>
     </p>
-    <p class="col-lg-12" >
+    <p class="col-lg-12" id="paraCustomerName">
         <span class="col-lg-4 bName">Customer Name:</span>
         <span class="col-lg-8">
             @Html.EditorFor(model => model.CustomerName,
                 new { htmlAttributes = new { @class = "form-control", @readonly = "readonly" } })
         </span>
     </p>
-    <p class="col-lg-12" >
+    <p class="col-lg-12" id="paraSalesOrderNo">
         <span class="col-lg-4 bName">Sales Order No.:</span>
         <span class="col-lg-8">
             @Html.EditorFor(model => model.SalesOrderNo,
                 new { htmlAttributes = new { @class = "form-control", @readonly = "readonly" } })
         </span>
     </p>
-    <p class="col-lg-12" >
+    <p class="col-lg-12" id="paraProdDescription">
         <span class="col-lg-4 bName">Product Name:</span>
         <span class="col-lg-8">
             @Html.EditorFor(model => model.ProdDescription,
                 new { htmlAttributes = new { @class = "form-control", @readonly = "readonly" } })
         </span>
     </p>
-    <p class="col-lg-12">
+    <p class="col-lg-12" id="paraCertType">
         <span class="col-lg-4 bName">Deliverable:</span>
         <span class="col-lg-8">
             @Html.EditorFor(model => model.CertType,
                 new { htmlAttributes = new { @class = "form-control", @readonly = "readonly" } })
         </span>
     </p>
-    <p class="col-lg-12">
+    <p class="col-lg-12" id="paraCertAction">
         <span class="col-lg-4 bName">Issuance Type:</span>
         <span class="col-lg-8">
             @Html.EditorFor(model => model.CertAction,
                 new { htmlAttributes = new { @class = "form-control", @readonly = "readonly" } })
         </span>
     </p>
-    <p class="col-lg-12">
+    <p class="col-lg-12" id="paraMainProdType">
         <span class="col-lg-4 bName">Equipment main-category:</span>
         <span class="col-lg-8">
             @Html.EditorFor(model => model.MainProdType,
                 new { htmlAttributes = new { @class = "form-control", @readonly = "readonly" } })
         </span>
     </p>
-    <p class="col-lg-12">
+    <p class="col-lg-12" id="paraSubProdType">
         <span class="col-lg-4 bName">Equipment sub-category:</span>
         <span class="col-lg-8">
             @Html.EditorFor(model => model.SubProdType,
                 new { htmlAttributes = new { @class = "form-control", @readonly = "readonly" } })
         </span>
     </p>
-    <p class="col-lg-12">
+    <p class="col-lg-12" id="paraMEDFBNo">
         <span class="col-lg-4 bName">Ref.Cert.No.:</span>
         <span class="col-lg-8">
             @Html.EditorFor(model => model.MEDFBNo,
@@ -86,7 +86,7 @@
                 "", new { @class = "text-danger" })
         </span>
     </p>
-    <p class="col-lg-12" >
+    <p class="col-lg-12" id="paraExistingCertNo">
         <span class="col-lg-4 bName">Ref.Deliverable No.:</span>
         <span class="col-lg-8">
             @Html.EditorFor(model => model.ExistingCertNo,
@@ -95,7 +95,7 @@
                 "", new { @class = "text-danger" })
         </span>
     </p>
-    <p class="col-lg-12">
+    <p class="col-lg-12" id="paraMEDFBDue">
         <span class="col-lg-4 bName">Ref.Cert.Expire Date: </span>
         <span class="col-lg-8">
             @Html.EditorFor(model => model.MEDFBDue,
@@ -104,7 +104,7 @@
                 "", new { @class = "text-danger" })
         </span>
     </p>
-    <p class="col-lg-12">
+    <p class="col-lg-12" id="paraMWL">
         <span class="col-lg-4 bName"> MWL: </span>
         <span class="col-lg-8">
             @Html.EditorFor(model => model.MWL,
@@ -113,7 +113,7 @@
                 "", new { @class = "text-danger" })
         </span>
     </p>
-    <p class="col-lg-12">
+    <p class="col-lg-12" id="paraCertAmount">
         <span class="col-lg-4 bName"> Amount of Certificate: </span>
         <span class="col-lg-8">
             @Html.EditorFor(model => model.CertAmount,
@@ -122,7 +122,7 @@
                 "", new { @class = "text-danger" })
         </span>
     </p>
-    <p class="col-lg-12">
+    <p class="col-lg-12" id="paraMEDItemNo">
         <span class="col-lg-4 bName"> MED Item No: </span>
         <span class="col-lg-8">
             @Html.EditorFor(model => model.MEDItemNo,
@@ -131,7 +131,7 @@
                 "", new { @class = "text-danger" })
         </span>
     </p>
-    <p class="col-lg-12">
+    <p class="col-lg-12" id="paraSerialNo">
         <span class="col-lg-4 bName"> Serial No.: </span>
         <span class="col-lg-8">
             @Html.EditorFor(model => model.SerialNo,
@@ -140,7 +140,7 @@
                 "", new { @class = "text-danger" })
         </span>
     </p>
-    <p class="col-lg-12">
+    <p class="col-lg-12" id="paraCertNo">
         <span class="col-lg-4 bName"> New ceritificate No.: </span>
         <span class="col-lg-8">
             @Html.EditorFor(model => model.CertNo,
@@ -149,7 +149,7 @@
                 "", new { @class = "text-danger" })
         </span>
     </p>
-    <p class="col-lg-12">
+    <p class="col-lg-12" id="paraSurveyStation">
         <span class="col-lg-4 bName"> Survey station: </span>
         <span class="col-lg-8">
             @Html.EditorFor(model => model.SurveyStation,
@@ -158,7 +158,7 @@
                 "", new { @class = "text-danger" })
         </span>
     </p>
-    <p class=" col-lg-12">
+    <p class=" col-lg-12" id="paraSurveyDate">
         <span class="bName col-lg-4">
             Survey date: (DD/MM/YYYY)
             <img onclick="viewCalendar('jcalendar_parent', 'SurveyDate')" style="margin-top: 5px;" width="20" height="20" src="~/Content/pictures/calendar-32x32.png" alt="CAL" border="0" class="no-print">
@@ -168,7 +168,7 @@
             <input class="form-control" name="SurveyDate_Input" value="@Model.SurveyDate" id="SurveyDate_Input" readonly />
         </span>
     </p>
-    <p class="col-lg-12">
+    <p class="col-lg-12" id="paraModificationDesc">
         <span class="bName col-lg-4">
             Scope of modification:
         </span>
@@ -179,7 +179,7 @@
                 "", new { @class = "text-danger" })
         </span>
     </p>
-    <p class="col-lg-12">
+    <p class="col-lg-12" id="paraApprNote">
         <span class="bName col-lg-4">
             Internal approval note:
         </span>
@@ -247,9 +247,9 @@
     var taskCompleteStr = "The job is executed by ";
 
     // Initial rendering
+    renderLSAParagraphs(Job.CertType, Job.CertAction);
     renderTaskShowHide(taskNo, taskStatusFlag, taskCompleteDate, taskCompleteStr, userSignature);
     renderTaskHandling(LUser, bm);
-    renderTaskInputFields(Job.CertType, Job.CertAction);
 </script>
 }
 
