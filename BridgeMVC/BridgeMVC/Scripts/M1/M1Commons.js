@@ -43,7 +43,7 @@ function taskComplete(taskNo, taskStatusFlag, taskCompleteDate, taskCompleteStr,
 }
 
 // TODO
-function renderTaskShowHide(taskNo, taskStatusFlagId, taskCompleteDateId, taskCompleteStr, userSignature) {
+function renderTaskActions(taskNo, taskStatusFlagId, taskCompleteDateId, taskCompleteStr, userSignature) {
     /*
     Renders which elements to show and hide.
     :arg taskNo: int, the task number
@@ -67,12 +67,12 @@ function renderTaskShowHide(taskNo, taskStatusFlagId, taskCompleteDateId, taskCo
         $("#TaskComplete").show();
     }
 
-    // actions when taskcomplete button is clicked
+    // Add event listener to TaskComplete element
     $("#TaskComplete").click(function () {
         taskComplete(taskNo, taskStatusFlagId, taskCompleteDateId, taskCompleteStr, userSignature);
     });
 
-    // actions when reopen the job
+    // Add event listener to ReOpenTask element
     $("#ReOpenTask").click(function () {
         $("#Task" + taskNo).val("TASK");
         $("#" + taskCompleteDateId).val(null);
@@ -217,6 +217,8 @@ function addInputFieldEventHandler(id, event, fun, depIds, depFuns) {
     var eventOptions = ["click", "dblclick", "mouseenter", "mouseleave",
         "keypress", "keydown", "keyup", "submit", "change", "focus",
         "blur", "load", "resize", "scroll", "unload"];
+
+    throw new Error("addInputFieldEventHandler is not implemented yet...")
 }
 
 function renderM1Task1Paragraphs() {
