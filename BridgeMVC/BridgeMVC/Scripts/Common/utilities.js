@@ -16,9 +16,9 @@
 
     var indices = [];
     arr = [];
-    for (var i in arrWithIndex) {
-        arr.push(arrWithIndex[i][0]);
-        indices.push(arrWithIndex[i][1]);
+    for (var ii in arrWithIndex) {
+        arr.push(arrWithIndex[ii][0]);
+        indices.push(arrWithIndex[ii][1]);
     }
 
     return indices;
@@ -79,7 +79,7 @@ function filterArray(arr, toRemove) {
     */
     arr = arr.filter(function (el) {
         return toRemove.indexOf(el) < 0;
-    })
+    });
 
     return arr;
 }

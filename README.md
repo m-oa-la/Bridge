@@ -1,5 +1,6 @@
 # Bridge
 
+
 ## Git/GitHub conventions
 1. Collaboration on Git/GitHub shall follow the GitFlow working model.
 
@@ -23,3 +24,4 @@ Resources:
 
 Resources:
 - ["Bundling and Minification" - Microsoft](https://docs.microsoft.com/en-us/aspnet/mvc/overview/performance/bundling-and-minification)
+

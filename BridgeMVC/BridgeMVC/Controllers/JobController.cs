@@ -151,8 +151,13 @@ namespace BridgeMVC.Controllers
 
             item.StatusNote = "";
             item.SendingFlag = "-";
-            //Session["newHandler"] = "-";
-            //Session["newTask"] = "-";
+            //Temp. solution. to be fixed
+            if(item.BridgeModule == "M3") 
+            {
+                item.CertType = "MED";
+                item.MEDItemNo = "MED/3.16 Fire doors";
+            }
+
 
             if (item == null)
             {
@@ -161,10 +166,11 @@ namespace BridgeMVC.Controllers
             //ViewBag.SelectList = await DocumentDBRepository<BRule>.GetItemsAsync(d => d.Tag == "BRule" && d.BridgeModule == item.BridgeModule);
             Session["DbJobId"] = item.Id;
             Session["NpsJobId"] = item.NpsJobId;
-
+            Session["MEDItemNo"] = item.MEDItemNo;
             await SetViewBags();
 
             return View((string)Session["BridgeModule"] + "_Task1", item);
+
         }
 
         [ActionName("CommonTask3")]
@@ -259,6 +265,7 @@ namespace BridgeMVC.Controllers
             if (ModelState.IsValid)
             {
                 string NewTaskNo = NewTask[0].ToString();
+                string s = item.SalesOrderNo;
 
                 if (!(NewTask + NewHandler).Contains("-"))
                 {
@@ -642,6 +649,27 @@ namespace BridgeMVC.Controllers
 
         [ActionName("M1_LSACert")]
         public async Task<ActionResult> M1_LSACertAsync(string id)
+        {
+            if (id == null)
+            {
+                return new HttpStatusCodeResult(HttpStatusCode.BadRequest);
+            }
+
+            Job item = await DocumentDBRepository.GetItemAsync<Job>(id);
+            if (item == null)
+            {
+                return HttpNotFound();
+            }
+            //ViewBag.SelectList = await DocumentDBRepository<BRule>.GetItemsAsync(d => d.Tag == "BRule" && d.BridgeModule == item.BridgeModule);
+            Session["NpsJobId"] = item.NpsJobId;
+            Session["DbJobId"] = item.Id;
+            ViewBag.BLSACert = await DocumentDBRepository.GetItemsAsync<BLSACert>(d => d.Tag == "BLSACert");
+            await SetViewBags();
+            return View(item);
+        }
+
+        [ActionName("AutoCert")]
+        public async Task<ActionResult> AutoCert(string id)
         {
             if (id == null)
             {

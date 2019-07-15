@@ -1,0 +1,71 @@
+﻿@model BridgeMVC.Models.Job
+
+@{
+    Layout = "~/Views/Shared/_LayoutAutoCertA4";
+    ViewBag.Title = "M1_LSACert";
+    var BLSACert = ViewBag.BLSACert;
+    var headerColor = "#03C5EA";
+}
+
+<h1>
+    <font face="Broader View" size="4" color=@headerColor>
+        MED LSA CERTIFICATE AUTO-TEXT
+    </font>
+</h1>
+<h2>Product description</h2>
+<div class="autotxt" id="prodDesp">
+</div>
+<h2>Application/Limitation</h2>
+<div class="autotxt" id="appLimit">
+</div>
+<h2>Type Examination documentation</h2>
+<table>
+    <tr>
+        <td><u><i>Drawing No.</i></u></td>
+        <td><u><i>Rev.</i></u></td>
+        <td><u><i>Title(s)</i></u></td>
+    </tr>
+    <tr>
+        <td>xxxx-xxx-xx</td>
+        <td>0</td>
+        <td>General Arrangement</td>
+    </tr>
+</table>
+<h2>Tests carried out </h2>
+<div class="autotxt" id="tests">
+</div>
+<table>
+    <tr>
+        <td><u><i>Description</i></u></td>
+        <td><u><i>Report</i></u></td>
+        <td><u><i>Date(s)</i></u></td>
+        <td><u><i>Witnessed by</i></u></td>
+    </tr>
+    <tr>
+        <td>GA-xxxxx Rev.1</td>
+        <td>xxxx-xxx-xx</td>
+        <td>xxxx-xxx-xx</td>
+        <td>DNV GL xxxxxx, Norway</td>
+    </tr>
+</table>
+<h2>Marking of product</h2>
+<div class="autotxt" id="marking">
+</div>
+<h2 id="retentionTitle"></h2>
+<div class="autotxt" id="retention">
+</div>
+<h3>END OF CERTIFICATE</h3>
+
+@section Scripts{
+<script>
+    var Job = @Html.Raw(Json.Encode(Model));
+    var lsaCert = @Html.Raw(Json.Encode(BLSACert));
+
+    readLSACert(Job, lsaCert);
+</script>
+}
+
+@section Styles{
+<style>
+</style>
+    }

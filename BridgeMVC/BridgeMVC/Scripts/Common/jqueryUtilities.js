@@ -42,7 +42,7 @@ function getElementParent(id, lvl) {
             return null;
         }
     }
-    return elem
+    return elem;
 }
 
 function getElementChildren(id, lvl) {
@@ -72,7 +72,7 @@ function getElementChildren(id, lvl) {
 
         temp = temp.filter(function (el) {
             return el != null && el != undefined;
-        })
+        });
 
         if (temp.length == 0) {
             return [];
@@ -121,12 +121,13 @@ function setElementStyleDisplay(id, lvl, value) {
     }
 }
 
-function displayElements(elemIds, show = true) {
+function displayElements(elemIds, show) {
     /*
     Renders elements
     :arg elemIds: list of strings, the element ids
     :arg show: boolean, whether the elements shall be shown (default: true)
     */
+    
     var value = "";
     if (show) {
         value = "block";
@@ -136,7 +137,7 @@ function displayElements(elemIds, show = true) {
 
     for (var i = 0; i < elemIds.length; i++) {
         id = elemIds[i];
-        setElementStyleDisplay(id, 0, value);
+        setElementStyleDisplay(id, 2, value);
     }
 }
 
@@ -214,7 +215,7 @@ function calcBudgetHour(data) {
     */
     var f = jQuery.parseJSON(data);
     var dis = (1 - f.allocationFee) * (1 - f.tsa - f.msa);
-    var feee = document.getElementById("Fee").value;;
+    var feee = document.getElementById("Fee").value;
     var internalFee = Math.round(feee * dis);
     var bh = Math.round(internalFee * 0.74 / 1200);
     $("#BudgetHour").val(bh);
