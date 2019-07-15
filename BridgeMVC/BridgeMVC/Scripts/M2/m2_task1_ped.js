@@ -1,49 +1,60 @@
-﻿function showHideFields() {
+﻿
+function showHideFields() {
 
-    var defaultHiddenList = "MEDFBNo,MEDFBDue,SerialNo,CertAmount,MWL,MEDItemNo,ExistingCertNo,SurveyStation,SurveyDate_Input,ModificationDesc".split(',');
+    $("#TaskComplete").val("Confirm input and Draft IORA");
+    document.getElementById("TaskComplete").style.width = "400px";
+
+    var defaultHiddenList = "MEDFBNo,MEDFBDue,SerialNo,CertAmount,MWL,MEDItemNo,ExistingCertNo,ModificationDesc".split(',');
     defaultHiddenList.forEach(hideElement);
 
     var toShow = "";
 
-    switch (Job.CertType) {
+    switch ($("#selectCertType").val()) {
         case "MED-F":
-            toShow += "MEDFBNo,MEDFBDue,SerialNo,CertAmount,MEDItemNo,SurveyStation,SurveyDate_Input,";
+            toShow += "MEDFBNo,MEDFBDue,SerialNo,CertAmount,MEDItemNo,SurveyStation,SurveyDate,";
             $("#pMEDFBNo").html("Ref. MED-B certificate No.");
             $("#selectCertAction").val("Initial");
             $("#selectMainProdType").val("Life-Saving appliances");
             $("#selectSubProdType").append(new Option("Module F certification", "Module F certification"));
             $("#selectSubProdType").val("Module F certification");
-            document.getElementById("signatures").style.display = "none";
             //$("#SubProdType").val("Module F certification");
             break;
         case "MED-G":
-            toShow += "SerialNo,MWL,MEDItemNo,SurveyStation,SurveyDate_Input,";
+            toShow += "SerialNo,MEDItemNo,";
             break;
         case "MED-B":
-            toShow += "MWL,MEDItemNo,SurveyStation,SurveyDate_Input,";
-            break;
-        case "TA":
-            toShow += "MWL,SurveyStation,SurveyDate_Input,";
+            toShow += "MEDItemNo,";
             break;
         case "DVR":
-            toShow += "SerialNo,MWL,";
+            toShow += "SerialNo,";
             break;
         case "MED-D":
-            toShow += "MWL,SurveyStation,SurveyDate_Input,";
+            toShow += "";
             break;
         default:
             toShow += "";
     }
 
-    switch (Job.CertAction) {
+    if ($("#selectCertType").val() == "PA - TSA-funded") {
+        $("#TaskComplete").val("Confirm & send job to Whiteboard");
+        //$("#TaskComplete").style.backgroundColor = "pink";
+    } else if ($("#selectCertType").val() == "PED" || $("#selectCertType").val() == "TPED") {
+        document.getElementById("TaskComplete").style.display = "none";
+    } else {
+        $("#TaskComplete").val("Confirm & draft IORA");
+        //$("#TaskComplete").style.backgroundColor = "darkblue";
+    }
+
+
+    switch ($("#selectCertAction").val()) {
         case "Modification":
-            toShow += "ExistingCertNo,ModificationDesc,";
+            toShow += "ExistingCertNo,";
             break;
         case "Initial with reference":
             toShow += "ExistingCertNo,";
             break;
         case "Renewal with modification":
-            toShow += "ExistingCertNo,ModificationDesc,";
+            toShow += "ExistingCertNo,";
             break;
         case "Renewal":
             toShow += "ExistingCertNo,";
@@ -55,37 +66,40 @@
     if (toShow) {
         var splitS = toShow.split(',');
         splitS.forEach(showElement);
+
     }
 }
 
-// Possibly add to common
 function showElement(value) {
     if (value) {
-        document.getElementById(value).parentNode.parentNode.style.display = "block";
+        document.getElementById(value).parentNode.style.display = "block";
     }
 }
-
-// Possibly add to common
 function hideElement(value) {
     if (value) {
-        document.getElementById(value).parentNode.parentNode.style.display = "none";
+        console.log(value);
+        document.getElementById(value).parentNode.style.display = "none";
     }
 }
 
 //$("#selectCertType").change();
 
-// Look into creating generalized version
 $("#selectCertType").on("change", function () {
     showHideFields()
 });
-
 $("#selectCertAction").on("change", function () {
     showHideFields()
 });
 
-// Look into creating generalized version
+
+
+
+
+
+//set up select list
 $.each(LCertType, function (key, data) {
-    $("#selectCertType").append(new Option(data.ListItem, data.ListItem));
+
+    $("#selectCertType").append(new Option(data.CertType, data.CertType));
 });
 
 $.each(LCertAction, function (key, data) {
@@ -97,7 +111,6 @@ $.each(LMainProdType, function (key, data) {
 });
 
 var mval = $("#selectMainProdType :selected").text();
-
 $.each(LSubProdType, function (key, data) {
     if (data.UpperLvl == mval) {
         $("#selectSubProdType").append(new Option(data.ListItem, data.ListItem));
@@ -122,7 +135,38 @@ $("#selectMainProdType").on("change", function () {
     });
 });
 
-// Look into creating generalized version
-function resizeIframe(obj) {
-    obj.style.height = obj.contentWindow.document.body.scrollHeight + 'px';
+function budgetHourCalc() {
+
+    if ($("#selectCertType").val() + "x" == "x") {
+        alert('The Certitication Type has to be selected first.');
+    } else {
+        ct1 = $("#selectCertType").val();
+
+        return $.ajax({
+            type: 'GET',
+            url: '/Job/M1_Task1_BudgetHourCalc',
+            data: { bm_f: bm, ct_f: ct1 },
+            cache: false,
+            success: calcBudgetHour
+        });
+    }
+
 }
+
+function calcBudgetHour(data) {
+
+    var f = jQuery.parseJSON(data);
+    var dis = (1 - f.allocationFee) * (1 - f.tsa - f.msa);
+    var feee = document.getElementById("Fee").value;;
+    var internalFee = Math.round(feee * dis);
+    var bh = Math.round(internalFee * 0.74 / 1200);
+    $("#BudgetHour").val(bh);
+    alert("External fee: " + feee +
+        ";\nAllocation Fee: " + f.allocationFee +
+        ";\nTSA: " + f.tsa +
+        ";\nMSA: " + f.msa +
+        ";\nInternal Fee: " + internalFee +
+        ";\nBudgetHour = InternalFee * 0,74 / 1200 = " + bh);
+}
+
+

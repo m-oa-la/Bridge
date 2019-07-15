@@ -67,7 +67,7 @@ namespace BridgeMVC.Controllers
                 }
 
                 var myModel = await DocumentDBRepository.GetItemsAsync<Job>(d=> d.Id == terminateJobId);
-                   return View(myModel.Take(20));
+                return View(myModel.Take(20));
             }
 
             if (!string.IsNullOrEmpty(SearchString))
@@ -80,7 +80,6 @@ namespace BridgeMVC.Controllers
             else
             {
                 var myModel = await DocumentDBRepository.GetItemsAsync<Job>(d => d.Tag == "NotExisting" && d.BridgeModule.ToUpper() == bm);
-
                 return View(myModel);
             }
         }
@@ -152,8 +151,13 @@ namespace BridgeMVC.Controllers
 
             item.StatusNote = "";
             item.SendingFlag = "-";
-            //Session["newHandler"] = "-";
-            //Session["newTask"] = "-";
+            //Temp. solution. to be fixed
+            if(item.BridgeModule == "M3") 
+            {
+                item.CertType = "MED";
+                item.MEDItemNo = "MED/3.16 Fire doors";
+            }
+
 
             if (item == null)
             {
@@ -162,21 +166,11 @@ namespace BridgeMVC.Controllers
             //ViewBag.SelectList = await DocumentDBRepository<BRule>.GetItemsAsync(d => d.Tag == "BRule" && d.BridgeModule == item.BridgeModule);
             Session["DbJobId"] = item.Id;
             Session["NpsJobId"] = item.NpsJobId;
-
-
+            Session["MEDItemNo"] = item.MEDItemNo;
             await SetViewBags();
-            string bm = (string)Session["BridgeModule"];
 
-            if (bm == "M1")
-            {
-                var meditemnos = await DocumentDBRepository.GetItemsAsync<BList>(d => d.Tag == "BList" && d.BridgeModule == bm && d.ListType == "MEDItemNo");
-                meditemnos = meditemnos.OrderBy(d => d.ListItem);
-                ViewBag.Lmeditemnos = meditemnos;
-            }
+            return View((string)Session["BridgeModule"] + "_Task1", item);
 
-
-
-            return View(bm + "_Task1", item);
         }
 
         [ActionName("CommonTask3")]
@@ -214,6 +208,7 @@ namespace BridgeMVC.Controllers
 
             //ViewBag.SelectList = await DocumentDBRepository<BRule>.GetItemsAsync(d => d.Tag == "BRule" && d.BridgeModule == item.BridgeModule);
             await SetViewBags();
+
             return View((string)Session["BridgeModule"] + "_Task3", item);
         }
 
@@ -244,8 +239,8 @@ namespace BridgeMVC.Controllers
             return View((string)Session["BridgeModule"] + "_Task4", item);
         }
 
-        [HttpPost]
-        [ActionName("CreateNewJob")]
+        [HttpPost] // Action verb
+        [ActionName("CreateNewJob")] // Action name
         [ValidateAntiForgeryToken]
         public async Task<string> CreateNewJob([Bind(Include = "Tag,BridgeModule,Id,NpsJobId,TaskHandler,Task1,Task2,Task3,Task4,CustomerName,ProdDescription,ApprNote," +
             "IsComplete,SalesOrderNo,SubOrderNo,CertType,CertAction,MainProdType, SubProdType,ReceivedTime,FeeSetTime,IoraSentTime,IoraReturnedTime,JobCompletedTime,CustomerName," +
@@ -270,6 +265,7 @@ namespace BridgeMVC.Controllers
             if (ModelState.IsValid)
             {
                 string NewTaskNo = NewTask[0].ToString();
+                string s = item.SalesOrderNo;
 
                 if (!(NewTask + NewHandler).Contains("-"))
                 {
@@ -515,7 +511,6 @@ namespace BridgeMVC.Controllers
             }
         }
 
-
         [ActionName("IoraDraft")]
         public async Task<ActionResult> IoraDraftAsync(string id)
         {
@@ -541,7 +536,6 @@ namespace BridgeMVC.Controllers
             return Redirect(Url.Content("~/Job/CreateIora/" + item.Id));
         }
 
-
         [ActionName("CreateIora")]
         public async Task<ActionResult> CreatIora(string id)
         {
@@ -549,8 +543,6 @@ namespace BridgeMVC.Controllers
             j.StatusNote = "";
             return View(j);
         }
-
-
 
         [ActionName("SendJobAPI")]
         public async Task<ActionResult> SendJobAPIAsync(string id, string newHandler = "-", string sendingFlag = "-")
@@ -579,8 +571,6 @@ namespace BridgeMVC.Controllers
             return View(item);
         }
 
-
-
         [ActionName("SendJob")]
         public async Task<ActionResult> SendJobAsync(string id)
         {
@@ -606,7 +596,6 @@ namespace BridgeMVC.Controllers
             Session["SendingFlag"] = "";
             return View(item);
         }
-
 
         [HttpPost]
         [ActionName("EditNew")]
@@ -658,9 +647,29 @@ namespace BridgeMVC.Controllers
             return View(item);
         }
 
-
         [ActionName("M1_LSACert")]
         public async Task<ActionResult> M1_LSACertAsync(string id)
+        {
+            if (id == null)
+            {
+                return new HttpStatusCodeResult(HttpStatusCode.BadRequest);
+            }
+
+            Job item = await DocumentDBRepository.GetItemAsync<Job>(id);
+            if (item == null)
+            {
+                return HttpNotFound();
+            }
+            //ViewBag.SelectList = await DocumentDBRepository<BRule>.GetItemsAsync(d => d.Tag == "BRule" && d.BridgeModule == item.BridgeModule);
+            Session["NpsJobId"] = item.NpsJobId;
+            Session["DbJobId"] = item.Id;
+            ViewBag.BLSACert = await DocumentDBRepository.GetItemsAsync<BLSACert>(d => d.Tag == "BLSACert");
+            await SetViewBags();
+            return View(item);
+        }
+
+        [ActionName("AutoCert")]
+        public async Task<ActionResult> AutoCert(string id)
         {
             if (id == null)
             {
@@ -753,6 +762,7 @@ namespace BridgeMVC.Controllers
             return Redirect(Url.Content("~/Job/_Index/"));
         }
 
+        /*
         public string CleanHtmlString (string s)
         {
             s = s.Replace("<br/>", "");
@@ -760,6 +770,7 @@ namespace BridgeMVC.Controllers
             s = s.Replace("</div>", "");
             return s;
         }
+        */
 
         [ActionName("M1_Task3_LSA")]
         public async Task<ActionResult> M1_Task3_LSA(string id)
@@ -789,4 +800,3 @@ namespace BridgeMVC.Controllers
         }
     }
 }
-

@@ -7,17 +7,15 @@
     <title>Bridge</title>
     @Styles.Render("~/Content/css")
     @Scripts.Render("~/bundles/modernizr")
-    <script language="JavaScript" type="text/javascript" src="~/Scripts/jquery-3.3.1.min.js"></script>
-    <script language="JavaScript" type="text/javascript" src="~/Scripts/jquery-ui.min.js"></script>
-    <script language="JavaScript" type="text/javascript" src="~/Scripts/bridgeScript.js"></script>
-    <link href="~/Content/jCalendar.css" type="text/css" rel="stylesheet">
-    <script type="text/javascript" src="~/Scripts/jCalendar.js"></script>
-    @{
-        ViewBag.Title = "Bridge_M1";
-        string BridgeLastUsed = (string)Session["BridgeModule"];
-    }
+    @Scripts.Render("~/bundles/jquery")
     <style>
-
+        .bing {
+            float: left;
+            /*width: 450px;*/
+            padding: 0.5em 1em 0.5em 1em;
+            min-width: 400px;
+            font-weight: bold;
+        }
         body {
             font: Avenir Next;
             margin-left: 60px;
@@ -33,7 +31,6 @@
             .navbar a {
                 color: black;
             }
-
 
         .navbar-collapse {
             background-color: cadetblue;
@@ -80,38 +77,31 @@
         .dropdown:hover .dropbtn {
             background-color: #3e8e41;
         }
+        .form-control {
+            font-weight: normal;
+        }
+
+        .hiddenBtn {
+            color: transparent;
+            background-color: transparent;
+            border: none;
+            float: right;
+        }
     </style>
 </head>
-
 <body>
-    
-        <header class="header"  >
-
-            <div class="navbar ">
-  
-                <div style="float:right">
-                    @Html.Partial("_LoginPartial")
-                </div>
-               
-
+    <header class="header"  >
+        <div class="navbar ">
+            <div style="float:right">
+                @Html.Partial("_LoginPartial")
             </div>
-
-        </header>
-
-
-
- <div class="container body-content">
+        </div>
+    </header>
+    <div class="container body-content">
         @RenderBody()
-</div>
-
+    </div>
     @*@Scripts.Render("~/bundles/jquery")*@
     @Scripts.Render("~/bundles/bootstrap")
     @RenderSection("scripts", required: false)
 </body>
-
-
-
-
 </html>
-
-

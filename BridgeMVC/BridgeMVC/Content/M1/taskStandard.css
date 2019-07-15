@@ -1,0 +1,20 @@
+﻿
+.bing {
+    float: left;
+    /*width: 450px;*/
+    padding: 0.5em 1em 0.5em 1em;
+    min-width: 400px;
+    font-weight: bold;
+}
+
+.form-control {
+    font-weight: bold;
+    color: steelblue;
+}
+
+
+
+body {
+    padding-left:3em;
+    padding-right:3em;
+}

@@ -1,16 +1,12 @@
 ﻿@model BridgeMVC.Models.BUser
 
 @{
-
     ViewBag.Title = "Index";
     Layout = "~/Views/Shared/_Layout.cshtml";
-    string LastUsedBridge = Model.BridgeLastUsed;
+    string LastUsedBridge = Model.BridgeLastUsed; // Bug here
     string ListModule = "";
-
     List<string> result = Model.BridgesGranted.Split(';').ToList();
     List<BridgeMVC.Models.BBridge> bridges = ViewBag.bridges;
-
-
     List<SelectListItem> listItems = new List<SelectListItem>();
     foreach (var b in bridges)
     {
@@ -18,23 +14,17 @@
         listItems.Add(new SelectListItem
         {
             Text = b.BridgeName,
-            Value = b.BridgeName,
-
+            Value = b.BridgeName
         });
     }
 }
 
-
-
 @using (Html.BeginForm())
 {
     @Html.AntiForgeryToken()
-
     <div class="form-horizontal">
-
         <hr />
         @Html.ValidationSummary(true, "", new { @class = "text-danger" })
-
 
         @Html.HiddenFor(model => model.Id)
         @Html.HiddenFor(model => model.EmployeeID)
@@ -65,34 +55,10 @@
                 @Html.DropDownListFor(model => model.BridgeLastUsed, listItems, LastUsedBridge, new { @class = "form-control" })
                 <input type="submit" value="SELECT" class="btn btn-info " style="font-size:medium; height:22px; padding:0 6px 0 6px; " />
             </div>
-
         </div>
     </div>
-
+    <script>
+        var lastUsed = "@LastUsedBridge";
+        console.log(lastUsed);
+    </script>
 }
-
-
-
-@*<div>
-        <a href="@Url.Action("Get", "Blob")" style="color:green; font-size:14pt;">View Data</a>
-    </div>
-    <div>
-        @using (Html.BeginForm("Index", "Blob", FormMethod.Post, new { enctype = "multipart/form-data" }))
-        {
-            @Html.AntiForgeryToken()
-            <fieldset>
-                <legend>Upload File</legend>
-                <ol>
-                    <li>
-                        <label style="margin-right:15px;">Select file </label>
-                        <input type="file" name="FilePath" value="" />
-                    </li>
-                </ol>
-                <input type="submit" value="Submit" />
-            </fieldset>
-        }
-    </div>*@
-
-
-
-

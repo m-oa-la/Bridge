@@ -1,0 +1,25 @@
+﻿<!DOCTYPE html>
+
+<html>
+<head>
+    <meta http-equiv="X-UA-Compatible" content="IE=edge" />
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width" />
+    <title>Bridge</title>
+    @Styles.Render("~/Content/css")
+    @Scripts.Render("~/bundles/modernizr")
+</head>
+<body>
+    <page size="A4">
+        @RenderBody()
+    </page>
+    @Scripts.Render("~/bundles/jquery")
+    @Scripts.Render("~/bundles/bootstrap")
+    @Scripts.Render("~/bundles/scripts/common")
+    @Scripts.Render("~/bundles/scripts/thirdParty")
+    @Scripts.Render("~/bundles/scripts/m1")
+    @RenderSection("scripts", required: false)
+    @Styles.Render("~/Content/M1/taskA4.css")
+    @RenderSection("styles", required: false)
+</body>
+</html>

@@ -1,8 +1,5 @@
-﻿/* CSS style used to create life saving appliances (LSA) certificates. */
-
-body {
+﻿body {
     background: rgb(204,204,204);
-    height: 297mm;
     width: 210mm;
     margin-left: auto;
     margin-right: auto;
@@ -10,11 +7,13 @@ body {
 
 page[size="A4"] {
     background: white;
-    height: 297mm;
     width: 210mm;
     display: block;
     margin: 0 0;
-    padding: 25mm;
+    padding-top: 10mm;
+    padding-left: 25mm;
+    padding-right: 25mm;
+    padding-bottom: 20mm;
     margin-bottom: 5mm;
     box-shadow: 0 0 5mm rgba(0,0,0,0.5);
 }
@@ -28,7 +27,8 @@ div {
 }
 
 table {
-    margin-left: 32px;
+    margin-left: 0px;
+    margin-right: 0px;
 }
 
 td {
@@ -38,7 +38,7 @@ td {
 h2 {
     zoom: 1;
     font-family: Verdana;
-    font-size: 14px;
+    font-size: 14.5px;
     color: black;
 }
 
@@ -49,6 +49,12 @@ h3 {
     color: black;
 }
 
+span {
+    padding-top: 0.1em;
+    padding-left: 0;
+    margin-left: 0;
+}
+
 .autotxt {
     zoom: 1;
     font-family: Verdana;
@@ -56,9 +62,32 @@ h3 {
     color: black;
 }
 
+.bName {
+    font-weight: bold;
+}
+
+.bValue {
+    font-weight: 100;
+}
+
+.form-control {
+    font-weight: bold;
+    color: steelblue;
+}
+
 @media print {
     .no-print, .no-print * {
         display: none !important;
+    }
+
+    /* Removes header from printout */
+    @page :header {
+        display: none
+    }
+
+    /* Removes footer from printout */
+    @page :footer {
+        display: none
     }
 
     body, page[size="A4"] {
