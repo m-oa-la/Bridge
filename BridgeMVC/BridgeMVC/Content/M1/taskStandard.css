@@ -1,2 +1,14 @@
 ﻿body {
+    margin: 0 60px 0 60px;
+}
+
+.bing {
+    float: left;
+    padding: 0.5em 1em 0.5em 1em;
+    min-width: 400px;
+    font-weight: bold;
+}
+
+.form-control{
+    font-weight: normal;
 }

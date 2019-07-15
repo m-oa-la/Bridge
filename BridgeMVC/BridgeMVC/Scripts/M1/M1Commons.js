@@ -210,3 +210,13 @@ function getCertificateActionDisplayElements(certAction) {
 
     return elemIds;
 }
+
+function addInputFieldEventHandler(id, event, fun=null, depIds=[], depFuns=[]) {
+    /*
+    CURRENTLY NOT USED.
+    Sets up an event handler for a html element.
+    */
+    var eventOptions = ["click", "dblclick", "mouseenter", "mouseleave",
+        "keypress", "keydown", "keyup", "submit", "change", "focus",
+        "blur", "load", "resize", "scroll", "unload"];
+}

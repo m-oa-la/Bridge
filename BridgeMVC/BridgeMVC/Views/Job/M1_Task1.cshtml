@@ -19,7 +19,6 @@
 @using (Html.BeginForm(null, null, FormMethod.Post, new { id = "jobForm" }))
 {
     @Html.AntiForgeryToken()
-
     <div>
         @Html.HiddenFor(model => model.Tag)
         @Html.HiddenFor(model => model.BridgeModule)
@@ -96,7 +95,6 @@
         @Html.HiddenFor(model => model.IoraDbId)
         @Html.HiddenFor(model => model.InternalFee)
     </div>
-
     <div class="form-horizontal">
         <hr />
         <div class="bing col-lg-6">
@@ -137,14 +135,14 @@
                 new List<SelectListItem> { new SelectListItem { Text = Model.CertAction, Value = Model.CertAction } }, 
                 new { @class = "form-control", id = "selectCertAction" })
         </div>
-        <div class="bing col-lg-6">
+        <div class="bing col-lg-6" id="MEDFBDue">
             <p>Ref. certificate expiring date.:</p>
             @Html.EditorFor(model => model.MEDFBDue, 
                 new { htmlAttributes = new { @class = "form-control" } })
             @Html.ValidationMessageFor(model => model.MEDFBDue, 
                 "", new { @class = "text-danger" })
         </div>
-        <div class="bing col-lg-6">
+        <div class="bing col-lg-6" id="ExistingCertNo">
             <p>Ref. deliverable no.:</p>
             @Html.EditorFor(model => model.ExistingCertNo, 
                 new { htmlAttributes = new { @class = "form-control" } })
@@ -170,14 +168,14 @@
             @Html.ValidationMessageFor(model => model.MWL, 
                 "", new { @class = "text-danger" })
         </div>
-        <div class="bing col-lg-6">
+        <div class="bing col-lg-6" id="CertAmount">
             <p>Amount of certificate:</p>
             @Html.EditorFor(model => model.CertAmount, 
                 new { htmlAttributes = new { @class = "form-control" } })
             @Html.ValidationMessageFor(model => model.CertAmount, 
                 "", new { @class = "text-danger" })
         </div>
-        <div class="bing col-lg-6">
+        <div class="bing col-lg-6" id="MEDFBNo">
             <p id="pMEDFBNo">Ref. Certificate No.:</p>
             @Html.EditorFor(model => model.MEDFBNo,
                 new { htmlAttributes = new { @class = "form-control" } })
@@ -191,21 +189,21 @@
             @Html.ValidationMessageFor(model => model.MEDItemNo, 
                 "", new { @class = "text-danger" })
         </div>
-        <div class="bing col-lg-6">
+        <div class="bing col-lg-6" id="SerialNo">
             <p> Serial no.: </p>
             @Html.EditorFor(model => model.SerialNo, 
                 new { htmlAttributes = new { @class = "form-control" } })
             @Html.ValidationMessageFor(model => model.SerialNo, 
                 "", new { @class = "text-danger" })
         </div>
-        <div class="bing col-lg-6">
+        <div class="bing col-lg-6" id="SurveyStation">
             <p> Survey station </p>
             @Html.EditorFor(model => model.SurveyStation, 
                 new { htmlAttributes = new { @class = "form-control" } })
             @Html.ValidationMessageFor(model => model.SurveyStation, 
                 "", new { @class = "text-danger" })
         </div>
-        <div class="bing col-lg-6">
+        <div class="bing col-lg-6" id="SurveyDate">
             <p>
                 Survey date: (DD/MM/YYYY)
                 <img onclick="viewCalendar('jcalendar_parent', 'SurveyDate')" style="margin-top: 5px;" width="20" height="20" src="~/Content/pictures/calendar-32x32.png" alt="CAL" border="0">
@@ -214,7 +212,7 @@
 
             <input class="form-control" name="SurveyDate_Input" value="@Model.SurveyDate" id="SurveyDate_Input" readonly />
         </div>
-        <div style="clear:both" ; class=" col-lg-12 ">
+        <div style="clear:both" ; class=" col-lg-12" id="ModificationDesc">
             <h4 style="clear:both;">Scope of modification:</h4>
             @Html.EditorFor(model => model.ModificationDesc, 
                 new { htmlAttributes = new { @class = "form-control", style = "height:60px" } })
@@ -234,7 +232,7 @@
         <div class="bing col-lg-6">
             Budget hour: <input type="button" id="budgetHourButton" img style="cursor:pointer" src="~/Content/pictures/magic.png" class="magicWand" />
 
-            @Html.EditorFor(model => model.BudgetHour, 
+            @Html.EditorFor(model => model.BudgetHour,
                 new { htmlAttributes = new { @class = "form-control" } })
             @Html.ValidationMessageFor(model => model.BudgetHour, 
                 "", new { @class = "text-danger" })
