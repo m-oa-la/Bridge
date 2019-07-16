@@ -85,42 +85,6 @@ function getElementChildren(id, lvl) {
     return elems;
 }
 
-function setElementStyleDisplay(id, lvl, value) {
-    /*
-    Sets the style display of html elements equal to value.
-    Positive levels sets the value for parent elements, while
-    negative levels sets the value for children elements.
-    :arg id: string, the root element id
-    :arg lvl: int, the number of levels to ascend/descend
-    :arg value: string, the style display value
-    */
-    if (id == null) {
-        return;
-    }
-
-    var elem = null;
-    var elems = null;
-
-    if (lvl >= 0) {
-        elem = getElementParent(id, lvl);
-        if (elem != null && elem != undefined) {
-            if (typeof elem.style !== 'undefined') {
-                elem.style.display = value;
-            }
-        }
-    } else if (lvl < 0) {
-        elems = getElementChildren(id, lvl);
-        for (var i = 0; i < elems.length; i++) {
-            elem = elems[i];
-            if (elem != null && elem != undefined) {
-                if (typeof elem.style !== 'undefined') {
-                    elem.style.display = value;
-                }
-            }
-        }
-    }
-}
-
 function displayElements(elemIds, show) {
     /*
     Renders elements
@@ -128,16 +92,14 @@ function displayElements(elemIds, show) {
     :arg show: boolean, whether the elements shall be shown (default: true)
     */
     
-    var value = "";
-    if (show) {
-        value = "block";
-    } else {
-        value = "none";
-    }
-
     for (var i = 0; i < elemIds.length; i++) {
-        id = elemIds[i];
-        setElementStyleDisplay(id, 0, value);
+        id = "#" + elemIds[i];
+
+        if (show) {
+            $(id).show();
+        } else {
+            $(id).hide();
+        }
     }
 }
 

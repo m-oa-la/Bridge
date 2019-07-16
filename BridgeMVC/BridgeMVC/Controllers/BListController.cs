@@ -27,7 +27,6 @@ namespace BridgeMVC.Controllers
                 BLs = BLs.Where(s => s.ListType.ToLower().Contains(searchString) || s.ListItem.ToLower().Contains(searchString));
             }
 
-
             return View(BLs.OrderBy(s => s.ListType));
         }
 
@@ -41,7 +40,6 @@ namespace BridgeMVC.Controllers
             };
             return View(S);
         }
-
 
         [HttpPost]
         [ActionName("Create")]

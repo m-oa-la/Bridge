@@ -42,10 +42,9 @@ function taskComplete(taskNo, taskStatusFlag, taskCompleteDate, taskCompleteStr,
     }
 }
 
-// TODO
 function renderTaskActions(taskNo, taskStatusFlagId, taskCompleteDateId, taskCompleteStr, userSignature) {
     /*
-    Renders which elements to show and hide.
+    Renders task status and task action buttons like re-open, save and complete.
     :arg taskNo: int, the task number
     :arg taskStatusFlagId: string, the id of the document taskStatusFlag
     :arg taskCompleteDateId: string, the id of the document date element
@@ -219,11 +218,4 @@ function addInputFieldEventHandler(id, event, fun, depIds, depFuns) {
         "blur", "load", "resize", "scroll", "unload"];
 
     throw new Error("addInputFieldEventHandler is not implemented yet...")
-}
-
-function renderM1Task1Paragraphs() {
-    /*
-    Add function description.
-    */
-    throw new Error("renderM1Task1Paragraphs is not implemented yet...")
 }

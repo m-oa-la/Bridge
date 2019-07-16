@@ -12,9 +12,9 @@
         <input type="submit" value="Search" />
     </p>
 }
+
 <table class="table">
     <tr>
-
         <th hidden>
             @Html.DisplayNameFor(model => model.BridgeModule)
         </th>
@@ -36,7 +36,6 @@
     @foreach (var item in Model)
     {
     <tr>
-
         <td hidden>
             @Html.DisplayFor(modelItem => item.BridgeModule)
         </td>
@@ -58,5 +57,4 @@
         </td>
     </tr>
     }
-
 </table>
