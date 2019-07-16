@@ -49,8 +49,7 @@
     }
 
     .table th, td {
-        border-radius:20px;
-
+        border-radius: 20px;
         border: 0.1px solid white;
     }
 
@@ -104,7 +103,11 @@
         border-style: none;
     }
 
- 
+    .jobList td, p {
+        padding: 0px 4px 0px 4px !important;
+        margin: 0px !important;
+    }
+
 </style>
 
 <div class="h2">
@@ -171,7 +174,7 @@
         <th style="border-top:none">          IORA STATUS    </th>
         <th></th>
         @*<th>            @Html.DisplayNameFor(model => model.TaskHandler)        </th>
-        <th>            @Html.DisplayNameFor(model => model.Completed)        </th>*@
+            <th>            @Html.DisplayNameFor(model => model.Completed)        </th>*@
 
     </tr>
 
@@ -200,13 +203,14 @@
 
         string ctColorCode = getColorCode(item.CertType);
 
- 
+
         string editlink1 = "'/Job/CommonTask1/" + item.Id + "'";
         string editlink2 = "'/Job/IsIORAExisting/" + item.Id + "'";
 
         string editlink3 = "'/Job/CommonTask3/" + item.Id + "'";
         string editlink4 = "'/Job/CommonTask4/" + item.Id + "'";
-        <tr>
+        
+        <tr class="jobList">
             <td style="@ctColorCode">
                 <p>  @Html.DisplayFor(modelItem => item.NpsJobId)</p>
             </td>
@@ -269,14 +273,14 @@
 <footer>
 
     <table class="table table-mid-align-rows hoverRow" style="table-layout:fixed;">
-  
+
         <tr>
             <td class="classTY"></td>
             <td style="@styleTxt">Task is completed</td>
             <td class="classTTASK"></td>
             <td style="@styleTxt"><p>Task is assigned to you (ongoing)</p></td>
             @*<td class="classT"></td>
-        <td style="@styleTxt">IORA pending verification</td>*@
+                <td style="@styleTxt">IORA pending verification</td>*@
             <td class="classTPENDING" align="center">X</td>
             <td style="@styleTxt">Task is pending for X days</td>
             <td class="classT"></td>
