@@ -2,6 +2,7 @@
 
 @{
     ViewBag.Title = "Index";
+    Layout = "~/Views/Shared/_LayoutIndex.cshtml";
     string BridgeLastUsed = (string)Session["BridgeModule"];
     string UserSignature = (string)Session["UserSignature"];
     var LUser = ViewBag.LUser;
@@ -9,9 +10,6 @@
     var BFlist = (IEnumerable<BridgeMVC.Models.BFinancial>)ViewBag.LCertType;
 
     BridgeMVC.Models.BBridge bridge = (BridgeMVC.Models.BBridge)ViewBag.bridge;
-
-    string styleTxt = "border-radius: 0; border: none";
-
     string bridgeLongName = bridge.BridgeLongName;
     List<string> taskNames = bridge.TaskName.Split(';').ToList<string>();
 
@@ -33,90 +31,12 @@
 
 }
 
-<style>
-    .hoverRow p {
-        display: block;
-        overflow: hidden;
-        text-overflow: clip;
-        white-space: nowrap;
-        max-width: 480px;
-    }
-
-    .hoverRow td:hover p {
-        white-space: normal;
-        word-wrap: normal;
-        word-break: break-all;
-    }
-
-    .table th, td {
-        border-radius: 20px;
-        border: 0.1px solid white;
-    }
-
-    .classTY {
-        background-color: seagreen;
-        color: transparent;
-        cursor: pointer;
-        width: 40px;
-        border-style: none;
-    }
-
-    .classTN {
-        background-color: gainsboro;
-        color: transparent;
-        cursor: pointer;
-        width: 40px;
-        border-style: none;
-    }
-
-    .classTTASK {
-        background-color: DodgerBlue;
-        color: transparent;
-        cursor: pointer;
-        width: 40px;
-        border-style: solid;
-    }
-
-    .classTTASKIORA {
-        background-color: DodgerBlue;
-        color: transparent;
-        cursor: pointer;
-        width: 40px;
-        border-style: none;
-    }
-
-    .classTPENDING {
-        background-color: gold;
-        color: black;
-        cursor: pointer;
-        width: 40px;
-        border-style: none;
-        font-size: large;
-        font-weight: bold;
-    }
-
-    .classT {
-        background-color: gainsboro;
-        color: transparent;
-        cursor: pointer;
-        width: 40px;
-        border-style: none;
-    }
-
-    .jobList td, p {
-        padding: 0px 4px 0px 4px !important;
-        margin: 0px !important;
-    }
-
-</style>
-
 <div class="h2">
     MY BRIDGE JOBLIST - @bridgeLongName
     <p style="float:right" class="btn btn-secondary">
         @Html.ActionLink("Whiteboard", "Whiteboard")
     </p>
 </div>
-
 <hr />
 
 @using (Html.BeginForm())
@@ -162,16 +82,16 @@
         <col span="1" style="width: 50px;">
     </colgroup>
     <tr>
-        <th style="border-top:none">           JOB ID       </th>
-        <th style="border-top:none">            CUSTOMER        </th>
-        <th style="border-top:none">           PROJECT NAME     </th>
+        <th style="border-top:none"> JOB ID        </th>
+        <th style="border-top:none"> CUSTOMER      </th>
+        <th style="border-top:none"> PROJECT NAME  </th>
         @foreach (string taskname in taskNames)
         {
-            <th style="border-top:none">           @taskname     </th>
+            <th style="border-top:none"> @taskname </th>
         }
 
-        <th style="border-top:none">                  </th>
-        <th style="border-top:none">          IORA STATUS    </th>
+        <th style="border-top:none">               </th>
+        <th style="border-top:none"> IORA STATUS   </th>
         <th></th>
         @*<th>            @Html.DisplayNameFor(model => model.TaskHandler)        </th>
             <th>            @Html.DisplayNameFor(model => model.Completed)        </th>*@
@@ -209,7 +129,7 @@
 
         string editlink3 = "'/Job/CommonTask3/" + item.Id + "'";
         string editlink4 = "'/Job/CommonTask4/" + item.Id + "'";
-        
+
         <tr class="jobList">
             <td style="@ctColorCode">
                 <p>  @Html.DisplayFor(modelItem => item.NpsJobId)</p>
@@ -223,16 +143,24 @@
                 </p>
             </td>
 
-            <td class="@classT1" onclick="location.href=@editlink1">
-                @Html.DisplayFor(modelItem => item.Task1)
+            <td>
+                <div class="@classT1" onclick="location.href=@editlink1"> 
+                    @Html.DisplayFor(modelItem => item.Task1) 
+                </div>
             </td>
-            <td class="T2 @classT2" onclick="location.href=@editlink2">
-                @Html.DisplayFor(modelItem => item.Task2)
+            <td>
+                <div class="T2 @classT2" onclick="location.href=@editlink2"> 
+                    @Html.DisplayFor(modelItem => item.Task2) 
+                </div>
             </td>
-            <td class="@classT3" onclick="location.href=@editlink3">
-                @Html.DisplayFor(modelItem => item.Task3)
+            <td>
+                <div class="@classT3" onclick="location.href=@editlink3"> 
+                    @Html.DisplayFor(modelItem => item.Task3) 
+                </div>
             </td>
+
             <td></td>
+            
             <td id="@statusId">
                 <p>
                     @if (!string.IsNullOrEmpty(item.OnHoldNote) && item.IsHold)
@@ -247,9 +175,8 @@
                     }
 
                 </p>
-
-
             </td>
+            
             <td>
 
                 @if (item.IsHold)
@@ -264,30 +191,12 @@
             </td>
 
         </tr>
-    }
+     }
 
 </table>
-
 <br /><br /><br />
 <hr />
-<footer>
 
-    <table class="table table-mid-align-rows hoverRow" style="table-layout:fixed;">
-
-        <tr>
-            <td class="classTY"></td>
-            <td style="@styleTxt">Task is completed</td>
-            <td class="classTTASK"></td>
-            <td style="@styleTxt"><p>Task is assigned to you (ongoing)</p></td>
-            @*<td class="classT"></td>
-                <td style="@styleTxt">IORA pending verification</td>*@
-            <td class="classTPENDING" align="center">X</td>
-            <td style="@styleTxt">Task is pending for X days</td>
-            <td class="classT"></td>
-            <td style="@styleTxt">Task is not assigned</td>
-        </tr>
-    </table>
-</footer>
 
 <script>
     var LUser = @Html.Raw(Json.Encode(LUser));

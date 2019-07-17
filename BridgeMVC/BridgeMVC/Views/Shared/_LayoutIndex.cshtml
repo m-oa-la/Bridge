@@ -1,0 +1,47 @@
+﻿<!DOCTYPE html>
+<html>
+<head>
+    <meta http-equiv="X-UA-Compatible" content="IE=edge" />
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Bridge</title>
+    @Styles.Render("~/Content/css")
+    @Scripts.Render("~/bundles/modernizr")
+    @Scripts.Render("~/bundles/jquery")
+    @Styles.Render("~/Content/Common/IndexStyleSheet.css")
+</head>
+
+<body>
+    <header class="header">
+        <div class="navbar ">
+            <div style="float:right">
+                @Html.Partial("_LoginPartial")
+            </div>
+        </div>
+    </header>
+    <div class="container body-content">
+        @RenderBody()
+    </div>
+
+    <footer>
+        <table class="table table-mid-align-rows hoverRow styleFooter" style="table-layout:fixed;">
+            <tr>
+                <td class="classTY"></td>
+                <td><p>Task is completed</p></td>
+                <td class="classTTASK"></td>
+                <td><p>Task is assigned to you (ongoing)</p></td>
+                @*<td class="classT"></td>
+                    <td style="@styleTxt">IORA pending verification</td>*@
+                <td class="classTPENDING" align="center">X</td>
+                <td><p>Task is pending for X days</p></td>
+                <td class="classT"></td>
+                <td><p>Task is not assigned</p></td>
+            </tr>
+        </table>
+    </footer>
+
+    @*@Scripts.Render("~/bundles/jquery")*@
+    @Scripts.Render("~/bundles/bootstrap")
+    @RenderSection("scripts", required: false)
+</body>
+</html>

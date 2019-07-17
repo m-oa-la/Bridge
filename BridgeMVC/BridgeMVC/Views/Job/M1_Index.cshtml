@@ -2,102 +2,16 @@
 
 @{
     ViewBag.Title = "Index";
-    Layout = "~/Views/Shared/_Layout.cshtml";
+    Layout = "~/Views/Shared/_LayoutIndex.cshtml";
     string BridgeLastUsed = (string)Session["BridgeModule"];
     string UserSignature = (string)Session["UserSignature"];
     var LUser = ViewBag.LUser;
     var US = ViewBag.userSig;
+
     BridgeMVC.Models.BBridge bridge = (BridgeMVC.Models.BBridge)ViewBag.bridge;
-    string styleTxt = "border-radius: 0; border: none";
     string bridgeLongName = bridge.BridgeLongName;
     List<string> taskNames = bridge.TaskName.Split(';').ToList<string>();
 }
-
-<style>
-    .classTY {
-        background-color: seagreen;
-        color: transparent;
-        cursor: pointer;
-        height: 10px;
-        width: 40px;
-        border-style: none;
-    }
-
-    .classTN {
-        background-color: gainsboro;
-        color: transparent;
-        cursor: pointer;
-        width: 40px;
-        border-style: none;
-    }
-
-    .classTTASK {
-        background-color: DodgerBlue;
-        color: transparent;
-        cursor: pointer;
-        width: 40px;
-        border-style: none;
-    }
-
-    .classTTASKIORA {
-        background-color: DodgerBlue;
-        color: transparent;
-        cursor: pointer;
-        width: 40px;
-        border-style: none;
-    }
-
-    .classTPENDING {
-        background-color: gold;
-        color: black;
-        cursor: pointer;
-        width: 40px;
-        border-style: none;
-        font-size: large;
-        font-weight: bold;
-    }
-
-    .classT {
-        background-color: gainsboro;
-        color: transparent;
-        cursor: pointer;
-        width: 40px;
-        border-style: none;
-    }
-
-
-    .hoverRow p {
-        display: block;
-        overflow: hidden;
-        text-overflow: clip;
-        white-space: nowrap;
-        max-width: 480px;
-    }
-
-    .hoverRow td:hover p {
-        white-space: normal;
-        word-wrap: normal;
-        word-break: break-all;
-    }
-
-    .table th, td {
-        border-radius: 25px;
-        border: 1px solid white;
-    }
-
-    .title {
-        font-size: x-large;
-        font-weight: bold;
-    }
-
-    .jobList td, p {
-        padding: 0px 4px 0px 4px !important;
-        margin: 0px !important;
-    }
-
-  
-
-</style>
 
 <div class="title">
     MY BRIDGE JOBLIST - @bridgeLongName
@@ -189,10 +103,10 @@
                 <p> @Html.DisplayFor(modelItem => item.NpsJobId) </p>
             </td>
             <td>
-                <div style="background-color:lightgray;cursor: pointer;text-align:center;height:25px" onclick="location.href=@linkNcertReporting">
+                <div style="background-color:lightgray; cursor: pointer; text-align:center; width:100%;" onclick="location.href=@linkNcertReporting">
 
-                    <div style="background-color:green;width:66.66%;position:relative;top:0px;height:24px">
-                        <div style="color:white">
+                    <div style="background-color:green;width:66.66%;position:relative;top:0px;height:24px;margin:0px">
+                        <div style="color:white; margin:auto;">
                             bhrs
                         </div>
                     </div>
@@ -204,17 +118,30 @@
             <td>
                 <p> @npsJobName </p>
             </td>
-            <td class="@classT1" onclick="location.href=@editlink1">
-                @Html.DisplayFor(modelItem => item.Task1)
+            <td>
+                <div class="@classT1" onclick="location.href=@editlink1"> 
+                    @Html.DisplayFor(modelItem => item.Task1) 
+                </div>
             </td>
-            <td class="@classT2" onclick="location.href=@editlink2" align="center" tag="@t2tag">
-                @Html.DisplayFor(modelItem => item.Task2)
+            <td>
+                <div class="@classT2" onclick="location.href=@editlink2" align="center" tag="@t2tag"> 
+                    @Html.DisplayFor(modelItem => item.Task2) 
+                </div>
             </td>
-            <td class="@classT3" onclick="location.href=@editlink3">
-                @Html.DisplayFor(modelItem => item.Task3)
+
+            <td>
+                <div class="@classT3" onclick="location.href=@editlink3"> 
+                    @Html.DisplayFor(modelItem => item.Task3) 
+                </div>
             </td>
-            <td class="@classT4" onclick="location.href=@editlink4">
-                @Html.DisplayFor(modelItem => item.Task4)
+
+            @*<td class="@classT3" onclick="location.href=@editlink3" style="width: 25px;">
+                    @Html.DisplayFor(modelItem => item.Task3)
+                </td> *@
+            <td>
+                <div class="@classT4" onclick="location.href=@editlink4"> 
+                    @Html.DisplayFor(modelItem => item.Task4) 
+                </div>
             </td>
             <td>
                 <p>
@@ -225,26 +152,11 @@
                 </p>
             </td>
         </tr>
-    }
+     }
 </table>
 <br /><br /><br />
 <hr />
-<footer>
-    <table class="table table-mid-align-rows hoverRow" style="table-layout:fixed;">
-        <tr>
-            <td class="classTY"></td>
-            <td style="@styleTxt"><p>Task is completed</p></td>
-            <td class="classTTASK"></td>
-            <td style="@styleTxt"><p>Task is assigned to you (ongoing)</p></td>
-            @*<td class="classT"></td>
-                <td style="@styleTxt">IORA pending verification</td>*@
-            <td class="classTPENDING" align="center">X</td>
-            <td style="@styleTxt"><p>Task is pending for X days</p></td>
-            <td class="classT"></td>
-            <td style="@styleTxt"><p>Task is not assigned</p></td>
-        </tr>
-    </table>
-</footer>
+
 
 @section Scripts {
     <script type="text/javascript">
