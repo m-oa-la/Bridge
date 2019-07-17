@@ -12,6 +12,9 @@
     BridgeMVC.Models.BBridge bridge = (BridgeMVC.Models.BBridge)ViewBag.bridge;
     string bridgeLongName = bridge.BridgeLongName;
     List<string> taskNames = bridge.TaskName.Split(';').ToList<string>();
+    var jobNum = Model.Count();
+    int TotalFee = 0;
+    string jobsTxt = "";
 
 
     string getColorCode(string ct)
@@ -100,6 +103,8 @@
 
     @foreach (var item in Model)
     {
+        // TotalFee += (int)item.Fee;
+
         string npsJobName = item.NpsJobName;
         string pauseIconId = "pause_" + item.Id;
         string startIconId = "start_" + item.Id;
@@ -144,23 +149,23 @@
             </td>
 
             <td>
-                <div class="@classT1" onclick="location.href=@editlink1"> 
-                    @Html.DisplayFor(modelItem => item.Task1) 
+                <div class="@classT1" onclick="location.href=@editlink1">
+                    @Html.DisplayFor(modelItem => item.Task1)
                 </div>
             </td>
             <td>
-                <div class="T2 @classT2" onclick="location.href=@editlink2"> 
-                    @Html.DisplayFor(modelItem => item.Task2) 
+                <div class="T2 @classT2" onclick="location.href=@editlink2">
+                    @Html.DisplayFor(modelItem => item.Task2)
                 </div>
             </td>
             <td>
-                <div class="@classT3" onclick="location.href=@editlink3"> 
-                    @Html.DisplayFor(modelItem => item.Task3) 
+                <div class="@classT3" onclick="location.href=@editlink3">
+                    @Html.DisplayFor(modelItem => item.Task3)
                 </div>
             </td>
 
             <td></td>
-            
+
             <td id="@statusId">
                 <p>
                     @if (!string.IsNullOrEmpty(item.OnHoldNote) && item.IsHold)
@@ -176,7 +181,7 @@
 
                 </p>
             </td>
-            
+
             <td>
 
                 @if (item.IsHold)
@@ -191,10 +196,24 @@
             </td>
 
         </tr>
-     }
+    }
 
 </table>
 <br /><br /><br />
+
+@{
+    if (jobNum > 1)
+    {
+        jobsTxt = "There are " + jobNum.ToString() + " jobs in the worklist.";
+    }
+    else
+    {
+        jobsTxt = "It is " + jobNum.ToString() + " job in the worklist.";
+    }
+}
+
+<div> @jobsTxt </div>
+<div> The total fee for the job(s) is @TotalFee NOK. </div>
 <hr />
 
 

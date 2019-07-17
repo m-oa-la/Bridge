@@ -11,6 +11,10 @@
     BridgeMVC.Models.BBridge bridge = (BridgeMVC.Models.BBridge)ViewBag.bridge;
     string bridgeLongName = bridge.BridgeLongName;
     List<string> taskNames = bridge.TaskName.Split(';').ToList<string>();
+    var jobNum = Model.Count();
+    int TotalFee = 0;
+    string jobsTxt = "";
+
 }
 
 <div class="title">
@@ -47,15 +51,16 @@
 }
 <br />
 
+
 <table class="table table-mid-align-rows hoverRow" style="table-layout:fixed;">
     <colgroup>
         <col span="1" style="width: 21%;">
         <col span="1" style="width: 120px;">
         <col span="1" style="width: 24%;">
         <col span="1" style="width: 24%;">
-        <col span="1" style="max-width: 50px; width:49px">
-        <col span="1" style="max-width: 50px; width:49px">
-        <col span="1" style="max-width: 50px; width:49px">
+        <col span="1" style="max-width: 40px; width:39px">
+        <col span="1" style="max-width: 40px; width:39px">
+        <col span="1" style="max-width: 40px; width:39px">
         <col span="1" style="max-width: 50px; width:49px">
         <col span="1" style="width: 24%;">
     </colgroup>
@@ -75,6 +80,8 @@
 
     @foreach (var item in Model)
     {
+        TotalFee += (int)item.Fee;
+
         string npsJobName = item.NpsJobName;
         if (string.IsNullOrEmpty(npsJobName))
         {
@@ -119,19 +126,19 @@
                 <p> @npsJobName </p>
             </td>
             <td>
-                <div class="@classT1" onclick="location.href=@editlink1"> 
-                    @Html.DisplayFor(modelItem => item.Task1) 
+                <div class="@classT1" onclick="location.href=@editlink1">
+                    @Html.DisplayFor(modelItem => item.Task1)
                 </div>
             </td>
             <td>
-                <div class="@classT2" onclick="location.href=@editlink2" align="center" tag="@t2tag"> 
-                    @Html.DisplayFor(modelItem => item.Task2) 
+                <div class="@classT2" onclick="location.href=@editlink2" align="center" tag="@t2tag">
+                    @Html.DisplayFor(modelItem => item.Task2)
                 </div>
             </td>
 
             <td>
-                <div class="@classT3" onclick="location.href=@editlink3"> 
-                    @Html.DisplayFor(modelItem => item.Task3) 
+                <div class="@classT3" onclick="location.href=@editlink3">
+                    @Html.DisplayFor(modelItem => item.Task3)
                 </div>
             </td>
 
@@ -139,8 +146,8 @@
                     @Html.DisplayFor(modelItem => item.Task3)
                 </td> *@
             <td>
-                <div class="@classT4" onclick="location.href=@editlink4"> 
-                    @Html.DisplayFor(modelItem => item.Task4) 
+                <div class="@classT4" onclick="location.href=@editlink4">
+                    @Html.DisplayFor(modelItem => item.Task4)
                 </div>
             </td>
             <td>
@@ -152,9 +159,25 @@
                 </p>
             </td>
         </tr>
-     }
+    }
 </table>
 <br /><br /><br />
+
+@*Stats*@
+
+@{
+    if (jobNum > 1)
+    {
+        jobsTxt = "There are " + jobNum.ToString() + " jobs in the worklist.";
+    }
+    else
+    {
+        jobsTxt = "It is " + jobNum.ToString() + " job in the worklist.";
+    }
+}
+
+<div> @jobsTxt </div>
+<div> The total fee for the job(s) is @TotalFee NOK. </div>
 <hr />
 
 
