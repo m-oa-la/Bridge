@@ -135,6 +135,7 @@ function getDisplayElements(certType, certAction) {
     // Get display element ids based on certificate type
     extension = getCertificateTypeDisplayElements(certType);
     toShow.push.apply(toShow, extension);
+
     // Get display element ids based on certificate action
     extension = getCertificateActionDisplayElements(certAction);
     toShow.push.apply(toShow, extension);
@@ -190,32 +191,20 @@ function getCertificateActionDisplayElements(certAction) {
 
     switch(certAction) {
         case "Modification":
-            elemIds = ["ExistingCertNo", "ModificationDesc"];
+            elemIds = ["paraExistingCertNo", "paraModificationDesc"];
             break;
         case "Initial with reference":
-            elemIds = ["ExistingCertNo"];
+            elemIds = ["paraExistingCertNo"];
             break;
         case "Renewal with modification":
-            elemIds = ["ExistingCertNo", "ModificationDesc"];
+            elemIds = ["paraExistingCertNo", "paraModificationDesc"];
             break;
         case "Renewal":
-            elemIds = ["ExistingCertNo"];
+            elemIds = ["paraExistingCertNo"];
             break;
         default:
             break;
     }
 
     return elemIds;
-}
-
-function addInputFieldEventHandler(id, event, fun, depIds, depFuns) {
-    /*
-    CURRENTLY NOT USED.
-    Sets up an event handler for a html element.
-    */
-    var eventOptions = ["click", "dblclick", "mouseenter", "mouseleave",
-        "keypress", "keydown", "keyup", "submit", "change", "focus",
-        "blur", "load", "resize", "scroll", "unload"];
-
-    throw new Error("addInputFieldEventHandler is not implemented yet...")
 }
