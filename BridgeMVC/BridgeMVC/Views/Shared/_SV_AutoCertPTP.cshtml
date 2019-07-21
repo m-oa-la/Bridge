@@ -1,0 +1,172 @@
+﻿@model BridgeMVC.Models.Job
+<style>
+    .editableBox {
+        height: 30px;
+        width: 330px;
+        transform: translateY(-32px);
+        margin-left: 12px;
+        border: none;
+        background-color: rgb(255, 255, 255);
+    }
+
+    .optionBox {
+        height: 36px;
+    }
+    .recreateprod {
+        float: right;
+        margin-right: 3em;
+        cursor:pointer;
+    }
+</style>
+
+
+@{
+    @Scripts.Render("~/bundles/jquery")
+    var LProduct = ViewBag.LProduct;
+    int sn = 0;
+    int totalProdNo = LProduct.Count;
+    var LPTP = ViewBag.LPTP;
+    var LValueSource = ViewBag.LValueSource;
+
+    //get the name of data source
+    string getDataSourceName(string ptpName)
+    {
+        foreach (var v in LPTP)
+        {
+            if (v.TechParaName == ptpName)
+            {
+                return v.ValueSource;
+            }
+        }
+        return "";
+    }
+
+    //list of the values for a data source
+    List<string> getDropDownList(string listtype)
+    {
+        List<string> alist = new List<string>();
+        foreach (var v in LValueSource)
+        {
+            if (v.ListType == listtype)
+            {
+                alist.Add(v.ListItem);
+            }
+        }
+        return alist;
+    }
+}
+
+<div >
+    <label class="alert-danger recreateprod" id="refreshProdPtps">RE-CREATE PRODUCT</label>
+</div>
+
+
+
+<div style="float:right; margin-right:3em" class="alert-danger" id="recreateprodbtn" hidden>
+    @Html.ActionLink(
+        linkText: "REFRESH PRODUCT",
+        actionName: "RefreshPTP",
+        controllerName: "Product",
+        routeValues: new {
+            bridgeJobId = Model.Id,
+        },
+htmlAttributes: null
+)
+</div>
+
+@foreach (var item in LProduct)
+{
+    sn = sn + 1;
+    string classStr = "form-control ptp " + item.Id;
+    int paraSN = 0;
+
+    <h4 style="font-weight:bold" class="col-lg-12">Product (@sn / @totalProdNo) :</h4>
+    foreach (var para in item.PTPs)
+    {
+        string classStr2 = classStr + " " + paraSN;
+        string valueSourceName = @getDataSourceName(@para.TechParaName);
+
+        <div class="bing col-lg-5">
+            <p>  @para.TechParaName </p>
+
+            @if (!string.IsNullOrEmpty(valueSourceName) && valueSourceName.ToLower().Contains("dropdown_"))
+            {
+                <select class="@classStr2">
+                    <option selected="selected" value="@para.TechParaValue">@para.TechParaValue</option>
+                    @foreach (string str in @getDropDownList(@valueSourceName))
+                    {
+                        <option value="@str">@str</option>
+                    }
+                </select>
+            }
+            else if (!string.IsNullOrEmpty(valueSourceName) && valueSourceName.ToLower().Contains("dropdownedit_"))
+            {
+                //editable dropdown box
+                @*<span>@valueSourceName@paraSN</span>*@
+                <div>
+                    <select class="@classStr2" name="dded-@paraSN">
+                        <option value=""></option>
+                        @foreach (string str in @getDropDownList(@valueSourceName))
+                        {
+                            <option value="@str">@str</option>
+                        }
+                    </select>
+                    <input value="@para.TechParaValue" class="@classStr2 editableBox" id="dded-@paraSN" />
+                </div>
+
+                //end of editable dropdown box
+            }
+            else
+            {
+                <input value="@para.TechParaValue" class="@classStr2" />
+            }
+
+        </div>
+
+        paraSN = paraSN + 1;
+    }
+}
+
+
+
+
+
+<script>
+
+
+    var LValueSource = @Html.Raw(Json.Encode(LValueSource));
+
+    $(document).ready(function () {
+
+        $('select[name^=dded-]').change(function () {
+            var navn = $(this).attr('name');
+            var selectedv = $(this).find(":selected").text();
+
+            $("#" + navn).val(selectedv);
+
+            savePTPbyClassName($(this).attr("class"), selectedv);;
+        });
+    });
+
+
+    $("#refreshProdPtps").click(function () {
+
+        if (confirm('The existing data for the product will be removed. Continue?')) {
+
+            $("#recreateprodbtn").click();
+
+        //    return $.ajax({
+        //        type: 'POST',
+        //        url: '/Product/RefreshPTP/',
+        //        data: { bridgeJobId: Job.Id},
+        //        cache: false,
+        //        success: {
+        //          }
+        //    });
+        } else {
+            // Do nothing!
+        }
+        window.location.reload(false);
+    });
+
+</script>

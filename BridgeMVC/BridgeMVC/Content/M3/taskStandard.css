@@ -1,0 +1,52 @@
+﻿
+
+
+body {
+    padding-left:3em;
+    padding-right:3em;
+}
+
+.bing {
+    float: left;
+    /*width: 450px;*/
+    padding: 0.5em 1em 0.5em 1em;
+    min-width: 400px;
+    font-weight: bold;
+    margin-top:-6px;
+}
+
+.form-control {
+    font-weight: bold;
+    color: steelblue;
+}
+
+.split {
+    height: 100%;
+    position: fixed;
+    z-index: 1;
+    top: 0;
+    overflow-x: hidden;
+    padding-top: 20px;
+    padding-left: 30px;
+    padding-bottom: 30px;
+}
+
+.left {
+    left: 0;
+    width: 480px;
+    /*background-color: lightgray;*/
+}
+
+.right {
+    background: rgb(204,204,204);
+    left: 480px;
+    width: 100%;
+}
+
+.centered {
+    position: absolute;
+    top: 50%;
+    left: 50%;
+    transform: translate(-50%, -50%);
+    text-align: center;
+}

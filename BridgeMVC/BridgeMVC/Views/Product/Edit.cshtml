@@ -1,154 +1,127 @@
 ﻿@model BridgeMVC.Models.Product
 
 @{
-
-    Layout = null;
-    var LMainProdType = ViewBag.LMainProdType;
-    var LSubProdType = ViewBag.LSubProdType;
+    ViewBag.Title = "EEE";
 }
 
-<head>
-    <meta charset="utf-8" />
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Bridge</title>
-    @Styles.Render("~/Content/css")
-    @Scripts.Render("~/bundles/modernizr")
-    <script language="JavaScript" type="text/javascript" src="~/Scripts/jquery-3.3.1.min.js"></script>
-    <script language="JavaScript" type="text/javascript" src="~/Scripts/bridgeScript.js"></script>
-    <script language="JavaScript" type="text/javascript" src="~/Scripts/jquery-ui-1.12.1.js"></script>
+<h2>EEE</h2>
 
 
-    <style>
-        body {
-            font: Avenir Next;
-        }
-    </style>
-</head>
-<h4 style="margin-top:1px"> Edit Product </h4>
 @using (Html.BeginForm())
 {
     @Html.AntiForgeryToken()
-
-
-    <div class="form-horizontal">
-
-        @Html.HiddenFor(model => model.Id)
-        @Html.HiddenFor(model => model.Tag)
-        @Html.HiddenFor(model => model.BridgeModule)
-        @Html.HiddenFor(model => model.DbJobId)
-        @Html.HiddenFor(model => model.NpsJobId)
-
-
-        <table>
-            <colgroup>
-                <col span="1" style="width: 16%;">
-                <col span="1" style="width: 16%;">
-                <col span="1" style="width: 20%;">
-                <col span="1" style="width: 16%;">
-                <col span="1" style="width: 16%;">
-                <col span="1" style="width: 16%;">
-            </colgroup>
-            <tr>
-                <td>
-                    Main type:
-                    @Html.DropDownListFor(model => model.MainProdType, new List<SelectListItem> { new SelectListItem { Text = Model.MainProdType, Value = Model.MainProdType } }, new { @class = "form-control", id = "selectMainProdType" })
-                    @Html.ValidationMessageFor(model => model.MainProdType, "", new { @class = "text-danger" })
-                </td>
-                <td>
-
-                    Sub type:
-                    @Html.DropDownListFor(model => model.SubProdType, new List<SelectListItem> { new SelectListItem { Text = Model.SubProdType, Value = Model.SubProdType } }, new { @class = "form-control", id = "selectSubProdType" })
-                    @Html.ValidationMessageFor(model => model.SubProdType, "", new { @class = "text-danger" })
-                </td>
-                <td>
-                    Product name:
-                    @Html.EditorFor(model => model.ProdDescription, new { htmlAttributes = new { @class = "form-control" } })
-                    @Html.ValidationMessageFor(model => model.ProdDescription, "", new { @class = "text-danger" })
-                </td>
-                <td>
-                    Design pressure:
-                    @Html.EditorFor(model => model.DesignPara1, new { htmlAttributes = new { @class = "form-control" } })
-                    @Html.ValidationMessageFor(model => model.DesignPara1, "", new { @class = "text-danger" })
-                </td>
-                <td>
-                    Design temperature:
-                    @Html.EditorFor(model => model.DesignPara2, new { htmlAttributes = new { @class = "form-control" } })
-                    @Html.ValidationMessageFor(model => model.DesignPara2, "", new { @class = "text-danger" })
-                </td>
-                <td>
-                    Note:
-                    @Html.EditorFor(model => model.Note, new { htmlAttributes = new { @class = "form-control" } })
-                    @Html.ValidationMessageFor(model => model.Note, "", new { @class = "text-danger" })
-                </td>
-                <td>
-                    <input type="submit" value="ADD" class="btn btn-info" />
-
-                </td>
-                <td>
-                    @Html.ActionLink("Cancel", "Index")
-                </td>
-
-            </tr>
-
-        </table>
-
-
-
+    
+<div class="form-horizontal">
+    <h4>Product</h4>
+    <hr />
+    @Html.ValidationSummary(true, "", new { @class = "text-danger" })
+    <div class="form-group">
+        @Html.LabelFor(model => model.Tag, htmlAttributes: new { @class = "control-label col-md-2" })
+        <div class="col-md-10">
+            @Html.EditorFor(model => model.Tag, new { htmlAttributes = new { @class = "form-control" } })
+            @Html.ValidationMessageFor(model => model.Tag, "", new { @class = "text-danger" })
+        </div>
     </div>
+
+    <div class="form-group">
+        @Html.LabelFor(model => model.BridgeModule, htmlAttributes: new { @class = "control-label col-md-2" })
+        <div class="col-md-10">
+            @Html.EditorFor(model => model.BridgeModule, new { htmlAttributes = new { @class = "form-control" } })
+            @Html.ValidationMessageFor(model => model.BridgeModule, "", new { @class = "text-danger" })
+        </div>
+    </div>
+
+    <div class="form-group">
+        @Html.LabelFor(model => model.MainProdType, htmlAttributes: new { @class = "control-label col-md-2" })
+        <div class="col-md-10">
+            @Html.EditorFor(model => model.MainProdType, new { htmlAttributes = new { @class = "form-control" } })
+            @Html.ValidationMessageFor(model => model.MainProdType, "", new { @class = "text-danger" })
+        </div>
+    </div>
+
+    <div class="form-group">
+        @Html.LabelFor(model => model.SubProdType, htmlAttributes: new { @class = "control-label col-md-2" })
+        <div class="col-md-10">
+            @Html.EditorFor(model => model.SubProdType, new { htmlAttributes = new { @class = "form-control" } })
+            @Html.ValidationMessageFor(model => model.SubProdType, "", new { @class = "text-danger" })
+        </div>
+    </div>
+
+    <div class="form-group">
+        @Html.LabelFor(model => model.ProdDescription, htmlAttributes: new { @class = "control-label col-md-2" })
+        <div class="col-md-10">
+            @Html.EditorFor(model => model.ProdDescription, new { htmlAttributes = new { @class = "form-control" } })
+            @Html.ValidationMessageFor(model => model.ProdDescription, "", new { @class = "text-danger" })
+        </div>
+    </div>
+
+    @Html.HiddenFor(model => model.Id)
+
+    <div class="form-group">
+        @Html.LabelFor(model => model.NCProdDbId, htmlAttributes: new { @class = "control-label col-md-2" })
+        <div class="col-md-10">
+            @Html.EditorFor(model => model.NCProdDbId, new { htmlAttributes = new { @class = "form-control" } })
+            @Html.ValidationMessageFor(model => model.NCProdDbId, "", new { @class = "text-danger" })
+        </div>
+    </div>
+
+    <div class="form-group">
+        @Html.LabelFor(model => model.DbJobId, htmlAttributes: new { @class = "control-label col-md-2" })
+        <div class="col-md-10">
+            @Html.EditorFor(model => model.DbJobId, new { htmlAttributes = new { @class = "form-control" } })
+            @Html.ValidationMessageFor(model => model.DbJobId, "", new { @class = "text-danger" })
+        </div>
+    </div>
+
+    <div class="form-group">
+        @Html.LabelFor(model => model.ProdName, htmlAttributes: new { @class = "control-label col-md-2" })
+        <div class="col-md-10">
+            @Html.EditorFor(model => model.ProdName, new { htmlAttributes = new { @class = "form-control" } })
+            @Html.ValidationMessageFor(model => model.ProdName, "", new { @class = "text-danger" })
+        </div>
+    </div>
+
+
+
+
+    <div class="form-group">
+        @Html.LabelFor(model => model.PTPs[0].Id, htmlAttributes: new { @class = "control-label col-md-2" })
+        <div class="col-md-10">
+            @Html.EditorFor(model => model.PTPs[0].Id, new { htmlAttributes = new { @class = "form-control" } })
+            @Html.ValidationMessageFor(model => model.PTPs[0].Id, "", new { @class = "text-danger" })
+        </div>
+    </div>
+
+    <div class="form-group">
+        @Html.LabelFor(model => model.PTPs[0].BridgeModule, htmlAttributes: new { @class = "control-label col-md-2" })
+        <div class="col-md-10">
+            @Html.EditorFor(model => model.PTPs[0].BridgeModule, new { htmlAttributes = new { @class = "form-control" } })
+            @Html.ValidationMessageFor(model => model.PTPs[0].BridgeModule, "", new { @class = "text-danger" })
+        </div>
+    </div>
+    <div class="form-group">
+        @Html.LabelFor(model => model.PTPs[0].Tag, htmlAttributes: new { @class = "control-label col-md-2" })
+        <div class="col-md-10">
+            @Html.EditorFor(model => model.PTPs[0].Tag, new { htmlAttributes = new { @class = "form-control" } })
+            @Html.ValidationMessageFor(model => model.PTPs[0].Tag, "", new { @class = "text-danger" })
+        </div>
+    </div>
+
+
+
+    @Html.ValidationSummary();
+    <div class="form-group">
+        <div class="col-md-offset-2 col-md-10">
+            <input type="submit" value="Save" class="btn btn-default" />
+        </div>
+    </div>
+</div>
 }
+
+<div>
+    @Html.ActionLink("Back to List", "Index")
+</div>
 
 @section Scripts {
     @Scripts.Render("~/bundles/jqueryval")
 }
-
-
-<script>
-
-    var LMainProdType = @Html.Raw(Json.Encode(LMainProdType));
-    var LSubProdType = @Html.Raw(Json.Encode(LSubProdType));
-
-
-    $.each(LMainProdType, function (key, data) {
-        $("#selectMainProdType").append(new Option(data.ListItem, data.ListItem));
-    });
-
-    var mval = $("#selectMainProdType :selected").text();
-    $.each(LSubProdType, function (key, data) {
-        if (data.UpperLvl == mval) {
-            $("#selectSubProdType").append(new Option(data.ListItem, data.ListItem));
-        }
-    });
-
-    //When main prodtype changes, refesh the sub prod type.
-    $("#selectMainProdType").on("change", function () {
-        var mval = $("#selectMainProdType :selected").text();
-
-        $('#selectSubProdType option').each(function () {
-            if ($(this).val() != 'X') {
-                $(this).remove();
-            }
-        });
-
-        $("#selectSubProdType option").remove();
-        $.each(LSubProdType, function (key, data) {
-            if (data.UpperLvl == mval) {
-                $("#selectSubProdType").append(new Option(data.ListItem, data.ListItem));
-            }
-        });
-    });
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-</script>

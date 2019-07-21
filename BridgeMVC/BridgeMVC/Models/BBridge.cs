@@ -29,7 +29,7 @@ namespace BridgeMVC.Models
         public string TaskName { get; set; }
 
         [JsonProperty(PropertyName = "bridgeLongName")]
-        public string BridgeLongName { get; set; }
+        public string BridgeLongName { get; set; }  
 
     
 

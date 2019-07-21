@@ -1,7 +1,7 @@
 ﻿@model BridgeMVC.Models.Job
 
 @{
-
+    Layout = "~/Views/Shared/_Layout.cshtml";
     string UserSignature = (string)Session["UserSignature"];
     string bridgeModule = (string)Session["BridgeModule"];
     var LCertType = ViewBag.LCertType;
@@ -10,8 +10,6 @@
     var LSubProdType = ViewBag.LSubProdType;
     var LUser = ViewBag.LUser;
     var IIORA = ViewBag.iIORA;
-
-
     var bUser = ViewBag.bUser;
     var bEmail = ViewBag.bEmail;
 }
@@ -42,7 +40,6 @@
     var bm = "@bridgeModule";
     var Job = @Html.Raw(Json.Encode(Model));
 
-
     var LMainProdType = @Html.Raw(Json.Encode(LMainProdType));
     var LSubProdType = @Html.Raw(Json.Encode(LSubProdType));
     var LUser = @Html.Raw(Json.Encode(LUser));
@@ -56,10 +53,6 @@
     var bEmail = BEmail[0];
     var IIORA = @Html.Raw(Json.Encode(IIORA));
     var iORA = IIORA[0];
-
-    console.log(iORA);
-    console.log(bUser);
-    console.log(bEmail);
 
     var TargetUser = bUser;
     var emailReceiver = eval(bEmail.MailTo);

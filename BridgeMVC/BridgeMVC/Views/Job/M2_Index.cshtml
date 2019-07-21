@@ -1,13 +1,9 @@
 ﻿@model IEnumerable<BridgeMVC.Models.Job>
 
 @{
-
-    /**/
-
     ViewBag.Title = "Index";
     string BridgeLastUsed = (string)Session["BridgeModule"];
     string UserSignature = (string)Session["UserSignature"];
-
     var LUser = ViewBag.LUser;
     var US = ViewBag.userSig;
     var BFlist = (IEnumerable<BridgeMVC.Models.BFinancial>)ViewBag.LCertType;
@@ -111,12 +107,12 @@
  
 </style>
 
-<h2>
+<div class="h2">
     MY BRIDGE JOBLIST - @bridgeLongName
     <p style="float:right" class="btn btn-secondary">
         @Html.ActionLink("Whiteboard", "Whiteboard")
     </p>
-</h2>
+</div>
 
 <hr />
 
@@ -288,14 +284,6 @@
         </tr>
     </table>
 </footer>
-
-
-
-
-
-
-
-
 
 <script>
     var LUser = @Html.Raw(Json.Encode(LUser));

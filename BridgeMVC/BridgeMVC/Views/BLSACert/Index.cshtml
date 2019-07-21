@@ -1,18 +1,46 @@
 ﻿@model IEnumerable<BridgeMVC.Models.BLSACert>
+@{
+    Layout = "~/Views/Shared/_LayoutM3TaskStandard.cshtml";
+    var LMEDItemNo = ViewBag.LMEDItemNo;
+}
 
-<p>
-    @Html.ActionLink("Create New", "Create")
-</p>
+@using (Html.BeginForm())
+{
+    <table class="col-lg-12">
+        <tr>
+            <td>
+                <select id="searchString" class="form-control" name="SearchString"></select>
+            </td>
+            <td>
+                <input type="submit" value="Search" style="text-align:right" />
+            </td>
+            <td class="col-lg-8"></td>
+            <td class="btn col-lg-2">
+                @Html.ActionLink("Create New", "Create")
+            </td>
+        </tr>
+    </table>
+
+}
+<br />
+
 <table class="table">
+    <colgroup>
+        <col span="1" style="width: 20px;">
+        <col span="1" style="width: 20px;">
+        <col span="1" style="width: 10%;">
+        <col span="1" style="width: 60%;">
+        <col span="1" style="width: 30%;">
+        <col span="1" style="width: 10px;">
+
+    </colgroup>
     <tr>
+
         <th>
-            @Html.DisplayNameFor(model => model.Tag)
+            MED Item No.
         </th>
         <th>
-            @Html.DisplayNameFor(model => model.BridgeModule)
-        </th>
-        <th>
-            @Html.DisplayNameFor(model => model.BookMarkName)
+            Sequence order
         </th>
         <th>
             @Html.DisplayNameFor(model => model.Chapter)
@@ -20,44 +48,64 @@
         <th>
             @Html.DisplayNameFor(model => model.Formula)
         </th>
-        <th>
-            @Html.DisplayNameFor(model => model.Description)
-        </th>
+
         <th>
             @Html.DisplayNameFor(model => model.Condition)
         </th>
         <th></th>
     </tr>
 
-@foreach (var item in Model) {
-    <tr>
-        <td>
-            @Html.DisplayFor(modelItem => item.Tag)
-        </td>
-        <td>
-            @Html.DisplayFor(modelItem => item.BridgeModule)
-        </td>
-        <td>
-            @Html.DisplayFor(modelItem => item.BookMarkName)
-        </td>
-        <td>
-            @Html.DisplayFor(modelItem => item.Chapter)
-        </td>
-        <td>
-            @Html.DisplayFor(modelItem => item.Formula)
-        </td>
-        <td>
-            @Html.DisplayFor(modelItem => item.Description)
-        </td>
-        <td>
-            @Html.DisplayFor(modelItem => item.Condition)
-        </td>
-        <td>
-            @Html.ActionLink("Edit", "Edit", new { id=item.Id }) |
-            @Html.ActionLink("Details", "Details", new { id=item.Id }) |
-            @Html.ActionLink("Delete", "Delete", new { id=item.Id })
-        </td>
-    </tr>
-}
+    @foreach (var item in Model)
+    {
+        <tr>
+
+            <td>
+                @Html.DisplayFor(modelItem => item.BookMarkName)
+            </td>
+            <td>
+               <input id="@item.Id" value="@item.Description" class="vs"/>
+            </td>
+            <td>
+                @Html.DisplayFor(modelItem => item.Chapter)
+            </td>
+            <td>
+                @Html.DisplayFor(modelItem => item.Formula)
+            </td>
+
+            <td>
+                @Html.DisplayFor(modelItem => item.Condition)
+            </td>
+            <td>
+                @Html.ActionLink("Edit", "Edit", new { id = item.Id })
+            </td>
+        </tr>
+    }
 
 </table>
+@section Scripts{
+
+    <script>
+        var LMEDItemNo = @Html.Raw(Json.Encode(LMEDItemNo));
+        SetupDropdownList("searchString", LMEDItemNo, "ListItem");
+
+        $("input[class^='vs']").on('change', function () {
+
+            var id = $(this).attr('id');
+            var value = $(this).val();
+            callSaveViewSequence(id, value);
+        });
+
+    function callSaveViewSequence(id, value) {
+
+        return $.ajax({
+            type: 'POST',
+            url: '/BLSACert/SaveViewSequence/',
+            data: { id: id, value: value },
+            cache: false,
+            success: {
+
+            }
+        });
+    }
+</script>
+    }

@@ -1,19 +1,9 @@
 ﻿@model BridgeMVC.Models.Rule
 
-@{
-
-    Layout = null;
-}
-
+@Scripts.Render("~/scripts/jquery-ui.min.js")
 <head>
     <meta charset="utf-8" />
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Bridge</title>
-    @Styles.Render("~/Content/css")
-    @Scripts.Render("~/bundles/modernizr")
-    <script language="JavaScript" type="text/javascript" src="~/Scripts/jquery-3.3.1.min.js"></script>
-    <script language="JavaScript" type="text/javascript" src="~/Scripts/bridgeScript.js"></script>
-    <script language="JavaScript" type="text/javascript" src="~/Scripts/jquery-ui-1.12.1.js"></script>
 
 
     <style>
@@ -39,13 +29,13 @@
 
         <table>
             <colgroup>
-            <col span="1" style="width: 80%;">
-            <col span="1" style="width: 10%;">
-            <col span="1" style="width: 10%;">
-        </colgroup>
+                <col span="1" style="width: 80%;">
+                <col span="1" style="width: 10%;">
+                <col span="1" style="width: 10%;">
+            </colgroup>
             <tr>
                 <td>
-                    @Html.EditorFor(model => model.RuleName, new { htmlAttributes = new { @class = "form-control", id = "RuleName"  } })
+                    @Html.EditorFor(model => model.RuleName, new { htmlAttributes = new { @class = "form-control", id = "RuleName" } })
                     @Html.ValidationMessageFor(model => model.RuleName, "", new { @class = "text-danger" })
                 </td>
                 <td>

@@ -1,0 +1,424 @@
+﻿@model BridgeMVC.Models.Job
+<h2>
+    The content below is generated according to input data and Bridge settings.
+</h2>
+
+@{
+    ViewBag.Title = "IORA Editing";
+    var bcolor = "#03C5EA";
+    string UserSignature = (string)Session["UserSignature"];
+    string bridgeModule = (string)Session["BridgeModule"];
+    var Job = ViewBag.Job;
+    var BIORA = ViewBag.BIORA;
+    var Rules = ViewBag.Rules;
+    var FinancialSet = ViewBag.FinancialSet;
+    var LUser = ViewBag.LUser;
+    var Products = ViewBag.Products;
+    var DocReqs = ViewBag.DocReqs;
+}
+
+@using (Html.BeginForm(null, null, FormMethod.Post))
+{
+
+
+    @Html.HiddenFor(model => model.Tag)
+    @Html.HiddenFor(model => model.BridgeModule)
+    @Html.HiddenFor(model => model.Id)
+    @Html.HiddenFor(model => model.NpsJobName)
+    @Html.HiddenFor(model => model.NpsJobId)
+    @Html.HiddenFor(model => model.TaskHandler)
+    @Html.HiddenFor(model => model.Task1)
+    @Html.HiddenFor(model => model.Task2)
+    @Html.HiddenFor(model => model.Task3)
+    @Html.HiddenFor(model => model.CustomerName)
+    @Html.HiddenFor(model => model.ProdDescription)
+    @*@Html.HiddenFor(model => model.ApprNote)*@
+    @Html.HiddenFor(model => model.IsComplete)
+    @Html.HiddenFor(model => model.SalesOrderNo)
+    @Html.HiddenFor(model => model.SubOrderNo)
+    @Html.HiddenFor(model => model.CertType)
+    @Html.HiddenFor(model => model.CertAction)
+    @Html.HiddenFor(model => model.MainProdType)
+    @Html.HiddenFor(model => model.SubProdType)
+    @Html.HiddenFor(model => model.ReceivedTime)
+    @Html.HiddenFor(model => model.FeeSetTime)
+    @Html.HiddenFor(model => model.IoraSentTime)
+    @Html.HiddenFor(model => model.IoraReturnedTime)
+    @Html.HiddenFor(model => model.JobCompletedTime)
+    @Html.HiddenFor(model => model.CustomerName)
+    @Html.HiddenFor(model => model.CustomerId)
+    @Html.HiddenFor(model => model.Fee)
+    @Html.HiddenFor(model => model.FeeSetter)
+    @Html.HiddenFor(model => model.FeeVerifier)
+    @Html.HiddenFor(model => model.JobVerifier)
+    @Html.HiddenFor(model => model.RAE)
+    @Html.HiddenFor(model => model.MWL)
+    @Html.HiddenFor(model => model.ExistingCertNo)
+    @Html.HiddenFor(model => model.CertNo)
+    @Html.HiddenFor(model => model.SerialNo)
+    @Html.HiddenFor(model => model.MEDItemNo)
+    @Html.HiddenFor(model => model.DeliveryWeek)
+    @Html.HiddenFor(model => model.LocalUnit)
+    @Html.HiddenFor(model => model.ArchiveFolder)
+    @Html.HiddenFor(model => model.IsHold)
+    @Html.HiddenFor(model => model.StatusNote)
+    @Html.HiddenFor(model => model.VerifyLvl)
+    @Html.HiddenFor(model => model.SurveyDate)
+    @Html.HiddenFor(model => model.SurveyStation)
+    @Html.HiddenFor(model => model.TechPara1)
+    @Html.HiddenFor(model => model.TechPara2)
+    @Html.HiddenFor(model => model.TechPara3)
+    @Html.HiddenFor(model => model.TechPara4)
+    @Html.HiddenFor(model => model.MEDFactory)
+    @Html.HiddenFor(model => model.MEDFBNo)
+    @Html.HiddenFor(model => model.MEDFBDue)
+    @Html.HiddenFor(model => model.AnyDesignChange)
+    @Html.HiddenFor(model => model.ChecklistUsed)
+    @Html.HiddenFor(model => model.DesignFolder)
+    @Html.HiddenFor(model => model.IsDocQualityGood)
+    @Html.HiddenFor(model => model.IsDocSufficient)
+    @Html.HiddenFor(model => model.SetHoldTime)
+    @Html.HiddenFor(model => model.IORASpentTime)
+    @Html.HiddenFor(model => model.ModificationDesc)
+    @Html.HiddenFor(model => model.OnHoldNote)
+    @Html.HiddenFor(model => model.FeeVerifyTime)
+    @Html.HiddenFor(model => model.RegisterTime)
+    @Html.HiddenFor(model => model.DocReq)
+    @Html.HiddenFor(model => model.NoOfCert)
+    @Html.HiddenFor(model => model.FeeSet)
+    @Html.HiddenFor(model => model.VesselID)
+    @Html.HiddenFor(model => model.DocReqNote)
+    @Html.HiddenFor(model => model.NpsDbId)
+    @Html.HiddenFor(model => model.ExeDoneBy)
+    @Html.HiddenFor(model => model.ExeDoneTime)
+    @Html.HiddenFor(model => model.CompletedBy)
+    @Html.HiddenFor(model => model.SendingFlag)
+    @Html.HiddenFor(model => model.IoraDbId)
+
+    @Html.HiddenFor(model => model.InternalFee)
+
+
+    <table>
+        <tr>
+            <td>
+                <h3> Project Name: </h3>
+                <div class="form-group">
+                    @Html.EditorFor(model => model.IoraProjName, new { htmlAttributes = new { @class = "form-control", id = "DpProjName01" } })
+                    @Html.ValidationMessageFor(model => model.IoraProjName, "", new { @class = "text-danger" })
+                </div>
+            </td>
+        </tr>
+        <tr>
+            <td>
+                <h3>Scope of work: </h3>
+                @Html.TextAreaFor(model => model.IoraSoW, new { @style = "height:300px; width:100%;", id = "DpSoW01", @class = "form-control" })
+                @Html.ValidationMessageFor(model => model.IoraSoW, "", new { @class = "text-danger" })
+            </td>
+        </tr>
+        <tr>
+            <td>
+                <h3>Budget details: </h3>
+                @Html.TextAreaFor(model => model.IoraConditions, new { @style = "height:200px; width:100%;", id = "DgSpecialConditions", @class = "form-control" })
+                @Html.ValidationMessageFor(model => model.IoraConditions, "", new { @class = "text-danger" })
+            </td>
+        </tr>
+
+        <tr>
+            <td>
+                <h3>Fee: </h3>
+                @Html.TextAreaFor(model => model.IoraFeeCalc, new { @style = "height:150px; width:100%;", id = "Str_SpecialC", @class = "form-control" })
+                @Html.ValidationMessageFor(model => model.IoraFeeCalc, "", new { @class = "text-danger" })
+            </td>
+        </tr>
+
+    </table>
+
+    @*<div class=" col-lg-12 ">
+            <h4 style="clear:both;">External note to be shown on IORA/Sow:</h4>
+            @Html.EditorFor(model => model.DocReqNote, new { htmlAttributes = new { @class = "form-control", style = "height:100px" } })
+            @Html.ValidationMessageFor(model => model.DocReqNote, "", new { @class = "text-danger" })
+        </div>*@
+
+    @*<div class=" col-lg-12 ">
+            <h4 style="clear:both;">IORA SoW note: (Auto-included in IORA SoW chapter)</h4>
+            @Html.EditorFor(model => model.DocReqNote, new { htmlAttributes = new { @class = "form-control", style = "height:100px" } })
+            @Html.ValidationMessageFor(model => model.DocReqNote, "", new { @class = "text-danger" })
+        </div>*@
+    <hr />
+    <div class=" col-lg-12 ">
+        <h4 style="clear:both;">Internal approval note: (Not auto-included in IORA)</h4>
+        @Html.EditorFor(model => model.ApprNote, new { htmlAttributes = new { @class = "form-control", style = "height:100px" } })
+        @Html.ValidationMessageFor(model => model.ApprNote, "", new { @class = "text-danger" })
+    </div>
+    <hr />
+    <input type="submit" value="Create/Update IORA" class="btn btn-default" readonly />
+
+}
+@section Scripts {
+    @Scripts.Render("~/bundles/jqueryval")
+}
+<script>
+
+
+    var BIORA = @Html.Raw(Json.Encode(BIORA));
+    var Job = @Html.Raw(Json.Encode(Model));
+    var sig = "@UserSignature";
+    var bm = "@bridgeModule";
+    var Rules = @Html.Raw(Json.Encode(Rules));
+    var FinancialSet = @Html.Raw(Json.Encode(FinancialSet));
+    var LUser = @Html.Raw(Json.Encode(LUser));
+    var Products = @Html.Raw(Json.Encode(Products));
+    var DocReqs = @Html.Raw(Json.Encode(DocReqs));
+    console.log(Job.NpsJobId);
+//general
+    var userSignature = "@UserSignature";
+    var bm = "@bridgeModule";
+
+    var TargetUser;
+    var BEmail;
+    var taskStatus;
+
+    //Set task parameter
+    var taskNo = 0;
+    var taskStatusFlag = "-";
+    var taskCompleteDate = "-";
+    var taskCompleteStr = "IORA is sent to local unit by ";
+
+
+    //$("#TaskComplete").html = "Send IORA to local unit"
+    console.log(Job);
+    updateProjDetail();
+    updateSoW();
+    updateSpecialConditions();
+    updateFeeCalc();
+
+
+
+    console.log(Job.NpsJobId);
+
+    function updateChapter(chapter)
+    {
+        var chBIORA = getObject(BIORA, "Chapter", chapter);
+        $.each(chBIORA, function (key, data) {
+            if (data.Formula != null && (eval(data.Condition) || data.Condition == null)) {
+                $("#" + data.BookMarkName).val(eval(data.Formula));
+            }
+        });
+
+    }
+
+    function readApplicableChapter(chapter) {
+        var s = "";
+        var chBIORA = getObject(BIORA, "Chapter", chapter);
+        $.each(chBIORA, function (key, data) {
+            if (data.Formula != null && (eval(data.Condition) || data.Condition == null)) {
+                s = s + eval(data.Formula);
+            }
+        });
+        return s;
+    }
+
+
+    //function updateDocNo() {
+    //    //$("#DgDNVDocNo01").val($("#NpsJobID").val() + "-J-" + $("#NPSJNo").val());
+    //    var chapter = "DoCNo";
+    //    updateChapter(chapter);
+    //}
+
+
+
+    function updateProjDetail() {
+        var chapter = "ProjectDetails";
+        updateChapter(chapter);
+        updateSoW()
+    }
+
+    function updateSoW() {
+        var sowStr = "";
+        sowStr += readApplicableChapter("SoW starting line");
+        sowStr += ": \r\n";
+
+
+        sowStr += "\r\nList of product(s): \r\n"
+        if (Job.SubProdType) {
+
+            sowStr += "- " + Job.SubProdType + ": " + Job.ProdDescription;
+            if (Job.SerialNo != null) {
+                sowStr += ", SN. " + Job.SerialNo;
+            };
+            if (Job.ExistingCertNo != null) {
+                sowStr += ", based on " + Job.ExistingCertNo;
+            };
+            if (Job.ExpireDate != null) {
+                sowStr += " with expire date: " + Job.ExpireDate;
+            };
+
+            sowStr += ". \r\n";
+
+        }
+
+
+        $.each(Products, function (key, data) {
+            sowStr += "-  " + data.SubProdType + ": " + data.ProdDescription + "\r\n";
+        });
+
+        sowStr += "\r\nApplicable Rules: \r\n"
+        $.each(Rules, function (key, data) {
+            sowStr += "-  " + data.RuleName + "\r\n";
+        });
+
+
+        sowStr += "\r\nApproval conditions: \r\n"
+
+        if (Job.BridgeModule == "M1") { //DocReq is used as approval conditions for M1
+
+            var hoopCondition = true;
+
+            $.each(DocReqs, function (key, data) {
+                sowStr += "-  " + data.DocReqItem + "\r\n";
+
+                if (data.DocReqItem.indexOf("to calculate the hoop stresses") > 0) {
+                    hoopCondition = false;
+                }
+
+            });
+
+            if (hoopCondition && Job.MainProdType == "Winches") {
+                sowStr += "-  In order to calculate the hoop stresses on the barrel; the maximum static pulling force with the C factor corresponding to the maximum number of layers will be taken into account to calculate these stresses.\r\n";
+            }
+
+
+        } else {
+            sowStr += "-  " + $("#DocReqNote").val() + "\r\n"; // docreqnote is used as external approval note for M2
+
+            sowStr += "\r\nDocumentation requirement: \r\n"
+
+            $.each(DocReqs, function (key, data) {
+                sowStr += "-  " + data.DocReqItem + "\r\n";
+            });
+
+        }
+
+
+
+        sowStr += "\r\n" + readApplicableChapter("SoW ending line");
+
+        $("#DpSoW01").val(sowStr);
+
+    }
+    function GetCertAct() {
+        var ca = "";
+        switch (Job.CertAction) {
+            case "Initial":
+                ca = "CertAction1";
+                break;
+            case "Renewal":
+                ca = "CertAction2";
+                break;
+            case "Modification":
+                ca = "CertAction3";
+                break;
+            case "Renewal with modification":
+                ca = "CertAction4";
+                break;
+            case "Initial with reference":
+                ca = "CertAction3";
+                break;
+            default:
+                ca = "CertAction1";
+        }
+        return ca;
+    }
+
+
+    function updateSpecialConditions() {
+        var chapter = "SpecialConditions";
+        var chBIORA = getObject(BIORA, "Chapter", chapter);
+        var sc = "";
+        var ca = GetCertAct();
+        var cax = FinancialSet[ca];
+        console.log("finalcialSet: " + FinancialSet);
+        console.log("CA:" + ca);
+        console.log("cax: " + cax);
+
+        $.each(chBIORA, function (key, data) {
+
+            var x = data.BookMarkName.split("_")[1];
+            console.log(x);
+
+
+            if ((cax.indexOf("," + x + ",") > -1)) {
+                sc = sc + eval(data.Formula) + "\r\n";
+            }
+        });
+
+
+        $("#DgSpecialConditions").val(sc);
+
+    }
+
+
+
+
+
+    function updateFeeCalc() {
+        var fee = Job.Fee;
+        var feeStr = "";
+        var serviceCode = FinancialSet.ServiceCode;
+        var tsa = FinancialSet.TSA;
+        var msa = FinancialSet.MSA;
+        var af = FinancialSet.AllocationFee;
+
+
+        feeStr += "Fee for the above work will be: \r\n";
+        feeStr += "- Total external fee:                   NOK " + fee + ".- (Service Code: " + serviceCode + ") \r\n";
+        if (af != 0) {
+            feeStr += "- Less allocation fee (" + af * 100 + "%):      NOK " + Math.round(fee * af) + ".- \r\n";
+        }
+        fee = Math.round(fee * (1 - af));
+
+        var xx = Math.round(fee * (tsa + msa));
+        console.log(xx);
+
+        feeStr += "- Less TSA/MSA (" + tsa * 100 + "% + " + msa * 100 + "%):   NOK " + xx + ".- \r\n";
+
+        fee = fee * (1 - tsa - msa);
+
+        feeStr += "- Total internal fee:                    NOK " + Math.round(fee) + ".- \r\n"
+        $("#Str_SpecialC").val(feeStr);
+
+        $("#InternalFee").val(Math.round(fee));
+
+    }
+
+
+    function getStartingWord() {
+
+        if (Job.CertType == "MED-B" || Job.CertType == "TA") {
+            switch (Job.CertAction) {
+                case "Initial":
+                    return "Initial ";
+                case "Renewal":
+                    return "Renewal of ";
+                case "Modification":
+                    return "Update of ";
+                case "Renewal with modification":
+                    return "Renewal and update of ";
+                case "Initial with reference":
+                    return "Initial ";
+                default:
+                    return "";
+
+            }
+
+
+        } else {
+            return "";
+        }
+
+
+    }
+
+    console.log(getStartingWord())
+
+</script>

@@ -1,0 +1,80 @@
+﻿@model IEnumerable<BridgeMVC.Models.BProdTechPara>
+
+@{
+    ViewBag.Title = "Index";
+}
+
+<h2>Index</h2>
+
+<p>
+    @Html.ActionLink("Create New", "Create")
+</p>
+<table class="table">
+    <tr>
+
+        <th>
+            @Html.DisplayNameFor(model => model.ProdName)
+        </th>
+        <th>
+            @Html.DisplayNameFor(model => model.ViewSequence)
+        </th>
+        <th>
+            @Html.DisplayNameFor(model => model.TechParaName)
+        </th>
+        <th>
+            @Html.DisplayNameFor(model => model.ValueSource)
+        </th>
+        <th>
+            @Html.DisplayNameFor(model => model.DefaultValue)
+        </th>
+
+        <th></th>
+    </tr>
+
+@foreach (var item in Model) {
+    <tr>
+
+        <td>
+            @Html.DisplayFor(modelItem => item.ProdName)
+        </td>
+        <td>
+            <input value="@item.ViewSequence" id="@item.Id" class="vs form-control"/>
+        </td>
+        <td>
+            @Html.DisplayFor(modelItem => item.TechParaName)
+        </td>
+        <td>
+            @Html.DisplayFor(modelItem => item.ValueSource)
+        </td>
+        <td>
+            @Html.DisplayFor(modelItem => item.DefaultValue)
+        </td>
+
+        <td>
+            @Html.ActionLink("Edit", "Edit", new { id = item.Id })
+        </td>
+    </tr>
+}
+
+</table>
+<script>
+    $("input[class^='vs']").on('change', function () {
+
+        var id = $(this).attr('id');
+        var value = $(this).val();
+        callSaveViewSequence(id, value);
+    });
+
+    function callSaveViewSequence(id, value) {
+
+        return $.ajax({
+            type: 'POST',
+            url: '/BProdTechPara/SaveViewSequence/',
+            data: { id: id, value: value },
+            cache: false,
+            success: {
+
+            }
+        });
+    }
+</script>
