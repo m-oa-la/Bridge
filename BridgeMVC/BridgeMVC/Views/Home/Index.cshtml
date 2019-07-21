@@ -35,7 +35,7 @@
         @Html.HiddenFor(model => model.LastName)
         @Html.HiddenFor(model => model.Signature)
 
-        <h2>Dear @Model.Signature : </h2>
+        <h2 id="dta">Dear @Model.Signature : </h2>
 
         <h3>You have the following Bridge modules:</h3>
         <div class="form-group">
@@ -58,7 +58,8 @@
         </div>
     </div>
     <script>
+
         var lastUsed = "@LastUsedBridge";
-        console.log(lastUsed);
+
     </script>
 }

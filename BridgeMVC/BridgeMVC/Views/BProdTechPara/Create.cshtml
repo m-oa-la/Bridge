@@ -1,115 +1,17 @@
 ﻿@model BridgeMVC.Models.BProdTechPara
-
-@{
-
-    @Scripts.Render("~/bundles/jquery")
-}
-
 <h2>Create</h2>
-
 
 @using (Html.BeginForm())
 {
     @Html.AntiForgeryToken()
-
 <div class="form-horizontal">
-    <h4>BProdTechPara</h4>
-    @Html.HiddenFor(model => model.Tag)
-    @Html.HiddenFor(model => model.BridgeModule)
-    
-
-    <div class="form-group">
-        @Html.LabelFor(model => model.ProdName, htmlAttributes: new { @class = "control-label col-md-2" })
-        <div class="col-md-10">
-            @Html.DropDownListFor(model => model.ProdName, new List<SelectListItem> { new SelectListItem { Text = Model.ProdName, Value = Model.ProdName } },
-new { @class = "form-control"})
-
-        </div>
-    </div>
-
-
-
-    <div class="form-group">
-        @Html.LabelFor(model => model.TechParaName, htmlAttributes: new { @class = "control-label col-md-2" })
-        <div class="col-md-10">
-            @Html.EditorFor(model => model.TechParaName, new { htmlAttributes = new { @class = "form-control" } })
-            @Html.ValidationMessageFor(model => model.TechParaName, "", new { @class = "text-danger" })
-        </div>
-    </div>
-
-    <div class="form-group">
-        @Html.LabelFor(model => model.Description, htmlAttributes: new { @class = "control-label col-md-2" })
-        <div class="col-md-10">
-            @Html.EditorFor(model => model.Description, new { htmlAttributes = new { @class = "form-control" } })
-            @Html.ValidationMessageFor(model => model.Description, "", new { @class = "text-danger" })
-        </div>
-    </div>
-
-    <div class="form-group">
-        @Html.LabelFor(model => model.DropdownSource, htmlAttributes: new { @class = "control-label col-md-2" })
-        <div class="col-md-10">
-            @Html.EditorFor(model => model.DropdownSource, new { htmlAttributes = new { @class = "form-control" } })
-            @Html.ValidationMessageFor(model => model.DropdownSource, "", new { @class = "text-danger" })
-        </div>
-    </div>
-
-    <div class="form-group">
-        @Html.LabelFor(model => model.AutoCompleteSource, htmlAttributes: new { @class = "control-label col-md-2" })
-        <div class="col-md-10">
-            @Html.EditorFor(model => model.AutoCompleteSource, new { htmlAttributes = new { @class = "form-control" } })
-            @Html.ValidationMessageFor(model => model.AutoCompleteSource, "", new { @class = "text-danger" })
-        </div>
-    </div>
-
-    <div class="form-group">
-        @Html.LabelFor(model => model.DefaultValue, htmlAttributes: new { @class = "control-label col-md-2" })
-        <div class="col-md-10">
-            @Html.EditorFor(model => model.DefaultValue, new { htmlAttributes = new { @class = "form-control" } })
-            @Html.ValidationMessageFor(model => model.DefaultValue, "", new { @class = "text-danger" })
-        </div>
-    </div>
-
-    <div class="form-group">
-        @Html.LabelFor(model => model.ViewSequence, htmlAttributes: new { @class = "control-label col-md-2" })
-        <div class="col-md-10">
-            @Html.EditorFor(model => model.ViewSequence, new { htmlAttributes = new { @class = "form-control" } })
-            @Html.ValidationMessageFor(model => model.ViewSequence, "", new { @class = "text-danger" })
-        </div>
-    </div>
-
-    <div class="form-group">
-        <div class="col-md-offset-2 col-md-10">
-            <input type="submit" value="Create" class="btn btn-default" />
-        </div>
-    </div>
+    @Html.Partial("../BProdTechPara/_SV_CreateEdit", Model)
 </div>
 }
 @Html.ValidationSummary()
 <div>
     @Html.ActionLink("Back to List", "Index")
 </div>
-
 @section Scripts {
     @Scripts.Render("~/bundles/jqueryval")
 }
-<script>
-
-    var Model = @Html.Raw(Json.Encode(Model));
-    var LProdName = [];
-    var LValueType = ['String', 'Integer', 'Long', 'Boolean'];
-
-    if (Model.BridgeModule == "M3") {
-        LProdName = ['MED/3.16 Fire doors', 'MED3.16 Fire doors'];
-        LProdName.forEach(function (element) {
-            console.log(element);
-            $("#ProdName").append(new Option(element, element));
-        });
-    }
-    LValueType.forEach(function (element) {
-        console.log(element);
-        $("#ValueType").append(new Option(element, element));
-    });
-
-
-
-</script>

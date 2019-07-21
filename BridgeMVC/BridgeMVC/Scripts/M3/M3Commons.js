@@ -97,19 +97,11 @@ function renderTaskHandling(LUser, bm) {
     });
 
     // Set up selectList for variable items
-    if (bm !== "M2") {
-        $.each(["-- Please select --", "1.FEE", "2.AGR", "3.EXE", "4.FNL"], function (index, value) {
+
+        $.each(["1.AutoCert"], function (index, value) {
             $("#selectListTask").append(new Option(value, value));
         });
-    } else if (bm === "M2") {
-        $.each(["-- Please select --", "1.FEE", "2.VER", "3.AGR", "4.WHITEBOARD"], function (index, value) {
-            $("#selectListTask").append(new Option(value, value));
-        });
-    } else if (bm === "M3") {
-        $.each(["AutoCert"], function (index, value) {
-            $("#selectListTask").append(new Option(value, value));
-        });
-    }
+   
 }
 
 function renderTaskInputFields(certType, certAction) {

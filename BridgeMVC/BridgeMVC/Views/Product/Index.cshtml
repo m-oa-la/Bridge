@@ -1,11 +1,15 @@
 ﻿@model IEnumerable<BridgeMVC.Models.Product>
 
 @{
+    /**/
+
+    Layout = "~/Views/Shared/_LayoutM3TaskStandard.cshtml";
     Layout = null;
     var sn = 0;
     var Job = ViewBag.Job;
     var LMainProdType = ViewBag.LMainProdType;
     var LSubProdType = ViewBag.LSubProdType;
+    string bridgeModule = (string)Session["BridgeModule"];
 }
 
 
@@ -32,31 +36,53 @@
     </style>
 </head>
 
-
-<h4 style="margin-top:1px">Products <span style="float:right; padding-right:4em"> @Html.ActionLink("Add New", "Create")</span></h4>
-
+@if (bridgeModule != "M3")
+{
+    <h4 style="margin-top:1px" > <span style="float:right; padding-right:4em"> @Html.ActionLink("Add New", "Create")</span></h4>
+}
+else
+{
+    <h4 style="margin-top:1px" id="refreshPTP">
+        <span style="float:right; padding-right:4em">
+            @Html.ActionLink(
+                linkText: "REFRESH",
+                actionName: "RefreshPTP",
+                controllerName: "Product",
+                routeValues: new {
+                    bridgeJobId = Model.FirstOrDefault().DbJobId,
+                },
+        htmlAttributes: null
+    )
+        </span></h4>
+}
 
 <tr></tr>
 @foreach (var item in Model)
 {
-    sn += 1;
-    <div style="border:groove;border-color:aliceblue;padding:12px">
-        <table>
-                <tr>
-                <td class="control-label ">Subject</td>
-                <td class="form-group col-lg-3" id="Subject_@item.Id">
+    sn = sn + 1;
+    string classStr = "form-control ptp " + item.Id;
+    int paraSN = 0;
 
-                    @Html.EditorFor(modelItem => item.DbJobId, new { htmlAttributes = new { @class = "form-control" } })
-                </td>
-            </tr>
-
-        </table>
-
+    <h4 style="font-weight:bold" class="col-lg-12">Product (@sn):</h4>
+    foreach (var para in item.PTPs)
+    {
+        string classStr2 = classStr + " " + paraSN;
+    <div class="form-group">
+        <div class="bing col-lg-6">
+            <p style="font-weight:bold"> @para.TechParaName</p>
+            <p>
+                @Html.EditorFor(model => para.TechParaValue, new { htmlAttributes = new { @class = classStr2 } })
+                @Html.ValidationMessageFor(model => para.TechParaValue, "", new { @class = "text-danger" })
+            </p>
+        </div>
     </div>
+        paraSN = paraSN + 1;
+    }
 
+    <hr />
 }
 
-<br />
+
 
 
 
@@ -67,50 +93,10 @@
     var Job = @Html.Raw(Json.Encode(Job));
     var sn = @sn;
     console.log(sn);
-
-
-    function saveTCItem(itemId) {
-        console.log(itemId);
-        var Subject = $("#Subject_" + itemId).children().eq(0).val();
-        var SubProdType = $("#SubProdType_" + itemId).children().eq(0).val();
-        var GudianceNote = $("#GN_" + itemId).children().eq(0).val();
-        var RuleRef = $("#RuleRef_" + itemId).children().eq(0).val();
-        var Condition = $("#Condition_" + itemId).children().eq(0).val();
-
-        //console.log(Subject);
-        //console.log(SubProdType);
-        //console.log(GudianceNote);
-        //console.log(RuleRef);
-        //console.log(Condition);
-
-        callSaveBTCApi(itemId, Subject, SubProdType, GudianceNote, RuleRef, Condition)
-
-    }
-
-    function callSaveBTCApi(itemId, Subject, SubProdType, GudianceNote, RuleRef, Condition) {
-        $.ajax(
-            {
-                type: 'GET',
-                url: '/BTechChecklist/SaveBTCItem',
-                data: { itemId: itemId, Subject: Subject, SubProdType: SubProdType, GudianceNote: GudianceNote, RuleRef: RuleRef, Condition: Condition },
-
-                success: function (data) {
-
-                    console.log(data);
-                },
-                error: function (e) {
-                    alert('Error: ' + e);
-
-                }
-            });
-    }
-
-
+    var bm = "@bridgeModule";
 
     var subProdDropdowns = $('*[id^="selectSubProdType"]');
-
     for (index = 0; index < subProdDropdowns.length; ++index) {
-
         $.each(LSubProdType, function (key, data) {
             if (data.UpperLvl == "LifeLife-Saving appliances") {
                 subProdDropdowns[index].append(new Option(data.ListItem, data.ListItem));
@@ -121,7 +107,31 @@
 
     };
 
+    $("input").on('change', function () {
+        //if class contains ptp, then save prod data
+        var ret = $(this).attr("class").split(" ")
+        if (ret[1] == "ptp") {
+            var prodid = ret[2];
+            var ptpid = ret[3];
+            var ptpval = $(this).val();
+
+            callSavePTPApi(prodid, ptpid, ptpval);
+        }
+    });
 
 
+
+    function callSavePTPApi(prodid, ptpid, ptpval) {
+
+        return $.ajax({
+            type: 'POST',
+            url: '/Product/SavePTP/',
+            data: { ProdId: prodid, PTPId: ptpid, PTPVal: ptpval },
+            cache: false,
+            success: {
+
+            }
+        });
+    }
 
 </script>

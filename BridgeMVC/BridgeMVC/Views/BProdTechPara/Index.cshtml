@@ -16,23 +16,18 @@
             @Html.DisplayNameFor(model => model.ProdName)
         </th>
         <th>
+            @Html.DisplayNameFor(model => model.ViewSequence)
+        </th>
+        <th>
             @Html.DisplayNameFor(model => model.TechParaName)
         </th>
         <th>
-            @Html.DisplayNameFor(model => model.Description)
-        </th>
-        <th>
-            @Html.DisplayNameFor(model => model.DropdownSource)
-        </th>
-        <th>
-            @Html.DisplayNameFor(model => model.AutoCompleteSource)
+            @Html.DisplayNameFor(model => model.ValueSource)
         </th>
         <th>
             @Html.DisplayNameFor(model => model.DefaultValue)
         </th>
-        <th>
-            @Html.DisplayNameFor(model => model.ViewSequence)
-        </th>
+
         <th></th>
     </tr>
 
@@ -43,27 +38,43 @@
             @Html.DisplayFor(modelItem => item.ProdName)
         </td>
         <td>
+            <input value="@item.ViewSequence" id="@item.Id" class="vs form-control"/>
+        </td>
+        <td>
             @Html.DisplayFor(modelItem => item.TechParaName)
         </td>
         <td>
-            @Html.DisplayFor(modelItem => item.Description)
-        </td>
-        <td>
-            @Html.DisplayFor(modelItem => item.DropdownSource)
-        </td>
-        <td>
-            @Html.DisplayFor(modelItem => item.AutoCompleteSource)
+            @Html.DisplayFor(modelItem => item.ValueSource)
         </td>
         <td>
             @Html.DisplayFor(modelItem => item.DefaultValue)
         </td>
+
         <td>
-            @Html.DisplayFor(modelItem => item.ViewSequence)
-        </td>
-        <td>
-            @Html.ActionLink("Edit", "Edit", new { id=item.Id }) 
+            @Html.ActionLink("Edit", "Edit", new { id = item.Id })
         </td>
     </tr>
 }
 
 </table>
+<script>
+    $("input[class^='vs']").on('change', function () {
+
+        var id = $(this).attr('id');
+        var value = $(this).val();
+        callSaveViewSequence(id, value);
+    });
+
+    function callSaveViewSequence(id, value) {
+
+        return $.ajax({
+            type: 'POST',
+            url: '/BProdTechPara/SaveViewSequence/',
+            data: { id: id, value: value },
+            cache: false,
+            success: {
+
+            }
+        });
+    }
+</script>

@@ -32,17 +32,14 @@ namespace BridgeMVC.Models
         [JsonProperty(PropertyName = "description")]
         public string Description { get; set; }
 
-        [JsonProperty(PropertyName = "dropdownSource")]
-        public string DropdownSource { get; set; }
-
-        [JsonProperty(PropertyName = "autoCompleteSource")]
-        public string AutoCompleteSource { get; set; }
+        [JsonProperty(PropertyName = "valueSource")]
+        public string ValueSource { get; set; }
 
         [JsonProperty(PropertyName = "defaultValue")]
         public string DefaultValue { get; set; }
 
         [JsonProperty(PropertyName = "viewSequence")]
-        public int ViewSequence { get; set; }
+        public string ViewSequence { get; set; }
     }
    
 }

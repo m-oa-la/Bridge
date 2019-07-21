@@ -5,39 +5,96 @@
     string BridgeLastUsed = (string)Session["BridgeModule"];
 }
 
-<h2>Settings</h2>
+<style>
+    img{
+        width:72px;
+        height:72px;
+    }
+</style>
+<h2>SET IT UP!</h2>
+<hr />
+@if (BridgeLastUsed == "M3")
+{
+
+    <li>
+        <a href="@Url.Action("Index", "BLSACert")" title="List View" class="links">
+            <img alt="List View" src="@Url.Content("~/Content/pictures/text.jpg")">
+            Text shown on Certificate acc. to tech. parameters
+        </a>
+    </li>
+    <li>
+        <a href="@Url.Action("Index", "bprodtechpara")" title="List View" class="links">
+            <img alt="List View" src="@Url.Content("~/Content/pictures/parameters.png")">
+            Technical parameters acc. to MED item No.
+        </a>
+    </li>
+    <hr />
+    <li>
+        <a href="@Url.Action("Index", "BList", new { searchstring = "BListType" })" title="List View" class="links">
+            <img alt="List View" src="@Url.Content("~/Content/pictures/dropdownName.png")">
+            Create a new Dropdown / autocomplete list
+        </a>
+    </li>
+
+    <li>
+        <a href="@Url.Action("Index", "BList")" title="List View" class="links">
+            <img alt="List View" src="@Url.Content("~/Content/pictures/dropdownList.png")">
+            Fill in a Dropdown / autocomplete list
+        </a>
+    </li>
+   <hr />
+    <li>
+        <a href="@Url.Action("Index", "BList", new { searchstring = "MEDItemNo" })" title="List View" class="links">
+            <img alt="List View" src="@Url.Content("~/Content/pictures/med.jpg")">
+            Create a new MEDItem No.
+        </a>
+    </li>
+
+
+
+}
+else
+{
+
+    <li>
+        @Html.ActionLink("IORA", "Index", "BIORA")
+    </li>
+
+    <li>
+        @Html.ActionLink("Email", "Index", "BEmail")
+    </li>
+    <li>
+        @Html.ActionLink("Certiticate Types", "Index", "BFinancial")
+    </li>
+
+
+    <li>
+        @Html.ActionLink("General lists (Product Type, Rules, Service types, etc.)", "Index", "BList")
+    </li>
+    <br />
+    <li>
+        @Html.ActionLink("Tech. Checklist", "Index", "BTechChecklist")
+    </li>
+    <li>
+        @Html.ActionLink("AutoCertificate", "Index", "BLSACert")
+    </li>
+    @*<li>
+            @Html.ActionLink("LSATechCheckList", "Index", "TechCheckList")
+        </li>*@
+    <br />
+
+}
 
 
 
 
-<li>
-    @Html.ActionLink("IORA", "Index", "BIORA")
-</li>
-
-<li>
-    @Html.ActionLink("Email", "Index", "BEmail")
-</li>
-<li>
-    @Html.ActionLink("Certiticate Types", "Index", "BFinancial")
-</li>
 
 
-<li>
-    @Html.ActionLink("General lists (Product Type, Rules, Service types, etc.)", "Index", "BList")
-</li>
-<br />
 
-<li>
-    @Html.ActionLink("MOANO375 LSA Certificate", "Index", "BLSACert")
-</li>
-@*<li>
-    @Html.ActionLink("LSATechCheckList", "Index", "TechCheckList")
-</li>*@
-<br />
-<li>
-    @Html.ActionLink("MOANO375 LSA TechChecklist", "Index", "BTechChecklist")
-</li>
 
+
+
+<hr />
 <div style="font-weight:bold;">
     <br />
     @Html.ActionLink("Select Bridge Module", "Index", "Home")

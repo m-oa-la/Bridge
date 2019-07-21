@@ -1,0 +1,35 @@
+﻿@model BridgeMVC.Models.Job
+
+@{
+    var headerColor = "#03C5EA";
+    var LAutoCertText = ViewBag.LAutoCertText;
+
+}
+
+<style>
+    .certBodyText {
+
+        font-size: 9pt;
+        font-family:'Verdana';
+    }
+
+    .certChapter {
+        font-size: 11pt;
+        font-weight: bold;
+        font-family: 'Verdana';
+    }
+</style>
+
+
+
+<div class="A4Background">
+    <page size="A4">
+        <h1>
+            <font face="Broader View" size="4" color=@headerColor>
+                MED/TA CERTIFICATE AUTO-TEXT
+            </font>
+        </h1>
+        <div id="CertText"></div>
+    </page>
+</div>
+

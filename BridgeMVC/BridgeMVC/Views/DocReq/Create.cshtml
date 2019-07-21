@@ -1,20 +1,13 @@
 ﻿@model BridgeMVC.Models.DocReq
 
 @{
-
-    Layout = null;
+    @Scripts.Render("~/scripts/jquery-ui.min.js")
 }
 
 <head>
     <meta charset="utf-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Bridge</title>
-    @Styles.Render("~/Content/css")
-    @Scripts.Render("~/bundles/modernizr")
-    <script language="JavaScript" type="text/javascript" src="~/Scripts/jquery-3.3.1.min.js"></script>
-    <script language="JavaScript" type="text/javascript" src="~/Scripts/Common/bridgeScript.js"></script>
-    <script language="JavaScript" type="text/javascript" src="~/Scripts/jquery-ui.min.js"></script>
-
 
     <style>
         body {
@@ -39,13 +32,13 @@
 
         <table>
             <colgroup>
-            <col span="1" style="width: 80%;">
-            <col span="1" style="width: 10%;">
-            <col span="1" style="width: 10%;">
-        </colgroup>
+                <col span="1" style="width: 80%;">
+                <col span="1" style="width: 10%;">
+                <col span="1" style="width: 10%;">
+            </colgroup>
             <tr>
                 <td>
-                    @Html.EditorFor(model => model.DocReqItem, new { htmlAttributes = new { @class = "form-control", id = "DocReqItem"  } })
+                    @Html.EditorFor(model => model.DocReqItem, new { htmlAttributes = new { @class = "form-control", id = "DocReqItem" } })
                     @Html.ValidationMessageFor(model => model.DocReqItem, "", new { @class = "text-danger" })
                 </td>
                 <td>

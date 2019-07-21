@@ -1,0 +1,74 @@
+﻿@model BridgeMVC.Models.BProdTechPara
+@{ 
+    var LValueResource = ViewBag.LValueResource;
+    var LMEDItemNo = ViewBag.LMEDItemNo;
+}
+
+<h4>BProdTechPara</h4>
+@Html.HiddenFor(model => model.Tag)
+@Html.HiddenFor(model => model.BridgeModule)
+
+<div class="form-group">
+    @Html.LabelFor(model => model.ProdName, htmlAttributes: new { @class = "control-label col-md-2" })
+    <div class="col-md-10">
+        @Html.DropDownListFor(model => model.ProdName,
+        new List<SelectListItem> { new SelectListItem { Text = Model.ProdName, Value = Model.ProdName } },
+        new { @class = "form-control", id = "selectProdName" })
+    </div>
+</div>
+
+<div class="form-group">
+    @Html.LabelFor(model => model.TechParaName, htmlAttributes: new { @class = "control-label col-md-2" })
+    <div class="col-md-10">
+        @Html.EditorFor(model => model.TechParaName, new { htmlAttributes = new { @class = "form-control" } })
+        @Html.ValidationMessageFor(model => model.TechParaName, "", new { @class = "text-danger" })
+    </div>
+</div>
+
+<div class="form-group">
+    @Html.LabelFor(model => model.Description, htmlAttributes: new { @class = "control-label col-md-2" })
+    <div class="col-md-10">
+        @Html.EditorFor(model => model.Description, new { htmlAttributes = new { @class = "form-control" } })
+        @Html.ValidationMessageFor(model => model.Description, "", new { @class = "text-danger" })
+    </div>
+</div>
+
+<div class="form-group">
+    @Html.LabelFor(model => model.ValueSource, htmlAttributes: new { @class = "control-label col-md-2" })
+    <div class="col-md-10">
+
+        @Html.DropDownListFor(model => model.ValueSource,
+        new List<SelectListItem> { new SelectListItem { Text = Model.ValueSource, Value = Model.ValueSource } },
+        new { @class = "form-control", id = "selectValueSource" })
+    </div>
+</div>
+
+<div class="form-group">
+    @Html.LabelFor(model => model.DefaultValue, htmlAttributes: new { @class = "control-label col-md-2" })
+    <div class="col-md-10">
+        @Html.EditorFor(model => model.DefaultValue, new { htmlAttributes = new { @class = "form-control" } })
+        @Html.ValidationMessageFor(model => model.DefaultValue, "", new { @class = "text-danger" })
+    </div>
+</div>
+
+<div class="form-group">
+    @Html.LabelFor(model => model.ViewSequence, htmlAttributes: new { @class = "control-label col-md-2" })
+    <div class="col-md-10">
+        @Html.EditorFor(model => model.ViewSequence, new { htmlAttributes = new { @class = "form-control" } })
+        @Html.ValidationMessageFor(model => model.ViewSequence, "", new { @class = "text-danger" })
+    </div>
+</div>
+
+<div class="form-group">
+    <div class="col-md-offset-2 col-md-10">
+        <input type="submit" value="Save" class="btn btn-default" />
+    </div>
+</div>
+
+<script>
+    var LValueResource = @Html.Raw(Json.Encode(LValueResource));
+    var LMEDItemNo = @Html.Raw(Json.Encode(LMEDItemNo));
+    SetupDropdownList("selectValueSource", LValueResource, "ListItem");
+    SetupDropdownList("selectProdName", LMEDItemNo, "ListItem");
+
+</script>

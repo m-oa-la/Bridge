@@ -12,7 +12,7 @@ using Newtonsoft.Json;
 
 namespace BridgeMVC.Controllers
 {
-    [Authorize]
+   [Authorize]
     public class JobController : Controller
     {
         [ActionName("_Index")]
@@ -87,6 +87,7 @@ namespace BridgeMVC.Controllers
         public async Task<string> SetViewBags()
         {
             var bm = (string)Session["BridgeModule"];
+            var jid = (string)Session["DbJobId"];
 
             var lbb = await DocumentDBRepository.GetItemsAsync<BBridge>(d => d.Tag == "BBridge" && d.BridgeName == bm);
              ViewBag.bridge = lbb.FirstOrDefault();
@@ -99,6 +100,9 @@ namespace BridgeMVC.Controllers
             lca = lca.OrderBy(d => d.ListItem);
             ViewBag.LCertAction = lca;
 
+            var lvalueSource = await DocumentDBRepository.GetItemsAsync<BList>(d => d.Tag == "BList" && d.BridgeModule == bm && (d.ListType.ToLower().Contains("autocomplete") || d.ListType.ToLower().Contains("dropdown")));
+            ViewBag.LValueSource = lvalueSource;
+
             var lmp = await DocumentDBRepository.GetItemsAsync<BList>(d => d.Tag == "BList" && d.BridgeModule == bm && d.ListType == "MainProdType");
             lmp = lmp.OrderBy(d => d.ListItem);
             ViewBag.LMainProdType = lmp;
@@ -107,9 +111,21 @@ namespace BridgeMVC.Controllers
             lsp = lsp.OrderBy(d => d.ListItem);
             ViewBag.LSubProdType = lsp;
 
+  
             var lu = await DocumentDBRepository.GetItemsAsync<BUser>(d => d.Tag == "BUser" && (d.BridgesGranted).Contains(bm));
             lu = lu.OrderBy(d => d.Signature);
             ViewBag.LUser = lu;
+            if (bm == "M3" && !string.IsNullOrEmpty(jid))
+            {
+                Job j = await DocumentDBRepository.GetItemAsync<Job>(jid);
+                ViewBag.LPTP = await DocumentDBRepository.GetItemsAsync<BProdTechPara>(d => d.Tag == "BProdTechPara" && d.BridgeModule == bm && d.ProdName == j.MEDItemNo);
+
+                ViewBag.LProduct = await DocumentDBRepository.GetItemsAsync<Product>(d => d.Tag == "Product" && d.DbJobId == jid);
+                var LAutoCertText = await DocumentDBRepository.GetItemsAsync<BLSACert>(d => d.Tag == "BLSACert" && d.BridgeModule == bm && d.BookMarkName == j.MEDItemNo);
+                //Sort autotxt by sequence order
+                LAutoCertText = LAutoCertText.OrderBy(d => d.Description); 
+                ViewBag.LAutoCertText = LAutoCertText;
+            }
 
             return ("");
         }
@@ -155,7 +171,11 @@ namespace BridgeMVC.Controllers
             if(item.BridgeModule == "M3") 
             {
                 item.CertType = "MED";
-                item.MEDItemNo = "MED/3.16 Fire doors";
+                item.MEDItemNo = "MED/3.16";
+                ViewBag.LProduct = await DocumentDBRepository.GetItemsAsync<Product>(d => d.Tag == "Product" && d.DbJobId == id);
+                var LAutoCertText = await DocumentDBRepository.GetItemsAsync<BLSACert>(d => d.Tag == "BLSACert" && d.BridgeModule == item.BridgeModule);
+                LAutoCertText = LAutoCertText.OrderBy(d => d.Description);
+                ViewBag.LAutoCertText = LAutoCertText;
             }
 
 
@@ -218,12 +238,8 @@ namespace BridgeMVC.Controllers
             {
                 return new HttpStatusCodeResult(HttpStatusCode.BadRequest);
             }
-
             Job item = await DocumentDBRepository.GetItemAsync<Job>(id);
-
             item.StatusNote = "";
-            //Session["newHandler"] = "-";
-            //Session["newTask"] = "-";
 
             if (item == null)
             {
@@ -232,7 +248,6 @@ namespace BridgeMVC.Controllers
             //ViewBag.SelectList = await DocumentDBRepository<BRule>.GetItemsAsync(d => d.Tag == "BRule" && d.BridgeModule == item.BridgeModule);
             Session["DbJobId"] = item.Id;
             Session["NpsJobId"] = item.NpsJobId;
-
 
             await SetViewBags();
             return View((string)Session["BridgeModule"] + "_Task4", item);

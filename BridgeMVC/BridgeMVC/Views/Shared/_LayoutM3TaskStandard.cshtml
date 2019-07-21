@@ -6,17 +6,13 @@
     <meta charset="utf-8" />
     <meta name="viewport" content="width=device-width" />
     <title>Bridge</title>
+    @Styles.Render("~/Content/M3/AutoCertA4.css")
     @Styles.Render("~/Content/css")
     @Scripts.Render("~/bundles/modernizr")
+    @Styles.Render("~/Content/M3/taskStandard.css")
 </head>
 <body>
-    <header class="header">
-        <div class="navbar ">
-            <div style="float:right">
-                @Html.Partial("_LoginPartial")
-            </div>
-        </div>
-    </header>
+
     <div>
         @RenderBody()
     </div>
@@ -25,8 +21,7 @@
     @Scripts.Render("~/bundles/scripts/common")
     @Scripts.Render("~/bundles/scripts/thirdParty")
     @Scripts.Render("~/bundles/scripts/m3")
-    @RenderSection("scripts", required: true)
-    @Styles.Render("~/Content/M1/taskStandard.css")
+    @RenderSection("scripts", required: false)
     @RenderSection("styles", required: false)
 </body>
 </html>

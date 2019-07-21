@@ -53,7 +53,6 @@ function renderTaskShowHide(taskNo, taskStatusFlagId, taskCompleteDateId, taskCo
     :arg userSignature: string, the signature of the user
     */
     var taskStatus = null;
-    console.log("hh");
     if ($("#" + taskStatusFlagId).val().length > 0) {
         taskStatus = taskCompleteStr + $("#" + taskStatusFlagId).val()
             + " on " + $("#" + taskCompleteDateId).val();

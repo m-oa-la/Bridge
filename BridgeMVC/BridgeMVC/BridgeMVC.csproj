@@ -329,8 +329,13 @@
     <Content Include="Content\M1\index.css" />
     <Content Include="Content\M1\taskA4.css" />
     <Content Include="Content\M1\taskStandard.css" />
+    <Content Include="Content\M3\index.css" />
+    <Content Include="Content\M3\AutoCertA4.css" />
+    <Content Include="Content\M3\taskStandard.css" />
     <Content Include="Content\pictures\calendar-32x32.png" />
     <Content Include="Content\pictures\DNVGLLogo.PNG" />
+    <Content Include="Content\pictures\dropdownList.png" />
+    <Content Include="Content\pictures\dropdownName.png" />
     <Content Include="Content\pictures\M2Profiles\BAY.png" />
     <Content Include="Content\pictures\M2Profiles\HDR.png" />
     <Content Include="Content\pictures\M2Profiles\JPOUL.png" />
@@ -350,12 +355,15 @@
     <Content Include="Content\pictures\M2Profiles\WHITEBOARD.PNG" />
     <Content Include="Content\pictures\M2Profiles\ZEINA.png" />
     <Content Include="Content\pictures\magic.png" />
+    <Content Include="Content\pictures\med.jpg" />
+    <Content Include="Content\pictures\parameters.png" />
     <Content Include="Content\pictures\Pause.png" />
     <Content Include="Content\pictures\Start.png" />
     <Content Include="Content\fonts\avenir-bold\e2f89b55-2e17-4aa3-af72-75a82c51008b.svg" />
     <Content Include="Content\fonts\avenir-italics\432d6c36-ab6a-4864-b76c-57748b886257.svg" />
     <Content Include="Content\fonts\avenir-italics\533c52aa-9e8d-4596-a1bc-562d2acb72df.svg" />
     <Content Include="Content\fonts\avenir\8e46b6cb-85f2-4400-a9d8-7cbd8ed30dd8.svg" />
+    <Content Include="Content\pictures\text.jpg" />
     <Content Include="favicon.ico" />
     <Content Include="fonts\glyphicons-halflings-regular.svg" />
     <Content Include="Global.asax" />
@@ -386,6 +394,7 @@
     <None Include="Properties\PublishProfiles\FolderProfile.pubxml" />
     <None Include="Properties\PublishProfiles\MABridgeDev - Web Deploy.pubxml" />
     <None Include="Scripts\jquery-3.3.1.intellisense.js" />
+    <Content Include="Scripts\Common\utilities.js" />
     <Content Include="Scripts\Common\jqueryUtilities.js" />
     <Content Include="Scripts\cldr.js" />
     <Content Include="Scripts\cldr\event.js" />
@@ -419,7 +428,7 @@
     <Content Include="Scripts\moment.js" />
     <Content Include="Scripts\moment.min.js" />
     <Content Include="Scripts\M1\lsa.js" />
-    <Content Include="Scripts\Common\utilities.js" />
+    <Content Include="Scripts\Common\autoCert.js" />
     <Content Include="Web.config">
       <SubType>Designer</SubType>
     </Content>
@@ -474,7 +483,6 @@
     <Content Include="Views\BCertType\Edit.cshtml" />
     <Content Include="Views\BList\Index.cshtml" />
     <Content Include="Views\BList\Create.cshtml" />
-    <Content Include="Views\BList\Delete.cshtml" />
     <Content Include="Views\BList\Edit.cshtml" />
     <Content Include="Views\Rule\FullList.cshtml" />
     <Content Include="Views\BEmail\Edit.cshtml" />
@@ -548,15 +556,18 @@
     <Content Include="Views\BProdTechPara\Edit.cshtml" />
     <Content Include="Views\BProdTechPara\Create.cshtml" />
     <Content Include="Views\Job\AutoCert.cshtml" />
-    <Content Include="Views\Shared\_LayoutAutoCertA4.cshtml" />
     <Content Include="Views\Shared\_LayoutM3TaskStandard.cshtml" />
     <Content Include="Views\Product\Edit.cshtml" />
+    <Content Include="Views\Shared\_SV_AutoCertPTP.cshtml" />
+    <Content Include="Views\Shared\_SV_AutoCertA4Page.cshtml" />
+    <Content Include="Views\BList\_SV_CreateEdit.cshtml" />
+    <Content Include="Views\BProdTechPara\_SV_CreateEdit.cshtml" />
+    <Content Include="Views\BLSACert\_SV_CreateEdit.cshtml" />
   </ItemGroup>
   <ItemGroup>
     <Folder Include="App_Data\M1\Projects\" />
     <Folder Include="Content\Common\" />
     <Folder Include="Content\M2\" />
-    <Folder Include="Content\M3\" />
     <Folder Include="Scripts\M2\" />
   </ItemGroup>
   <ItemGroup>

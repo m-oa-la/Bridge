@@ -1,4 +1,16 @@
-﻿function findSortingIndices(arr) {
+﻿
+//Below codes solve 'includes' method not working in IE
+String.prototype.includes = function (str) {
+    var returnValue = false;
+
+    if (this.indexOf(str) !== -1) {
+        returnValue = true;
+    }
+
+    return returnValue;
+};
+
+function findSortingIndices(arr) {
     /*
     Finds the indices that sorts an 1D array of numbers.
     :arg arr: an array of numbers, the data

@@ -8,6 +8,7 @@
     @Styles.Render("~/Content/css")
     @Scripts.Render("~/bundles/modernizr")
     @Scripts.Render("~/bundles/jquery")
+    @Scripts.Render("~/bundles/scripts/common")
     <style>
         .bing {
             float: left;
@@ -16,6 +17,7 @@
             min-width: 400px;
             font-weight: bold;
         }
+
         body {
             font: Avenir Next;
             margin-left: 60px;
@@ -77,6 +79,7 @@
         .dropdown:hover .dropbtn {
             background-color: #3e8e41;
         }
+
         .form-control {
             font-weight: normal;
         }
@@ -90,7 +93,7 @@
     </style>
 </head>
 <body>
-    <header class="header"  >
+    <header class="header">
         <div class="navbar ">
             <div style="float:right">
                 @Html.Partial("_LoginPartial")

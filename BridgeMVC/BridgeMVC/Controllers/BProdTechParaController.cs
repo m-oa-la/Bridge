@@ -29,6 +29,21 @@ namespace BridgeMVC.Controllers
             return true;
         }
 
+        public async Task<String> SetViewBag()
+        {
+            string bm = (string)Session["BridgeModule"];
+            var lmeditemno = await DocumentDBRepository.GetItemsAsync<BList>(d => d.Tag == "BList" && d.BridgeModule == bm && d.ListType == "MEDItemNo");
+            lmeditemno = lmeditemno.OrderBy(d => d.ListItem);
+            ViewBag.LMEDItemNo = lmeditemno;
+
+            var lvalueresource = await DocumentDBRepository.GetItemsAsync<BList>(d => d.Tag == "BList" && d.BridgeModule == bm 
+            && d.ListType.ToLower().Contains("blisttype") && (d.ListItem.ToLower().Contains("autocomplete") || d.ListItem.ToLower().Contains("dropdown") || d.ListItem.ToLower().Contains("free text")));
+
+            lvalueresource = lvalueresource.OrderBy(d => d.ListItem);
+            ViewBag.LValueResource = lvalueresource;
+
+            return "";
+        }
 
         [ActionName("Index")]
         public async Task<ActionResult> IndexAsync()
@@ -36,6 +51,7 @@ namespace BridgeMVC.Controllers
             if (IsAdmin())
             {
                 var s = await DocumentDBRepository.GetItemsAsync<BProdTechPara>(d => d.Tag == "BProdTechPara");
+                s = s.OrderBy(o => o.ViewSequence);
                 return View(s);
             }
             else
@@ -45,10 +61,11 @@ namespace BridgeMVC.Controllers
         }
 
         [ActionName("Create")]
-        public ActionResult Create()
+        public async Task<ActionResult> CreateAsync()
         {
             var S = new BProdTechPara();
             S.BridgeModule = (string)Session["BridgeModule"];
+            await SetViewBag();
             return View(S);
         }
 
@@ -57,7 +74,7 @@ namespace BridgeMVC.Controllers
         [ActionName("Create")]
         [ValidateAntiForgeryToken]
         public async Task<ActionResult> CreateAsync([Bind(Include = "Tag,Id,BridgeModule,ProdName,TechParaName," +
-            "Description,DropdownSource,AutoCompleteSource,DefaultValue,ValueType,ViewSequence")] BProdTechPara item)
+            "Description,ValueSource,DefaultValue,ValueType,ViewSequence")] BProdTechPara item)
         {
             if (IsAdmin())
             {
@@ -67,11 +84,8 @@ namespace BridgeMVC.Controllers
                     await DocumentDBRepository.CreateItemAsync<BProdTechPara>(item);
                     return RedirectToAction("Index");
                 }
-                else
-                {
-
-                }
             }
+            await SetViewBag();
             return View(item);
         }
 
@@ -79,7 +93,7 @@ namespace BridgeMVC.Controllers
         [ActionName("Edit")]
         [ValidateAntiForgeryToken]
         public async Task<ActionResult> EditAsync([Bind(Include = "Tag,Id,BridgeModule,ProdName,TechParaName," +
-            "Description,DropdownSource,AutoCompleteSource,DefaultValue,ValueType,ViewSequence")] BProdTechPara item)
+            "Description,ValueSource,DefaultValue,ValueType,ViewSequence")] BProdTechPara item)
         {
             if (IsAdmin())
             {
@@ -89,6 +103,7 @@ namespace BridgeMVC.Controllers
                     return RedirectToAction("Index");
                 }
             }
+            await SetViewBag();
             return View(item);
         }
 
@@ -105,9 +120,20 @@ namespace BridgeMVC.Controllers
             {
                 return HttpNotFound();
             }
-
+            await SetViewBag();
             return View(item);
         }
+
+        [HttpPost]
+        [ActionName("SaveViewSequence")]
+        public async Task<ActionResult> SaveViewSequence (string id, string value)
+        {
+            BProdTechPara item = await DocumentDBRepository.GetItemAsync<BProdTechPara>(id);
+            item.ViewSequence = value;
+            await DocumentDBRepository.UpdateItemAsync<BProdTechPara>(item.Id, item);
+            return null;
+        }
+
 
     }
 }

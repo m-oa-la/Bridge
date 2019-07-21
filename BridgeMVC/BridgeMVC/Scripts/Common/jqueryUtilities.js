@@ -240,3 +240,20 @@ function readBEmail(tn, bm) {
 function returnBEmail(data) {
     BEmail = jQuery.parseJSON(data);
 }
+
+function SetupDropdownList(dropdownid, dropdownsourcelist, propName) {
+
+    if (propName == null) {
+        $.each(dropdownsourcelist, function (key, data) {
+            data = data;
+            $("#" + dropdownid).append(new Option(data, data));
+        });
+    } else {
+        $.each(dropdownsourcelist, function (key, data) {
+            data = data;
+              var s = eval("data." + propName);
+            $("#" + dropdownid).append(new Option(s, s));
+        });
+    }
+
+}
