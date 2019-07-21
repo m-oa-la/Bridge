@@ -1,9 +1,8 @@
 ﻿@model BridgeMVC.Models.Job
 
 @{
-    /**/
-
     ViewBag.Title = "M1_Task1";
+    Layout = "~/Views/Shared/_Layout.cshtml";
     string UserSignature = (string)Session["UserSignature"];
     string bridgeModule = (string)Session["BridgeModule"];
     var LCertType = ViewBag.LCertType;
@@ -11,7 +10,6 @@
     var LMainProdType = ViewBag.LMainProdType;
     var LSubProdType = ViewBag.LSubProdType;
     var LUser = ViewBag.LUser;
-
 }
 <h2>CREATE NEW JOB</h2>
 
@@ -20,126 +18,107 @@
 {
     @Html.AntiForgeryToken()
 
-<div class="form-horizontal">
-    <hr />
-    @Html.ValidationSummary(true, "", new { @class = "text-danger" })
-    @Html.HiddenFor(model => model.Id)
-    @Html.HiddenFor(model => model.Tag)
-    @Html.HiddenFor(model => model.BridgeModule)
-    @Html.HiddenFor(model => model.NpsJobName)
-    @Html.HiddenFor(model => model.Task1)
-    @Html.HiddenFor(model => model.Task2)
-    @Html.HiddenFor(model => model.Task3)
-    @Html.HiddenFor(model => model.Task4)
-    @Html.HiddenFor(model => model.IsComplete)
-    @Html.HiddenFor(model => model.FeeSetter)
-    @Html.HiddenFor(model => model.TaskHandler)
-    <div class="bing col-lg-6" hidden>
-        NPS Job ID:
-        @Html.EditorFor(model => model.SendingFlag, new { htmlAttributes = new { @class = "form-control", id = "NpsJobId" } })
-        @Html.ValidationMessageFor(model => model.SendingFlag, "", new { @class = "text-danger" })
-    </div>
-    <div class="bing col-lg-6">
-        NPS Job ID:
-        @Html.EditorFor(model => model.NpsJobId, new { htmlAttributes = new { @class = "form-control", id = "NpsJobId" } })
-        @Html.ValidationMessageFor(model => model.NpsJobId, "", new { @class = "text-danger" })
-    </div>
-    <div class="bing col-lg-6">
-        Customer:
-        @Html.EditorFor(model => model.CustomerName, new { htmlAttributes = new { @class = "form-control" } })
-        @Html.ValidationMessageFor(model => model.CustomerName, "", new { @class = "text-danger" })
-    </div>
-    <div class="bing col-lg-6">
-        Sales Order:
-        @Html.EditorFor(model => model.SalesOrderNo, new { htmlAttributes = new { @class = "form-control" } })
-        @Html.ValidationMessageFor(model => model.SalesOrderNo, "", new { @class = "text-danger" })
-    </div>
-    <div class="bing col-lg-6">
-        Certificate type:
-        @Html.EditorFor(model => model.CertType, new { htmlAttributes = new { @class = "form-control" } })
-        @Html.ValidationMessageFor(model => model.CertType, "", new { @class = "text-danger" })
-    </div>
-    <div class="bing col-lg-6">
-        Job Received Time:
-        @Html.EditorFor(model => model.ReceivedTime, new { htmlAttributes = new { @class = "form-control", @Value = Model.ReceivedTime?.ToString("dd-MM-yyyy HH:mm:ss") } })
-    </div>
-    <div class="bing col-lg-6" hidden>
-        Engineer to set fee:
-        @Html.EditorFor(model => model.TaskHandler, new { htmlAttributes = new { @class = "form-control" } })
-        @Html.ValidationMessageFor(model => model.TaskHandler, "", new { @class = "text-danger" })
-    </div>
-    @*<div class="col-lg-12" hidden>
-            <div class="col-lg-6">
+    <div class="form-horizontal">
+        <hr />
+        @Html.ValidationSummary(true, "", new { @class = "text-danger" })
+        @Html.HiddenFor(model => model.Id)
+        @Html.HiddenFor(model => model.Tag)
+        @Html.HiddenFor(model => model.BridgeModule)
+        @Html.HiddenFor(model => model.NpsJobName)
+        @Html.HiddenFor(model => model.Task1)
+        @Html.HiddenFor(model => model.Task2)
+        @Html.HiddenFor(model => model.Task3)
+        @Html.HiddenFor(model => model.Task4)
+        @Html.HiddenFor(model => model.IsComplete)
+        @Html.HiddenFor(model => model.FeeSetter)
+        @Html.HiddenFor(model => model.TaskHandler)
+        <div class="bing col-lg-6" hidden>
+            NPS Job ID:
+            @Html.EditorFor(model => model.SendingFlag,
+                new { htmlAttributes = new { @class = "form-control", id = "NpsJobId" } })
+            @Html.ValidationMessageFor(model => model.SendingFlag, "",
+                new { @class = "text-danger" })
+        </div>
+        <div class="bing col-lg-6">
+            NPS Job ID:
+            @Html.EditorFor(model => model.NpsJobId,
+                new { htmlAttributes = new { @class = "form-control", id = "NpsJobId" } })
+            @Html.ValidationMessageFor(model => model.NpsJobId,
+                "", new { @class = "text-danger" })
+        </div>
+        <div class="bing col-lg-6">
+            Customer:
+            @Html.EditorFor(model => model.CustomerName,
+                new { htmlAttributes = new { @class = "form-control" } })
+            @Html.ValidationMessageFor(model => model.CustomerName,
+                "", new { @class = "text-danger" })
+        </div>
+        <div class="bing col-lg-6">
+            Sales Order:
+            @Html.EditorFor(model => model.SalesOrderNo,
+                new { htmlAttributes = new { @class = "form-control" } })
+            @Html.ValidationMessageFor(model => model.SalesOrderNo,
+                "", new { @class = "text-danger" })
+        </div>
+        <div class="bing col-lg-6">
+            Certificate type:
+            @Html.EditorFor(model => model.CertType,
+                new { htmlAttributes = new { @class = "form-control" } })
+            @Html.ValidationMessageFor(model => model.CertType,
+                "", new { @class = "text-danger" })
+        </div>
+        <div class="bing col-lg-6">
+            Job Received Time:
+            @Html.EditorFor(model => model.ReceivedTime, new { htmlAttributes = new { @class = "form-control", @Value = Model.ReceivedTime?.ToString("dd-MM-yyyy HH:mm:ss") } })
+        </div>
+        <div class="bing col-lg-6" hidden>
+            Engineer to set fee:
+            @Html.EditorFor(model => model.TaskHandler, new { htmlAttributes = new { @class = "form-control" } })
+            @Html.ValidationMessageFor(model => model.TaskHandler, "", new { @class = "text-danger" })
+        </div>
+        <div class="col-lg-12">
+            <div class="col-lg-5">
                 <h3>Please select the new task handler:</h3>
                 <select id="selectListHandler" class="form-control"></select>
             </div>
-            <div class="col-lg-6">
+            <div class="col-lg-5">
                 <h3> and new task:</h3>
                 <select id="selectListTask" class="form-control"></select>
             </div>
         </div>
         <h4>&nbsp;</h4>
-        <a href="#" name="emailLink" id="emailLink" class="btn btn-info" style="float:right" hidden>Send job to the new task handler</a>*@
-
-    @*<div class="form-group">
-
-            <div class=" col-md-10">
-                <br />
-                <input type="submit" value="Create" class="btn btn-subtle" style="float:left" />
-            </div>
-        </div>*@
-    @*//next task, send job and return to work list*@
-    <div class="col-lg-12">
-        <div class="col-lg-5">
-            <h3>Please select the new task handler:</h3>
-            <select id="selectListHandler" class="form-control"></select>
-        </div>
-        <div class="col-lg-5">
-            <h3> and new task:</h3>
-            <select id="selectListTask" class="form-control"></select>
-        </div>
+        <input value="Send job" class="btn btn-default" id="sendJobEmail" readonly />
+        <input value="Return to worklist" class="btn btn-default" id="returnToWorklist" style="float:right" readonly />
     </div>
-    <h4>&nbsp;</h4>
-    <input value="Send job" class="btn btn-default" id="sendJobEmail" readonly />
-    <input value="Return to worklist" class="btn btn-default" id="returnToWorklist" style="float:right" readonly />
-</div>
-
-
 }
-
 
 @section Scripts {
-    @Scripts.Render("~/bundles/jqueryval")
+    @Scripts.Render("~/bundles/jqueryval");
+    @Scripts.Render("~/bundles/scripts/common");
+
+    <script type="text/javascript" language="javascript">
+        // Read viewbag's info.
+        var userSignature = "@UserSignature";
+        var bm = "@bridgeModule";
+        var Job = @Html.Raw(Json.Encode(Model));
+
+        var LMainProdType = @Html.Raw(Json.Encode(LMainProdType));
+        var LSubProdType = @Html.Raw(Json.Encode(LSubProdType));
+        var LUser = @Html.Raw(Json.Encode(LUser));
+        var LCertAction = @Html.Raw(Json.Encode(LCertAction));
+        var LCertType = @Html.Raw(Json.Encode(LCertType));
+
+        var TargetUser;
+        var BEmail;
+        var taskStatus;
+
+        //Set task parameter
+        var taskNo = 1;
+        var taskStatusFlag = "feeSetter";
+        var taskCompleteDate = "feeSetTime";
+        var taskCompleteStr = "The fee is set by";
+
+        renderTaskHandling(LUser, bm);
+
+    </script>
 }
-
-<script type="text/javascript" src="~/Scripts/bridgeScript.js" language="javascript"></script>
-
-
-<script type="text/javascript" language="javascript">
-  //read viewbag's info.
-
-
-    var userSignature = "@UserSignature";
-    var bm = "@bridgeModule";
-    var Job = @Html.Raw(Json.Encode(Model));
-
-     var LMainProdType = @Html.Raw(Json.Encode(LMainProdType));
-    var LSubProdType = @Html.Raw(Json.Encode(LSubProdType));
-    var LUser = @Html.Raw(Json.Encode(LUser));
-    var LCertAction = @Html.Raw(Json.Encode(LCertAction));
-    var LCertType = @Html.Raw(Json.Encode(LCertType));
-
-    var TargetUser;
-    var BEmail;
-    var taskStatus;
-
-
-    //Set task parameter
-    var taskNo = 1;
-    var taskStatusFlag = "feeSetter";
-    var taskCompleteDate = "feeSetTime";
-    var taskCompleteStr = "The fee is set by";
-
-    renderTaskHandling();
-
-</script>

@@ -11,27 +11,49 @@ namespace BridgeMVC.Controllers
     [Authorize]
     public class BLSACertController : Controller
     {
+        public async Task<String> SetViewBags()
+        {
+            string bm = (string)Session["BridgeModule"];
+            ViewBag.LMEDItemNo = await DocumentDBRepository.GetItemsAsync<BList>(d => d.Tag == "BList" && d.BridgeModule == bm && d.ListType == "MEDItemNo");
+            ViewBag.LPTPs = await DocumentDBRepository.GetItemsAsync<BProdTechPara>(d => d.Tag == "BProdTechPara" && d.BridgeModule == bm);
+            Job J = await DocumentDBRepository.GetItemAsync<Job>("4e5a1ffe-df4a-4146-9d82-acc196b7a6ee");
+            ViewBag.Job = J;
+            var ps = await DocumentDBRepository.GetItemsAsync<Product>(d => d.Tag == "Product" && d.DbJobId == J.Id);
+            ViewBag.Product = ps.FirstOrDefault();
+            ViewBag.LPTPs = await DocumentDBRepository.GetItemsAsync<BProdTechPara>(d => d.Tag == "BProdTechPara" && d.BridgeModule == bm);
+  
+            return "";
+        }
+
 
         [ActionName("Index")]
-        public async Task<ActionResult> IndexAsync()
+        public async Task<ActionResult> IndexAsync(string searchString)
         {
-            var s = await DocumentDBRepository.GetItemsAsync<BLSACert>(d => d.Tag == "BLSACert");
+            var s = await DocumentDBRepository.GetItemsAsync<BLSACert>(d => d.Tag == "BLSACert" && d.BridgeModule == (string)Session["BridgeModule"]);
+
+            if (!String.IsNullOrEmpty(searchString))
+            {
+                searchString = searchString.ToLower();
+                if (searchString != "all")
+                {
+                    s = s.Where(x => x.BookMarkName.ToLower().Contains(searchString.Replace(" ","")));
+                }
+            }
+            s = s.OrderBy(o => o.BookMarkName).ThenBy(o => o.Description);
+            await SetViewBags();
             return View(s);
         }
 
         [ActionName("Create")]
         public async Task<ActionResult> CreateAsync()
         {
-
-            var j = await DocumentDBRepository.GetItemAsync<Job>("a74571b7-2758-48ae-bd1a-d88efc437f26");
-            ViewBag.Job = j;
    
-            //var f = await DocumentDBRepository<BFinancial>.GetItemsAsync(d => d.Tag == "BFinancial" && d.BridgeModule == j.BridgeModule && d.CertType == j.CertType);
-            //ViewBag.FinancialSet = f.FirstOrDefault();
             var S = new BLSACert();
+            S.BridgeModule = (string)Session["BridgeModule"];
+            S.Condition = "true";
+            await SetViewBags();
             return View(S);
         }
-
 
         [HttpPost]
         [ActionName("Create")]
@@ -44,7 +66,7 @@ namespace BridgeMVC.Controllers
                 await DocumentDBRepository.CreateItemAsync<BLSACert>(item);
                 return RedirectToAction("Index");
             }
-
+            await SetViewBags();
             return View(item);
         }
 
@@ -59,7 +81,7 @@ namespace BridgeMVC.Controllers
                 await DocumentDBRepository.UpdateItemAsync<BLSACert>(item.Id, item);
                 return RedirectToAction("Index");
             }
-
+            await SetViewBags();
             return View(item);
         }
 
@@ -70,20 +92,23 @@ namespace BridgeMVC.Controllers
             {
                 return new HttpStatusCodeResult(HttpStatusCode.BadRequest);
             }
-
             BLSACert item = await DocumentDBRepository.GetItemAsync<BLSACert>(id);
-            var j = await DocumentDBRepository.GetItemAsync<Job>("a74571b7-2758-48ae-bd1a-d88efc437f26");
-            ViewBag.Job = j;
-
-
-
             if (item == null)
             {
                 return HttpNotFound();
             }
-
+            await SetViewBags();
             return View(item);
         }
 
+        [HttpPost]
+        [ActionName("SaveViewSequence")]
+        public async Task<ActionResult> SaveViewSequence(string id, string value)
+        {
+            BLSACert item = await DocumentDBRepository.GetItemAsync<BLSACert>(id);
+            item.Description = value;
+            await DocumentDBRepository.UpdateItemAsync<BLSACert>(item.Id, item);
+            return null;
+        }
     }
 }

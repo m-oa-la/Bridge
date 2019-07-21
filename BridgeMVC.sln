@@ -3,7 +3,7 @@ Microsoft Visual Studio Solution File, Format Version 12.00
 # Visual Studio 15
 VisualStudioVersion = 15.0.28010.2046
 MinimumVisualStudioVersion = 10.0.40219.1
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "BridgeMVC", "BridgeMVC\BridgeMVC\BridgeMVC.csproj", "{66F59208-3EDA-42FC-8B06-D29E87C912F2}"
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "BridgeMVC", "BridgeMVC\BridgeMVC.csproj", "{66F59208-3EDA-42FC-8B06-D29E87C912F2}"
 EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution

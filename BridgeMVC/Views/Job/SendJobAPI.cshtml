@@ -42,7 +42,6 @@
     var bm = "@bridgeModule";
     var Job = @Html.Raw(Json.Encode(Model));
 
-
     var LMainProdType = @Html.Raw(Json.Encode(LMainProdType));
     var LSubProdType = @Html.Raw(Json.Encode(LSubProdType));
     var LUser = @Html.Raw(Json.Encode(LUser));
@@ -56,10 +55,6 @@
     var bEmail = BEmail[0];
     var IIORA = @Html.Raw(Json.Encode(IIORA));
     var iORA = IIORA[0];
-
-    console.log(iORA);
-    console.log(bUser);
-    console.log(bEmail);
 
     var TargetUser = bUser;
     var emailReceiver = eval(bEmail.MailTo);

@@ -13,12 +13,14 @@ namespace BridgeMVC.Models
         [Required]
         [JsonProperty(PropertyName = "tag")]
         public string Tag { get; set; } = "Job";
+
         [Required]
         [JsonProperty(PropertyName = "bridgeModule")]
         public string BridgeModule { get; set; } 
 
         [JsonProperty(PropertyName = "id")]
         public string Id { get; set; }
+
         [Required]
         [JsonProperty(PropertyName = "uniqueKey")]
         public string NpsJobId { get; set; }
@@ -187,10 +189,8 @@ namespace BridgeMVC.Models
         [JsonProperty(PropertyName = "designFolder")]
         public string DesignFolder { get; set; }
 
-
         [JsonProperty(PropertyName = "isDocQualityGood")]
         public Boolean IsDocQualityGood { get; set; }
-
 
         [JsonProperty(PropertyName = "isDocSufficient")]
         public Boolean IsDocSufficient { get; set; }
@@ -200,6 +200,7 @@ namespace BridgeMVC.Models
 
         [JsonProperty(PropertyName = "ioraSpentTime")]
         public int? IORASpentTime { get; set; }
+
         [DataType(DataType.MultilineText)]
         [JsonProperty(PropertyName = "modificationDesc")]
         public string ModificationDesc { get; set; }
@@ -270,7 +271,6 @@ namespace BridgeMVC.Models
 
         [JsonProperty(PropertyName = "npsJobName")]
         public string NpsJobName { get; set; }
-
     }
 }
 //ModificationDesc,OnHoldNote,FeeVerifyTime,RegisterTime,DocReq,NoOfCert,FeeSet,VesselID,DocReqNote
