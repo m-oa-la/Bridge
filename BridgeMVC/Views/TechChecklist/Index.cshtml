@@ -14,9 +14,7 @@
     @Styles.Render("~/Content/css")
     @Scripts.Render("~/bundles/modernizr")
     <script language="JavaScript" type="text/javascript" src="~/Scripts/jquery-3.3.1.min.js"></script>
-    <script language="JavaScript" type="text/javascript" src="~/Scripts/bridgeScript.js"></script>
     <style>
-
         body {
             font: Avenir Next;
         }
@@ -42,12 +40,8 @@
             border-width:thin;
             border-color:grey;
         }
-
-  
-
     </style>
 </head>
-
 
 <h4>LSA Tech.Checklist</h4>
 <table class="table" style="font-size:medium;" border="1" >
@@ -56,10 +50,8 @@
         <col span="1" style="width: 25%;">
         <col span="1" style="width: 10%;">
         <col span="1" style="width: 50%;">
-
         <col span="1" style="width: 5%;">
         <col span="1" style="width: 5%;">
-
     </colgroup>
     <tr >
         <th style="background-color:lightgray">
@@ -85,7 +77,6 @@
 
     @foreach (var item in Model)
     {
-
         sn += 1;
         string fOK = "fOK(\"" + item.Id + "\")";
         string fNA = "fNA(\"" + item.Id + "\")";
@@ -103,28 +94,25 @@
             <td>
                 @Html.DisplayFor(modelItem => item.TCGuidance)
             </td>
-
-
             <td>
-                @Html.EditorFor(modelItem => item.TCOK, new { htmlAttributes = new { @id = item.Id + "OK", @onclick = @fOK } })
-
+                @Html.EditorFor(modelItem => item.TCOK, 
+                    new { htmlAttributes = new { @id = item.Id + "OK", @onclick = @fOK } })
             </td>
             <td>
-                @Html.EditorFor(modelItem => item.TCNA, new { htmlAttributes = new { @id = item.Id + "NA", @onclick = @fNA } })
-
+                @Html.EditorFor(modelItem => item.TCNA, 
+                    new { htmlAttributes = new { @id = item.Id + "NA", @onclick = @fNA } })
             </td>
         </tr>
     }
 </table>
 <script>
     var NewTC = @Html.Raw(Json.Encode(NewTC));
-       var Job = @Html.Raw(Json.Encode(Job));
-    console.log(Job);
+    var Job = @Html.Raw(Json.Encode(Job));
+
     var Model = @Html.Raw(Json.Encode(Model));
     if (NewTC) {
         for (index = 0; index < Model.length; ++index) {
             var m = Model[index];
-            //console.log(m.Id);
             //$('#' + m.Id).hide();
             if (m.TCCondition != null && !eval(m.TCCondition)) {
                 deleteTC(m.Id);
@@ -133,27 +121,20 @@
         }
     }
 
-
     function deleteTC(id) {
         $.ajax(
             {
                 type: 'GET',
                 url: "/TechChecklist/DeleteTC",
                 data: { id: id },
-
                 success: function (data) {
-
                     console.log(id + " is deleted");
                 },
                 error: function (e) {
                     alert('Error: ' + e);
-
                 }
             });
     }
-
-
-
 
    function fOK(id)
    {
@@ -203,25 +184,4 @@
     function checkout(data) {
         console.log(data);
     }
-
-
-    //else
-    //{
-    //    ct1 = $("#selectCertType").val();
-
-    //    return $.ajax({
-    //        type: 'GET',
-    //        url: '/Job/M1_Task1_BudgetHourCalc',
-    //        data: { bm_f: bm, ct_f: ct1 },
-    //        cache: false,
-    //        success: calcBudgetHour
-    //    });
-    //}
-    //}
-
-
-
-
-
-
 </script>

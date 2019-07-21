@@ -17,11 +17,8 @@ namespace BridgeMVC.Controllers
         public async Task<string> SetViewBags()
         {
             var bm = (string)Session["BridgeModule"];
-            //ViewBag.LCertType = await DocumentDBRepository.GetItemsAsync<BList>(d => d.Tag == "BList" && d.BridgeModule == bm && d.ListType == "CertType");
-            //ViewBag.LCertAction = await DocumentDBRepository.GetItemsAsync<BList>(d => d.Tag == "BList" && d.BridgeModule == bm && d.ListType == "CertAction");
-            ViewBag.LMainProdType = await DocumentDBRepository.GetItemsAsync<BList>(d => d.Tag == "BList" && d.BridgeModule == bm && d.ListType == "MainProdType");
-            ViewBag.LSubProdType = await DocumentDBRepository.GetItemsAsync<BList>(d => d.Tag == "BList" && d.BridgeModule == bm && d.ListType == "SubProdType");
-            //ViewBag.LUser = await DocumentDBRepository.GetItemsAsync<BUser>(d => d.Tag == "BUser" && (d.BridgesGranted).Contains(bm));
+            var medItemNo = (string)Session["MEDItemNo"];
+            ViewBag.LProdTech = await DocumentDBRepository.GetItemsAsync<BProdTechPara>(d => d.Tag == "BProdTechPara" && d.BridgeModule == bm && d.ProdName == medItemNo);
 
             return ("");
         }
@@ -29,26 +26,29 @@ namespace BridgeMVC.Controllers
         [ActionName("Index")]
         public async Task<ActionResult> IndexAsync()
         {
-
-            var items = await DocumentDBRepository.GetItemsAsync<Product>(d => d.Tag == "Product" && d.DbJobId == (string)Session["DbJobId"]);
-            //Session["BridgeModule"] = items.FirstOrDefault().BridgeModule;
+            string dbjid = (string)Session["DbJobId"];
+            await AddPTPifEmpty(dbjid);
+            var items = await DocumentDBRepository.GetItemsAsync<Product>(d => d.Tag == "Product" && d.DbJobId == dbjid);
             return View(items);
         }
         [ActionName("IndexReadOnly")]
         public async Task<ActionResult> IndexReadOnlyAsync()
         {
-
             var items = await DocumentDBRepository.GetItemsAsync<Product>(d => d.Tag == "Product" && d.DbJobId == (string)Session["DbJobId"]);
-            //Session["BridgeModule"] = items.FirstOrDefault().BridgeModule;
             return View(items);
         }
-
+        [ActionName("RefreshPTP")]
+        public async Task<ActionResult> RefreshPTP(string bridgeJobId)
+        {
+            string dbjid = (string)Session["DbJobId"];
+            string redirectUrl = "~/Job/CommonTask1/" + bridgeJobId;
+            await RefreshPTPAsync(dbjid);
+            return Redirect(Url.Content(redirectUrl));
+        }
         [ActionName("FullList")]
         public async Task<ActionResult> FullListAsync()
         {
-
             var items = await DocumentDBRepository.GetItemsAsync<Product>(d => d.Tag == "Product");
-            //Session["BridgeModule"] = items.FirstOrDefault().BridgeModule;
             return View(items);
         }
 
@@ -78,38 +78,38 @@ namespace BridgeMVC.Controllers
 
             return RedirectToAction("Index");
         }
-
-
-
-
-
-
-
-
+        [HttpPost]
+        [ActionName("SavePTP")]
+        public async Task<ActionResult> SavePTP(string ProdId, int PTPId, string PTPVal)
+        {
+            Product p = await DocumentDBRepository.GetItemAsync<Product>(ProdId);
+            p.PTPs[PTPId].TechParaValue = PTPVal;
+            await DocumentDBRepository.UpdateItemAsync<Product>(p.Id, p);
+  
+            return null;
+        }
 
         [ActionName("Create")]
         public async Task<ActionResult> CreateAsync()
         {
-            var r = new Product
+
+            var p = new Product
             {
                 Tag = "Product",
-                NpsJobId = (string)Session["NpsJobId"],
                 DbJobId = (string)Session["DbJobId"],
                 BridgeModule = (string)Session["BridgeModule"]
 
             };
-            await SetViewBags();
-  
-
-            return View(r);
+            await DocumentDBRepository.CreateItemAsync<Product>(p);
+            return RedirectToAction("Index"); 
 
         }
 
         [HttpPost]
         [ActionName("Create")]
         [ValidateAntiForgeryToken]
-        public async Task<ActionResult> CreateAsync([Bind(Include = "Id,Tag,BridgeModule,MainProdType,SubProdType,ProdDescription,NpsJobId,DbJobId," +
-            "DesignPara1,DesignPara2,DesignPara3,DesignPara4,DesignPara5,DesignPara6,Note")] Product item)
+        public async Task<ActionResult> CreateAsync([Bind(Include = "Id,Tag,BridgeModule,MainProdType,SubProdType,ProdDescription,DbJobId," +
+            "Uk,NCProductDbId,DbJobId,ProdName,NCProdType,PTPs")] Product item)
         {
             if (ModelState.IsValid)
             {
@@ -124,8 +124,8 @@ namespace BridgeMVC.Controllers
         [HttpPost]
         [ActionName("Edit")]
         [ValidateAntiForgeryToken]
-        public async Task<ActionResult> EditAsync([Bind(Include = "Id,Tag,BridgeModule,MainProdType,SubProdType,ProdDescription,NpsJobId,DbJobId," +
-            "DesignPara1,DesignPara2,DesignPara3,DesignPara4,DesignPara5,DesignPara6,Note")] Product item)
+        public async Task<ActionResult> EditAsync([Bind(Include = "Id,Tag,BridgeModule,MainProdType,SubProdType,ProdDescription,DbJobId," +
+            "Uk,NCProductDbId,DbJobId,ProdName,NCProdType,PTPs")] Product item)
         {
             if (ModelState.IsValid)
             {
@@ -153,8 +153,55 @@ namespace BridgeMVC.Controllers
             return View(item);
         }
 
+        public async Task AddPTPifEmpty (string dbjid)
+        {
+            Job j = await DocumentDBRepository.GetItemAsync<Job>(dbjid);
+            var LProdTechPara = await DocumentDBRepository.GetItemsAsync<BProdTechPara>(d => d.Tag == "BProdTechPara" && d.BridgeModule == j.BridgeModule && d.ProdName == j.MEDItemNo);
+                LProdTechPara = LProdTechPara.OrderBy(d => d.ViewSequence);
+            var items = await DocumentDBRepository.GetItemsAsync<Product>(d => d.Tag == "Product" && d.DbJobId == dbjid);
 
+            foreach (Product prod in items)
+            {
+                if (prod.PTPs.Count() == 0)
+                {
+                    foreach (BProdTechPara bptp in LProdTechPara)
+                    {
+                        ProdTechPara newptp = new ProdTechPara()
+                        {
+                            TechParaName = bptp.TechParaName,
+                            TechParaValue = bptp.DefaultValue,
+                        };
+                        prod.PTPs.Add(newptp);
+                    }
+                }
+            }
+        }
+        public async Task RefreshPTPAsync(string dbjid)
+        {
+            Job j = await DocumentDBRepository.GetItemAsync<Job>(dbjid);
+            var LProdTechPara = await DocumentDBRepository.GetItemsAsync<BProdTechPara>(d => d.Tag == "BProdTechPara" && d.BridgeModule == j.BridgeModule && d.ProdName == j.MEDItemNo);
+                LProdTechPara = LProdTechPara.OrderBy(d => d.ViewSequence);
+            var items = await DocumentDBRepository.GetItemsAsync<Product>(d => d.Tag == "Product" && d.DbJobId == dbjid);
 
+            foreach (Product prod in items)
+            {
+                if (prod.PTPs.Count() != 0)
+                {
+                    prod.PTPs.Clear();
+                }
+
+                foreach (BProdTechPara bptp in LProdTechPara)
+                {
+                    ProdTechPara newptp = new ProdTechPara()
+                    {
+                        TechParaName = bptp.TechParaName,
+                        TechParaValue = bptp.DefaultValue,
+                    };
+                    prod.PTPs.Add(newptp);
+                }
+                await DocumentDBRepository.UpdateItemAsync<Product>(prod.Id, prod);
+            }
+        }
 
 
     }

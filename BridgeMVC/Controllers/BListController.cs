@@ -12,6 +12,15 @@ namespace BridgeMVC.Controllers
     [Authorize]
     public class BListController : Controller
     {
+        public async Task<String> SetViewBag()
+        {
+            string bm = (string)Session["BridgeModule"];
+            var lblistType = await DocumentDBRepository.GetItemsAsync<BList>(d => d.Tag == "BList" && d.BridgeModule == bm && d.ListType == "BListType");
+            lblistType = lblistType.OrderBy(d => d.ListItem);
+            ViewBag.LBlistType = lblistType;
+            return "";
+        }
+
         // GET: BList
         [ActionName("Index")]
         public async Task<ActionResult> IndexAsync(string searchString)
@@ -32,13 +41,15 @@ namespace BridgeMVC.Controllers
         }
 
         [ActionName("Create")]
-        public ActionResult Create()
+        public async Task<ActionResult> CreateAsync()
         {
             var bm = (string)Session["BridgeModule"];
             var S = new BList()
             {
                 BridgeModule = bm,
             };
+
+            await SetViewBag();
             return View(S);
         }
 
@@ -53,7 +64,7 @@ namespace BridgeMVC.Controllers
                 await DocumentDBRepository.CreateItemAsync<BList>(item);
                 return RedirectToAction("Index");
             }
-
+            await SetViewBag();
             return View(item);
         }
 
@@ -67,7 +78,7 @@ namespace BridgeMVC.Controllers
                 await DocumentDBRepository.UpdateItemAsync<BList>(item.Id, item);
                 return RedirectToAction("Index");
             }
-
+            await SetViewBag();
             return View(item);
         }
 
@@ -84,35 +95,9 @@ namespace BridgeMVC.Controllers
             {
                 return HttpNotFound();
             }
-
+            await SetViewBag();
             return View(item);
         }
 
-        public async Task<ActionResult> Delete(string id)
-        {
-            if (id == null)
-            {
-                return new HttpStatusCodeResult(HttpStatusCode.BadRequest);
-            }
-
-            BList r = await DocumentDBRepository.GetItemAsync<BList>(id);
-
-            if (r == null)
-            {
-                return HttpNotFound();
-            }
-
-            return View(r);
-        }
-
-        //[HttpPost, ActionName("Delete")]
-        //[ValidateAntiForgeryToken]
-        //public async Task<ActionResult> DeleteConfirmed(string id)
-        //{
-        //    BList r = await DocumentDBRepository.GetItemAsync<BList>(id);
-        //    await DocumentDBRepository.DeleteItemAsync(r.Id);
-
-        //    return RedirectToAction("Index");
-        //}
     }
 }
