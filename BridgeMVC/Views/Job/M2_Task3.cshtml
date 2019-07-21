@@ -1,0 +1,420 @@
+﻿@model BridgeMVC.Models.Job
+
+@{
+    ViewBag.Title = "M1_Task1";
+    string UserSignature = (string)Session["UserSignature"];
+    string bridgeModule = (string)Session["BridgeModule"];
+    string SF = (string)Session["SendingFlag"];
+
+    var LCertType = ViewBag.LCertType;
+    var LCertAction = ViewBag.LCertAction;
+    var LMainProdType = ViewBag.LMainProdType;
+    var LSubProdType = ViewBag.LSubProdType;
+    var LUser = ViewBag.LUser;
+
+}
+
+<style>
+    .bing {
+        float: left;
+        /*width: 450px;*/
+        padding: 0.5em 1em 0.5em 1em;
+        min-width: 400px;
+        font-weight: bold;
+    }
+
+    .form-control {
+        font-weight: bold;
+        color: steelblue;
+    }
+</style>
+
+<h2>EXECUTE APPROVAL</h2>
+
+@using (Html.BeginForm(null, null, FormMethod.Post, new { id = "jobForm" }))
+{@Html.AntiForgeryToken()
+
+<div>
+
+    @Html.HiddenFor(model => model.Tag)
+    @Html.HiddenFor(model => model.BridgeModule)
+    @Html.HiddenFor(model => model.Id)
+    @Html.HiddenFor(model => model.NpsJobName)
+    @Html.HiddenFor(model => model.NpsJobId)
+    @*@Html.HiddenFor(model => model.TaskHandler)*@
+    @Html.HiddenFor(model => model.Task1)
+    @Html.HiddenFor(model => model.Task2)
+    @Html.HiddenFor(model => model.Task3)
+    @Html.HiddenFor(model => model.CustomerName)
+    @Html.HiddenFor(model => model.ProdDescription)
+    @*@Html.HiddenFor(model => model.ApprNote)*@
+    @Html.HiddenFor(model => model.IsComplete)
+    @*@Html.HiddenFor(model => model.SalesOrderNo)*@
+    @*@Html.HiddenFor(model => model.SubOrderNo)*@
+    @Html.HiddenFor(model => model.CertType)
+    @Html.HiddenFor(model => model.CertAction)
+    @Html.HiddenFor(model => model.MainProdType)
+    @Html.HiddenFor(model => model.SubProdType)
+    @Html.HiddenFor(model => model.ReceivedTime)
+    @*@Html.HiddenFor(model => model.FeeSetTime)*@
+    @Html.HiddenFor(model => model.IoraSentTime)
+    @Html.HiddenFor(model => model.IoraReturnedTime)
+    @Html.HiddenFor(model => model.JobCompletedTime)
+    @*@Html.HiddenFor(model => model.CustomerName)
+        @Html.HiddenFor(model => model.CustomerId)*@
+    @*@Html.HiddenFor(model => model.Fee)*@
+    @*@Html.HiddenFor(model => model.FeeSetter)
+        @Html.HiddenFor(model => model.FeeVerifier)*@
+    @Html.HiddenFor(model => model.JobVerifier)
+    @*@Html.HiddenFor(model => model.RAE)*@
+    @*@Html.HiddenFor(model => model.MWL)*@
+    @Html.HiddenFor(model => model.ExistingCertNo)
+    @Html.HiddenFor(model => model.CertNo)
+    @*@Html.HiddenFor(model => model.SerialNo)*@
+    @*@Html.HiddenFor(model => model.MEDItemNo)*@
+    @Html.HiddenFor(model => model.DeliveryWeek)
+    @Html.HiddenFor(model => model.LocalUnit)
+    @Html.HiddenFor(model => model.ArchiveFolder)
+    @Html.HiddenFor(model => model.IsHold)
+    @Html.HiddenFor(model => model.StatusNote)
+    @Html.HiddenFor(model => model.VerifyLvl)
+    @*@Html.HiddenFor(model => model.SurveyDate)
+        @Html.HiddenFor(model => model.SurveyStation)*@
+    @Html.HiddenFor(model => model.TechPara1)
+    @Html.HiddenFor(model => model.TechPara2)
+    @Html.HiddenFor(model => model.TechPara3)
+    @Html.HiddenFor(model => model.TechPara4)
+    @Html.HiddenFor(model => model.MEDFactory)
+    @*@Html.HiddenFor(model => model.MEDFBNo)*@
+    @*@Html.HiddenFor(model => model.MEDFBDue)*@
+    @Html.HiddenFor(model => model.AnyDesignChange)
+    @Html.HiddenFor(model => model.ChecklistUsed)
+    @Html.HiddenFor(model => model.DesignFolder)
+    @Html.HiddenFor(model => model.IsDocQualityGood)
+    @Html.HiddenFor(model => model.IsDocSufficient)
+    @Html.HiddenFor(model => model.SetHoldTime)
+    @Html.HiddenFor(model => model.IORASpentTime)
+    @Html.HiddenFor(model => model.ModificationDesc)
+    @Html.HiddenFor(model => model.OnHoldNote)
+    @*@Html.HiddenFor(model => model.FeeVerifyTime)*@
+    @Html.HiddenFor(model => model.RegisterTime)
+    @Html.HiddenFor(model => model.DocReq)
+    @Html.HiddenFor(model => model.NoOfCert)
+    @Html.HiddenFor(model => model.FeeSet)
+    @Html.HiddenFor(model => model.VesselID)
+    @Html.HiddenFor(model => model.DocReqNote)
+    @Html.HiddenFor(model => model.NpsDbId)
+    @*@Html.HiddenFor(model => model.ExeDoneBy)
+        @Html.HiddenFor(model => model.ExeDoneTime)*@
+    @Html.HiddenFor(model => model.CompletedBy)
+    @Html.HiddenFor(model => model.SendingFlag)
+    @Html.HiddenFor(model => model.IoraDbId)
+    @Html.HiddenFor(model => model.InternalFee)
+    @Html.HiddenFor(model => model.BudgetHour)
+</div>
+<div class="form-horizontal">
+    <hr />
+
+    <div class="bing col-lg-12">
+
+        <h3>Scope of work: </h3>
+        @Html.TextAreaFor(model => model.IoraSoW, new { @style = "height:300px; width:100%;", id = "DpSoW01", @class = "form-control", @readonly = "readonly" })
+        @Html.ValidationMessageFor(model => model.IoraSoW, "", new { @class = "text-danger" })
+
+    </div>
+
+
+
+    <div class="bing col-lg-6">
+        <p>Sales Order:</p>
+        @Html.EditorFor(model => model.SalesOrderNo, new { htmlAttributes = new { @class = "form-control", @readonly = "readonly" } })
+        @Html.ValidationMessageFor(model => model.SalesOrderNo, "", new { @class = "text-danger" })
+    </div>
+
+    <div class="bing col-lg-6" hidden>
+        <p>Fee (External, incl. TSA/MSA):</p>
+        @Html.EditorFor(model => model.Fee, new { htmlAttributes = new { @class = "form-control", @readonly = "readonly" } })
+        @Html.ValidationMessageFor(model => model.Fee, "", new { @class = "text-danger" })
+    </div>
+
+    <div class="bing col-lg-6">
+        <p>Budget Hours:</p>
+        @Html.EditorFor(model => model.BudgetHour, new { htmlAttributes = new { @class = "form-control", @readonly = "readonly" } })
+        @Html.ValidationMessageFor(model => model.BudgetHour, "", new { @class = "text-danger" })
+    </div>
+
+    <div class="bing col-lg-6">
+        <p>Appoval Sub Order:</p>
+        @Html.EditorFor(model => model.SubOrderNo, new { htmlAttributes = new { @class = "form-control" } })
+        @Html.ValidationMessageFor(model => model.SubOrderNo, "", new { @class = "text-danger" })
+    </div>
+
+    <div class="bing col-lg-6" hidden>
+        <p>RAE:<img style="cursor:pointer" src="~/Content/pictures/magic.png" onclick="SetWBasRAE()" class="magicWand"></p>
+        @Html.EditorFor(model => model.RAE, new { htmlAttributes = new { @class = "form-control" } })
+        @Html.ValidationMessageFor(model => model.RAE, "", new { @class = "text-danger" })
+    </div>
+
+
+    <div class="bing col-lg-6">
+        <p>Ref. certificate due date.:</p>
+        @Html.EditorFor(model => model.MEDFBDue, new { htmlAttributes = new { @class = "form-control", @readonly = "readonly" } })
+        @Html.ValidationMessageFor(model => model.MEDFBDue, "", new { @class = "text-danger" })
+    </div>
+
+
+
+
+    <div class="bing col-lg-6">
+        <p>Maximum working load:</p>
+        @Html.EditorFor(model => model.MWL, new { htmlAttributes = new { @class = "form-control", @readonly = "readonly" } })
+        @Html.ValidationMessageFor(model => model.MWL, "", new { @class = "text-danger" })
+    </div>
+    <div class="bing col-lg-6">
+        <p>Amount of certificate:</p>
+        @Html.EditorFor(model => model.CertAmount, new { htmlAttributes = new { @class = "form-control", @readonly = "readonly" } })
+        @Html.ValidationMessageFor(model => model.CertAmount, "", new { @class = "text-danger" })
+    </div>
+
+    <div class="bing col-lg-6">
+        <p id="pMEDFBNo">Ref. Certificate No.:</p>
+        @Html.EditorFor(model => model.MEDFBNo, new { htmlAttributes = new { @class = "form-control", @readonly = "readonly" } })
+        @Html.ValidationMessageFor(model => model.MEDFBNo, "", new { @class = "text-danger" })
+    </div>
+
+    <div class="bing col-lg-6">
+        <p> MED Item No.: </p>
+        @Html.EditorFor(model => model.MEDItemNo, new { htmlAttributes = new { @class = "form-control", @readonly = "readonly" } })
+        @Html.ValidationMessageFor(model => model.MEDItemNo, "", new { @class = "text-danger" })
+    </div>
+    <div class="bing col-lg-6">
+        <p> Serial no.: </p>
+        @Html.EditorFor(model => model.SerialNo, new { htmlAttributes = new { @class = "form-control", @readonly = "readonly" } })
+        @Html.ValidationMessageFor(model => model.SerialNo, "", new { @class = "text-danger" })
+    </div>
+    <div class="bing col-lg-6" hidden>
+        <p> Survey station </p>
+        @Html.EditorFor(model => model.SurveyStation, new { htmlAttributes = new { @class = "form-control" } })
+        @Html.ValidationMessageFor(model => model.SurveyStation, "", new { @class = "text-danger" })
+    </div>
+    <div class="bing col-lg-6" hidden>
+        <p> Survey date: (DD-MM-YYYY) </p>
+        @Html.EditorFor(model => model.SurveyDate, new { htmlAttributes = new { @class = "form-control" } })
+        @Html.ValidationMessageFor(model => model.SurveyDate, "", new { @class = "text-danger" })
+    </div>
+
+
+
+    <div class="bing col-lg-6" hidden>
+        Fee setter
+        @Html.EditorFor(model => model.FeeSetter, new { htmlAttributes = new { @class = "form-control" } })
+
+        @Html.EditorFor(model => model.FeeSetTime, new { htmlAttributes = new { @class = "form-control" } })
+
+        @Html.EditorFor(model => model.TaskHandler, new { htmlAttributes = new { @class = "form-control" } })
+        @Html.EditorFor(model => model.ExeDoneBy, new { htmlAttributes = new { @class = "form-control" } })
+
+        @Html.EditorFor(model => model.ExeDoneTime, new { htmlAttributes = new { @class = "form-control" } })
+        @Html.EditorFor(model => model.FeeVerifier, new { htmlAttributes = new { @class = "form-control" } })
+        @Html.EditorFor(model => model.FeeVerifyTime, new { htmlAttributes = new { @class = "form-control" } })
+    </div>
+
+
+    <div class=" col-lg-12 ">
+        <h4 style="clear:both;">Internal Approval Note:</h4>
+        @Html.EditorFor(model => model.ApprNote, new { htmlAttributes = new { @class = "form-control", style = "height:100px" } })
+        @Html.ValidationMessageFor(model => model.ApprNote, "", new { @class = "text-danger" })
+    </div>
+    <hr />
+    <div class="form-group" style="clear:both;">
+        <br />
+        <div class="col-md-12">
+            <input name="submit" type="submit" value="Save" class="btn btn-default" id="saveButton1" readonly />
+
+            <input name="submit" value="Send to WHITEBOARD" class="btn btn-primary" style="float:right" type="submit" id="TaskComplete1" readonly />
+        </div>
+    </div>
+
+</div>
+
+}
+
+
+@section Scripts {
+    @Scripts.Render("~/bundles/jqueryval")
+}
+
+
+<script>
+
+    //read viewbag's info.
+    var userSignature = "@UserSignature";
+    var bm = "@bridgeModule";
+    var Job = @Html.Raw(Json.Encode(Model));
+
+    var LMainProdType = @Html.Raw(Json.Encode(LMainProdType));
+    var LSubProdType = @Html.Raw(Json.Encode(LSubProdType));
+    var LUser = @Html.Raw(Json.Encode(LUser));
+    var LCertAction = @Html.Raw(Json.Encode(LCertAction));
+    var LCertType = @Html.Raw(Json.Encode(LCertType));
+
+    var TargetUser;
+    var BEmail;
+    var taskStatus;
+
+    //Set task parameter
+    var taskNo = 3;
+    var taskStatusFlag = "FeeVerifier"; //who completed the task
+    var taskCompleteDate = "FeeVerifyTime";
+    var taskCompleteStr = "The fee is verified by ";
+
+    renderTaskShowHide();
+    renderTaskHandling();
+
+    $("#selectListHandler").val("WHITEBOARD");
+
+
+    //show hide fields
+    showHideFields();
+    function showHideFields()
+    {
+
+        var defaultHiddenList = "MEDFBNo,MEDFBDue,SerialNo,CertAmount,MWL,MEDItemNo,ExistingCertNo,SurveyStation,SurveyDate".split(',');
+        defaultHiddenList.forEach(hideElement);
+
+        var toShow = "";
+        console.log(Job.CertType);
+
+        switch (Job.CertType) {
+
+            case "MED-F":
+                toShow += "MEDFBNo,MEDFBDue,SerialNo,CertAmount,MEDItemNo,SurveyStation,SurveyDate,";
+                $("#pMEDFBNo").html("Ref. MED-B certificate No.");
+                $("#selectCertAction").val("Initial");
+                $("#selectMainProdType").val("Life-Saving appliances");
+                $("#selectSubProdType").append(new Option("Module F certification", "Module F certification"));
+                $("#selectSubProdType").val("Module F certification");
+                //$("#SubProdType").val("Module F certification");
+                break;
+            case "MED-G":
+                toShow += "";
+                break;
+            case "MED-B":
+                toShow += "";
+                break;
+            case "TA":
+                toShow += "";
+                break;
+            case "DVR":
+                toShow += "";
+                break;
+            case "MED-D":
+                toShow += "";
+                break;
+            default:
+                toShow += "";
+        }
+        switch ($("#selectCertAction").val()) {
+            case "Modification":
+                toShow += "";
+                break;
+            case "Initial with reference":
+                toShow += "";
+                break;
+            case "Renewal with modification":
+                toShow += "";
+                break;
+            case "Renewal":
+                toShow += "";
+                break;
+            default:
+                toShow += "";
+        }
+
+
+        if (toShow) {
+            var splitS = toShow.split(',');
+            splitS.forEach(showElement);
+        }
+     }
+
+    function showElement(value) {
+        console.log("show" + value);
+        if (value) {
+            document.getElementById(value).parentNode.style.display = "block";
+        }
+    }
+    function hideElement(value) {
+        console.log("hide" + value);
+        if (value) {
+            document.getElementById(value).parentNode.style.display = "none";
+        }
+    }
+
+    //$("#selectCertType").change();
+
+    $("#selectCertType").on("change", function () {
+        showHideFields()
+    });
+    $("#selectCertAction").on("change", function () {
+        showHideFields()
+    });
+
+
+
+
+
+
+
+
+    //console.log(getTodayDate());
+
+    //set up select list
+    $.each(LCertType, function (key, data) {
+        $("#selectCertType").append(new Option(data.ListItem, data.ListItem));
+    });
+
+    $.each(LCertAction, function (key, data) {
+        $("#selectCertAction").append(new Option(data.ListItem, data.ListItem));
+    });
+
+    $.each(LMainProdType, function (key, data) {
+        $("#selectMainProdType").append(new Option(data.ListItem, data.ListItem));
+    });
+
+    var mval = $("#selectMainProdType :selected").text();
+      $.each(LSubProdType, function (key, data) {
+        if (data.UpperLvl == mval) {
+            $("#selectSubProdType").append(new Option(data.ListItem, data.ListItem));
+        }
+    });
+
+//When main prodtype changes, refesh the sub prod type.
+    $("#selectMainProdType").on("change", function () {
+        var mval = $("#selectMainProdType :selected").text();
+
+        $('#selectSubProdType option').each(function () {
+            if ($(this).val() != 'X') {
+                $(this).remove();
+            }
+        });
+
+        $("#selectSubProdType option").remove();
+        $.each(LSubProdType, function (key, data) {
+            if (data.UpperLvl == mval) {
+                $("#selectSubProdType").append(new Option(data.ListItem, data.ListItem));
+            }
+        });
+    });
+
+    function SetWBasRAE() {
+
+        $("#RAE").val("WHITEBOARD");
+
+
+    }
+
+
+</script>
+
+
