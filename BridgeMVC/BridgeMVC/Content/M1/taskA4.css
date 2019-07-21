@@ -11,9 +11,9 @@ page[size="A4"] {
     display: block;
     margin: 0 0;
     padding-top: 10mm;
-    padding-left: 25mm;
-    padding-right: 25mm;
-    padding-bottom: 20mm;
+    padding-left: 5mm;
+    padding-right: 5mm;
+    padding-bottom: 10mm;
     margin-bottom: 5mm;
     box-shadow: 0 0 5mm rgba(0,0,0,0.5);
 }
