@@ -14,6 +14,14 @@
     var jobNum = Model.Count();
     int TotalFee = 0;
     string jobsTxt = "";
+    if (jobNum == 1)
+    {
+        jobsTxt = "It is " + jobNum.ToString() + " job in the worklist.";
+    }
+    else
+    {
+        jobsTxt = "There are " + jobNum.ToString() + " jobs in the worklist.";
+    }
 
 }
 
@@ -80,7 +88,10 @@
 
     @foreach (var item in Model)
     {
-        TotalFee += (int)item.Fee;
+        if (item.Fee != null)
+        {
+            TotalFee += (int)item.Fee;
+        }
 
         string npsJobName = item.NpsJobName;
         if (string.IsNullOrEmpty(npsJobName))
@@ -164,17 +175,6 @@
 <br /><br /><br />
 
 @*Stats*@
-
-@{
-    if (jobNum > 1)
-    {
-        jobsTxt = "There are " + jobNum.ToString() + " jobs in the worklist.";
-    }
-    else
-    {
-        jobsTxt = "It is " + jobNum.ToString() + " job in the worklist.";
-    }
-}
 
 <div> @jobsTxt </div>
 <div> The total fee for the job(s) is @TotalFee NOK. </div>

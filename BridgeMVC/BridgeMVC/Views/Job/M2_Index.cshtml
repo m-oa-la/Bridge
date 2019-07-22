@@ -15,6 +15,14 @@
     var jobNum = Model.Count();
     int TotalFee = 0;
     string jobsTxt = "";
+    if (jobNum == 1)
+    {
+        jobsTxt = "It is " + jobNum.ToString() + " job in the worklist.";
+    }
+    else
+    {
+        jobsTxt = "There are " + jobNum.ToString() + " jobs in the worklist.";
+    }
 
 
     string getColorCode(string ct)
@@ -103,8 +111,11 @@
 
     @foreach (var item in Model)
     {
-        // TotalFee += (int)item.Fee;
-
+        if (item.Fee != null)
+        {
+            TotalFee += (int)item.Fee;
+        }
+              
         string npsJobName = item.NpsJobName;
         string pauseIconId = "pause_" + item.Id;
         string startIconId = "start_" + item.Id;
@@ -200,17 +211,6 @@
 
 </table>
 <br /><br /><br />
-
-@{
-    if (jobNum > 1)
-    {
-        jobsTxt = "There are " + jobNum.ToString() + " jobs in the worklist.";
-    }
-    else
-    {
-        jobsTxt = "It is " + jobNum.ToString() + " job in the worklist.";
-    }
-}
 
 <div> @jobsTxt </div>
 <div> The total fee for the job(s) is @TotalFee NOK. </div>
