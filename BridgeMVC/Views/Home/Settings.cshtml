@@ -6,9 +6,9 @@
 }
 
 <style>
-    img{
-        width:72px;
-        height:72px;
+    img {
+        width: 72px;
+        height: 72px;
     }
 </style>
 <h2>SET IT UP!</h2>
@@ -19,30 +19,31 @@
     <li>
         <a href="@Url.Action("Index", "BLSACert")" title="List View" class="links">
             <img alt="List View" src="@Url.Content("~/Content/pictures/text.jpg")">
-            Text shown on Certificate acc. to tech. parameters
-        </a>
-    </li>
-    <li>
-        <a href="@Url.Action("Index", "bprodtechpara")" title="List View" class="links">
-            <img alt="List View" src="@Url.Content("~/Content/pictures/parameters.png")">
-            Technical parameters acc. to MED item No.
+            Body text on certificate
         </a>
     </li>
     <hr />
     <li>
-        <a href="@Url.Action("Index", "BList", new { searchstring = "BListType" })" title="List View" class="links">
-            <img alt="List View" src="@Url.Content("~/Content/pictures/dropdownName.png")">
-            Create a new Dropdown / autocomplete list
+        <a href="@Url.Action("Index", "bprodtechpara")" title="List View" class="links">
+            <img alt="List View" src="@Url.Content("~/Content/pictures/parameters.png")">
+            Technical parameters for product
         </a>
     </li>
+    <hr />
+    @*<li>
+            <a href="@Url.Action("Index", "BList", new { searchstring = "BListType" })" title="List View" class="links">
+                <img alt="List View" src="@Url.Content("~/Content/pictures/dropdownName.png")">
+                Create a new Dropdown / autocomplete list
+            </a>
+        </li>*@
 
     <li>
         <a href="@Url.Action("Index", "BList")" title="List View" class="links">
             <img alt="List View" src="@Url.Content("~/Content/pictures/dropdownList.png")">
-            Fill in a Dropdown / autocomplete list
+            Dropdown list (Non-/Editable)
         </a>
     </li>
-   <hr />
+    <hr />
     <li>
         <a href="@Url.Action("Index", "BList", new { searchstring = "MEDItemNo" })" title="List View" class="links">
             <img alt="List View" src="@Url.Content("~/Content/pictures/med.jpg")">

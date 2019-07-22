@@ -170,9 +170,30 @@ namespace BridgeMVC.Controllers
             //Temp. solution. to be fixed
             if(item.BridgeModule == "M3") 
             {
-                item.CertType = "MED";
-                item.MEDItemNo = "MED/3.16";
-                ViewBag.LProduct = await DocumentDBRepository.GetItemsAsync<Product>(d => d.Tag == "Product" && d.DbJobId == id);
+                
+                if(!(item.MEDItemNo == "MED/3.16" && item.CertType == "MED"))
+                {
+                    item.CertType = "MED";
+                    item.MEDItemNo = "MED/3.16";
+                    await DocumentDBRepository.UpdateItemAsync<Job>(item.Id, item);
+                }
+
+                var lproduct = await DocumentDBRepository.GetItemsAsync<Product>(d => d.Tag == "Product" && d.DbJobId == id);
+                if (lproduct.Count() == 0)
+                {
+                    Product p = new Product()
+                    {
+                        BridgeModule = item.BridgeModule,
+                        ProdName = item.MEDItemNo,
+                        DbJobId = item.Id,
+                        PTPs = new List<ProdTechPara>(),
+                    };
+                    await DocumentDBRepository.CreateItemAsync<Product>(p);
+                    lproduct = await DocumentDBRepository.GetItemsAsync<Product>(d => d.Tag == "Product" && d.DbJobId == id);
+                }
+
+                ViewBag.LProduct = lproduct;
+
                 var LAutoCertText = await DocumentDBRepository.GetItemsAsync<BLSACert>(d => d.Tag == "BLSACert" && d.BridgeModule == item.BridgeModule);
                 LAutoCertText = LAutoCertText.OrderBy(d => d.Description);
                 ViewBag.LAutoCertText = LAutoCertText;
