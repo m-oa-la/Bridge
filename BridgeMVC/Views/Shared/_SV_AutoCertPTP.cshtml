@@ -150,23 +150,29 @@ htmlAttributes: null
 
 
     $("#refreshProdPtps").click(function () {
+        recreateptp(Job.Id);
+        window.location.reload(false);
+    });
+
+
+    function recreateptp(id) {
 
         if (confirm('The existing data for the product will be removed. Continue?')) {
 
-            $("#recreateprodbtn").click();
+            //$("#recreateprodbtn").click();
 
-        //    return $.ajax({
-        //        type: 'POST',
-        //        url: '/Product/RefreshPTP/',
-        //        data: { bridgeJobId: Job.Id},
-        //        cache: false,
-        //        success: {
-        //          }
-        //    });
+            return $.ajax({
+                type: 'POST',
+                url: '/Product/RefreshPTP/',
+                data: { bridgeJobId: Job.Id},
+                cache: false,
+                success: {
+                  },
+            });
         } else {
             // Do nothing!
         }
-        window.location.reload(false);
-    });
+
+    }
 
 </script>
