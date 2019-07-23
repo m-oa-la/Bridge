@@ -59,8 +59,7 @@
 }
 <br />
 
-
-<table class="table table-mid-align-rows hoverRow" style="table-layout:fixed;">
+<table id="sortTable" class="table table-mid-align-rows hoverRow" style="table-layout:fixed;">
     <colgroup>
         <col span="1" style="width: 21%;">
         <col span="1" style="width: 120px;">
@@ -73,15 +72,17 @@
         <col span="1" style="width: 24%;">
     </colgroup>
     <tr>
-        <th style="border-top:none"> JOB ID        </th>
-        <th style="border-top:none"> PROGRESS      </th>
-        <th style="border-top:none"> CUSTOMER      </th>
-        <th style="border-top:none"> PROJECT NAME  </th>
+        <th onclick="sortTable(0)" style="border-top:none"> JOB ID       <div class="arrows"> &#11046 </div> </th>
+        <th onclick="sortTable(1)" style="border-top:none"> PROGRESS     <div class="arrows"> &#11046 </div> </th>
+        <th onclick="sortTable(2)" style="border-top:none"> CUSTOMER     <div class="arrows"> &#11046 </div> </th>
+        <th onclick="sortTable(3)" style="border-top:none"> PROJECT NAME <div class="arrows"> &#11046 </div> </th>
+        @{ int col = 4; }
         @foreach (string taskname in taskNames)
         {
-            <th style="border-top:none"> @taskname </th>
+            <th onclick="sortTable(@col)" style="border-top:none"> @taskname <div class="arrows"></div> </th>
+            col++;
         }
-        <th style="border-top:none"> IORA STATUS   </th>
+        <th onclick="sortTable(@col)"> IORA STATUS <div class="arrows"> &#11046 </div>  </th>
         @*<th>            @Html.DisplayNameFor(model => model.TaskHandler)        </th>
             <th>            @Html.DisplayNameFor(model => model.Completed)        </th>*@
     </tr>
@@ -174,7 +175,7 @@
 </table>
 <br /><br /><br />
 
-@*Stats*@
+@*Stats *@
 
 <div> @jobsTxt </div>
 <div> The total fee for the job(s) is @TotalFee NOK. </div>
@@ -183,13 +184,18 @@
 
 @section Scripts {
     <script type="text/javascript">
-        var LUser = @Html.Raw(Json.Encode(LUser));
+            var LUser = @Html.Raw(Json.Encode(LUser));
         var us = @Html.Raw(Json.Encode(US));
 
-        $("#userSig").append(new Option(us, us));
+        console.log(LUser);
 
-        $.each(LUser, function (key, data) {
-            $("#userSig").append(new Option(data.Signature, data.Signature));
-        });
+            $("#userSig").append(new Option(us, us));
+
+            $.each(LUser, function (key, data) {
+                $("#userSig").append(new Option(data.Signature, data.Signature));
+            });
+
+
+
     </script>
 }

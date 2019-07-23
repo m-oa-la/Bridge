@@ -146,7 +146,7 @@ body {
 
 .table th, td {
     border-radius: 25px;
-    border: 1px solid white;
+    border: 1px solid white !important;
 }
 
 .title {
@@ -169,3 +169,6 @@ body {
     border-radius: 12.5px;
 }
 
+.arrows {
+    float:right;
+}
