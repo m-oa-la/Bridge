@@ -23,6 +23,7 @@
         jobsTxt = "There are " + jobNum.ToString() + " jobs in the worklist.";
     }
 
+    
 }
 
 <div class="title">
@@ -65,26 +66,30 @@
         <col span="1" style="width: 120px;">
         <col span="1" style="width: 24%;">
         <col span="1" style="width: 24%;">
-        <col span="1" style="max-width: 40px; width:39px">
-        <col span="1" style="max-width: 40px; width:39px">
-        <col span="1" style="max-width: 40px; width:39px">
+        <col span="1" style="max-width: 40px; width:35px">
+        <col span="1" style="max-width: 40px; width:35px">
+        <col span="1" style="max-width: 40px; width:35px">
         <col span="1" style="max-width: 50px; width:49px">
         <col span="1" style="width: 24%;">
+        <col span="1" style="width: 182px;">
     </colgroup>
     <tr>
-        <th onclick="sortTable(0)" style="border-top:none"> JOB ID       <div class="arrows"> &#11046 </div> </th>
-        <th onclick="sortTable(1)" style="border-top:none"> PROGRESS     <div class="arrows"> &#11046 </div> </th>
-        <th onclick="sortTable(2)" style="border-top:none"> CUSTOMER     <div class="arrows"> &#11046 </div> </th>
-        <th onclick="sortTable(3)" style="border-top:none"> PROJECT NAME <div class="arrows"> &#11046 </div> </th>
+        <th onclick="sortTable(0)"> JOB ID       <div class="arrows"> &#11046 </div> </th>
+        <th onclick="sortTable(1)"> PROGRESS     <div class="arrows"> &#11046 </div> </th>
+        <th onclick="sortTable(2)"> CUSTOMER     <div class="arrows"> &#11046 </div> </th>
+        <th onclick="sortTable(3)"> PROJECT NAME <div class="arrows"> &#11046 </div> </th>
         @{ int col = 4; }
         @foreach (string taskname in taskNames)
         {
-            <th onclick="sortTable(@col)" style="border-top:none"> @taskname <div class="arrows"></div> </th>
+            <th onclick="sortTable(@col)"> @taskname <div class="arrows"></div> </th>
             col++;
         }
         <th onclick="sortTable(@col)"> IORA STATUS <div class="arrows"> &#11046 </div>  </th>
+        @{ col++; }
+        <th onclick="sortTable(@col)"> DAYS SINCE RECEIVED <div class="arrows"> &#11046 </div>  </th>
+
         @*<th>            @Html.DisplayNameFor(model => model.TaskHandler)        </th>
-            <th>            @Html.DisplayNameFor(model => model.Completed)        </th>*@
+        <th>            @Html.DisplayNameFor(model => model.Completed)        </th>*@
     </tr>
 
     @foreach (var item in Model)
@@ -116,6 +121,17 @@
         string editlink4 = "'/Job/CommonTask4/" + item.Id + "'";
         string linkNcertReporting = "'/Job/NCertReporting/" + item.Id + "'";
         string t2tag = "T2TAG" + item.Task2 + "T2TAG";
+
+        string daysSince = "0,0";
+        if (item.ReceivedTime != null)
+        {
+            DateTime recievedTime = (DateTime)item.ReceivedTime;
+            TimeSpan timeSpan = DateTime.Now - recievedTime;
+            daysSince = timeSpan.TotalDays.ToString("0.0");
+        }
+
+
+
 
         <tr class="jobList">
             <td>
@@ -170,8 +186,13 @@
                     }
                 </p>
             </td>
+            <td>
+                <p style="float:right">
+                    @daysSince
+                </p>
+            </td>
         </tr>
-    }
+     }
 </table>
 <br /><br /><br />
 
@@ -182,20 +203,14 @@
 <hr />
 
 
-@section Scripts {
-    <script type="text/javascript">
-            var LUser = @Html.Raw(Json.Encode(LUser));
-        var us = @Html.Raw(Json.Encode(US));
+<script type="text/javascript">
+    var LUser = @Html.Raw(Json.Encode(LUser));
+    var us = @Html.Raw(Json.Encode(US));
 
-        console.log(LUser);
+    $("#userSig").append(new Option(us, us));
 
-            $("#userSig").append(new Option(us, us));
-
-            $.each(LUser, function (key, data) {
-                $("#userSig").append(new Option(data.Signature, data.Signature));
-            });
-
-
-
-    </script>
-}
+    $.each(LUser, function (key, data) {
+        $("#userSig").append(new Option(data.Signature, data.Signature));
+    });
+       
+</script>
