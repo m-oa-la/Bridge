@@ -66,12 +66,12 @@
         <col span="1" style="width: 120px;">
         <col span="1" style="width: 24%;">
         <col span="1" style="width: 24%;">
-        <col span="1" style="max-width: 40px; width:35px">
-        <col span="1" style="max-width: 40px; width:35px">
-        <col span="1" style="max-width: 40px; width:35px">
-        <col span="1" style="max-width: 50px; width:49px">
+        <col span="1" style="width: 35px">
+        <col span="1" style="width: 35px">
+        <col span="1" style="width: 35px">
+        <col span="1" style="width: 50px">
         <col span="1" style="width: 24%;">
-        <col span="1" style="width: 182px;">
+        <col span="1" style="width: 22%; max-width: 182px;">
     </colgroup>
     <tr>
         <th onclick="sortTable(0)"> JOB ID       <div class="arrows"> &#11046 </div> </th>
@@ -122,12 +122,21 @@
         string linkNcertReporting = "'/Job/NCertReporting/" + item.Id + "'";
         string t2tag = "T2TAG" + item.Task2 + "T2TAG";
 
-        string daysSince = "0,0";
+        string daysSince = "0";
+        string receivedClass = "";
         if (item.ReceivedTime != null)
         {
-            DateTime recievedTime = (DateTime)item.ReceivedTime;
-            TimeSpan timeSpan = DateTime.Now - recievedTime;
-            daysSince = timeSpan.TotalDays.ToString("0.0");
+            TimeSpan timeSpan = DateTime.Now - (DateTime)item.ReceivedTime;
+            double days = timeSpan.TotalDays;
+            if (days > 60)
+            {
+                receivedClass = "color: red;";
+            }
+            else if (days > 30)
+            {
+                receivedClass = "color: orange;";
+            }
+            daysSince = days.ToString("0.0");
         }
 
 
@@ -153,6 +162,7 @@
             <td>
                 <p> @npsJobName </p>
             </td>
+            
             <td>
                 <div class="@classT1" onclick="location.href=@editlink1">
                     @Html.DisplayFor(modelItem => item.Task1)
@@ -186,10 +196,8 @@
                     }
                 </p>
             </td>
-            <td>
-                <p style="float:right">
-                    @daysSince
-                </p>
+            <td style="text-align:right; @receivedClass">
+                @daysSince
             </td>
         </tr>
      }

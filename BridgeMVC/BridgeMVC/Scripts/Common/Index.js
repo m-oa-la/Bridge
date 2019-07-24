@@ -1,7 +1,8 @@
 ﻿function sortTable(n) {
     // n is the column number to be sorted
     // Add onclick="sortTable(n)" in <th>
-    var table, rows, switching, i, x, y, shouldSwitch, dir, switchcount = 0;
+    // If sorted numerically, only number string inside <th>
+    var table, rows, switching, i, num, x, y, shouldSwitch, dir, switchcount = 0;
     table = document.getElementById("sortTable");
     switching = true;
     //Set the sorting direction to ascending:
@@ -19,24 +20,32 @@
             shouldSwitch = false;
             /*Get the two elements you want to compare,
             one from current row and one from the next:*/
-            x = rows[i].getElementsByTagName("td")[n];
-            y = rows[i + 1].getElementsByTagName("td")[n];
+            x = rows[i].getElementsByTagName("td")[n].innerHTML;
+            y = rows[i + 1].getElementsByTagName("td")[n].innerHTML;
+            /*Check if the column is numbers or letters */
+            if (isNaN(x.replace(",", ".")) && isNaN(y.replace(",", "."))) {
+                x = x.toLowerCase();
+                y = y.toLowerCase();
+            }
+            else {
+                x = Number(x.replace(",", "."));
+                y = Number(y.replace(",", "."));
+            }
+
             /*check if the two rows should switch place,
             based on the direction, asc or desc:*/
-            if (dir == "asc") {
-                if (x.innerHTML.toLowerCase() > y.innerHTML.toLowerCase()) {
-                    //if so, mark as a switch and break the loop:
-                    shouldSwitch = true;
-                    break;
-                }
-            } else if (dir == "desc") {
-                if (x.innerHTML.toLowerCase() < y.innerHTML.toLowerCase()) {
-                    //if so, mark as a switch and break the loop:
-                    shouldSwitch = true;
-                    break;
-                }
+            if (dir == "asc" && x > y) {
+                //if so, mark as a switch and break the loop:
+                shouldSwitch = true;
+                break;
+            }
+            else if (dir == "desc" && x < y) {
+                //if so, mark as a switch and break the loop:
+                shouldSwitch = true;
+                break;
             }
         }
+
         if (shouldSwitch) {
             /*If a switch has been marked, make the switch
             and mark that a switch has been done:*/

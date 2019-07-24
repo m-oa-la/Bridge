@@ -88,9 +88,9 @@
         <col span="1" style="width: 40px;">
         <col span="1" style="width: 40px;">
         <col span="1" style="width: 40px;">
-        <col span="1" style="width: 40px;">
         <col span="1" style="width: 30%;">
         <col span="1" style="width: 50px;">
+        <col span="1" style="width: 20%; max-width: 182px;">
     </colgroup>
     <tr>
         <th onclick="sortTable(0)"> JOB ID       <div class="arrows"> &#11046 </div> </th>
@@ -102,22 +102,21 @@
             <th onclick="sortTable(@col)"> @taskname <div class="arrows"></div> </th>
             col++;
         }
-
-        <th> <div class="arrows"></div> </th>
-        <th onclick="sortTable(7)"> IORA STATUS   <div class="arrows"> &#11046 </div> </th>
-        <th onclick="sortTable(8)"> <div class="arrows"> &#11046 </div> </th>
+        <th onclick="sortTable(6)"> IORA STATUS   <div class="arrows"> &#11046 </div> </th>
+        <th onclick="sortTable(7)"> <div class="arrows"> &#11046 </div> </th>
+        <th onclick="sortTable(8)"> DAYS IN SYSTEM <div class="arrows"> &#11046 </div> </th>
         @*<th>            @Html.DisplayNameFor(model => model.TaskHandler)        </th>
             <th>            @Html.DisplayNameFor(model => model.Completed)        </th>*@
 
     </tr>
-
+    
     @foreach (var item in Model)
     {
         if (item.Fee != null)
         {
             TotalFee += (int)item.Fee;
         }
-              
+
         string npsJobName = item.NpsJobName;
         string pauseIconId = "pause_" + item.Id;
         string startIconId = "start_" + item.Id;
@@ -148,17 +147,34 @@
         string editlink3 = "'/Job/CommonTask3/" + item.Id + "'";
         string editlink4 = "'/Job/CommonTask4/" + item.Id + "'";
 
+        string daysSince = "0";
+        string receivedClass = "";
+        if (item.ReceivedTime != null)
+        {
+            TimeSpan timeSpan = DateTime.Now - (DateTime)item.ReceivedTime;
+            double days = timeSpan.TotalDays;
+            if (days > 60)
+            {
+                receivedClass = "color: red;";
+            }
+            else if (days > 30)
+            {
+                receivedClass = "color: orange;";
+            }
+            daysSince = days.ToString("0.0");
+        }
+
+
+
         <tr class="jobList">
             <td style="@ctColorCode">
-                <p>  @Html.DisplayFor(modelItem => item.NpsJobId)</p>
+                <p> @Html.DisplayFor(modelItem => item.NpsJobId) </p>
             </td>
             <td>
-                <p>  @Html.DisplayFor(modelItem => item.CustomerName)</p>
+                <p> @Html.DisplayFor(modelItem => item.CustomerName) </p>
             </td>
             <td>
-                <p>
-                    @npsJobName
-                </p>
+                <p> @npsJobName </p>
             </td>
 
             <td>
@@ -177,19 +193,15 @@
                 </div>
             </td>
 
-            <td></td>
-
             <td id="@statusId">
                 <p>
                     @if (!string.IsNullOrEmpty(item.OnHoldNote) && item.IsHold)
                     {
                         @item.OnHoldNote.ToUpper().Split(new[] { ';' })[0]
-
                     }
                     else
                     {
                         @Html.DisplayFor(modelItem => item.IoraDbId)
-
                     }
 
                 </p>
@@ -207,9 +219,12 @@
                 }
 
             </td>
-
+            
+            <td style="text-align:right; @receivedClass">
+                @daysSince 
+            </td>
         </tr>
-    }
+     }
 
 </table>
 <br /><br /><br />
@@ -288,6 +303,10 @@
         var year = d.getFullYear();
 
         return year + '-' + month + '-' + date + ' ' + hr + ':' + min + ':00';
+        }
+
+    function change() {
+        document.getElementsByClassName("lala")[1].innerHTML = "5,0";
     }
 
 
