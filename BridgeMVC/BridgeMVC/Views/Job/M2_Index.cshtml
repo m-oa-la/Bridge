@@ -14,17 +14,7 @@
     List<string> taskNames = bridge.TaskName.Split(';').ToList<string>();
     var jobNum = Model.Count();
     int TotalFee = 0;
-    string jobsTxt = "";
-    if (jobNum == 1)
-    {
-        jobsTxt = "It is " + jobNum.ToString() + " job in the worklist.";
-    }
-    else
-    {
-        jobsTxt = "There are " + jobNum.ToString() + " jobs in the worklist.";
-    }
-
-
+   
     string getColorCode(string ct)
     {
         string c = "";
@@ -54,9 +44,10 @@
 {
     <table>
         <colgroup>
-            <col span="1" style="width: 12%;">
-            <col span="1" style="width: 76%;">
-            <col span="1" style="width: 12%;">
+            <col span="1" style="width: 15%;">
+            <col span="1" style="width: 70%;">
+            <col span="1" style="width: 15%;">
+            <col span="1" style="width: 80px;">
 
         </colgroup>
         <tr>
@@ -67,7 +58,8 @@
             <td>
                 <input type="submit" value="Search" />
             </td>
-            <td style="float:right">
+            
+            <td style="text-align:right">
                 <select id="userSig" name="userSig" class="form-control"></select>
             </td>
             <td>
@@ -76,7 +68,6 @@
         </tr>
 
     </table>
-
 }
 <br />
 
@@ -85,12 +76,12 @@
         <col span="1" style="width: 20%;">
         <col span="1" style="width: 20%;">
         <col span="1" style="width: 20%;">
-        <col span="1" style="width: 40px;">
-        <col span="1" style="width: 40px;">
-        <col span="1" style="width: 40px;">
-        <col span="1" style="width: 30%;">
+        <col span="1" style="width: 35px;">
+        <col span="1" style="width: 35px;">
         <col span="1" style="width: 50px;">
-        <col span="1" style="width: 20%; max-width: 182px;">
+        <col span="1" style="width: 30%;">
+        <col span="1" style="width: 35px;">
+        <col span="1" style="width: 66px;">
     </colgroup>
     <tr>
         <th onclick="sortTable(0)"> JOB ID       <div class="arrows"> &#11046 </div> </th>
@@ -104,7 +95,7 @@
         }
         <th onclick="sortTable(6)"> IORA STATUS   <div class="arrows"> &#11046 </div> </th>
         <th onclick="sortTable(7)"> <div class="arrows"> &#11046 </div> </th>
-        <th onclick="sortTable(8)"> DAYS IN SYSTEM <div class="arrows"> &#11046 </div> </th>
+        <th onclick="sortTable(8)"> DAYS <div class="arrows"> &#11046 </div> </th>
         @*<th>            @Html.DisplayNameFor(model => model.TaskHandler)        </th>
             <th>            @Html.DisplayNameFor(model => model.Completed)        </th>*@
 
@@ -164,8 +155,7 @@
             daysSince = days.ToString("0.0");
         }
 
-
-
+        
         <tr class="jobList">
             <td style="@ctColorCode">
                 <p> @Html.DisplayFor(modelItem => item.NpsJobId) </p>
@@ -183,7 +173,7 @@
                 </div>
             </td>
             <td>
-                <div class="T2 @classT2" onclick="location.href=@editlink2">
+                <div class="@classT2" onclick="location.href=@editlink2">
                     @Html.DisplayFor(modelItem => item.Task2)
                 </div>
             </td>
@@ -229,8 +219,9 @@
 </table>
 <br /><br /><br />
 
-<div> @jobsTxt </div>
-<div> The total fee for the job(s) is @TotalFee NOK. </div>
+<div> <strong> In total: </strong> </div>
+<div> Jobs: @jobNum </div>
+<div> Fee: @TotalFee NOK </div>
 <hr />
 
 
@@ -305,9 +296,4 @@
         return year + '-' + month + '-' + date + ' ' + hr + ':' + min + ':00';
         }
 
-    function change() {
-        document.getElementsByClassName("lala")[1].innerHTML = "5,0";
-    }
-
-
-</script>
+ </script>
