@@ -19,6 +19,7 @@ function refreshCertText(Job, Product, LAutoCertText, eid) {
     });
 
     highlightTxt("XX", eid);
+    setBulletPoint("-", eid);
 }
 
 function writeCertBodyText(data, Job, Product) {
@@ -113,6 +114,20 @@ function tuneXXvalue(str) {
 
     return s;
 }
+
+function setBulletPoint(bulletPoint, eid) {
+
+    $("#" + eid + " p").each(function () {
+        if ($(this).text()[0] == "-") {
+            $(this).addClass("bulletinlist");
+        }
+    });
+   
+}
+
+
+
+
 
 function setupAutoFillingField(LVauleResource, LAutoCertText){
 
