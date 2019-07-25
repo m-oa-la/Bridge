@@ -144,12 +144,10 @@ htmlAttributes: null
 
 
 
-<script>
+<script >
 
 
     var LValueSource = @Html.Raw(Json.Encode(LValueSource));
-
-
 
     $(document).ready(function () {
    
@@ -165,26 +163,21 @@ htmlAttributes: null
             renderPTPeditview();
         });
 
-
         $('select[name^=dded-]').change(function () {
             var navn = $(this).attr('name');
             var selectedv = $(this).find(":selected").text();
             $("#" + navn).val(selectedv);
             savePTPbyClassName($(this).attr("class"), selectedv);;
         });
-
         renderPTPeditview();
     });
-
 
     $("#refreshProdPtps").click(function () {
         recreateptp(Job.Id);
         window.location.reload(false);
     });
 
-
     function recreateptp(id) {
-
         if (confirm('The existing data for the product will be removed. Continue?')) {
 
             //$("#recreateprodbtn").click();
@@ -213,7 +206,6 @@ htmlAttributes: null
             setBackgroundColor(this.id, val);
         });
 
-
         $('div[id^=divø]').each(function () {
             var subdivid = this.id;
             //$('#' + subdivid).hide();
@@ -221,11 +213,8 @@ htmlAttributes: null
                 if (subdivid.includes("_")) {
                     var ctrldivid = subdivid.split("_")[0];
                     var v = $("#" + ctrldivid + "> select").find(":selected").text();
-                    console.log(subdivid);
-                    var sdiv = document.getElementById(subdivid);
                     if (v != "Yes") {
                         $("#" + subdivid).css("display", "none")
-                        //sdiv.setAttribute("display","block");
                     } else {
                         $("#" + subdivid).css({
                             "display": "block",
@@ -234,19 +223,17 @@ htmlAttributes: null
                         });
                     }
                 }
-            } catch{ }
+            } catch (err) { };
         });
     }
-
     function setBackgroundColor(id, val) {
-
         try {
             if (val.toLowerCase().includes("xx") || val == null || val == "") {
                 $('#' + id).css("background-color", "#ffe9ec");
             } else {
                 $('#' + id).css("background-color", "white");
             };
-        } catch{ }
+        } catch(err){ }
 
     }
 </script>

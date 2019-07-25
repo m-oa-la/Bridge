@@ -17,7 +17,6 @@ function refreshCertText(Job, Product, LAutoCertText, eid) {
             writeCertBodyText(data, Job, Product);
         }
     });
-
     highlightTxt("XX", eid);
     setBulletPoint("-", eid);
 }
@@ -87,7 +86,6 @@ function getProdProp(Product, prodprop) {
             return s;
         }
     });
-
     return s;
 }
 
