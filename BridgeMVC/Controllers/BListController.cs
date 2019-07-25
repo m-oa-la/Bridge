@@ -39,6 +39,23 @@ namespace BridgeMVC.Controllers
 
             return View(BLs.OrderBy(s => s.ListType));
         }
+        [ActionName("GenericIndex")]
+        public async Task<ActionResult> GenericIndex(string searchString)
+        {
+            string bm = (string)Session["BridgeModule"];
+            var BLs = await DocumentDBRepository.GetItemsAsync<BList>(d => d.Tag == "BList" && d.BridgeModule == bm);
+            BLs.OrderBy(s => s.BridgeModule);
+
+            if (!String.IsNullOrEmpty(searchString))
+            {
+                searchString = searchString.ToLower();
+
+                BLs = BLs.Where(s => s.ListType.ToLower().Contains(searchString) || s.ListItem.ToLower().Contains(searchString));
+            }
+
+
+            return View(BLs.OrderBy(s => s.ListType));
+        }
 
         [ActionName("Create")]
         public async Task<ActionResult> CreateAsync()
@@ -97,6 +114,47 @@ namespace BridgeMVC.Controllers
             }
             await SetViewBag();
             return View(item);
+        }
+
+        [ActionName("Saveblistvalue")]
+        public async Task<string> Saveblistvalue(string id, string newval)
+        {
+            if (id == null)
+            {
+                return "bad request, id cannot be null";
+            }
+
+            BList item = await DocumentDBRepository.GetItemAsync<BList>(id);
+            if (item == null)
+            {
+                return "bad request, invalid id";
+            }
+
+            item.ListItem = newval;
+            var v = await DocumentDBRepository.UpdateItemAsync<BList>(item.Id, item);
+            return "";
+        }
+
+        [ActionName("CreateBlistItem")]
+        public async Task<string> CreateBlistItem(string listType)
+        {
+
+            BList b = new BList()
+            {
+                BridgeModule = (string)Session["BridgeModule"],
+                ListType = listType,
+                ListItem = "xx",
+            };
+            var v = await DocumentDBRepository.CreateItemAsync<BList>(b);
+
+            return GetIdFromDocument(v.ToString());
+        }
+
+
+        public string GetIdFromDocument(string s)
+        {
+            string str = s.Split(new string[] { "id\": \"" }, StringSplitOptions.None)[1];
+            return str.Split(("\"")[0])[0];
         }
 
     }

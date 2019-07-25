@@ -50,7 +50,7 @@ namespace BridgeMVC.Controllers
         {
             if (IsAdmin())
             {
-                var s = await DocumentDBRepository.GetItemsAsync<BProdTechPara>(d => d.Tag == "BProdTechPara");
+                var s = await DocumentDBRepository.GetItemsAsync<BProdTechPara>(d => d.Tag == "BProdTechPara" && d.BridgeModule == (string)Session["BridgeModule"]);
                 s = s.OrderBy(o => o.ViewSequence);
                 return View(s);
             }

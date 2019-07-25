@@ -125,6 +125,11 @@ namespace BridgeMVC.Controllers
                 //Sort autotxt by sequence order
                 LAutoCertText = LAutoCertText.OrderBy(d => d.Description); 
                 ViewBag.LAutoCertText = LAutoCertText;
+            }else if (bm == "M2" && !string.IsNullOrEmpty(jid))
+            {
+                Job j = await DocumentDBRepository.GetItemAsync<Job>(jid);
+                ViewBag.LPTP = await DocumentDBRepository.GetItemsAsync<BProdTechPara>(d => d.Tag == "BProdTechPara" && d.BridgeModule == bm );
+                ViewBag.LProduct = await DocumentDBRepository.GetItemsAsync<Product>(d => d.Tag == "Product" && d.DbJobId == jid);
             }
 
             return ("");
@@ -162,13 +167,19 @@ namespace BridgeMVC.Controllers
             {
                 return new HttpStatusCodeResult(HttpStatusCode.BadRequest);
             }
-
             Job item = await DocumentDBRepository.GetItemAsync<Job>(id);
+            if (item == null)
+            {
+                return HttpNotFound();
+            }
 
             item.StatusNote = "";
             item.SendingFlag = "-";
+            Session["DbJobId"] = item.Id;
+            Session["NpsJobId"] = item.NpsJobId;
+            Session["MEDItemNo"] = item.MEDItemNo;
             //Temp. solution. to be fixed
-            if(item.BridgeModule == "M3") 
+            if (item.BridgeModule == "M3") 
             {
                 
                 if(!(item.MEDItemNo == "MED/3.16" && item.CertType == "MED"))
@@ -199,17 +210,18 @@ namespace BridgeMVC.Controllers
                 ViewBag.LAutoCertText = LAutoCertText;
             }
 
+            if (item.BridgeModule == "M2" && !string.IsNullOrEmpty(item.CertType) && (item.CertType=="PED" || item.CertType == "TPED")){
+                ViewBag.Customer = await AddCustomerInfoIfNoneAsync(item);
+                var LCustomer = await DocumentDBRepository.GetItemsAsync<Customer>(d => d.Tag == "Customer" && d.CustomerId == item.CustomerId);
+                ViewBag.LCustomerAddr = LCustomer.GroupBy(x=>x.Address).Select(x=>x.Last()).ToList();
+                ViewBag.LCustomerContact = LCustomer.GroupBy(x => x.Email).Select(x => x.Last()).ToList();
 
-            if (item == null)
-            {
-                return HttpNotFound();
+                await AddPEDProductstoJobIfNone(item.Id);
+                await SetViewBags();
+                return View((string)Session["BridgeModule"] + "_Task1_PED", item);
             }
-            //ViewBag.SelectList = await DocumentDBRepository<BRule>.GetItemsAsync(d => d.Tag == "BRule" && d.BridgeModule == item.BridgeModule);
-            Session["DbJobId"] = item.Id;
-            Session["NpsJobId"] = item.NpsJobId;
-            Session["MEDItemNo"] = item.MEDItemNo;
-            await SetViewBags();
 
+            await SetViewBags();
             return View((string)Session["BridgeModule"] + "_Task1", item);
         }
 
@@ -832,6 +844,110 @@ namespace BridgeMVC.Controllers
             ViewBag.LUser = lu;
 
             return View("M1_Task3_LSA", item);
+        }
+        
+        private async Task<Customer> AddCustomerInfoIfNoneAsync(Job j)
+        {
+            var lcustomer = await DocumentDBRepository.GetItemsAsync<Customer>(cs => cs.Tag == "Customer" && cs.CustomerId == j.CustomerId);
+            if (lcustomer.Count() == 0)
+            {
+                Customer c = new Customer()
+                {
+                    CustomerId = j.CustomerId,
+                    CustomerName = j.CustomerName,
+                    Address = "xx",
+                    Email = "xx@xx",
+                };
+                var d = await DocumentDBRepository.CreateItemAsync<Customer>(c);
+                string cid = new BListController().GetIdFromDocument(d.ToString());
+                return await DocumentDBRepository.GetItemAsync<Customer>(cid);
+            }
+            else
+            {
+                return lcustomer.FirstOrDefault();
+            }
+        }
+
+      
+        [ActionName("AddPEDProductByProdName")]
+        public async Task AddPEDProductByProdName(string jobid, string prodName)
+        {
+            string bm = (string)Session["BridgeModule"];
+            var LPTP = await DocumentDBRepository.GetItemsAsync<BProdTechPara>(bp => bp.Tag == "BProdTechPara" && bp.ProdName == prodName && bp.BridgeModule == bm);
+                   Product newP = new Product()
+                {
+                    DbJobId = jobid,
+                    BridgeModule = bm,
+                    ProdName = prodName,
+                    PTPs = new List<ProdTechPara>(),
+                };
+                foreach (BProdTechPara ptp in LPTP)
+                {
+                    ProdTechPara newptp = new ProdTechPara()
+                    {
+                        TechParaName = ptp.TechParaName,
+                        TechParaValue = ptp.DefaultValue,
+                    };
+                    newP.PTPs.Add(newptp);
+                }
+                await DocumentDBRepository.CreateItemAsync<Product>(newP);
+            
+        }
+        [Authorize]
+        [ActionName("DeleteProdById")]
+        public async Task DeleteProdById(string prodid)
+        {
+            Product r = await DocumentDBRepository.GetItemAsync<Product>(prodid);
+            if (r.Tag == "Product" && r.DbJobId == (string)Session["DbJobId"])
+            {
+                await DocumentDBRepository.DeleteItemAsync(r.Id);
+            }
+        }
+
+        [ActionName("SavePTPBySN")]
+        public async Task SavePTPBySN(string prodid, int sn, string newValue)
+        {
+            Product r = await DocumentDBRepository.GetItemAsync<Product>(prodid);
+            r.PTPs[sn].TechParaValue = newValue;
+            await DocumentDBRepository.UpdateItemAsync<Product>(prodid, r);
+        }
+
+        [ActionName("ZTest")]
+        public async Task<ActionResult> ZTest(string id)
+        {
+            if (id == null)
+            {
+                return new HttpStatusCodeResult(HttpStatusCode.BadRequest);
+            }
+            Job item = await DocumentDBRepository.GetItemAsync<Job>(id);
+            item.StatusNote = "";
+
+            if (item == null)
+            {
+                return HttpNotFound();
+            }
+            //ViewBag.SelectList = await DocumentDBRepository<BRule>.GetItemsAsync(d => d.Tag == "BRule" && d.BridgeModule == item.BridgeModule);
+            Session["DbJobId"] = item.Id;
+            Session["NpsJobId"] = item.NpsJobId;
+
+            await SetViewBags();
+            ViewBag.LPTP = await DocumentDBRepository.GetItemsAsync<BProdTechPara>(d => d.Tag == "BProdTechPara" && d.BridgeModule == item.BridgeModule);
+            ViewBag.LProduct = await DocumentDBRepository.GetItemsAsync<Product>(d => d.Tag == "Product" && d.DbJobId == item.Id);
+
+            return View(item);
+        }
+
+        public async Task AddPEDProductstoJobIfNone(string jobid)
+        {
+            string[] ProdNameArray = new string[] { "PED_PCA_Product", "PED_PCA_ProjAct", "PED_PCA_Condition", "PED_PCA_Investment" };
+            foreach (string prodName in ProdNameArray)
+            {
+                var p = await DocumentDBRepository.GetItemsAsync<Product>(pd => pd.Tag == "Product" && pd.ProdName == prodName && pd.DbJobId == jobid);
+                if (p.Count() == 0)
+                {
+                    await AddPEDProductByProdName(jobid, prodName);
+                }
+            }
         }
     }
 }

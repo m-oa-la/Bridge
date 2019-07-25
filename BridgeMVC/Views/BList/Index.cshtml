@@ -1,61 +1,164 @@
 ﻿@model IEnumerable<BridgeMVC.Models.BList>
 
-<h2>Bridging List</h2>
-<p>
-    @Html.ActionLink("Add New", "Create", new { target = "_blank" })
-</p>
-
-@using (Html.BeginForm())
-{
-    <p>
-        Filter: @Html.TextBox("SearchString")
-        <input type="submit" value="Search" />
-    </p>
-}
-<table class="table">
-    <tr>
-
-        <th hidden>
-            @Html.DisplayNameFor(model => model.BridgeModule)
-        </th>
-        <th>
-            @Html.DisplayNameFor(model => model.ListType)
-        </th>
-        <th>
-            @Html.DisplayNameFor(model => model.ListItem)
-        </th>
-        <th>
-            @Html.DisplayNameFor(model => model.Note)
-        </th>
-        <th>
-            @Html.DisplayNameFor(model => model.UpperLvl)
-        </th>
-        <th></th>
-    </tr>
-
-    @foreach (var item in Model)
-    {
-    <tr>
-
-        <td hidden>
-            @Html.DisplayFor(modelItem => item.BridgeModule)
-        </td>
-        <td>
-            @Html.DisplayFor(modelItem => item.ListType)
-        </td>
-        <td>
-            @Html.DisplayFor(modelItem => item.ListItem)
-        </td>
-        <td>
-            @Html.DisplayFor(modelItem => item.Note)
-        </td>
-        <td>
-            @Html.DisplayFor(modelItem => item.UpperLvl)
-        </td>
-        <td>
-            @Html.ActionLink("Edit", "Edit", new { id = item.Id }) 
-        </td>
-    </tr>
+<style>
+    td {
+        border: 1px solid lightgrey;
     }
 
-</table>
+    .blistTable {
+        display: compact;
+        float: left;
+        margin: 1em;
+        width: auto;
+        min-width: 45%;
+        /*border: 1px solid grey;*/
+    }
+
+        .blistTable tr td {
+            white-space: nowrap;
+        }
+    .blistTableEdit {
+        width: 40px;
+        border:none;
+    }
+
+    .tableListDiv {
+          /*margin:3em;*/
+    }
+    .blistTableTh {
+        background-color: lightgray;
+        font-weight:bold;
+    }
+    .addBlistBtn{
+        font-size:x-large;
+        padding-left:1px;
+    }
+
+</style>
+
+<h2> @Html.ActionLink("Generic Index", "GenericIndex")</h2>
+
+<h2>General Lists</h2>
+<b style="background-color:yellow">Double click to modify</b>
+
+<div id="tableListDiv" class="tableListDiv"   > </div>
+
+<script>
+     var LBList = @Html.Raw(Json.Encode(Model));
+    listTablesByType(LBList, "tableListDiv", "ListType", ["ListItem"]);
+
+
+    function listTablesByType(datasource, parentdivid, mainattr, attrtobelisted) {
+        var doc = document;
+        var div = doc.getElementById(parentdivid);
+        var tblname = "";
+
+        $.each(datasource, function (key, data) {
+
+            if (data[mainattr] !== tblname) {
+                tblname = data[mainattr];
+
+                var td = doc.createElement("td");
+                td.textContent = tblname;
+                td.setAttribute("class", "blistTableTh");
+                var tr = doc.createElement("tr");
+                tr.appendChild(td);
+
+                var a = doc.createElement("a");
+                a.textContent = "+";
+                 a.setAttribute("class", "btn addBlistBtn");
+                a.id = "newlistitemø" + data["ListType"];
+
+                var tda = doc.createElement("td");
+                tda.appendChild(a);
+                tda.setAttribute("class", "blistTableEdit");
+
+                tr.appendChild(tda);
+
+                var tbl = doc.createElement("table");
+                tbl.setAttribute("class", "blistTable");
+                tbl.appendChild(tr);
+                div.appendChild(tbl);
+
+            } else {
+                var td1 = doc.createElement("td");
+                td1.textContent = data.ListItem;
+                td1.id = "editø" + data.Id;
+      
+                var tr = doc.createElement("tr");
+                tr.appendChild(td1);
+ 
+
+                var tbl = div.lastChild;
+                tbl.appendChild(tr);
+               }
+
+        });
+
+
+    }
+
+    $(document).ready(function () {
+
+        $('td[id^=editø]').dblclick(function () {
+            var oldval = this.innerText;
+            var id = this.id;
+            this.innerText = "";
+            var input = document.createElement("input");
+            input.value = oldval;
+            input.setAttribute("class", "form-control");
+            input.onblur = function () {
+                saveblistvalue(id, oldval, this.value);
+            }
+            this.appendChild(input);
+        });
+
+        $('a[id^=newlistitemø]').click(function () {
+            var id = this.id;
+            var tbl = document.getElementById(id).parentElement;
+
+            var v = createListItem(id.split("ø")[1]);
+
+            window.location.reload(false); 
+        });
+
+
+    });
+
+    function saveblistvalue(id, oldval, newval) {
+        var td = document.getElementById(id);
+        td.innerHtml = "";
+        td.innerText = newval;
+        console.log(id);
+        if (oldval != newval) {
+            var bid = id.split("ø")[1];
+
+            return $.ajax({
+                type: 'GET',
+                url: '/BList/Saveblistvalue/',
+                data: {
+                    id: bid, newval: newval
+                },
+                cache: false,
+                success: {
+                },
+            });
+        }
+     }
+
+    function createListItem(listType) {
+         $.ajax({
+            type: 'GET',
+            url: '/BList/CreateBlistItem/',
+            data: {
+                listType: listType
+            },
+            cache: false,
+             success: function (data) {
+                 return data;
+            },
+        });
+    }
+
+
+</script>

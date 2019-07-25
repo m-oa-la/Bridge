@@ -195,7 +195,7 @@ new { htmlAttributes = new { @class = "form-control", style = "height:60px" } })
     @{
         Html.RenderPartial("_SV_AutoCertPTP");
     }
-    <div  class="split right">
+    <div  class="split right" id="autoCertA4">
         @{
             Html.RenderPartial("_SV_AutoCertA4Page");
         }
@@ -232,7 +232,7 @@ new { htmlAttributes = new { @class = "form-control", style = "height:60px" } })
  
 
     //Get autoCert text
-    refreshCertText(Job, Product, LAutoCertText);
+        refreshCertText(Job, Product, LAutoCertText, "CertText");
 
     // Initial rendering
     renderTaskHandling(LUser, bm);
@@ -282,11 +282,10 @@ new { htmlAttributes = new { @class = "form-control", style = "height:60px" } })
                 callSavePTPApi(prodid, ptpid, ptpval);
 
                 Product.PTPs[ptpid].TechParaValue = ptpval;
-                refreshCertText(Job, Product, LAutoCertText);
+                refreshCertText(Job, Product, LAutoCertText, "CertText");
 
             }
         }
-
 
         function callSavePTPApi(prodid, ptpid, ptpval) {
 
@@ -300,5 +299,7 @@ new { htmlAttributes = new { @class = "form-control", style = "height:60px" } })
                 }
             });
         }
+
+
     </script>
 }
