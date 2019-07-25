@@ -203,6 +203,23 @@ function returnBEmail(data) {
     BEmail = jQuery.parseJSON(data);
 }
 
+function SetupDropdownList(dropdownid, dropdownsourcelist, propName) {
+
+    if (propName == null) {
+        $.each(dropdownsourcelist, function (key, data) {
+            data = data;
+            $("#" + dropdownid).append(new Option(data, data));
+        });
+    } else {
+        $.each(dropdownsourcelist, function (key, data) {
+            data = data;
+            var s = eval("data." + propName);
+            $("#" + dropdownid).append(new Option(s, s));
+        });
+    }
+
+}
+
 function isValidJQueryEvent(event) {
     /* Checks if an event is a valid jQuery event.
      :arg event: string
@@ -328,7 +345,7 @@ function arrayApplyFilter(arr, filter) {
      * :arg arr: array
      * :arg filter: array */
     arr = arr.filter(function (el) {
-        return !filter.includes(el);
+        return filter.indexOf(el) < 0;
     });
     return arr;
 }

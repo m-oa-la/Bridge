@@ -1,6 +1,4 @@
-﻿
-
-function refreshCertText(Job, Product, LAutoCertText, eid) {
+﻿function refreshCertText(Job, Product, LAutoCertText, eid) {
     //Job: current job
     //Product: first product
     //LautoCertText: autotxt filtered by MEDItemNo. of Job

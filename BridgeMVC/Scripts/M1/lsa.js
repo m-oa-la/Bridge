@@ -64,10 +64,16 @@ function readLSACert(Job, cert) {
         sortingIndices = findSortingIndices(priorities);
 
         // Pick paragraph according to the sorting indices
-        for (var j1 = 0; j1 < sortingIndices.length; j1++) {
+        for (var j = 0; j < sortingIndices.length; j++) {
             k = sortingIndices[j];
             paragraph = paragraphs[k];
-            line = eval(paragraph.Formula);
+
+            try {
+                line = eval(paragraph.Formula);
+            } catch (err) {
+                line = "";
+            }
+
 
             if (line.startsWith(bulletPoint)) {
                 line = line.slice(bulletPoint.length);
@@ -113,7 +119,7 @@ function getLSADisplayElements(certType, certAction) {
     extension = getCertificateActionDisplayElements(certAction);
     toShow.push.apply(toShow, extension);
 
-    toHide = filterArray(toHide, toShow);
+    toHide = arrayApplyFilter(toHide, toShow);
     return [toShow, toHide];
 }
 

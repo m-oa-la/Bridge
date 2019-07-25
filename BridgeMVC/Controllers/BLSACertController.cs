@@ -16,12 +16,15 @@ namespace BridgeMVC.Controllers
             string bm = (string)Session["BridgeModule"];
             ViewBag.LMEDItemNo = await DocumentDBRepository.GetItemsAsync<BList>(d => d.Tag == "BList" && d.BridgeModule == bm && d.ListType == "MEDItemNo");
             ViewBag.LPTPs = await DocumentDBRepository.GetItemsAsync<BProdTechPara>(d => d.Tag == "BProdTechPara" && d.BridgeModule == bm);
-            Job J = await DocumentDBRepository.GetItemAsync<Job>("4e5a1ffe-df4a-4146-9d82-acc196b7a6ee");
-            ViewBag.Job = J;
-            var ps = await DocumentDBRepository.GetItemsAsync<Product>(d => d.Tag == "Product" && d.DbJobId == J.Id);
-            ViewBag.Product = ps.FirstOrDefault();
+            if (bm == "M3")
+            {
+                Job J = await DocumentDBRepository.GetItemAsync<Job>("4e5a1ffe-df4a-4146-9d82-acc196b7a6ee");
+                ViewBag.Job = J;
+                var ps = await DocumentDBRepository.GetItemsAsync<Product>(d => d.Tag == "Product" && d.DbJobId == J.Id);
+                ViewBag.Product = ps.FirstOrDefault();
+            }
+ 
             ViewBag.LPTPs = await DocumentDBRepository.GetItemsAsync<BProdTechPara>(d => d.Tag == "BProdTechPara" && d.BridgeModule == bm);
-  
             return "";
         }
 

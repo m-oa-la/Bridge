@@ -148,7 +148,7 @@
             @Html.ValidationMessageFor(model => model.Fee, "", new { @class = "text-danger" })
         </div>
         <div class="bing col-lg-6" id="paraBudgetHour">
-            Budget hour: <input type="button" id="budgetHourButton" img style="cursor:pointer" src="~/Content/pictures/magic.png" class="magicWand" />
+            Budget hour: <img id="budgetHourButton"  src="~/Content/pictures/magic.png" class="magicWand" />
             @Html.EditorFor(model => model.BudgetHour, new { htmlAttributes = new { @class = "form-control" } })
             @Html.ValidationMessageFor(model => model.BudgetHour, "", new { @class = "text-danger" })
         </div>
@@ -235,7 +235,7 @@
     });
     // Budge hour button click handler
     $("#budgetHourButton").on("click", function () {
-        budgetHourCallback(bm, taskNo, LCertType);
+        budgetHourCallback(bm, taskNo, Job.CertType);
     });
     /*
     var mval = $("#selectMainProdType :selected").text();
