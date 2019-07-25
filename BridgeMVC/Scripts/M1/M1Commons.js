@@ -141,7 +141,7 @@ function getDisplayElements(certType, certAction) {
     extension = getCertificateActionDisplayElements(certAction);
     toShow.push.apply(toShow, extension);
 
-    toHide = filterArray(toHide, toShow);
+    toHide = arrayApplyFilter(toHide, toShow);
     return [toShow, toHide];
 }
 

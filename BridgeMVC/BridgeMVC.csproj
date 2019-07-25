@@ -397,8 +397,9 @@
     <None Include="Properties\PublishProfiles\MABridgeDev - Web Deploy.pubxml" />
     <None Include="Scripts\jquery-3.3.1.intellisense.js" />
     <Content Include="Scripts\Common\Index.js" />
-    <Content Include="Scripts\Common\ptphandling.js" />
     <Content Include="Scripts\Common\jqueryUtilities.js" />
+    <Content Include="Scripts\Common\ptphandling.js" />
+    <Content Include="Scripts\Common\utilities.js" />
     <Content Include="Scripts\cldr.js" />
     <Content Include="Scripts\cldr\event.js" />
     <Content Include="Scripts\cldr\supplemental.js" />

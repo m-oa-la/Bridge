@@ -10,14 +10,17 @@ page[size="A4"] {
     width: 210mm;
     display: block;
     margin: 0 0;
-    padding-top: 10mm;
-    padding-left: 5mm;
-    padding-right: 5mm;
-    padding-bottom: 10mm;
+    padding-top: 20mm;
+    padding-left: 20mm;
+    padding-right: 20mm;
+    padding-bottom: 20mm;
     margin-bottom: 5mm;
     box-shadow: 0 0 5mm rgba(0,0,0,0.5);
 }
 
+@page {
+    margin: 0;
+}
 p {
     height: auto;
 }

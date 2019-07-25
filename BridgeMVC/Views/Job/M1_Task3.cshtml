@@ -207,9 +207,9 @@
     var taskCompleteStr = "The job is executed by ";
 
     // Initial rendering
-    renderTaskShowHide(taskNo, taskStatusFlag, taskCompleteDate, taskCompleteStr, userSignature)
-    renderTaskHandling(LUser, bm)
-    renderTaskInputFields(Job.LCertType, Job.LCertAction);
+    renderTaskActions(taskNo, taskStatusFlag, taskCompleteDate, taskCompleteStr, userSignature);
+    renderTaskHandling(LUser, bm);
+    renderTaskInputFields(Job.CertType, Job.CertAction);
 
     //set up select list
     $.each(LCertType, function (key, data) {
