@@ -13,7 +13,7 @@
 </style>
 <h2>SET IT UP!</h2>
 <hr />
-@if (BridgeLastUsed == "M3")
+@if (BridgeLastUsed != "M1")
 {
 
     <li>
@@ -47,42 +47,43 @@
     <li>
         <a href="@Url.Action("Index", "BList", new { searchstring = "MEDItemNo" })" title="List View" class="links">
             <img alt="List View" src="@Url.Content("~/Content/pictures/med.jpg")">
-            Create a new MEDItem No.
+            Create a new MEDItem No. / Product name
         </a>
     </li>
 
-
+    <hr />
 
 }
-else
+
+@if(BridgeLastUsed != "M3")
 {
 
-    <li>
-        @Html.ActionLink("IORA", "Index", "BIORA")
-    </li>
+<li>
+    @Html.ActionLink("IORA", "Index", "BIORA")
+</li>
 
-    <li>
-        @Html.ActionLink("Email", "Index", "BEmail")
-    </li>
-    <li>
-        @Html.ActionLink("Certiticate Types", "Index", "BFinancial")
-    </li>
+<li>
+    @Html.ActionLink("Email", "Index", "BEmail")
+</li>
+<li>
+    @Html.ActionLink("Certiticate Types", "Index", "BFinancial")
+</li>
 
 
-    <li>
-        @Html.ActionLink("General lists (Product Type, Rules, Service types, etc.)", "Index", "BList")
-    </li>
-    <br />
-    <li>
-        @Html.ActionLink("Tech. Checklist", "Index", "BTechChecklist")
-    </li>
-    <li>
-        @Html.ActionLink("AutoCertificate", "Index", "BLSACert")
-    </li>
-    @*<li>
-            @Html.ActionLink("LSATechCheckList", "Index", "TechCheckList")
-        </li>*@
-    <br />
+<li>
+    @Html.ActionLink("General lists (Product Type, Rules, Service types, etc.)", "Index", "BList")
+</li>
+<br />
+<li>
+    @Html.ActionLink("Tech. Checklist", "Index", "BTechChecklist")
+</li>
+<li>
+    @Html.ActionLink("AutoCertificate", "Index", "BLSACert")
+</li>
+@*<li>
+        @Html.ActionLink("LSATechCheckList", "Index", "TechCheckList")
+    </li>*@
+<br />
 
 }
 

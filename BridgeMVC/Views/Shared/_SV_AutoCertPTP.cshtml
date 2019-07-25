@@ -17,6 +17,13 @@
         margin-right: 3em;
         cursor:pointer;
     }
+
+    .ptp{
+        max-width:inherit;
+    }
+    .bing {
+        max-width: 372px;
+    }
 </style>
 
 
@@ -83,15 +90,21 @@ htmlAttributes: null
     <h4 style="font-weight:bold" class="col-lg-12">Product (@sn / @totalProdNo) :</h4>
     foreach (var para in item.PTPs)
     {
-        string classStr2 = classStr + " " + paraSN;
+        string valueinputclass = classStr + " " + paraSN;
         string valueSourceName = @getDataSourceName(@para.TechParaName);
-
-        <div class="bing col-lg-5">
+        string divid = "divø" + para.TechParaName;
+        divid = divid.Replace(" ", "-");
+        divid = divid.Replace("?", "-");
+        divid = divid.Replace("/", "-");
+        divid = divid.Replace("(", "-");
+        divid = divid.Replace(")", "-");
+        divid = divid.Replace(":", "-");
+        <div class="bing col-lg-5" id="@divid">
             <p>  @para.TechParaName </p>
 
             @if (!string.IsNullOrEmpty(valueSourceName) && valueSourceName.ToLower().Contains("dropdown_"))
             {
-                <select class="@classStr2">
+                <select class="@valueinputclass" id="dded-@paraSN">
                     <option selected="selected" value="@para.TechParaValue">@para.TechParaValue</option>
                     @foreach (string str in @getDropDownList(@valueSourceName))
                     {
@@ -102,23 +115,23 @@ htmlAttributes: null
             else if (!string.IsNullOrEmpty(valueSourceName) && valueSourceName.ToLower().Contains("dropdownedit_"))
             {
                 //editable dropdown box
-                @*<span>@valueSourceName@paraSN</span>*@
+
                 <div>
-                    <select class="@classStr2" name="dded-@paraSN">
+                    <select class="@valueinputclass" name="dded-@paraSN">
                         <option value=""></option>
                         @foreach (string str in @getDropDownList(@valueSourceName))
                         {
                             <option value="@str">@str</option>
                         }
                     </select>
-                    <input value="@para.TechParaValue" class="@classStr2 editableBox" id="dded-@paraSN" />
+                    <input value="@para.TechParaValue" class="@valueinputclass editableBox" id="dded-@paraSN" />
                 </div>
 
                 //end of editable dropdown box
             }
             else
             {
-                <input value="@para.TechParaValue" class="@classStr2" />
+                <input value="@para.TechParaValue" class="@valueinputclass" id="dded-@paraSN"/>
             }
 
         </div>
@@ -136,16 +149,31 @@ htmlAttributes: null
 
     var LValueSource = @Html.Raw(Json.Encode(LValueSource));
 
+
+
     $(document).ready(function () {
+   
+
+        $('select[id^=dded-]').change(function () {
+            var val = $('#' + this.id).find(":selected").text();
+            setBackgroundColor(this.id, val);
+            renderPTPeditview();
+        });
+        $('input[id^=dded-]').change(function () {
+            var val = $('#' + this.id).val();
+             setBackgroundColor(this.id, val);
+            renderPTPeditview();
+        });
+
 
         $('select[name^=dded-]').change(function () {
             var navn = $(this).attr('name');
             var selectedv = $(this).find(":selected").text();
-
             $("#" + navn).val(selectedv);
-
             savePTPbyClassName($(this).attr("class"), selectedv);;
         });
+
+        renderPTPeditview();
     });
 
 
@@ -175,4 +203,50 @@ htmlAttributes: null
 
     }
 
+    function renderPTPeditview() {
+        $('select[id^=dded-]').each(function () {
+            var val = $('#' + this.id).find(":selected").text();
+            setBackgroundColor(this.id, val);
+        });
+        $('input[id^=dded-]').each(function () {
+            var val = $('#' + this.id).val();
+            setBackgroundColor(this.id, val);
+        });
+
+
+        $('div[id^=divø]').each(function () {
+            var subdivid = this.id;
+            //$('#' + subdivid).hide();
+            try {
+                if (subdivid.includes("_")) {
+                    var ctrldivid = subdivid.split("_")[0];
+                    var v = $("#" + ctrldivid + "> select").find(":selected").text();
+                    console.log(subdivid);
+                    var sdiv = document.getElementById(subdivid);
+                    if (v != "Yes") {
+                        $("#" + subdivid).css("display", "none")
+                        //sdiv.setAttribute("display","block");
+                    } else {
+                        $("#" + subdivid).css({
+                            "display": "block",
+                            "margin-left": "60px",
+                            "max-width": "312px",
+                        });
+                    }
+                }
+            } catch{ }
+        });
+    }
+
+    function setBackgroundColor(id, val) {
+
+        try {
+            if (val.toLowerCase().includes("xx") || val == null || val == "") {
+                $('#' + id).css("background-color", "#ffe9ec");
+            } else {
+                $('#' + id).css("background-color", "white");
+            };
+        } catch{ }
+
+    }
 </script>

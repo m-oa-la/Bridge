@@ -10,6 +10,14 @@
     @Html.ActionLink("Create New", "Create")
 </p>
 <table class="table">
+    <colgroup>
+        <col span="1" style="width: 48px;">
+        <col span="1" style="width: 48px;">
+        <col span="1" style="width: 50%;">
+        <col span="1" style="width: 20%;">
+        <col span="1" style="width: 20%;">
+        <col span="1" style="width: 10%;">
+    </colgroup>
     <tr>
 
         <th>
@@ -31,30 +39,31 @@
         <th></th>
     </tr>
 
-@foreach (var item in Model) {
-    <tr>
+    @foreach (var item in Model)
+    {
+        <tr>
 
-        <td>
-            @Html.DisplayFor(modelItem => item.ProdName)
-        </td>
-        <td>
-            <input value="@item.ViewSequence" id="@item.Id" class="vs form-control"/>
-        </td>
-        <td>
-            @Html.DisplayFor(modelItem => item.TechParaName)
-        </td>
-        <td>
-            @Html.DisplayFor(modelItem => item.ValueSource)
-        </td>
-        <td>
-            @Html.DisplayFor(modelItem => item.DefaultValue)
-        </td>
+            <td>
+                @Html.DisplayFor(modelItem => item.ProdName)
+            </td>
+            <td>
+                <input value="@item.ViewSequence" id="@item.Id" class="vs form-control" />
+            </td>
+            <td>
+                @Html.DisplayFor(modelItem => item.TechParaName)
+            </td>
+            <td>
+                @Html.DisplayFor(modelItem => item.ValueSource)
+            </td>
+            <td>
+                @Html.DisplayFor(modelItem => item.DefaultValue)
+            </td>
 
-        <td>
-            @Html.ActionLink("Edit", "Edit", new { id = item.Id })
-        </td>
-    </tr>
-}
+            <td>
+                @Html.ActionLink("Edit", "Edit", new { id = item.Id })
+            </td>
+        </tr>
+    }
 
 </table>
 <script>

@@ -329,6 +329,7 @@
     <Content Include="Content\M1\index.css" />
     <Content Include="Content\M1\taskA4.css" />
     <Content Include="Content\M1\taskStandard.css" />
+    <Content Include="Content\M2\m2_task1_ped.css" />
     <Content Include="Content\M3\index.css" />
     <Content Include="Content\M3\AutoCertA4.css" />
     <Content Include="Content\M3\taskStandard.css" />
@@ -394,6 +395,7 @@
     <None Include="Properties\PublishProfiles\FolderProfile.pubxml" />
     <None Include="Properties\PublishProfiles\MABridgeDev - Web Deploy.pubxml" />
     <None Include="Scripts\jquery-3.3.1.intellisense.js" />
+    <Content Include="Scripts\Common\ptphandling.js" />
     <Content Include="Scripts\Common\utilities.js" />
     <Content Include="Scripts\Common\jqueryUtilities.js" />
     <Content Include="Scripts\cldr.js" />
@@ -421,6 +423,7 @@
     <Content Include="Scripts\jquery.validate.unobtrusive.js" />
     <Content Include="Scripts\jquery.validate.unobtrusive.min.js" />
     <Content Include="Scripts\M1\M1Commons.js" />
+    <Content Include="Scripts\M2\m2_task1_ped.js" />
     <Content Include="Scripts\M3\M3Commons.js" />
     <Content Include="Scripts\modernizr-2.8.3.js" />
     <Content Include="Scripts\moment-with-locales.js" />
@@ -548,7 +551,7 @@
     <Content Include="Views\TechChecklist\Blank.cshtml" />
     <Content Include="Views\Job\NCertReporting.cshtml" />
     <Content Include="Views\Job\InputApprOrderId.cshtml" />
-    <Content Include="Views\Shared\_LayoutM1TaskStandard.cshtml" />
+    <Content Include="Views\Shared\_LayoutM2TaskStandard.cshtml" />
     <Content Include="Views\Shared\_LayoutM1TaskA4.cshtml" />
     <Content Include="Views\Job\M2_Task1_PED.cshtml" />
     <Content Include="Views\Shared\_PartialM3JobHiddenAttributes.cshtml" />
@@ -563,12 +566,15 @@
     <Content Include="Views\BList\_SV_CreateEdit.cshtml" />
     <Content Include="Views\BProdTechPara\_SV_CreateEdit.cshtml" />
     <Content Include="Views\BLSACert\_SV_CreateEdit.cshtml" />
+    <Content Include="Views\Shared\_LayoutM1TaskStandard.cshtml" />
+    <Content Include="Views\Customer\Edit.cshtml" />
+    <Content Include="Views\Customer\Index.cshtml" />
+    <Content Include="Views\Job\ZTest.cshtml" />
+    <Content Include="Views\BList\GenericIndex.cshtml" />
   </ItemGroup>
   <ItemGroup>
     <Folder Include="App_Data\M1\Projects\" />
     <Folder Include="Content\Common\" />
-    <Folder Include="Content\M2\" />
-    <Folder Include="Scripts\M2\" />
   </ItemGroup>
   <ItemGroup>
     <Content Include="fonts\glyphicons-halflings-regular.woff2" />
@@ -626,7 +632,7 @@
       </FlavorProperties>
     </VisualStudio>
   </ProjectExtensions>
-<Target Name="EnsureNuGetPackageBuildImports" BeforeTargets="PrepareForBuild">
+  <Target Name="EnsureNuGetPackageBuildImports" BeforeTargets="PrepareForBuild">
     <PropertyGroup>
       <ErrorText>This project references NuGet package(s) that are missing on this computer. Use NuGet Package Restore to download them.  For more information, see http://go.microsoft.com/fwlink/?LinkID=322105. The missing file is {0}.</ErrorText>
     </PropertyGroup>

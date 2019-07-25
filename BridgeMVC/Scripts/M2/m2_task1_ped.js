@@ -1,172 +1,209 @@
-﻿
-function showHideFields() {
+﻿// TODO
+function taskComplete(taskNo, taskStatusFlag, taskCompleteDate, taskCompleteStr, userSignature) {
+    /*
+    Add function description.
+    :arg taskNo:
+    :arg taskStatusFlag:
+    :arg taskCompleteDate:
+    :arg taskCompleteStr:
+    :arg userSignature:
+    */
+    $("#Task" + taskNo).val("Y");
+    var dt = getTodayDate();
+    $("#" + taskCompleteDate).val(dt);
 
-    $("#TaskComplete").val("Confirm input and Draft IORA");
-    document.getElementById("TaskComplete").style.width = "400px";
+    console.log($("#selectCertType").val());
 
-    var defaultHiddenList = "MEDFBNo,MEDFBDue,SerialNo,CertAmount,MWL,MEDItemNo,ExistingCertNo,ModificationDesc".split(',');
-    defaultHiddenList.forEach(hideElement);
+    if ($("#BridgeModule").val() === "M2") {
 
-    var toShow = "";
-
-    switch ($("#selectCertType").val()) {
-        case "MED-F":
-            toShow += "MEDFBNo,MEDFBDue,SerialNo,CertAmount,MEDItemNo,SurveyStation,SurveyDate,";
-            $("#pMEDFBNo").html("Ref. MED-B certificate No.");
-            $("#selectCertAction").val("Initial");
-            $("#selectMainProdType").val("Life-Saving appliances");
-            $("#selectSubProdType").append(new Option("Module F certification", "Module F certification"));
-            $("#selectSubProdType").val("Module F certification");
-            //$("#SubProdType").val("Module F certification");
-            break;
-        case "MED-G":
-            toShow += "SerialNo,MEDItemNo,";
-            break;
-        case "MED-B":
-            toShow += "MEDItemNo,";
-            break;
-        case "DVR":
-            toShow += "SerialNo,";
-            break;
-        case "MED-D":
-            toShow += "";
-            break;
-        default:
-            toShow += "";
-    }
-
-    if ($("#selectCertType").val() == "PA - TSA-funded") {
-        $("#TaskComplete").val("Confirm & send job to Whiteboard");
-        //$("#TaskComplete").style.backgroundColor = "pink";
-    } else if ($("#selectCertType").val() == "PED" || $("#selectCertType").val() == "TPED") {
-        document.getElementById("TaskComplete").style.display = "none";
-    } else {
-        $("#TaskComplete").val("Confirm & draft IORA");
-        //$("#TaskComplete").style.backgroundColor = "darkblue";
-    }
-
-
-    switch ($("#selectCertAction").val()) {
-        case "Modification":
-            toShow += "ExistingCertNo,";
-            break;
-        case "Initial with reference":
-            toShow += "ExistingCertNo,";
-            break;
-        case "Renewal with modification":
-            toShow += "ExistingCertNo,";
-            break;
-        case "Renewal":
-            toShow += "ExistingCertNo,";
-            break;
-        default:
-            toShow += "";
-    }
-
-    if (toShow) {
-        var splitS = toShow.split(',');
-        splitS.forEach(showElement);
-
-    }
-}
-
-function showElement(value) {
-    if (value) {
-        document.getElementById(value).parentNode.style.display = "block";
-    }
-}
-function hideElement(value) {
-    if (value) {
-        console.log(value);
-        document.getElementById(value).parentNode.style.display = "none";
-    }
-}
-
-//$("#selectCertType").change();
-
-$("#selectCertType").on("change", function () {
-    showHideFields()
-});
-$("#selectCertAction").on("change", function () {
-    showHideFields()
-});
-
-
-
-
-
-
-//set up select list
-$.each(LCertType, function (key, data) {
-
-    $("#selectCertType").append(new Option(data.CertType, data.CertType));
-});
-
-$.each(LCertAction, function (key, data) {
-    $("#selectCertAction").append(new Option(data.ListItem, data.ListItem));
-});
-
-$.each(LMainProdType, function (key, data) {
-    $("#selectMainProdType").append(new Option(data.ListItem, data.ListItem));
-});
-
-var mval = $("#selectMainProdType :selected").text();
-$.each(LSubProdType, function (key, data) {
-    if (data.UpperLvl == mval) {
-        $("#selectSubProdType").append(new Option(data.ListItem, data.ListItem));
-    }
-});
-
-//When main prodtype changes, refesh the sub prod type.
-$("#selectMainProdType").on("change", function () {
-    var mval = $("#selectMainProdType :selected").text();
-
-    $('#selectSubProdType option').each(function () {
-        if ($(this).val() != 'X') {
-            $(this).remove();
+        if ($("#selectCertType").val() === "PA - TSA-funded") {
+            $("#SendingFlag").val("TSAtoWB");
+            console.log("TSAtoWB");
+        } else {
+            $("#SendingFlag").val("M2DraftIORA");
+            console.log("m2draftiora");
         }
+    }
+
+    var taskStatus = taskCompleteStr + userSignature + " on " + dt;
+
+    $("#" + taskStatusFlag).val(userSignature);
+    $("#TaskStatus").html(taskStatus);
+    $("#saveButton").click();
+    $("#ReOpenTask").show();
+    $("#TaskComplete").hide();
+    $("#saveButton").hide();
+
+    if (taskStatusFlag === "IORASentBy") {
+        console.log("Send IORA to LU");
+        $("#SendingFlag").val(9);
+        console.log($("#TaskHandler").val());
+        $('#jobForm').submit();
+    }
+}
+
+// TODO
+function renderTaskShowHide(taskNo, taskStatusFlagId, taskCompleteDateId, taskCompleteStr, userSignature) {
+    /*
+    Renders which elements to show and hide.
+    :arg taskNo: int, the task number
+    :arg taskStatusFlagId: string, the id of the document taskStatusFlag
+    :arg taskCompleteDateId: string, the id of the document date element
+    :arg taskCompleteStr: string, task complete message
+    :arg userSignature: string, the signature of the user
+    */
+    var taskStatus = null;
+    if ($("#" + taskStatusFlagId).val().length > 0) {
+        taskStatus = taskCompleteStr + $("#" + taskStatusFlagId).val()
+            + " on " + $("#" + taskCompleteDateId).val();
+        $("#TaskStatus").html(taskStatus);
+        $("#saveButton").hide();
+        $("#ReOpenTask").show();
+        $("#TaskComplete").hide();
+    } else {
+        $("#saveButton").show();
+        $("#ReOpenTask").hide();
+        $("#TaskComplete").show();
+    }
+
+    // actions when taskcomplete button is clicked
+    $("#TaskComplete").click(function () {
+        taskComplete(taskNo, taskStatusFlagId, taskCompleteDateId, taskCompleteStr, userSignature);
     });
 
-    $("#selectSubProdType option").remove();
-    $.each(LSubProdType, function (key, data) {
-        if (data.UpperLvl == mval) {
-            $("#selectSubProdType").append(new Option(data.ListItem, data.ListItem));
-        }
+    // actions when reopen the job
+    $("#ReOpenTask").click(function () {
+        $("#Task" + taskNo).val("TASK");
+        $("#" + taskCompleteDateId).val(null);
+        $("#" + taskStatusFlagId).val(null);
+        $("#TaskStatus").html(taskStatus);
+        $("#saveButton").show();
+        $("#ReOpenTask").hide();
+        $("#TaskComplete").show();
     });
-});
+}
 
-function budgetHourCalc() {
+// TODO
+function renderTaskHandling(LUser, bm) {
+    /*
+    Add function description.
+    :arg LUser: List of users(?).
+    :arg bm: The bridge module.
+    */
+    $("#selectListHandler").append(new Option("-- Please select --", null));
+    $.each(LUser, function (key, data) {
+        $("#selectListHandler").append(new Option(data.Signature, data.Signature));
+    });
 
-    if ($("#selectCertType").val() + "x" == "x") {
-        alert('The Certitication Type has to be selected first.');
-    } else {
-        ct1 = $("#selectCertType").val();
-
-        return $.ajax({
-            type: 'GET',
-            url: '/Job/M1_Task1_BudgetHourCalc',
-            data: { bm_f: bm, ct_f: ct1 },
-            cache: false,
-            success: calcBudgetHour
+    // Set up selectList for variable items
+    if (bm !== "M2") {
+        $.each(["-- Please select --", "1.FEE", "2.AGR", "3.EXE", "4.FNL"], function (index, value) {
+            $("#selectListTask").append(new Option(value, value));
+        });
+    } else if (bm === "M2") {
+        $.each(["-- Please select --", "1.FEE", "2.VER", "3.AGR", "4.WHITEBOARD"], function (index, value) {
+            $("#selectListTask").append(new Option(value, value));
         });
     }
-
 }
 
-function calcBudgetHour(data) {
-
-    var f = jQuery.parseJSON(data);
-    var dis = (1 - f.allocationFee) * (1 - f.tsa - f.msa);
-    var feee = document.getElementById("Fee").value;;
-    var internalFee = Math.round(feee * dis);
-    var bh = Math.round(internalFee * 0.74 / 1200);
-    $("#BudgetHour").val(bh);
-    alert("External fee: " + feee +
-        ";\nAllocation Fee: " + f.allocationFee +
-        ";\nTSA: " + f.tsa +
-        ";\nMSA: " + f.msa +
-        ";\nInternal Fee: " + internalFee +
-        ";\nBudgetHour = InternalFee * 0,74 / 1200 = " + bh);
+function renderTaskInputFields(certType, certAction) {
+    /*
+    Renders input fields based on the type of certificate that is selected.
+    :arg certType: string, the certificate type
+    :arg certAction: string, the certificate action
+    */
+    var elemIds = getDisplayElements(certType, certAction);
+    displayElements(elemIds[0], show = true);
+    displayElements(elemIds[1], show = false);
 }
 
+function getDisplayElements(certType, certAction) {
+    /*
+    Gets the ids of the elements that should be shown.
+    :arg certType: string, the certificate type
+    :arg certAction: string, the certificate action
+    :return: list of lists of strings, the element ids
+    */
 
+    // Default element ids to hide.
+    var toHide = ["MEDFBNo", "MEDFBDue", "SerialNo", "CertAmount", "MWL", "MEDItemNo",
+        "ExistingCertNo", "SurveyStation", "SurveyDate", "ModificationDesc"];
+    var toShow = [];
+    var extension = null;
+
+    // Get display element ids based on certificate type
+    extension = getCertificateTypeDisplayElements(certType);
+    toShow.push.apply(toShow, extension);
+    // Get display element ids based on certificate action
+    extension = getCertificateActionDisplayElements(certAction);
+    toShow.push.apply(toShow, extension);
+
+    toHide = filterArray(toHide, toShow);
+    return [toShow, toHide];
+}
+
+function getCertificateTypeDisplayElements(certType) {
+    /*
+    Module business logic. Returns the ids of the elements that should
+    be shown based on the certificate type.
+    :arg certType: string, the certificate type
+    :return: list of strings, the element ids
+    */
+    var elemIds = [];
+
+    switch (certType) {
+        case "MED-F":
+            elemIds = ["MEDFBNo", "MEDFBDue", "SerialNo", "CertAmount",
+                "MEDItemNo", "SurveyStation", "SurveyDate"];
+            break;
+        case "MED-G":
+            elemIds = ["SerialNo", "MWL", "MEDItemNo"];
+            break;
+        case "MED-B":
+            elemIds = ["MWL", "MEDItemNo"];
+            break;
+        case "TA":
+            elemIds = ["MWL"];
+            break;
+        case "DVR":
+            elemIds = ["SerialNo", "MWL"];
+            break;
+        case "MED-D":
+            elemIds = ["MWL"];
+            break;
+        default:
+            break;
+    }
+
+    return elemIds;
+}
+
+function getCertificateActionDisplayElements(certAction) {
+    /*
+    Module business logic. Returns the ids of the elements that should
+    be shown based on the certificate action.
+    :arg certAction: string, the certificate action
+    :return: list of strings, the element ids
+    */
+    var elemIds = [];
+
+    switch (certAction) {
+        case "Modification":
+            elemIds = ["ExistingCertNo", "ModificationDesc"];
+            break;
+        case "Initial with reference":
+            elemIds = ["ExistingCertNo"];
+            break;
+        case "Renewal with modification":
+            elemIds = ["ExistingCertNo", "ModificationDesc"];
+            break;
+        case "Renewal":
+            elemIds = ["ExistingCertNo"];
+            break;
+        default:
+            break;
+    }
+
+    return elemIds;
+}
