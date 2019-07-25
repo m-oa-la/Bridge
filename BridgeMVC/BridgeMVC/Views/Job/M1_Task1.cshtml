@@ -9,9 +9,9 @@
     var LCertAction = ViewBag.LCertAction;
     var LMainProdType = ViewBag.LMainProdType;
     var LSubProdType = ViewBag.LSubProdType;
+    var LMEDItemNo = ViewBag.LMEDItemNo;
     var LUser = ViewBag.LUser;
     var FinancialSet = ViewBag.FinancialSet;
-    var Lmeditemnos = ViewBag.Lmeditemnos;
 }
 
 <h2>FEE SETTING</h2>
@@ -19,8 +19,8 @@
 {
     @Html.AntiForgeryToken()
 
-<div class="form-horizontal">
-    <div class="bing col-lg-6" id="paraNpsJodId">
+<div class="form-horizontal" id="jobBing">
+    <div class="bing col-lg-6" id="paraNpsJobId">
         <p> NPS Job ID: </p>
         <p>
             @Html.EditorFor(model => model.NpsJobId, new { htmlAttributes = new { @class = "form-control", id = "NpsJobId" } })
@@ -58,6 +58,12 @@
         <p>Issurance type:</p>
         <p>
             @Html.DropDownListFor(model => model.CertAction, new List<SelectListItem> { new SelectListItem { Text = Model.CertAction, Value = Model.CertAction } }, new { @class = "form-control", id = "selectCertAction" })
+        </p>
+    </div>
+    <div class="bing col-lg-6" id="paraMEDItemNo">
+        <p> MED Item No.: </p>
+        <p>
+            @Html.DropDownListFor(model => model.MEDItemNo, new List<SelectListItem> { new SelectListItem { Text = Model.MEDItemNo, Value = Model.MEDItemNo } }, new { @class = "form-control", id = "selectMEDItemNo" })
         </p>
     </div>
     <div class="bing col-lg-6" id="paraMEDFBDue">
@@ -105,13 +111,6 @@
         <p>
             @Html.EditorFor(model => model.MEDFBNo, new { htmlAttributes = new { @class = "form-control" } })
             @Html.ValidationMessageFor(model => model.MEDFBNo, "", new { @class = "text-danger" })
-        </p>
-    </div>
-    <div class="bing col-lg-6" id="paraMEDItemNo">
-        <p> MED Item No.: </p>
-        <p>
-            @Html.EditorFor(model => model.MEDItemNo, new { htmlAttributes = new { @class = "form-control" } })
-            @Html.ValidationMessageFor(model => model.MEDItemNo, "", new { @class = "text-danger" })
         </p>
     </div>
     <div class="bing col-lg-6" id="paraSerialNo">
@@ -184,56 +183,77 @@
     var userSignature = "@UserSignature";
     var bm = "@bridgeModule";
     var Job = @Html.Raw(Json.Encode(Model));
+    var LCertType = @Html.Raw(Json.Encode(LCertType));
+    var LCertAction = @Html.Raw(Json.Encode(LCertAction));
+    var LMEDItemNo = @Html.Raw(Json.Encode(LMEDItemNo));
     var LMainProdType = @Html.Raw(Json.Encode(LMainProdType));
     var LSubProdType = @Html.Raw(Json.Encode(LSubProdType));
     var LUser = @Html.Raw(Json.Encode(LUser));
-    var LCertAction = @Html.Raw(Json.Encode(LCertAction));
-    var LCertType = @Html.Raw(Json.Encode(LCertType));
-    var LMEDItemNos = @Html.Raw(Json.Encode(Lmeditemnos));
 
-    // Set task parameter
+    // Task parameters
     var taskNo = 1;
     var taskStatusFlag = "FeeSetter"; //who completed the task
     var taskCompleteDate = "FeeSetTime";
     var taskCompleteStr = "The fee is set by ";
 
-    // Initial rendering
+    // Tags
+    var certTypeDropTag = "#selectCertType";
+    var certActionDropTag = "#selectCertAction";
+    var mainDropTag = "#selectMainProdType";
+    var subDropTag = "#selectSubProdType";
+    var medDropTag = "#selectMEDItemNo";
+    var certTypeParaTag = "#paraCertType";
+    var mainParaTag = "#paraMainProdType";
+    var subParaTag = "#paraSubProdType";
+    var medParaTag = "#paraMEDItemNo";
+
+    // Initial task configuration
     renderTaskActions(taskNo, taskStatusFlag, taskCompleteDate, taskCompleteStr, userSignature);
     renderTaskHandling(LUser, bm);
-    renderTaskInputFields($("#selectCertType").val(), $("#selectCertAction").val());
 
-    $.each(LCertType, function (key, data) {
-        $("#selectCertType").append(new Option(data.CertType, data.CertType));
+    // Initialize dropdown menus
+    initializeDropdownMenu(certTypeDropTag, LCertType, "CertType");
+    initializeDropdownMenu(certActionDropTag, LCertAction, "ListItem");
+    initializeDropdownMenu(medDropTag, LMEDItemNo, "ListItem");
+    initializeDropdownMenu(mainDropTag, LMainProdType, "ListItem");
+    initializeDropdownMenu(subDropTag, LSubProdType, "ListItem");
+
+    // Initial certificate configuration
+    task1CertChangeEvent(certActionDropTag, certTypeDropTag,
+        mainDropTag, subDropTag, medDropTag, certTypeParaTag, medParaTag)
+
+    // Event handlers
+    $(certActionDropTag).on("change", function () {
+        task1CertChangeEvent(certActionDropTag, certTypeDropTag, mainDropTag,
+            subDropTag, medDropTag, certTypeParaTag, medParaTag)
+    });
+    
+    $(certTypeDropTag).on("change", function () {
+        task1CertChangeEvent(certActionDropTag, certTypeDropTag, mainDropTag,
+            subDropTag, medDropTag, certTypeParaTag, medParaTag)
     });
 
-    $.each(LCertAction, function (key, data) {
-        $("#selectCertAction").append(new Option(data.ListItem, data.ListItem));
+    $(medDropTag).on("change", function () {
+        task1MedChangeEvent(mainDropTag, subDropTag, medDropTag,
+            mainParaTag, subParaTag)
     });
 
-    $.each(LMainProdType, function (key, data) {
-        $("#selectMainProdType").append(new Option(data.ListItem, data.ListItem));
+    $(mainDropTag).on("change", function () {
+        task1MainChangeEvent(mainDropTag, subDropTag, LSubProdType, "UpperLvl");
     });
 
-    $.each(LMEDItemNos, function (key, data) {
-        $("#selectMEDItemNo").append(new Option(data.ListItem, data.ListItem));
+    // Budge hour button click handler
+    $("#budgetHourButton").on("click", function () {
+        budgetHourCallback(bm, taskNo, LCertType);
     });
 
+    /*
     var mval = $("#selectMainProdType :selected").text();
 
     $.each(LSubProdType, function (key, data) {
         if (data.UpperLvl == mval) {
             $("#selectSubProdType").append(new Option(data.ListItem, data.ListItem));
         }
-    });
-
-    // Setting up jQuery change listener for selectCertType
-    $("#selectCertType").on("change", function () {
-        renderTaskInputFields($("#selectCertType").val(), $("#selectCertAction").val());
-    });
-
-    // Setting up jQuery change listener for selectCertAction
-    $("#selectCertAction").on("change", function () {
-        renderTaskInputFields($("#selectCertType").val(), $("#selectCertAction").val());
     });
 
     // Setting up jQuery change listener for selectMainProdType
@@ -254,12 +274,7 @@
             }
         });
     });
-
-    // Setting up jQuery click listener for budget hour button.
-    // Not working 100 % correctly yet ?
-    $("budgetHourButton").on("click", function () {
-        budgetHourCallback(bm, taskNo, LCertType);
-    })
+    */
     </script>
 }
 

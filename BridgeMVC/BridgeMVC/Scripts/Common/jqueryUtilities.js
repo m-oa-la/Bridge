@@ -91,7 +91,6 @@ function displayElements(elemIds, show) {
     :arg elemIds: list of strings, the element ids
     :arg show: boolean, whether the elements shall be shown (default: true)
     */
-    
     for (var i = 0; i < elemIds.length; i++) {
         id = "#" + elemIds[i];
 
@@ -201,4 +200,201 @@ function readBEmail(tn, bm) {
 
 function returnBEmail(data) {
     BEmail = jQuery.parseJSON(data);
+}
+
+function isValidJQueryEvent(event) {
+    /* Checks if an event is a valid jQuery event.
+     :arg event: string
+     :return: boolean */
+    var eventOptions = ["click", "dblclick", "mouseenter", "mouseleave",
+        "keypress", "keydown", "keyup", "submit", "change", "focus",
+        "blur", "load", "resize", "scroll", "unload"];
+
+    return eventOptions.includes(event);
+}
+
+function htmlElementExists(tag) {
+    /* Checks if a html element exists. 
+     * :arg tag: string, jQuery tag (# + id) */
+    return Boolean($(tag).length);
+}
+
+function htmlElementIsSelect(tag) {
+    /* Checks if a html element is a select element.
+     * :arg tag: string, jQuery tag (# + id) */
+    return $(tag).is('select');
+}
+
+function initializeDropdownMenu(tag, itemList, attribute) {
+    /* Populates a dropdown menu with options from an item list.
+     * :arg tag: string, jQuery tag (# + id)
+     * :arg itemList: list of objects
+     * :arg attribute: string, object attribute name */
+    if (!htmlElementExists(tag)) {
+        console.log("Html element with tag " + tag + " does not exist...");
+        return;
+    } else if (!htmlElementIsSelect(tag)) {
+        console.log("Html element with tag " + tag + " is not a select element...");
+        return;
+    }
+
+    var selected = $(tag + " :selected").val();
+    var item = null;
+    for (var i in itemList) {
+        item = itemList[i];
+        if (!item.hasOwnProperty(attribute)) {
+            continue;
+        } else if (selected == item[attribute]) {
+            continue;
+        }
+        $(tag).append(new Option(item[attribute], item[attribute]));
+    }
+    sortDropdownMenuOptions(tag);
+}
+
+function updateDropdownMenu(tag, excludes) {
+    /* Enables and shows select options whos text is not in excludes.
+     * :arg tag: string, jQuery element tag (# + id)
+     * :arg excludes: list of strings */
+    if (!htmlElementExists(tag)) {
+        console.log("Html element with tag " + tag + " does not exist...");
+        return;
+    } else if (!htmlElementIsSelect(tag)) {
+        console.log("Html element with tag " + tag + " is not a select element...");
+        return;
+    }
+
+    excludes = arrayToLower(excludes);
+
+    var selected = $(tag + " :selected").val();
+    var isInvalid = excludes.includes(selected.toLowerCase());
+
+    var options = $(tag).find("option");
+    var option = null;
+    for (var i = 0; i < options.length; i++) {
+        option = options[i]
+        if (excludes.includes(option.text.toLowerCase())) {
+            option.hidden = true;
+            option.disabled = true;
+        } else {
+            if (isInvalid) {
+                $(tag).val(option.value);
+                isInvalid = false;
+            }
+            option.hidden = false;
+            option.disabled = false;
+        }
+    }
+}
+
+function sortDropdownMenuOptions(tag) {
+    /* Sort the options of a dropdown menu in alphabetical order.
+     * :arg tag: string, jQuery element tag (# + id) */
+    if (!htmlElementExists(tag)) {
+        console.log("Html element with tag " + tag + " does not exist...");
+        return;
+    }
+
+    var menu = $(tag);
+    var selected = menu.val();
+    var optionList = menu.find("option");
+    optionList.sort(function (a, b) { return $(a).text() > $(b).text() ? 1 : -1; });
+    menu.html("").append(optionList);
+    menu.val(selected);
+} 
+
+function getDropdownMenuValues(tag, onlyVisible) {
+    var values = [];
+    $(tag + " option").each(function () {
+        if (onlyVisible) {
+            if (!$(this).hidden) {
+                values.push($(this).val());
+            }
+        } else {
+            values.push($(this).val());
+        }
+    });
+
+    return values;
+}
+
+function getDropdownSelected(tag) {
+    return $(tag).find(":selected").text();
+}
+
+function arrayApplyFilter(arr, filter) {
+    /* Removes the elements of a filter from an array.
+     * :arg arr: array
+     * :arg filter: array */
+    arr = arr.filter(function (el) {
+        return !filter.includes(el);
+    })
+    return arr;
+}
+
+function arrayToLower(arr) {
+    /* Makes the string elements of an array lower case.
+     * :arg arr: array */
+    var elem = null;
+    for (var i = 0; i < arr.length; i++) {
+        elem = arr[i];
+        if (typeof elem == "string") {
+            arr[i] = arr[i].toLowerCase();
+        }
+    }
+    return arr;
+}
+
+function arrayToUpper(arr) {
+    /* Makes the string elements of an array upper case.
+     * :arg arr: array */
+    var elem = null;
+    for (var i = 0; i < arr.length; i++) {
+        elem = arr[i];
+        if (typeof elem == "string") {
+            arr[i] = arr[i].toUpperCase();
+        }
+    }
+    return arr;
+}
+
+function arrayRemoveEmpties(arr) {
+    /* Removes empty strings from an array.
+     * :arg arr: array */
+    arr = arr.filter(function (el) {
+        return el != "";
+    });
+    
+    return arr;
+}
+
+function getObjectsWithAttribute(objects, attribute, value) {
+    /* Returns the objects that have an attribute with a certain value.
+     * :arg objects: list of objects
+     * :arg attribute: string
+     * :arg value: - 
+     * :return: list of objects */
+    var list = [];
+    var object = null;
+    for (var i = 0; i < objects.length; i++) {
+        object = objects[i];
+        if (object.hasOwnProperty(attribute)) {
+            if (object[attribute] == value) {
+                list.push(object)
+            }
+        }
+    }
+    return list;
+}
+
+function getObjectAttributeValues(objects, attribute) {
+    var list = [];
+    var object = null;
+    for (var i = 0; i < objects.length; i++) {
+        object = objects[i];
+        if (object.hasOwnProperty(attribute)) {
+            list.push(object[attribute]);
+        }
+    }
+    return list;
 }

@@ -107,6 +107,10 @@ namespace BridgeMVC.Controllers
             lsp = lsp.OrderBy(d => d.ListItem);
             ViewBag.LSubProdType = lsp;
 
+            var lmed = await DocumentDBRepository.GetItemsAsync<BList>(d => d.Tag == "BList" && d.BridgeModule == bm && d.ListType == "MEDItemNo");
+            lmed = lmed.OrderBy(d => d.ListItem);
+            ViewBag.LMEDItemNo = lmed;
+
             var lu = await DocumentDBRepository.GetItemsAsync<BUser>(d => d.Tag == "BUser" && (d.BridgesGranted).Contains(bm));
             lu = lu.OrderBy(d => d.Signature);
             ViewBag.LUser = lu;
