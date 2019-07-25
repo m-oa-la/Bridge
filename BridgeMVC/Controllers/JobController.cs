@@ -90,7 +90,7 @@ namespace BridgeMVC.Controllers
             var jid = (string)Session["DbJobId"];
 
             var lbb = await DocumentDBRepository.GetItemsAsync<BBridge>(d => d.Tag == "BBridge" && d.BridgeName == bm);
-             ViewBag.bridge = lbb.FirstOrDefault();
+            ViewBag.bridge = lbb.FirstOrDefault();
 
             var lct = await DocumentDBRepository.GetItemsAsync<BFinancial>(d => d.Tag == "BFinancial" && d.BridgeModule == bm);
             lct = lct.OrderBy(d => d.CertType);
@@ -111,10 +111,14 @@ namespace BridgeMVC.Controllers
             lsp = lsp.OrderBy(d => d.ListItem);
             ViewBag.LSubProdType = lsp;
 
-  
+            var lmed = await DocumentDBRepository.GetItemsAsync<BList>(d => d.Tag == "BList" && d.BridgeModule == bm && d.ListType == "MEDItemNo");
+            lmed = lmed.OrderBy(d => d.ListItem);
+            ViewBag.LMEDItemNo = lmed;
+
             var lu = await DocumentDBRepository.GetItemsAsync<BUser>(d => d.Tag == "BUser" && (d.BridgesGranted).Contains(bm));
             lu = lu.OrderBy(d => d.Signature);
             ViewBag.LUser = lu;
+
             if (bm == "M3" && !string.IsNullOrEmpty(jid))
             {
                 Job j = await DocumentDBRepository.GetItemAsync<Job>(jid);
@@ -808,16 +812,6 @@ namespace BridgeMVC.Controllers
             await CreateNewJob(item);
             return Redirect(Url.Content("~/Job/_Index/"));
         }
-
-        /*
-        public string CleanHtmlString (string s)
-        {
-            s = s.Replace("<br/>", "");
-            s = s.Replace("<div>", "");
-            s = s.Replace("</div>", "");
-            return s;
-        }
-        */
 
         [ActionName("M1_Task3_LSA")]
         public async Task<ActionResult> M1_Task3_LSA(string id)

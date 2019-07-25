@@ -2,93 +2,19 @@
 
 @{
     ViewBag.Title = "Index";
-    Layout = "~/Views/Shared/_Layout.cshtml";
+    Layout = "~/Views/Shared/_LayoutIndex.cshtml";
     string BridgeLastUsed = (string)Session["BridgeModule"];
     string UserSignature = (string)Session["UserSignature"];
     var LUser = ViewBag.LUser;
     var US = ViewBag.userSig;
+
     BridgeMVC.Models.BBridge bridge = (BridgeMVC.Models.BBridge)ViewBag.bridge;
-    string styleTxt = "border-radius: 0; border: none";
     string bridgeLongName = bridge.BridgeLongName;
     List<string> taskNames = bridge.TaskName.Split(';').ToList<string>();
+    var jobNum = Model.Count();
+    int TotalFee = 0;
+
 }
-
-<style>
-    .classTY {
-        background-color: seagreen;
-        color: transparent;
-        cursor: pointer;
-        width: 40px;
-        border-style: none;
-    }
-
-    .classTN {
-        background-color: gainsboro;
-        color: transparent;
-        cursor: pointer;
-        width: 40px;
-        border-style: none;
-    }
-
-    .classTTASK {
-        background-color: DodgerBlue;
-        color: transparent;
-        cursor: pointer;
-        width: 40px;
-        border-style: none;
-    }
-
-    .classTTASKIORA {
-        background-color: DodgerBlue;
-        color: transparent;
-        cursor: pointer;
-        width: 40px;
-        border-style: none;
-    }
-
-    .classTPENDING {
-        background-color: gold;
-        color: black;
-        cursor: pointer;
-        width: 40px;
-        border-style: none;
-        font-size: large;
-        font-weight: bold;
-    }
-
-    .classT {
-        background-color: gainsboro;
-        color: transparent;
-        cursor: pointer;
-        width: 40px;
-        border-style: none;
-    }
-
-
-    .hoverRow p {
-        display: block;
-        overflow: hidden;
-        text-overflow: clip;
-        white-space: nowrap;
-        max-width: 480px;
-    }
-
-    .hoverRow td:hover p {
-        white-space: normal;
-        word-wrap: normal;
-        word-break: break-all;
-    }
-
-    .table th, td {
-        border-radius: 25px;
-        border: 1px solid white;
-    }
-
-    .title {
-        font-size: x-large;
-        font-weight: bold;
-    }
-</style>
 
 <div class="title">
     MY BRIDGE JOBLIST - @bridgeLongName
@@ -100,10 +26,10 @@
 {
     <table>
         <colgroup>
-            <col span="1" style="width: 12%;">
-            <col span="1" style="width: 76%;">
-            <col span="1" style="width: 12%;">
-
+            <col span="1" style="width: 15%;">
+            <col span="1" style="width: 70%;">
+            <col span="1" style="width: 15%;">
+            <col span="1" style="width: 80px;">
         </colgroup>
         <tr>
             <td>
@@ -113,7 +39,8 @@
             <td>
                 <input type="submit" value="Search" />
             </td>
-            <td style="float:right">
+
+            <td style="text-align:right">
                 <select id="userSig" name="userSig" class="form-control"></select>
             </td>
             <td>
@@ -124,34 +51,43 @@
 }
 <br />
 
-<table class="table table-mid-align-rows hoverRow" style="table-layout:fixed;">
+<table id="sortTable" class="table table-mid-align-rows hoverRow" style="table-layout:fixed;">
     <colgroup>
         <col span="1" style="width: 21%;">
         <col span="1" style="width: 120px;">
         <col span="1" style="width: 24%;">
         <col span="1" style="width: 24%;">
-        <col span="1" style="max-width: 50px; width:49px">
-        <col span="1" style="max-width: 50px; width:49px">
-        <col span="1" style="max-width: 50px; width:49px">
-        <col span="1" style="max-width: 50px; width:49px">
+        <col span="1" style="width: 35px">
+        <col span="1" style="width: 35px">
+        <col span="1" style="width: 35px">
+        <col span="1" style="width: 50px">
         <col span="1" style="width: 24%;">
+        <col span="1" style="width: 66px">
     </colgroup>
     <tr>
-        <th style="border-top:none">           JOB ID       </th>
-        <th style="border-top:none">            PROGRESS    </th>
-        <th style="border-top:none">            CUSTOMER        </th>
-        <th style="border-top:none">            PROJECT NAME    </th>
+        <th onclick="sortTable(0)"> JOB ID       <div class="arrows"> &#11046 </div> </th>
+        <th onclick="sortTable(1)"> PROGRESS     <div class="arrows"> &#11046 </div> </th>
+        <th onclick="sortTable(2)"> CUSTOMER     <div class="arrows"> &#11046 </div> </th>
+        <th onclick="sortTable(3)"> PROJECT NAME <div class="arrows"> &#11046 </div> </th>
+        @{ int col = 4; }
         @foreach (string taskname in taskNames)
         {
-            <th style="border-top:none">           @taskname     </th>
+            <th onclick="sortTable(@col)"> @taskname <div class="arrows"></div> </th>
+            col++;
         }
-        <th style="border-top:none">          IORA STATUS    </th>
+        <th onclick="sortTable(@col)"> IORA STATUS <div class="arrows"> &#11046 </div>  </th>
+        @{ col++; }
+        <th onclick="sortTable(@col)"> DAYS <div class="arrows"> &#11046 </div>  </th>
         @*<th>            @Html.DisplayNameFor(model => model.TaskHandler)        </th>
             <th>            @Html.DisplayNameFor(model => model.Completed)        </th>*@
     </tr>
-
     @foreach (var item in Model)
     {
+        if (item.Fee != null)
+        {
+            TotalFee += (int)item.Fee;
+        }
+
         string npsJobName = item.NpsJobName;
         if (string.IsNullOrEmpty(npsJobName))
         {
@@ -175,41 +111,71 @@
         string linkNcertReporting = "'/Job/NCertReporting/" + item.Id + "'";
         string t2tag = "T2TAG" + item.Task2 + "T2TAG";
 
-        <tr>
+        string daysSince = "0";
+        string receivedClass = "";
+        if (item.ReceivedTime != null)
+        {
+            TimeSpan timeSpan = DateTime.Now - (DateTime)item.ReceivedTime;
+            double days = timeSpan.TotalDays;
+            if (days > 60)
+            {
+                receivedClass = "color: red;";
+            }
+            else if (days > 30)
+            {
+                receivedClass = "color: orange;";
+            }
+            daysSince = days.ToString("0.0");
+        }
+
+
+
+
+        <tr class="jobList">
             <td>
-                <p>
-                    @Html.DisplayFor(modelItem => item.NpsJobId)
-                </p>
+                <p> @Html.DisplayFor(modelItem => item.NpsJobId) </p>
             </td>
             <td>
-                <div style="background-color:lightgray;cursor: pointer;text-align:center;height:25px" onclick="location.href=@linkNcertReporting">
+                <div style="background-color:lightgray; cursor: pointer; width:100%;" onclick="location.href=@linkNcertReporting">
 
-                    <div style="background-color:green;width:66.66%;position:relative;top:0px;height:24px">
-                        <div style="color:white">
+                    <div style="background-color:green;width:66.66%;position:relative;top:0px;height:24px;margin:0px">
+                        <div style="color:white; margin:auto;">
                             bhrs
                         </div>
                     </div>
                 </div>
             </td>
             <td>
-                <p>  @Html.DisplayFor(modelItem => item.CustomerName)</p>
+                <p> @Html.DisplayFor(modelItem => item.CustomerName) </p>
             </td>
             <td>
-                <p>
-                    @npsJobName
-                </p>
+                <p> @npsJobName </p>
             </td>
-            <td class="@classT1" onclick="location.href=@editlink1">
-                @Html.DisplayFor(modelItem => item.Task1)
+
+            <td>
+                <div class="@classT1" onclick="location.href=@editlink1">
+                    @Html.DisplayFor(modelItem => item.Task1)
+                </div>
             </td>
-            <td class="@classT2" onclick="location.href=@editlink2" align="center" tag="@t2tag">
-                @Html.DisplayFor(modelItem => item.Task2)
+            <td>
+                <div class="@classT2" onclick="location.href=@editlink2" align="center" tag="@t2tag">
+                    @Html.DisplayFor(modelItem => item.Task2)
+                </div>
             </td>
-            <td class="@classT3" onclick="location.href=@editlink3">
-                @Html.DisplayFor(modelItem => item.Task3)
+
+            <td>
+                <div class="@classT3" onclick="location.href=@editlink3">
+                    @Html.DisplayFor(modelItem => item.Task3)
+                </div>
             </td>
-            <td class="@classT4" onclick="location.href=@editlink4">
-                @Html.DisplayFor(modelItem => item.Task4)
+
+            @*<td class="@classT3" onclick="location.href=@editlink3" style="width: 25px;">
+                    @Html.DisplayFor(modelItem => item.Task3)
+                </td> *@
+            <td>
+                <div class="@classT4" onclick="location.href=@editlink4">
+                    @Html.DisplayFor(modelItem => item.Task4)
+                </div>
             </td>
             <td>
                 <p>
@@ -219,37 +185,31 @@
                     }
                 </p>
             </td>
+            <td style="text-align:right; @receivedClass">
+                @daysSince
+            </td>
         </tr>
     }
 </table>
 <br /><br /><br />
+
+<table class="stats">
+    <tr>
+        <td><strong> In total: </strong></td>
+        <td> Jobs: @jobNum </td>
+        <td> Fee: @TotalFee NOK </td>
+    </tr>
+</table>
+
 <hr />
-<footer>
-    <table class="table table-mid-align-rows hoverRow" style="table-layout:fixed;">
-        <tr>
-            <td class="classTY"></td>
-            <td style="@styleTxt"><p>Task is completed</p></td>
-            <td class="classTTASK"></td>
-            <td style="@styleTxt"><p>Task is assigned to you (ongoing)</p></td>
-            @*<td class="classT"></td>
-                <td style="@styleTxt">IORA pending verification</td>*@
-            <td class="classTPENDING" align="center">X</td>
-            <td style="@styleTxt"><p>Task is pending for X days</p></td>
-            <td class="classT"></td>
-            <td style="@styleTxt"><p>Task is not assigned</p></td>
-        </tr>
-    </table>
-</footer>
 
-@section Scripts {
-    <script type="text/javascript">
-        var LUser = @Html.Raw(Json.Encode(LUser));
-        var us = @Html.Raw(Json.Encode(US));
 
-        $("#userSig").append(new Option(us, us));
+<script type="text/javascript">
+    var LUser = @Html.Raw(Json.Encode(LUser));
+    var us = @Html.Raw(Json.Encode(US));
+    $("#userSig").append(new Option(us, us));
+    $.each(LUser, function (key, data) {
+        $("#userSig").append(new Option(data.Signature, data.Signature));
+    });
 
-        $.each(LUser, function (key, data) {
-            $("#userSig").append(new Option(data.Signature, data.Signature));
-        });
-    </script>
-}
+</script>

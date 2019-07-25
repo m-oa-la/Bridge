@@ -36,7 +36,6 @@ namespace BridgeMVC.Controllers
                 BLs = BLs.Where(s => s.ListType.ToLower().Contains(searchString) || s.ListItem.ToLower().Contains(searchString));
             }
 
-
             return View(BLs.OrderBy(s => s.ListType));
         }
         [ActionName("GenericIndex")]
@@ -53,7 +52,6 @@ namespace BridgeMVC.Controllers
                 BLs = BLs.Where(s => s.ListType.ToLower().Contains(searchString) || s.ListItem.ToLower().Contains(searchString));
             }
 
-
             return View(BLs.OrderBy(s => s.ListType));
         }
 
@@ -69,7 +67,6 @@ namespace BridgeMVC.Controllers
             await SetViewBag();
             return View(S);
         }
-
 
         [HttpPost]
         [ActionName("Create")]
@@ -129,7 +126,6 @@ namespace BridgeMVC.Controllers
             {
                 return "bad request, invalid id";
             }
-
             item.ListItem = newval;
             var v = await DocumentDBRepository.UpdateItemAsync<BList>(item.Id, item);
             return "";
@@ -149,7 +145,6 @@ namespace BridgeMVC.Controllers
 
             return GetIdFromDocument(v.ToString());
         }
-
 
         public string GetIdFromDocument(string s)
         {

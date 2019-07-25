@@ -17,12 +17,13 @@ namespace BridgeMVC.Models
 
         [JsonProperty(PropertyName = "id")]
         public string Id { get; set; }
+
         [Required]
         [JsonProperty(PropertyName = "bridgeModule")]
         public string BridgeModule { get; set; }
+
         [Required]
         [StringLength(50)]
-
         [DisplayName("Type of the list item")]
         [JsonProperty(PropertyName = "listType")] // CertType, Rule, EqtType, SubEqtType 
         public string ListType { get; set; }
@@ -35,10 +36,8 @@ namespace BridgeMVC.Models
         [JsonProperty(PropertyName = "upperLvl")]
         public string UpperLvl { get; set; }
 
-
         [JsonProperty(PropertyName = "uniqueKey")]
         public string Uk => $"{ListType} {ListItem} {UpperLvl}";
-
 
         [JsonProperty(PropertyName = "note")] // CertType, Rule, EqtType, SubEqtType 
         public string Note { get; set; }

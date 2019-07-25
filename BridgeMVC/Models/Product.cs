@@ -15,8 +15,8 @@ namespace BridgeMVC.Models
 
         [JsonProperty(PropertyName = "techParaValue")]
         public string TechParaValue { get; set; }
-
     }
+
     public class Product
     {
         [Required]

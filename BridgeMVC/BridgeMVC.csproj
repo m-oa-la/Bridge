@@ -324,6 +324,7 @@
     <Content Include="Content\bootstrap-theme.min.css" />
     <Content Include="Content\bootstrap.css" />
     <Content Include="Content\bootstrap.min.css" />
+    <Content Include="Content\Common\IndexStyleSheet.css" />
     <Content Include="Content\jCalendar.css" />
     <Content Include="Content\jquery-ui.css" />
     <Content Include="Content\M1\index.css" />
@@ -395,8 +396,8 @@
     <None Include="Properties\PublishProfiles\FolderProfile.pubxml" />
     <None Include="Properties\PublishProfiles\MABridgeDev - Web Deploy.pubxml" />
     <None Include="Scripts\jquery-3.3.1.intellisense.js" />
+    <Content Include="Scripts\Common\Index.js" />
     <Content Include="Scripts\Common\ptphandling.js" />
-    <Content Include="Scripts\Common\utilities.js" />
     <Content Include="Scripts\Common\jqueryUtilities.js" />
     <Content Include="Scripts\cldr.js" />
     <Content Include="Scripts\cldr\event.js" />
@@ -423,6 +424,7 @@
     <Content Include="Scripts\jquery.validate.unobtrusive.js" />
     <Content Include="Scripts\jquery.validate.unobtrusive.min.js" />
     <Content Include="Scripts\M1\M1Commons.js" />
+    <Content Include="Scripts\M1\task1.js" />
     <Content Include="Scripts\M2\m2_task1_ped.js" />
     <Content Include="Scripts\M3\M3Commons.js" />
     <Content Include="Scripts\modernizr-2.8.3.js" />
@@ -571,10 +573,10 @@
     <Content Include="Views\Customer\Index.cshtml" />
     <Content Include="Views\Job\ZTest.cshtml" />
     <Content Include="Views\BList\GenericIndex.cshtml" />
+    <Content Include="Views\Shared\_LayoutIndex.cshtml" />
   </ItemGroup>
   <ItemGroup>
     <Folder Include="App_Data\M1\Projects\" />
-    <Folder Include="Content\Common\" />
   </ItemGroup>
   <ItemGroup>
     <Content Include="fonts\glyphicons-halflings-regular.woff2" />
