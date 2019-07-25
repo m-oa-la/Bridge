@@ -40,7 +40,7 @@
                 <input type="submit" value="Search" />
             </td>
 
-            <td style="float:right">
+            <td style="text-align:right">
                 <select id="userSig" name="userSig" class="form-control"></select>
             </td>
             <td>
@@ -195,10 +195,14 @@
 </table>
 <br /><br /><br />
 
-@*Stats *@
-<div> <strong> In total: </strong> </div>
-<div> Jobs: @jobNum </div>
-<div> Fee: @TotalFee NOK </div>
+<table class="stats">
+        <tr>
+            <td><strong> In total: </strong></td>
+            <td> Jobs: @jobNum </td>
+            <td> Fee: @TotalFee NOK </td>
+        </tr>    
+</table>
+
 <hr />
 
 

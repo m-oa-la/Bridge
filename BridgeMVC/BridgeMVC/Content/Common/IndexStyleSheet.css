@@ -149,7 +149,7 @@ body {
     border: 1px solid white !important;
 }
 
-th {
+.table th {
     cursor: pointer;
 }
 
@@ -176,4 +176,9 @@ th {
 
 .arrows {
     float:right;
+}
+
+.stats td{
+    width: 33%;
+    text-align: center;
 }

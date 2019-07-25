@@ -14,7 +14,7 @@
     List<string> taskNames = bridge.TaskName.Split(';').ToList<string>();
     var jobNum = Model.Count();
     int TotalFee = 0;
-   
+
     string getColorCode(string ct)
     {
         string c = "";
@@ -58,7 +58,7 @@
             <td>
                 <input type="submit" value="Search" />
             </td>
-            
+
             <td style="text-align:right">
                 <select id="userSig" name="userSig" class="form-control"></select>
             </td>
@@ -100,7 +100,7 @@
             <th>            @Html.DisplayNameFor(model => model.Completed)        </th>*@
 
     </tr>
-    
+
     @foreach (var item in Model)
     {
         if (item.Fee != null)
@@ -155,7 +155,7 @@
             daysSince = days.ToString("0.0");
         }
 
-        
+
         <tr class="jobList">
             <td style="@ctColorCode">
                 <p> @Html.DisplayFor(modelItem => item.NpsJobId) </p>
@@ -209,21 +209,25 @@
                 }
 
             </td>
-            
+
             <td style="text-align:right; @receivedClass">
-                @daysSince 
+                @daysSince
             </td>
         </tr>
-     }
+    }
 
 </table>
 <br /><br /><br />
 
-<div> <strong> In total: </strong> </div>
-<div> Jobs: @jobNum </div>
-<div> Fee: @TotalFee NOK </div>
-<hr />
+<table class="stats">
+    <tr>
+        <td><strong> In total: </strong></td>
+        <td> Jobs: @jobNum </td>
+        <td> Fee: @TotalFee NOK </td>
+    </tr>
+</table>
 
+<hr />
 
 <script type="text/javascript">
     var LUser = @Html.Raw(Json.Encode(LUser));
@@ -296,4 +300,4 @@
         return year + '-' + month + '-' + date + ' ' + hr + ':' + min + ':00';
         }
 
- </script>
+</script>
