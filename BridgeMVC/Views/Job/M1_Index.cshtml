@@ -2,7 +2,7 @@
 
 @{
     ViewBag.Title = "Index";
-    Layout = "~/Views/Shared/_LayoutIndex.cshtml";
+    Layout = "~/Views/Job/_LayoutIndex.cshtml";
     string BridgeLastUsed = (string)Session["BridgeModule"];
     string UserSignature = (string)Session["UserSignature"];
     var LUser = ViewBag.LUser;
@@ -22,47 +22,20 @@
 </div>
 <hr />
 
-@using (Html.BeginForm())
-{
-    <table>
-        <colgroup>
-            <col span="1" style="width: 15%;">
-            <col span="1" style="width: 70%;">
-            <col span="1" style="width: 15%;">
-            <col span="1" style="width: 80px;">
-        </colgroup>
-        <tr>
-            <td>
-                @Html.TextBox("SearchString", null, new { @class = "form-control" })
-
-            </td>
-            <td>
-                <input type="submit" value="Search" />
-            </td>
-
-            <td style="text-align:right">
-                <select id="userSig" name="userSig" class="form-control"></select>
-            </td>
-            <td>
-                <input type="submit" value="Change User" />
-            </td>
-        </tr>
-    </table>
-}
-<br />
+@Html.Partial("~/Views/Job/_IndexNavBar.cshtml")
 
 <table id="sortTable" class="table table-mid-align-rows hoverRow" style="table-layout:fixed;">
     <colgroup>
-        <col span="1" style="width: 21%;">
-        <col span="1" style="width: 120px;">
-        <col span="1" style="width: 24%;">
-        <col span="1" style="width: 24%;">
-        <col span="1" style="width: 35px">
-        <col span="1" style="width: 35px">
-        <col span="1" style="width: 35px">
-        <col span="1" style="width: 50px">
-        <col span="1" style="width: 24%;">
-        <col span="1" style="width: 66px">
+        <col span="1" style="width: 21%;" />
+        <col span="1" style="width: 120px;" />
+        <col span="1" style="width: 24%;" />
+        <col span="1" style="width: 24%;" />
+        <col span="1" style="width: 35px" />
+        <col span="1" style="width: 35px" />
+        <col span="1" style="width: 35px" />
+        <col span="1" style="width: 50px" />
+        <col span="1" style="width: 24%;" />
+        <col span="1" style="width: 66px" />
     </colgroup>
     <tr>
         <th onclick="sortTable(0)"> JOB ID       <div class="arrows"> &#11046 </div> </th>
@@ -125,7 +98,7 @@
                 receivedClass = "color: orange;";
             }
         }
-                     
+
 
         <tr class="jobList">
             <td>
@@ -187,17 +160,18 @@
         </tr>
     }
 </table>
-<br /><br /><br />
+<br /><br />
 
-<table class="stats">
-    <tr>
-        <td><strong> In total: </strong></td>
-        <td> Jobs: @jobNum </td>
-        <td> Fee: @TotalFee NOK </td>
-    </tr>
-</table>
-
-<hr />
+<div class="stats">
+    <table>
+        <tr>
+            <td><strong> In total: </strong></td>
+            <td> Jobs: @jobNum </td>
+            <td> Fee: @TotalFee NOK </td>
+        </tr>
+    </table>
+    <hr />
+</div>
 
 
 <script type="text/javascript">
