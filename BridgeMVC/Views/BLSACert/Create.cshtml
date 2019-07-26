@@ -1,0 +1,26 @@
+﻿@model BridgeMVC.Models.BLSACert
+
+@{
+    var LMEDItemNo = ViewBag.LMEDItemNo;
+    var Job = ViewBag.Job;
+    var Product = ViewBag.Product;
+    var LPTPs = ViewBag.LPTPs;
+}
+
+
+@using (Html.BeginForm())
+{
+    @Html.AntiForgeryToken()
+
+    <div class="form-horizontal">
+
+        @Html.Partial("../BLSACert/_SV_CreateEdit", Model)
+    </div>
+}
+
+<div>
+    @Html.ActionLink("Back to List", "Index")
+</div>
+@section Scripts {
+    @Scripts.Render("~/bundles/jqueryval")
+}

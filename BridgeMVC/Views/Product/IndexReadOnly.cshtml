@@ -1,0 +1,79 @@
+﻿@model IEnumerable<BridgeMVC.Models.Product>
+
+@{
+    Layout = null;
+}
+
+
+<head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Bridge</title>
+    @Styles.Render("~/Content/css")
+    @Scripts.Render("~/bundles/modernizr")
+    <script language="JavaScript" type="text/javascript" src="~/Scripts/jquery-3.3.1.min.js"></script>
+    <script language="JavaScript" type="text/javascript" src="~/Scripts/Common/bridgeScript.js"></script>
+
+    <style>
+        body {
+            font: Avenir Next;
+        }
+    </style>
+</head>
+
+<h4 style="margin-top:1px"> Products </h4>
+
+<table class="table">
+    <colgroup>
+        <col span="1" style="width: 18%;">
+        <col span="1" style="width: 18%;">
+        <col span="1" style="width: 18%;">
+        <col span="1" style="width: 18%;">
+        <col span="1" style="width: 18%;">
+        <col span="1" style="width: 10%;">
+        <tr>
+            <th>
+                Main Type
+            </th>
+            <th>
+                Sub Type
+            </th>
+            <th>
+                Product name
+            </th>
+            <th>
+                Design Pressure
+            </th>
+            <th>
+                Design Temp.
+            </th>
+            <th>
+                Note
+            </th>
+        </tr>
+    </colgroup>
+
+    @foreach (var item in Model)
+    {
+ 
+        <tr>
+            <td>
+                @Html.DisplayFor(modelItem => item.MainProdType)
+            </td>
+            <td>
+                @Html.DisplayFor(modelItem => item.SubProdType)
+            </td>
+            <td>
+                @Html.DisplayFor(modelItem => item.Note)
+            </td>
+            <td>
+
+                @Html.ActionLink("Edit", "Edit", new { id = item.Id })
+
+            </td>
+
+
+        </tr>
+    }
+
+</table>

@@ -1,0 +1,305 @@
+﻿@model BridgeMVC.Models.Job
+@{
+    @*@Styles.Render("~/Content/M1/taskA4.css")*@
+Layout = "~/Views/Shared/_LayoutM3TaskStandard.cshtml";
+
+string UserSignature = (string)Session["UserSignature"];
+string bridgeModule = (string)Session["BridgeModule"];
+var LCertType = ViewBag.LCertType;
+var LCertAction = ViewBag.LCertAction;
+var LUser = ViewBag.LUser;
+var LAutoCertText = ViewBag.LAutoCertText;
+var LVauleResource = ViewBag.LVauleResource;
+var LPTP = ViewBag.LPTP;
+
+var LProd = ViewBag.LProduct;
+}
+
+@using (Html.BeginForm(null, null, FormMethod.Post, new { id = "jobForm" }))
+{
+    @Html.AntiForgeryToken()
+
+<div class="form-horizontal split left">
+    <h2>AutoCert</h2>
+    <hr />
+
+    <div class="bing col-lg-5">
+        <p> NPS Job ID: </p>
+        <p>
+            @Html.EditorFor(model => model.NpsJobId, new { htmlAttributes = new { @class = "form-control", @readonly = "readonly" } })
+
+        </p>
+    </div>
+
+    <div class="bing col-lg-5">
+        <p>Customer:</p>
+        <p>
+            @Html.EditorFor(model => model.CustomerName, new { htmlAttributes = new { @class = "form-control", @readonly = "readonly" } })
+
+        </p>
+    </div>
+    <div class="bing col-lg-5">
+        <p>Sales Order:</p>
+        <p>
+            @Html.EditorFor(model => model.SalesOrderNo, new { htmlAttributes = new { @class = "form-control", @readonly = "readonly" } })
+
+        </p>
+    </div>
+    <div class="bing col-lg-5" hidden>
+        <p>Product Name:</p>
+        <p>
+            @Html.EditorFor(model => model.ProdDescription, new { htmlAttributes = new { @class = "form-control" } })
+            @Html.ValidationMessageFor(model => model.ProdDescription, "", new { @class = "text-danger" })
+        </p>
+
+    </div>
+    <div class="bing col-lg-5">
+        <p>Deliverable:</p>
+        <p>
+            @Html.DropDownListFor(model => model.CertType, new List<SelectListItem> { new SelectListItem { Text = Model.CertType, Value = Model.CertType } },
+new { @class = "form-control", id = "selectCertType" })
+        </p>
+
+    </div>
+    <div class="bing col-lg-5">
+        <p> MED Item No.: </p>
+        <p>
+            @Html.EditorFor(model => model.MEDItemNo,
+new { htmlAttributes = new { @class = "form-control", @readonly = "readonly" } })
+            @Html.ValidationMessageFor(model => model.MEDItemNo,
+"", new { @class = "text-danger" })
+        </p>
+    </div>
+    <div class="bing col-lg-5">
+        <p>New Certificate No.:</p>
+        <p>
+            @Html.EditorFor(model => model.CertNo,
+new { htmlAttributes = new { @class = "form-control" } })
+            @Html.ValidationMessageFor(model => model.CertNo,
+"", new { @class = "text-danger" })
+        </p>
+    </div>
+    <div class="bing col-lg-5">
+        <p>Issurance type:</p>
+        <p>
+            @Html.DropDownListFor(model => model.CertAction, new List<SelectListItem> { new SelectListItem { Text = Model.CertAction, Value = Model.CertAction } },
+new { @class = "form-control", id = "selectCertAction" })
+        </p>
+
+    </div>
+    <div class="bing col-lg-5">
+        <p>Ref. certificate expiring date.:</p>
+        <p>
+            @Html.EditorFor(model => model.MEDFBDue, new { htmlAttributes = new { @class = "form-control" } })
+            @Html.ValidationMessageFor(model => model.MEDFBDue,
+"", new { @class = "text-danger" })
+        </p>
+
+    </div>
+    <div class="bing col-lg-5">
+        <p>Ref. deliverable no.:</p>
+        <p>
+            @Html.EditorFor(model => model.ExistingCertNo, new { htmlAttributes = new { @class = "form-control" } })
+            @Html.ValidationMessageFor(model => model.ExistingCertNo,
+"", new { @class = "text-danger" })
+        </p>
+    </div>
+    <div class="bing col-lg-5" hidden>
+        <p>Main Equipment category:</p>
+        <p>
+            @Html.DropDownListFor(model => model.MainProdType,
+new List<SelectListItem> { new SelectListItem { Text = Model.MainProdType, Value = Model.MainProdType } },
+new { @class = "form-control", id = "selectMainProdType" })
+        </p>
+
+    </div>
+    <div class="bing col-lg-5" hidden>
+        <p>Sub Equipment category:</p>
+        <p>
+            @Html.DropDownListFor(model => model.SubProdType,
+new List<SelectListItem> { new SelectListItem { Text = Model.SubProdType, Value = Model.SubProdType } },
+new { @class = "form-control", id = "selectSubProdType" })
+        </p>
+
+    </div>
+    <div class="bing col-lg-5">
+        <p>Maximum working load:</p>
+        <p>
+            @Html.EditorFor(model => model.MWL,
+new { htmlAttributes = new { @class = "form-control" } })
+            @Html.ValidationMessageFor(model => model.MWL,
+"", new { @class = "text-danger" })
+        </p>
+
+    </div>
+    <div class="bing col-lg-5">
+        <p>Amount of certificate:</p>
+        <p>
+            @Html.EditorFor(model => model.CertAmount,
+new { htmlAttributes = new { @class = "form-control" } })
+            @Html.ValidationMessageFor(model => model.CertAmount,
+"", new { @class = "text-danger" })
+        </p>
+
+    </div>
+    <div class="bing col-lg-5">
+        <p id="pMEDFBNo">Ref. Certificate No.:</p>
+        <p>
+            @Html.EditorFor(model => model.MEDFBNo,
+new { htmlAttributes = new { @class = "form-control" } })
+            @Html.ValidationMessageFor(model => model.MEDFBNo,
+"", new { @class = "text-danger" })
+        </p>
+    </div>
+
+    <div class="bing col-lg-5" hidden>
+        <p> Serial no.: </p>
+        <p>
+            @Html.EditorFor(model => model.SerialNo,
+new { htmlAttributes = new { @class = "form-control" } })
+            @Html.ValidationMessageFor(model => model.SerialNo,
+"", new { @class = "text-danger" })
+        </p>
+
+    </div>
+    <div class="bing col-lg-5" hidden>
+        <p> Survey station </p>
+        <p>
+            @Html.EditorFor(model => model.SurveyStation,
+new { htmlAttributes = new { @class = "form-control" } })
+            @Html.ValidationMessageFor(model => model.SurveyStation,
+"", new { @class = "text-danger" })
+        </p>
+
+    </div>
+    <div class="bing col-lg-5" hidden>
+        <p>
+            Survey date: (DD/MM/YYYY)
+            <img onclick="viewCalendar('jcalendar_parent', 'SurveyDate')" style="margin-top: 5px;" width="20" height="20" src="~/Content/pictures/calendar-32x32.png" alt="CAL" border="0">
+        </p>
+        <div id="jcalendar_parent" class="jcalendar_parent" style="z-index: 999"></div>
+
+        <input class="form-control" name="SurveyDate_Input" value="@Model.SurveyDate" id="SurveyDate_Input" readonly />
+    </div>
+    <div style="clear:both" ; class=" col-lg-12 ">
+        <h4 style="clear:both;">Scope of modification:</h4>
+        <p>
+            @Html.EditorFor(model => model.ModificationDesc,
+new { htmlAttributes = new { @class = "form-control", style = "height:60px" } })
+            @Html.ValidationMessageFor(model => model.ModificationDesc,
+"", new { @class = "text-danger" })
+        </p>
+
+    </div>
+
+    @{
+        Html.RenderPartial("_SV_AutoCertPTP");
+    }
+    <div  class="split right" id="autoCertA4">
+        @{
+            Html.RenderPartial("_SV_AutoCertA4Page");
+        }
+    </div>
+    @{ 
+    Html.RenderPartial("_PartialM1JobHiddenAttributes");
+    Html.RenderPartial("_SaveCompleteReopen");
+    Html.RenderPartial("_TaskSending");
+    }
+</div>
+
+}
+<br />
+<br />
+
+@section Scripts{
+    <script>
+    //read viewbag's info.
+
+    var userSignature = "@UserSignature";
+    var bm = "@bridgeModule";
+    var Job = @Html.Raw(Json.Encode(Model));
+
+    var LUser = @Html.Raw(Json.Encode(LUser));
+    var LCertAction = @Html.Raw(Json.Encode(LCertAction));
+    var LCertType = @Html.Raw(Json.Encode(LCertType));
+
+    var LVauleResource = @Html.Raw(Json.Encode(LVauleResource));
+
+    //AutoCertVariables
+    var LAutoCertText =  @Html.Raw(Json.Encode(LAutoCertText));
+    var LProduct = @Html.Raw(Json.Encode(LProd));
+        var Product = LProduct[0];
+ 
+
+    //Get autoCert text
+        refreshCertText(Job, Product, LAutoCertText, "CertText");
+
+    // Initial rendering
+    renderTaskHandling(LUser, bm);
+    renderTaskInputFields($("#selectCertType").val(), $("#selectCertAction").val());
+
+    //input field, source var, property name from the source (null if source var is a list of string)
+    SetupDropdownList("selectCertType", LCertType, "CertType");
+    SetupDropdownList("selectCertAction", LCertAction, "ListItem");
+
+    // Setting up jQuery change listener for selectCertType
+    $("#selectCertType").on("change", function () {
+        renderTaskInputFields($("#selectCertType").val(), $("#selectCertAction").val());
+    });
+
+    // Setting up jQuery change listener for selectCertAction
+    $("#selectCertAction").on("change", function () {
+        renderTaskInputFields($("#selectCertType").val(), $("#selectCertAction").val());
+    });
+
+ //Hide not used elements
+        hideElement("TaskComplete");
+        hideElement("ReOpenTask");
+        $("#selectListTask").val("1.AutoCert");
+        $('#selectListTask').attr("disabled", true);
+        $('#SV_selectTask').attr("class", "col-lg-12");
+        hideElement("SV_selectHandler");
+        hideElement("TaskStatus");
+        
+//Monitor if ptp input field is changed. If so, save ptp.
+    $("input").on('change', function () {
+        //if class contains ptp, then save prod data
+        savePTPbyClassName($(this).attr("class"), $(this).val());
+    });
+
+    $("select").on('change', function () {
+        //if class contains ptp, then save prod data
+        savePTPbyClassName($(this).attr("class"), $(this).val());
+    });
+
+        function savePTPbyClassName(classname,value) {
+            //if class contains ptp, then save prod data
+            var ret = classname.split(" ")
+            if (ret[1] == "ptp") {
+                var prodid = ret[2];
+                var ptpid = ret[3];
+                var ptpval = value;
+                callSavePTPApi(prodid, ptpid, ptpval);
+
+                Product.PTPs[ptpid].TechParaValue = ptpval;
+                refreshCertText(Job, Product, LAutoCertText, "CertText");
+
+            }
+        }
+
+        function callSavePTPApi(prodid, ptpid, ptpval) {
+
+            return $.ajax({
+                type: 'POST',
+                url: '/Product/SavePTP/',
+                data: { ProdId: prodid, PTPId: ptpid, PTPVal: ptpval },
+                cache: false,
+                success: {
+
+                }
+            });
+        }
+
+
+    </script>
+}

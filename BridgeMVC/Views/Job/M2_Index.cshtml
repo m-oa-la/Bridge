@@ -1,0 +1,288 @@
+﻿@model IEnumerable<BridgeMVC.Models.Job>
+
+@{
+    ViewBag.Title = "Index";
+    Layout = "~/Views/Shared/_LayoutIndex.cshtml";
+    string BridgeLastUsed = (string)Session["BridgeModule"];
+    string UserSignature = (string)Session["UserSignature"];
+    var LUser = ViewBag.LUser;
+    var US = ViewBag.userSig;
+    var BFlist = (IEnumerable<BridgeMVC.Models.BFinancial>)ViewBag.LCertType;
+
+    BridgeMVC.Models.BBridge bridge = (BridgeMVC.Models.BBridge)ViewBag.bridge;
+    string bridgeLongName = bridge.BridgeLongName;
+    List<string> taskNames = bridge.TaskName.Split(';').ToList<string>();
+    var jobNum = Model.Count();
+    int TotalFee = 0;
+
+    string getColorCode(string ct)
+    {
+        string c = "";
+        foreach (BridgeMVC.Models.BFinancial bf in BFlist)
+        {
+            if (bf.CertType == ct)
+            {
+                c = bf.ColorCode;
+            }
+        }
+
+        return "background-color:" + c;
+    }
+
+
+}
+
+<div class="h2">
+    MY BRIDGE JOBLIST - @bridgeLongName
+    <p style="float:right" class="btn btn-secondary">
+        @Html.ActionLink("Whiteboard", "Whiteboard")
+    </p>
+</div>
+<hr />
+
+@using (Html.BeginForm())
+{
+    <table>
+        <colgroup>
+            <col span="1" style="width: 15%;">
+            <col span="1" style="width: 70%;">
+            <col span="1" style="width: 15%;">
+            <col span="1" style="width: 80px;">
+
+        </colgroup>
+        <tr>
+            <td>
+                @Html.TextBox("SearchString", null, new { @class = "form-control" })
+
+            </td>
+            <td>
+                <input type="submit" value="Search" />
+            </td>
+
+            <td style="text-align:right">
+                <select id="userSig" name="userSig" class="form-control"></select>
+            </td>
+            <td>
+                <input type="submit" value="Change User" />
+            </td>
+        </tr>
+
+    </table>
+}
+<br />
+
+<table id="sortTable" class="table table-mid-align-rows hoverRow" style="table-layout:fixed;">
+    <colgroup>
+        <col span="1" style="width: 20%;">
+        <col span="1" style="width: 20%;">
+        <col span="1" style="width: 20%;">
+        <col span="1" style="width: 35px;">
+        <col span="1" style="width: 35px;">
+        <col span="1" style="width: 50px;">
+        <col span="1" style="width: 30%;">
+        <col span="1" style="width: 35px;">
+        <col span="1" style="width: 66px;">
+    </colgroup>
+    <tr>
+        <th onclick="sortTable(0)"> JOB ID       <div class="arrows"> &#11046 </div> </th>
+        <th onclick="sortTable(1)"> CUSTOMER     <div class="arrows"> &#11046 </div> </th>
+        <th onclick="sortTable(2)"> PROJECT NAME <div class="arrows"> &#11046 </div> </th>
+        @{ int col = 3; }
+        @foreach (string taskname in taskNames)
+        {
+            <th onclick="sortTable(@col)"> @taskname <div class="arrows"></div> </th>
+            col++;
+        }
+        <th onclick="sortTable(6)"> IORA STATUS   <div class="arrows"> &#11046 </div> </th>
+        <th onclick="sortTable(7)"> <div class="arrows"> &#11046 </div> </th>
+        <th onclick="sortTable(8)"> DAYS <div class="arrows"> &#11046 </div> </th>
+        @*<th>            @Html.DisplayNameFor(model => model.TaskHandler)        </th>
+            <th>            @Html.DisplayNameFor(model => model.Completed)        </th>*@
+    </tr>
+    @foreach (var item in Model)
+    {
+        if (item.Fee != null)
+        {
+            TotalFee += (int)item.Fee;
+        }
+
+        string npsJobName = item.NpsJobName;
+        string pauseIconId = "pause_" + item.Id;
+        string startIconId = "start_" + item.Id;
+        string statusId = "status_" + item.Id;
+
+        string classT1 = "classT" + item.Task1;
+        string classT2 = "classT" + item.Task2;
+
+        if (classT2 == "classTTASK")
+        {
+            classT2 = "classTTASKIORA";
+        }
+
+
+        string classT3 = "classT" + item.Task3;
+        string classT4 = "classT" + item.Task4;
+        if (string.IsNullOrEmpty(npsJobName))
+        {
+            npsJobName = item.ProdDescription;
+        }
+
+        string ctColorCode = getColorCode(item.CertType);
+
+
+        string editlink1 = "'/Job/CommonTask1/" + item.Id + "'";
+        string editlink2 = "'/Job/IsIORAExisting/" + item.Id + "'";
+
+        string editlink3 = "'/Job/CommonTask3/" + item.Id + "'";
+        string editlink4 = "'/Job/CommonTask4/" + item.Id + "'";
+
+        string daysSince = "0";
+        string receivedClass = "";
+        if (item.ReceivedTime != null)
+        {
+            TimeSpan timeSpan = DateTime.Now - (DateTime)item.ReceivedTime;
+            double days = timeSpan.TotalDays;
+            if (days > 60)
+            {
+                receivedClass = "color: red;";
+            }
+            else if (days > 30)
+            {
+                receivedClass = "color: orange;";
+            }
+            daysSince = days.ToString("0.0");
+        }
+
+
+        <tr class="jobList">
+            <td style="@ctColorCode">
+                <p> @Html.DisplayFor(modelItem => item.NpsJobId) </p>
+            </td>
+            <td>
+                <p> @Html.DisplayFor(modelItem => item.CustomerName) </p>
+            </td>
+            <td>
+                <p> @npsJobName </p>
+            </td>
+
+            <td>
+                <div class="@classT1" onclick="location.href=@editlink1">
+                    @Html.DisplayFor(modelItem => item.Task1)
+                </div>
+            </td>
+            <td>
+                <div class="@classT2" onclick="location.href=@editlink2">
+                    @Html.DisplayFor(modelItem => item.Task2)
+                </div>
+            </td>
+            <td>
+                <div class="@classT3" onclick="location.href=@editlink3">
+                    @Html.DisplayFor(modelItem => item.Task3)
+                </div>
+            </td>
+
+            <td id="@statusId">
+                <p>
+                    @if (!string.IsNullOrEmpty(item.OnHoldNote) && item.IsHold)
+                    {
+                        @item.OnHoldNote.ToUpper().Split(new[] { ';' })[0]
+                    }
+                    else
+                    {
+                        @Html.DisplayFor(modelItem => item.IoraDbId)
+                    }
+
+                </p>
+            </td>
+
+            <td>
+
+                @if (item.IsHold)
+                {
+                    <img id="@startIconId" src="~/Content/pictures/Start.png" height="24" width="24" onclick="startPause(this.id)" />
+                }
+                else
+                {
+                    <img id="@pauseIconId" src="~/Content/pictures/Pause.png" height="24" width="24" onclick="startPause(this.id)" />
+                }
+
+            </td>
+
+            <td style="text-align:right; @receivedClass">
+                @daysSince
+            </td>
+        </tr>
+    }
+
+</table>
+<br /><br /><br />
+
+<table class="stats">
+    <tr>
+        <td><strong> In total: </strong></td>
+        <td> Jobs: @jobNum </td>
+        <td> Fee: @TotalFee NOK </td>
+    </tr>
+</table>
+
+<hr />
+
+<script type="text/javascript">
+    var LUser = @Html.Raw(Json.Encode(LUser));
+    var us = @Html.Raw(Json.Encode(US));
+    console.log(LUser);
+    $("#userSig").append(new Option(us, us));
+    $.each(LUser, function (key, data) {
+        $("#userSig").append(new Option(data.Signature, data.Signature));
+    });
+    function startPause(clickedId) {
+        var newNote = "";
+        var clickedItem = clickedId.split("_")[0];
+        var jid = clickedId.split('_')[1];
+        var statusid = "status_" + jid;
+        document.getElementById(clickedId).style.display = 'none';
+        if (clickedItem == "start")
+        {
+            newNote = "Resumed_on:" + formateDateNow() + " by " + us + ";";
+        }
+        else if (clickedItem == "pause")
+        {
+            newNote = "OH_from:" + formateDateNow() + " by " + us + ";";
+        }
+        updateOhNote(jid, newNote)
+        document.getElementById(statusid).innerHTML = newNote;
+    }
+    function updateOhNote(jid, newNote) {
+        $.ajax(
+            {
+                type: 'GET',
+                url: '/Job/UpdateOnHoldNote',
+                data: { id: jid, newNote: newNote },
+                success: function (data) {
+                    console.log(data);
+                },
+                error: function (e) {
+                    alert('Error: ' + e);
+                }
+            });
+    }
+    function formateDateNow() {
+        var d = new Date();
+        var day = d.getDay();
+        var hr = d.getHours();
+        var min = d.getMinutes();
+        var ss = d.getSeconds();
+        if (min < 10) {
+            min = "0" + min;
+        }
+        //var ampm = "am";
+        //if (hr > 12) {
+        //    hr -= 12;
+        //    ampm = "pm";
+        //}
+        var date = d.getDate();
+        var month = d.getMonth();
+        var year = d.getFullYear();
+        return year + '-' + month + '-' + date + ' ' + hr + ':' + min + ':00';
+        }
+</script>

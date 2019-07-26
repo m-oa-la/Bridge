@@ -1,0 +1,187 @@
+﻿@model IEnumerable<BridgeMVC.Models.TechChecklist>
+@{
+    Layout = null;
+    var sn = 0;
+    var NewTC = ViewBag.NewTC;
+    var Job = ViewBag.Job;
+}
+
+
+<head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Bridge</title>
+    @Styles.Render("~/Content/css")
+    @Scripts.Render("~/bundles/modernizr")
+    <script language="JavaScript" type="text/javascript" src="~/Scripts/jquery-3.3.1.min.js"></script>
+    <style>
+        body {
+            font: Avenir Next;
+        }
+
+        input[type=checkbox] {
+            /* Double-sized Checkboxes */
+            -ms-transform: scale(2); /* IE */
+            -moz-transform: scale(2); /* FF */
+            -webkit-transform: scale(2); /* Safari and Chrome */
+            -o-transform: scale(2); /* Opera */
+            padding: 10px;
+        }
+
+        /* Might want to wrap a span around your checkbox text */
+        .checkboxtext {
+            /* Checkbox text */
+            font-size: 110%;
+            display: inline;
+        }
+
+        td{
+            border:solid;
+            border-width:thin;
+            border-color:grey;
+        }
+    </style>
+</head>
+
+<h4>LSA Tech.Checklist</h4>
+<table class="table" style="font-size:medium;" border="1" >
+    <colgroup>
+        <col span="1" style="width: 5%;">
+        <col span="1" style="width: 25%;">
+        <col span="1" style="width: 10%;">
+        <col span="1" style="width: 50%;">
+        <col span="1" style="width: 5%;">
+        <col span="1" style="width: 5%;">
+    </colgroup>
+    <tr >
+        <th style="background-color:lightgray">
+            No.
+        </th>
+        <th style="background-color:lightgray">
+            Subject
+        </th>
+        <th style="background-color:lightgray">
+            Rule ref.
+        </th>
+        <th style="background-color:lightgray">
+            Guidance
+        </th>
+
+        <th style="background-color:lightgray">
+            YES
+        </th>
+        <th style="background-color:lightgray">
+            NA
+        </th>
+    </tr>
+
+    @foreach (var item in Model)
+    {
+        sn += 1;
+        string fOK = "fOK(\"" + item.Id + "\")";
+        string fNA = "fNA(\"" + item.Id + "\")";
+
+        <tr id="@item.Id" >
+            <td >
+                @sn
+            </td>
+            <td>
+                @Html.DisplayFor(modelItem => item.TCSubject)
+            </td>
+            <td>
+                @Html.DisplayFor(modelItem => item.TCRuleRef)
+            </td>
+            <td>
+                @Html.DisplayFor(modelItem => item.TCGuidance)
+            </td>
+            <td>
+                @Html.EditorFor(modelItem => item.TCOK, 
+                    new { htmlAttributes = new { @id = item.Id + "OK", @onclick = @fOK } })
+            </td>
+            <td>
+                @Html.EditorFor(modelItem => item.TCNA, 
+                    new { htmlAttributes = new { @id = item.Id + "NA", @onclick = @fNA } })
+            </td>
+        </tr>
+    }
+</table>
+<script>
+    var NewTC = @Html.Raw(Json.Encode(NewTC));
+    var Job = @Html.Raw(Json.Encode(Job));
+
+    var Model = @Html.Raw(Json.Encode(Model));
+    if (NewTC) {
+        for (index = 0; index < Model.length; ++index) {
+            var m = Model[index];
+            //$('#' + m.Id).hide();
+            if (m.TCCondition != null && !eval(m.TCCondition)) {
+                deleteTC(m.Id);
+                $('#' + m.Id).hide();
+            }
+        }
+    }
+
+    function deleteTC(id) {
+        $.ajax(
+            {
+                type: 'GET',
+                url: "/TechChecklist/DeleteTC",
+                data: { id: id },
+                success: function (data) {
+                    console.log(id + " is deleted");
+                },
+                error: function (e) {
+                    alert('Error: ' + e);
+                }
+            });
+    }
+
+   function fOK(id)
+   {
+       var cOK = id + "OK";
+       var cNA = id + "NA";
+       var s = document.getElementById(cOK).checked;
+
+       if (s) {
+           document.getElementById(cNA).checked = false;
+       }
+
+       var tcokvalue = document.getElementById(cOK).checked;
+       var tcnavalue = document.getElementById(cNA).checked;
+
+
+       updateTC(id, tcokvalue, tcnavalue);
+    }
+
+    function fNA(id) {
+        var cOK = id + "OK";
+        var cNA = id + "NA";
+        var s = document.getElementById(cNA).checked;
+
+        if (s) {
+            document.getElementById(cOK).checked = false;
+        }
+        var tcokvalue = document.getElementById(cOK).checked;
+        var tcnavalue = document.getElementById(cNA).checked;
+
+        updateTC(id, tcokvalue, tcnavalue);
+    }
+
+
+    function updateTC(tcid, tcokvalue, tcnavalue) {
+
+        console.log(tcid);
+
+        return $.ajax({
+            type: 'POST',
+            url: '/TechChecklist/UpdateTCAPI/',
+            data: { tcID: tcid, tcOKValue: tcokvalue, tcNAValue: tcnavalue },
+            cache: false,
+            success: checkout
+        });
+    }
+
+    function checkout(data) {
+        console.log(data);
+    }
+</script>

@@ -1,0 +1,32 @@
+﻿<!DOCTYPE html>
+
+<html>
+<head>
+    <meta http-equiv="X-UA-Compatible" content="IE=edge" />
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width" />
+    <title>Bridge</title>
+    @Styles.Render("~/Content/css")
+    @Scripts.Render("~/bundles/modernizr")
+</head>
+<body>
+    <header class="header">
+        <div class="navbar ">
+            <div style="float:right">
+                @Html.Partial("_LoginPartial")
+            </div>
+        </div>
+    </header>
+    <div>
+        @RenderBody()
+    </div>
+    @Scripts.Render("~/bundles/jquery")
+    @Scripts.Render("~/bundles/bootstrap")
+    @Scripts.Render("~/bundles/scripts/common")
+    @Scripts.Render("~/bundles/scripts/thirdParty")
+    @Scripts.Render("~/bundles/scripts/m1")
+    @RenderSection("scripts", required: false)
+    @Styles.Render("~/Content/M1/taskStandard.css")
+    @RenderSection("styles", required: false)
+</body>
+</html>

@@ -1,0 +1,188 @@
+﻿@model BridgeMVC.Models.BLSACert
+@{
+    var LMEDItemNo = ViewBag.LMEDItemNo;
+    var Job = ViewBag.Job;
+    var Product = ViewBag.Product;
+    var LPTPs = ViewBag.LPTPs;
+}
+@Html.ValidationSummary(true, "", new { @class = "text-danger" })
+
+<style>
+    p:hover {
+        background-color: palegreen;
+        cursor:copy;
+    }
+    h4{
+        margin-top:-12px;
+    }
+    .testlabel{
+        cursor:pointer;
+    }
+    .testresult{
+        background-color:lightgray;
+    }
+
+</style>
+
+
+<h4>AutoCert Settings</h4>
+<hr />
+<div class="form-group" hidden>
+    @Html.LabelFor(model => model.Tag, htmlAttributes: new { @class = " col-md-2" })
+    <div class="col-md-12">
+        @Html.EditorFor(model => model.Tag, new { htmlAttributes = new { @class = "form-control" } })
+        @Html.ValidationMessageFor(model => model.Tag, "", new { @class = "text-danger" })
+    </div>
+</div>
+
+<div class="form-group" hidden>
+    @Html.LabelFor(model => model.BridgeModule, htmlAttributes: new { @class = "h4 col-md-2" })
+    <div class="col-md-12">
+        @Html.EditorFor(model => model.BridgeModule, new { htmlAttributes = new { @class = "form-control" } })
+        @Html.ValidationMessageFor(model => model.BridgeModule, "", new { @class = "text-danger" })
+    </div>
+</div>
+
+<div class="form-group">
+    @Html.LabelFor(model => model.BookMarkName, htmlAttributes: new { @class = "h4 col-md-2" })
+    <div class="col-md-12">
+        @Html.DropDownListFor(model => model.BookMarkName,
+        new List<SelectListItem> { new SelectListItem { Text = Model.BookMarkName, Value = Model.BookMarkName } },
+        new { @class = "form-control", id = "selectProdName1" })
+    </div>
+</div>
+
+<div class="form-group">
+    @Html.LabelFor(model => model.Chapter, htmlAttributes: new { @class = "h4 col-md-2" })
+    <div class="col-md-12">
+        @Html.EditorFor(model => model.Chapter, new { htmlAttributes = new { @class = "form-control" } })
+        @Html.ValidationMessageFor(model => model.Chapter, "", new { @class = "text-danger" })
+    </div>
+</div>
+<div class="form-group">
+    <label class="h4 col-md-2">Display order no.</label>
+    <div class="col-md-12">
+        @Html.EditorFor(model => model.Description, new { htmlAttributes = new { @class = "form-control" } })
+        @Html.ValidationMessageFor(model => model.Description, "", new { @class = "text-danger" })
+    </div>
+</div>
+<div class="form-group">
+    <label class="h4 col-md-2 testlabel" id="label_formula">Formula  (click to test)</label>
+    <span id="formulatestresult" class="testresult"></span>
+    <div class="col-md-12">
+        @Html.EditorFor(model => model.Formula, new { htmlAttributes = new { @class = "form-control" } })
+        @Html.ValidationMessageFor(model => model.Formula, "", new { @class = "text-danger" })
+    </div>
+</div>
+
+
+
+<div class="form-group">
+    <label class="h4 col-md-2 testlabel" id="label_condition">Condition (click to test)</label>   
+    <span id="conditiontestresult"  class="testresult"></span>
+    <div class="col-md-12">
+        @Html.EditorFor(model => model.Condition, new { htmlAttributes = new { @class = "form-control" } })
+        @Html.ValidationMessageFor(model => model.Condition, "", new { @class = "text-danger" })
+    </div>
+</div>
+@*To be further developped. The list below should be refreshed when itemno changes*@
+<div>
+
+    <h2> Available technical parameters:</h2> 
+    <h4>(copy by single click)</h4>
+
+    @foreach (var ptp in LPTPs)
+    {
+        <p>[@ptp.TechParaName] = @ptp.ValueSource</p>
+    }
+    <h2>AvailableJobproperties:</h2>
+    <h4>(copy by single click)</h4>
+
+    <p>Job.NpsJobId = @Job.NpsJobId</p>
+    <p>Job.JobName = @Job.NpsJobName</p>
+    <p>Job.CertType = @Job.CertType</p>
+    <p>Job.CertAction = @Job.CertAction</p>
+    <p>Job.CertNo = @Job.CertNo</p>
+    <p>Job.SalesOrderNo = @Job.SalesOrderNo</p>
+
+
+</div>
+
+
+
+
+<div class="form-group">
+    <div class="col-md-offset-2 col-md-12">
+        <input type="submit" value="Save" class="btn btn-default" />
+    </div>
+</div>
+
+<script>
+
+    var LMEDItemNo = @Html.Raw(Json.Encode(LMEDItemNo));
+    var Job = @Html.Raw(Json.Encode(Job));
+    var Product = @Html.Raw(Json.Encode(Product));
+    var LPTPs = @Html.Raw(Json.Encode(LPTPs));
+    console.log(LPTPs);
+    console.log(Job);
+    //SetupDropdownList("selectValueSource", LValueResource, "ListItem");
+    try {
+        SetupDropdownList("selectProdName1", LMEDItemNo, "ListItem");
+    }
+    catch (err) { console.log(err); }
+
+
+
+    function clicktocopy() {
+        var copyText = document.getElementById("myInput");
+        copyText.select();
+        document.execCommand("copy");
+    }
+
+    $(document).ready(function () {
+        $('p').click(function () {
+            var s = $(this).html();
+            s = " " + s + " ";
+            if (s.includes("=")) {
+                s = s.split("=")[0];
+            }
+            textToClipboard(s);
+        });
+    });
+
+    function textToClipboard(text) {
+        var dummy = document.createElement("textarea");
+        document.body.appendChild(dummy);
+        dummy.value = text;
+        dummy.select();
+        document.execCommand("copy");
+        document.body.removeChild(dummy);
+    };
+
+    $("#label_formula").click(function () {
+        var s = document.getElementById("Formula").value;
+        try {
+          
+            var s2 = compileProdProp(s);
+            var s3 = eval(s2);
+            $("#formulatestresult").html(s3);
+        } catch (err) {
+            $("#formulatestresult").html(err);
+        }
+    });
+    $("#label_condition").click(function () {
+        var s = document.getElementById("Condition").value;
+        try {
+            var s2 = compileProdProp(s);
+            var s3 = eval(s2);
+            if (!s3) {
+                s3 = "false"
+            };
+            $("#conditiontestresult").html(s3);
+        } catch (err) {
+            $("#conditiontestresult").html("false");
+        }
+    });
+
+
+</script>

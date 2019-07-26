@@ -1,0 +1,102 @@
+﻿@model IEnumerable<BridgeMVC.Models.Job>
+
+@{
+    ViewBag.Title = "Index";
+    string BridgeLastUsed = (string)Session["BridgeModule"];
+    string UserSignature = (string)Session["UserSignature"];
+    string colorY, colorN, colorTask;
+    colorY = "background-color:#5296c3; color:transparent;";
+    colorN = "background-color:azure; color:transparent;";
+    colorTask = "background-color:#81d078; color:transparent;";
+    var users = ViewBag.users;
+}
+
+<h2>SEARCH</h2>
+<h3>Only the first 20 results are shown.</h3>
+
+@using (Html.BeginForm())
+{
+    <table>
+        <colgroup>
+            <col span="1" style="width: 12%;">
+            <col span="1" style="width: 76%;">
+            <col span="1" style="width: 12%;">
+
+        </colgroup>
+        <tr>
+            <td>
+                @Html.TextBox("SearchString", null, new { @class = "form-control" })
+
+            </td>
+            <td>
+                <input type="submit" value="Search" />
+            </td>
+
+        </tr>
+
+    </table>
+
+
+    <br />
+
+    <table class="table table-mid-align-rows">
+        <colgroup>
+            <col span="1" style="width: 12%;">
+            <col span="1" style="width: 24%;">
+            <col span="1" style="width: 24%;">
+            <col span="1" style="width: 10%;">
+            <col span="1" style="width: 10%;">
+            <col span="1" style="width: 10%;">
+            <col span="1" style="width: 10%;">
+        </colgroup>
+        <tr>
+
+            <th style="border-top:none">           JOBID       </th>
+            <th style="border-top:none">            CUSTOMER        </th>
+            <th style="border-top:none">            Product name     </th>
+            <th style="border-top:none">           Handler     </th>
+            <th style="border-top:none">           Is completed?     </th>
+            @*<th>            @Html.DisplayNameFor(model => model.TaskHandler)        </th>
+                <th>            @Html.DisplayNameFor(model => model.Completed)        </th>*@
+
+        </tr>
+
+        @foreach (var item in Model)
+        {
+
+        <tr>
+            <td>
+                @Html.DisplayFor(modelItem => item.NpsJobId)
+            </td>
+            <td>
+                @Html.DisplayFor(modelItem => item.CustomerName)
+            </td>
+            <td>
+                @Html.DisplayFor(modelItem => item.ProdDescription)
+            </td>
+            <td>
+                @Html.DisplayFor(modelItem => item.TaskHandler)
+            </td>
+            <td>
+                @Html.DisplayFor(modelItem => item.IsComplete)
+            </td>
+            @if (!item.IsComplete)
+            {
+                <td>
+                    <button type="submit" name="terminateJobId" value="@item.Id">Terminate</button>
+
+                </td>
+            }
+
+        </tr>
+
+
+        }
+
+    </table>
+}
+<script>
+    var users = @Html.Raw(Json.Encode(users));
+
+    console.log(users);
+</script>

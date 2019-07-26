@@ -1,0 +1,307 @@
+﻿@model BridgeMVC.Models.Job
+@{
+    Layout = "~/Views/Shared/_LayoutM2TaskStandard.cshtml";
+    ViewBag.Title = "M1_Task1";
+    string UserSignature = (string)Session["UserSignature"];
+    string bridgeModule = (string)Session["BridgeModule"];
+    string SF = (string)Session["SendingFlag"];
+
+    var LCertType = ViewBag.LCertType;
+    var LCertAction = ViewBag.LCertAction;
+    var LMainProdType = ViewBag.LMainProdType;
+    var LSubProdType = ViewBag.LSubProdType;
+    var LUser = ViewBag.LUser;
+    var FinancialSet = ViewBag.FinancialSet;
+    var Customer = ViewBag.Customer;
+    var LCustomerAddr = ViewBag.LCustomerAddr;
+    var LCustomerContact = ViewBag.LCustomerContact;
+
+    var LVauleSource = ViewBag.LValueSource;
+    var LPTP = ViewBag.LPTP;
+    var LProd = ViewBag.LProduct;
+
+}
+
+
+
+
+<style>
+    .ptpbtn {
+        max-height:36px;
+
+        margin:0;
+        transform: translateY(27px);
+    }
+
+    .PEDeditableBox {
+        height: 30px;
+        width: calc(100% - 15px);
+        transform: translateY(-32px);
+        background-color: rgb(255, 255, 255);
+    }
+
+    .PEDoptionBox {
+        height: 36px;
+        width: 100%;
+        border: none;
+        color: black;
+      
+    }
+
+    .PEDDDEInput {
+        height: 36px;
+        width: calc(100% - 12px);
+        transform: translateY(-18px);
+        background-color: rgb(255, 255, 255);
+    }
+
+    .PEDDDESelect {
+        height: 36px;
+        width: 100%;
+        border: none;
+        color: black;
+        transform: translateY(27px);
+
+    }
+    .tblcell{
+        padding:1px;
+        margin:1px;
+        max-height:40px;
+    }
+    .tbl {
+        border-spacing: 1em;
+        border-collapse: collapse;
+        max-height: 40px;
+    }
+
+</style>
+
+<body style="background-color:lightgrey">
+    <page size="A4">
+        <div href="/"><img style="width:690px;" src="~/Content/pictures/DNVGLLogo.PNG"></div>
+        <h3>Product Ceritification Agreement no.: @Model.NpsJobId -J-?, Rev.?</h3>
+        <hr />
+        <h3>0. Customer Information</h3>
+
+        <table border="1" style="border-color:black">
+            <colgroup>
+                <col span="1" style="width: 50%;">
+                <col span="1" style="width: 50%;">
+             </colgroup>
+            <tr>
+                <td class="CellTh">
+                    Name:
+                </td>
+                <td class="CellTh">Address:</td>
+            </tr>
+            <tr >
+                <td class="CellContent">
+                    @Customer.CustomerName
+                </td>
+                <td class="CellContent">
+
+                    <div style="max-height:36px">
+                        <select class="PEDoptionBox" name="dded_CustomerAddress">
+                            <option value=""></option>
+                            @foreach (var v in LCustomerAddr)
+                            {
+                                <option value="@v.Address">@v.Address</option>
+                            }
+                        </select>
+                        <input value="@Customer.Address" class="PEDeditableBox form-control" id="dded_CustomerAddress" />
+                    </div>
+                  </td>
+            </tr>
+            <tr>
+
+                <td class="CellTh">
+                    Contact person:
+                </td>
+                <td class="CellTh">Phone:</td>
+            </tr>
+            <tr>
+                <td class="CellContent">
+                    <div style="max-height:36px">
+                        <select class="PEDoptionBox" name="dded_CustomerContactPerson">
+                            <option value=""></option>
+                            @foreach (var v in LCustomerAddr)
+                            {
+                                <option value="@v.ContactPerson">@v.ContactPerson;@v.Email;@v.PhoneNo </option>
+                            }
+                        </select>
+                        <input value="@Customer.ContactPerson" class="PEDeditableBox form-control" id="dded_CustomerContactPerson" />
+                    </div>
+                  </td>
+                <td class="CellContent">
+                    <input value="@Customer.PhoneNo" class="customerinfo form-control" id="ddedøCustomerPhoneNo" />
+                </td>
+            </tr>
+            <tr>
+                <td class="CellTh">
+                    Customer's required invoice information:
+                </td>
+                <td class="CellTh">E-mail::</td>
+            </tr>
+            <tr>
+                <td class="CellContent ">
+                    <input value="@Customer.InvoiceInfo" class="customerinfo form-control" id="ddedøCustomerInvoiceInfo" />
+                </td>
+                <td class="CellContent">
+                    <input value="@Customer.Email" class="customerinfo form-control" id="ddedøCustomerEmail" />
+                </td>
+            </tr>
+        </table>
+        <hr />
+        <h3>1. Scope of Work</h3>
+        <h3>1.1 Products to be certified  <button class="btn-primary" id="addProdøPED_PCA_Product">+</button></h3>
+        <table class="tbl" id="tbløPED_PCA_Product"></table>
+
+        <h3>1.2 Project Activities and Deliverables  <button class="btn-primary" id="addProdøPED_PCA_ProjAct">+</button></h3>
+        <table class="tbl" id="tbløPED_PCA_ProjAct"></table>
+
+        <h3>1.3 Conditions</h3>
+        It is assumed the equipment in the package is produced or fabricated in compliance with applicable
+        EU Directive(s).
+        Following aspects of the assessment are excluded from the scope of work:
+
+        <hr />
+        <h3>2. Investment</h3>
+        <h3>2.1 Project Activites  <button class="btn-primary" id="addProdøPED_PCA_Investment">+</button></h3>
+        <table class="tbl" id="tbløPED_PCA_Investment"></table>
+
+
+        @using (Html.BeginForm(null, null, FormMethod.Post, new { id = "jobForm" }))
+        {
+            @Html.AntiForgeryToken()
+
+        <div class="form-horizontal">
+            <hr />
+
+          <div class="bing col-lg-6">
+                <h4>Budget hour:</h4> 
+                @Html.EditorFor(model => model.BudgetHour, new { htmlAttributes = new { @class = "form-control" } })
+                @Html.ValidationMessageFor(model => model.BudgetHour, "", new { @class = "text-danger" })
+            </div>
+            <div class="bing col-lg-6">
+                <h4>To be delivered in ? week(s):</h4>
+                @Html.EditorFor(model => model.DeliveryWeek, new { htmlAttributes = new { @class = "form-control" } })
+                @Html.ValidationMessageFor(model => model.DeliveryWeek, "", new { @class = "text-danger" })
+            </div>
+            <div class="bing col-lg-6" hidden>
+                <h4>Fee setter</h4>
+                @Html.EditorFor(model => model.FeeSetter, new { htmlAttributes = new { @class = "form-control", id = "feeSetter" } })
+                @Html.EditorFor(model => model.FeeSetTime, new { htmlAttributes = new { @class = "form-control", id = "feeSetTime" } })
+                @Html.EditorFor(model => model.TaskHandler, new { htmlAttributes = new { @class = "form-control" } })
+            </div>
+
+            <div class=" col-lg-12 ">
+                <h4 style="clear:both;">Internal approval note: </h4>
+                @Html.EditorFor(model => model.ApprNote, new { htmlAttributes = new { @class = "form-control", style = "height:100px" } })
+                @Html.ValidationMessageFor(model => model.ApprNote, "", new { @class = "text-danger" })
+            </div>
+            @{
+                Html.RenderPartial("_PartialM1JobHiddenAttributes");
+                Html.RenderPartial("_SaveCompleteReopen");
+                Html.RenderPartial("_TaskSending");
+
+            }
+
+        </div>
+        
+    }
+        <hr />
+    </page>
+</body>
+
+@section Scripts {
+    <script>
+
+    var LValueSource = @Html.Raw(Json.Encode(LVauleSource));
+    var LProduct = @Html.Raw(Json.Encode(LProd));
+    var LPTP = @Html.Raw(Json.Encode(LPTP));
+
+    //read viewbag's info.
+    var userSignature = "@UserSignature";
+    var bm = "@bridgeModule";
+    var Job = @Html.Raw(Json.Encode(Model));
+
+    var LMainProdType = @Html.Raw(Json.Encode(LMainProdType));
+    var LSubProdType = @Html.Raw(Json.Encode(LSubProdType));
+    var LUser = @Html.Raw(Json.Encode(LUser));
+    var LCertAction = @Html.Raw(Json.Encode(LCertAction));
+    var LCertType = @Html.Raw(Json.Encode(LCertType));
+    var Customer = @Html.Raw(Json.Encode(Customer));
+
+    var TargetUser;
+    var BEmail;
+    var taskStatus;
+
+    //Set task parameter
+    var taskNo = 1;
+    var taskStatusFlag = "feeSetter"; //who completed the task
+    var taskCompleteDate = "feeSetTime";
+    var taskCompleteStr = "The draft IORA is prepared by ";
+
+    renderTaskShowHide(taskNo, taskStatusFlag, taskCompleteDate, taskCompleteStr, userSignature);
+    renderTaskHandling(LUser, bm);
+
+        ptpCreateEditableTable("tbløPED_PCA_Product");
+        ptpCreateEditableTable("tbløPED_PCA_ProjAct");
+        ptpCreateEditableTable("tbløPED_PCA_Investment");
+        addDropdownEdit();
+    //renderTaskInputFields($("#selectCertType").val(), $("#selectCertAction").val());
+
+        function budgetHourCalc() {
+            alert("Function not defined yet");
+        }
+
+
+        $(document).ready(function () {
+
+            $('select[name^=ddedø]').change(function () {
+                var navn = $(this).attr('name');
+                var selectedv = $(this).find(":selected").text();
+                var s = (selectedv + ";").split(";");
+                $("#" + navn).val(s[0]);
+                if (s.length > 2) {
+                    $("#dded_CustomerPhoneNo").val(s[1]);
+                    $("#dded_CustomerEmail").val(s[2]);
+                }
+                saveCustomer();
+            });
+
+            $('input[id^=ddedø]').change(function () {
+                saveCustomer();
+            });
+        });
+
+
+
+        function saveCustomer() {
+            var s = "#dded_Customer";
+            var id = Customer.Id;
+            var address = $(s + "Address").val();
+            var contactPerson = $(s + "ContactPerson").val();
+            var phoneNo = $(s + "PhoneNo").val();
+            var email = $(s + "Email").val();
+            var invoiceInfo = $(s + "InvoiceInfo").val();
+
+                return $.ajax({
+                    type: 'POST',
+                    url: '/Customer/SaveCustomerAsync/',
+                    data: {
+                        id: id, address: address, contactPerson: contactPerson,
+                        phoneNo: phoneNo, email: email, invoiceInfo: invoiceInfo
+                    },
+                    cache: false,
+                    success: {
+                    },
+                });
+        }
+
+      
+
+
+</script>
+  
+}

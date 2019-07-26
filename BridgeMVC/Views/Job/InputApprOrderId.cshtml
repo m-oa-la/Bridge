@@ -1,0 +1,28 @@
+﻿@model BridgeMVC.Models.Job
+<h2>
+    Please input the Approval sub-order No. for job @Model.NpsJobId :
+</h2>
+@using (Html.BeginForm())
+{
+    <table>
+        <colgroup>
+            <col span="1" style="width: 200px;">
+            <col span="1" style="width: 200px%;">
+            <col span="1" style="width: 50px%;">
+        </colgroup>
+        <tr>
+            <td hidden>
+                @Html.TextBox("id", Model.Id, new { @class = "form-control" })
+
+            </td>
+            <td>
+                @Html.TextBox("apprOrderId", null, new { @class = "form-control" })
+
+            </td>
+            <td>
+                <input type="submit" value="Submit"/>
+            </td>
+
+        </tr>
+    </table>
+}

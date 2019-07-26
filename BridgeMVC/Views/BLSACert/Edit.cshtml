@@ -1,0 +1,20 @@
+﻿@model BridgeMVC.Models.BLSACert
+
+@{
+    var Job = ViewBag.Job;
+}
+
+@using (Html.BeginForm())
+{
+    @Html.AntiForgeryToken()
+
+<div class="form-horizontal">
+
+    @Html.HiddenFor(model => model.Id)
+    @Html.Partial("../BLSACert/_SV_CreateEdit", Model)
+</div>
+}
+
+<div>
+    @Html.ActionLink("Back to List", "Index")
+</div>
