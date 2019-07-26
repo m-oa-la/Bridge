@@ -73,15 +73,16 @@
 
 <table id="sortTable" class="table table-mid-align-rows hoverRow" style="table-layout:fixed;">
     <colgroup>
-        <col span="1" style="width: 20%;">
-        <col span="1" style="width: 20%;">
-        <col span="1" style="width: 20%;">
-        <col span="1" style="width: 35px;">
-        <col span="1" style="width: 35px;">
-        <col span="1" style="width: 50px;">
-        <col span="1" style="width: 30%;">
-        <col span="1" style="width: 35px;">
-        <col span="1" style="width: 66px;">
+        <col span="1" style="width: 20%;" />
+        <col span="1" style="width: 20%;" />
+        <col span="1" style="width: 20%;" />
+        <col span="1" style="width: 35px;" />
+        <col span="1" style="width: 35px;" />
+        <col span="1" style="width: 49px;" />
+        <col span="1" style="width: 1px" />
+        <col span="1" style="width: 30%;" />
+        <col span="1" style="width: 35px;" />
+        <col span="1" style="width: 66px;" />
     </colgroup>
     <tr>
         <th onclick="sortTable(0)"> JOB ID       <div class="arrows"> &#11046 </div> </th>
@@ -93,12 +94,14 @@
             <th onclick="sortTable(@col)"> @taskname <div class="arrows"></div> </th>
             col++;
         }
-        <th onclick="sortTable(6)"> IORA STATUS   <div class="arrows"> &#11046 </div> </th>
-        <th onclick="sortTable(7)"> <div class="arrows"> &#11046 </div> </th>
-        <th onclick="sortTable(8)"> DAYS <div class="arrows"> &#11046 </div> </th>
+        <th><div class="arrows"></div></th>
+        <th onclick="sortTable(7)"> IORA STATUS   <div class="arrows"> &#11046 </div> </th>
+        <th onclick="sortTable(8)"> <div class="arrows"> &#11046 </div> </th>
+        <th onclick="sortTable(9)"> DAYS <div class="arrows"> &#11046 </div> </th>
         @*<th>            @Html.DisplayNameFor(model => model.TaskHandler)        </th>
             <th>            @Html.DisplayNameFor(model => model.Completed)        </th>*@
     </tr>
+  
     @foreach (var item in Model)
     {
         if (item.Fee != null)
@@ -136,12 +139,12 @@
         string editlink3 = "'/Job/CommonTask3/" + item.Id + "'";
         string editlink4 = "'/Job/CommonTask4/" + item.Id + "'";
 
-        string daysSince = "0";
+        int days = 0;
         string receivedClass = "";
         if (item.ReceivedTime != null)
         {
             TimeSpan timeSpan = DateTime.Now - (DateTime)item.ReceivedTime;
-            double days = timeSpan.TotalDays;
+            days = (int)timeSpan.TotalDays;
             if (days > 60)
             {
                 receivedClass = "color: red;";
@@ -150,9 +153,8 @@
             {
                 receivedClass = "color: orange;";
             }
-            daysSince = days.ToString("0.0");
         }
-
+        
 
         <tr class="jobList">
             <td style="@ctColorCode">
@@ -180,6 +182,8 @@
                     @Html.DisplayFor(modelItem => item.Task3)
                 </div>
             </td>
+
+            <td></td>
 
             <td id="@statusId">
                 <p>
@@ -209,7 +213,7 @@
             </td>
 
             <td style="text-align:right; @receivedClass">
-                @daysSince
+                @days
             </td>
         </tr>
     }

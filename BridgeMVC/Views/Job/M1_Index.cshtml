@@ -76,8 +76,7 @@
             col++;
         }
         <th onclick="sortTable(@col)"> IORA STATUS <div class="arrows"> &#11046 </div>  </th>
-        @{ col++; }
-        <th onclick="sortTable(@col)"> DAYS <div class="arrows"> &#11046 </div>  </th>
+        <th onclick="sortTable(9)"> DAYS <div class="arrows"> &#11046 </div>  </th>
         @*<th>            @Html.DisplayNameFor(model => model.TaskHandler)        </th>
             <th>            @Html.DisplayNameFor(model => model.Completed)        </th>*@
     </tr>
@@ -111,12 +110,12 @@
         string linkNcertReporting = "'/Job/NCertReporting/" + item.Id + "'";
         string t2tag = "T2TAG" + item.Task2 + "T2TAG";
 
-        string daysSince = "0";
+        int days = 0;
         string receivedClass = "";
         if (item.ReceivedTime != null)
         {
             TimeSpan timeSpan = DateTime.Now - (DateTime)item.ReceivedTime;
-            double days = timeSpan.TotalDays;
+            days = (int)timeSpan.TotalDays;
             if (days > 60)
             {
                 receivedClass = "color: red;";
@@ -125,11 +124,8 @@
             {
                 receivedClass = "color: orange;";
             }
-            daysSince = days.ToString("0.0");
         }
-
-
-
+                     
 
         <tr class="jobList">
             <td>
@@ -186,7 +182,7 @@
                 </p>
             </td>
             <td style="text-align:right; @receivedClass">
-                @daysSince
+                @days
             </td>
         </tr>
     }
