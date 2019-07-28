@@ -73,10 +73,13 @@ function renderTaskShowHide(taskNo, taskStatusFlagId, taskCompleteDateId, taskCo
 
     // actions when reopen the job
     $("#ReOpenTask").click(function () {
+
+        console.log("asdfasdf");
         $("#Task" + taskNo).val("TASK");
         $("#" + taskCompleteDateId).val(null);
         $("#" + taskStatusFlagId).val(null);
         $("#TaskStatus").html(taskStatus);
+        $("#TaskStatus").hide();
         $("#saveButton").show();
         $("#ReOpenTask").hide();
         $("#TaskComplete").show();

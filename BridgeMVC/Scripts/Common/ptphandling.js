@@ -26,6 +26,11 @@ function ptpCreateTH(tableName, prodName) {
     tbl.appendChild(th);
 }
 
+/*
+ * list all product
+ * tableName: the target table id
+ * prodName: the Product name
+*/
 function ptpListProduct(tableName, prodName) {
     var doc = document;
     var tbl = doc.getElementById(tableName);
@@ -47,7 +52,7 @@ function ptpListProduct(tableName, prodName) {
 
             var btnRemove = doc.createElement("button");
             btnRemove.innerHTML = "-";
-            btnRemove.setAttribute("id", "removeProdø" + prodData.Id);
+            btnRemove.setAttribute("id", "removeProdø" + key + "ø"+ prodData.Id);
             btnRemove.setAttribute("class", "btn-danger ptpbtn");
             tr.appendChild(btnRemove);
             tbl.appendChild(tr);
@@ -56,9 +61,9 @@ function ptpListProduct(tableName, prodName) {
 
 }
 
-//Dropdown editable box
-$(document).ready(function () {
 
+$(document).ready(function () {
+    //auto save Customer contact information when value is changed
     $('select[name^=ddedø]').change(function () {
         var navn = $(this).attr('name');
         var selectedv = $(this).find(":selected").text();
@@ -71,10 +76,12 @@ $(document).ready(function () {
         saveCustomer();
     });
 
+    //Direct edit the value of customer contact as free text
     $('input[id^=ddedø]').change(function () {
         saveCustomer();
     });
 
+    //add a new product
     $('button[id^=addProdø]').click(function () {
         var prodName = this.id.split("ø")[1];
         addProdbyProdName(Job.Id, prodName);
@@ -86,7 +93,19 @@ $(document).ready(function () {
         DeleteProdById(prodid);
         window.location.reload(false);
     });
+     //Change para. input when corresponding dropdown box selected changes
+    $('select[id^=PEDDDESelectø]').change(function () {
+        var s = this.id;
+        var newValue = $(this).find(":selected").text();
 
+        var prodid = s.split("ø")[2];
+        var sn = s.split("ø")[1];
+
+        $("#saveProdø" + sn + "ø" + prodid).val(newValue);
+        SavePTPBySN(prodid, sn, newValue);
+  
+    });
+    //Save product when value changes
     $('textarea[id^=saveProdø]').change(function () {
 
         var s = this.id;
@@ -139,24 +158,30 @@ function addDropdownEdit() {
 
             $.each(LProduct, function (keyprod, dataprod) {
                 if (dataprod.ProdName === dataptp.ProdName) {
+                    //elem: the input filed. 
+                    //assing PEDDDEInput class for it
                     elementid = "saveProdø" + dataptp.ViewSequence + "ø" + dataprod.Id;
-                     var elem = doc.getElementById(elementid);
-                    elem.setAttribute("class","PEDDDEInput form-control");
+                    var elem = doc.getElementById(elementid);
+                    elem.setAttribute("class", "PEDDDEInput form-control");
+
+                    //dde:  dropdwon editable select
                     var dde = doc.createElement("select");
                             var opt = doc.createElement("option");
                             opt.value = " ";
                             opt.text = " ";
                             dde.appendChild(opt);
+
                     $.each(LValueSource, function (key, data) {
-                             if (data.ListType === dataptp.ValueSource) {
+                            if (data.ListType === dataptp.ValueSource) {
                             var opt = doc.createElement("option");
                             opt.value = data.ListItem;
                             opt.text= data.ListItem;
                             dde.appendChild(opt);
                         }
-                        
                     });
+
                     dde.setAttribute("class", "PEDDDESelect");
+                    dde.setAttribute("id", "PEDDDESelectø" + + dataptp.ViewSequence + "ø" + dataprod.Id);
                     var td = elem.parentElement;
                     td.setAttribute("style", "max-height:38px");
                     td.insertBefore(dde, td.childNodes[0]);

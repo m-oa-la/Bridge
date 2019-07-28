@@ -1,7 +1,8 @@
 ﻿@model BridgeMVC.Models.Job
 @{
+    ViewBag.Title = "M2_Task1_PED";
     Layout = "~/Views/Shared/_LayoutM2TaskStandard.cshtml";
-    ViewBag.Title = "M1_Task1";
+    @Styles.Render("~/Content/css", "~/Content/M2/m2_task1_ped.css")
     string UserSignature = (string)Session["UserSignature"];
     string bridgeModule = (string)Session["BridgeModule"];
     string SF = (string)Session["SendingFlag"];
@@ -27,9 +28,8 @@
 
 <style>
     .ptpbtn {
-        max-height:36px;
-
-        margin:0;
+        max-height: 36px;
+        margin: 0;
         transform: translateY(27px);
     }
 
@@ -45,7 +45,6 @@
         width: 100%;
         border: none;
         color: black;
-      
     }
 
     .PEDDDEInput {
@@ -61,19 +60,19 @@
         border: none;
         color: black;
         transform: translateY(27px);
+    }
 
+    .tblcell {
+        padding: 1px;
+        margin: 1px;
+        max-height: 40px;
     }
-    .tblcell{
-        padding:1px;
-        margin:1px;
-        max-height:40px;
-    }
+
     .tbl {
         border-spacing: 1em;
         border-collapse: collapse;
         max-height: 40px;
     }
-
 </style>
 
 <body style="background-color:lightgrey">
@@ -87,14 +86,14 @@
             <colgroup>
                 <col span="1" style="width: 50%;">
                 <col span="1" style="width: 50%;">
-             </colgroup>
+            </colgroup>
             <tr>
                 <td class="CellTh">
                     Name:
                 </td>
                 <td class="CellTh">Address:</td>
             </tr>
-            <tr >
+            <tr>
                 <td class="CellContent">
                     @Customer.CustomerName
                 </td>
@@ -110,7 +109,7 @@
                         </select>
                         <input value="@Customer.Address" class="PEDeditableBox form-control" id="dded_CustomerAddress" />
                     </div>
-                  </td>
+                </td>
             </tr>
             <tr>
 
@@ -131,7 +130,7 @@
                         </select>
                         <input value="@Customer.ContactPerson" class="PEDeditableBox form-control" id="dded_CustomerContactPerson" />
                     </div>
-                  </td>
+                </td>
                 <td class="CellContent">
                     <input value="@Customer.PhoneNo" class="customerinfo form-control" id="ddedøCustomerPhoneNo" />
                 </td>
@@ -174,41 +173,41 @@
         {
             @Html.AntiForgeryToken()
 
-        <div class="form-horizontal">
-            <hr />
+            <div class="form-horizontal">
+                <hr />
 
-          <div class="bing col-lg-6">
-                <h4>Budget hour:</h4> 
-                @Html.EditorFor(model => model.BudgetHour, new { htmlAttributes = new { @class = "form-control" } })
-                @Html.ValidationMessageFor(model => model.BudgetHour, "", new { @class = "text-danger" })
-            </div>
-            <div class="bing col-lg-6">
-                <h4>To be delivered in ? week(s):</h4>
-                @Html.EditorFor(model => model.DeliveryWeek, new { htmlAttributes = new { @class = "form-control" } })
-                @Html.ValidationMessageFor(model => model.DeliveryWeek, "", new { @class = "text-danger" })
-            </div>
-            <div class="bing col-lg-6" hidden>
-                <h4>Fee setter</h4>
-                @Html.EditorFor(model => model.FeeSetter, new { htmlAttributes = new { @class = "form-control", id = "feeSetter" } })
-                @Html.EditorFor(model => model.FeeSetTime, new { htmlAttributes = new { @class = "form-control", id = "feeSetTime" } })
-                @Html.EditorFor(model => model.TaskHandler, new { htmlAttributes = new { @class = "form-control" } })
+                <div class="bing col-lg-6">
+                    <h4>Budget hour:</h4>
+                    @Html.EditorFor(model => model.BudgetHour, new { htmlAttributes = new { @class = "form-control" } })
+                    @Html.ValidationMessageFor(model => model.BudgetHour, "", new { @class = "text-danger" })
+                </div>
+                <div class="bing col-lg-6">
+                    <h4>To be delivered in ? week(s):</h4>
+                    @Html.EditorFor(model => model.DeliveryWeek, new { htmlAttributes = new { @class = "form-control" } })
+                    @Html.ValidationMessageFor(model => model.DeliveryWeek, "", new { @class = "text-danger" })
+                </div>
+                <div class="bing col-lg-6" hidden>
+                    <h4>Fee setter</h4>
+                    @Html.EditorFor(model => model.FeeSetter, new { htmlAttributes = new { @class = "form-control", id = "feeSetter" } })
+                    @Html.EditorFor(model => model.FeeSetTime, new { htmlAttributes = new { @class = "form-control", id = "feeSetTime" } })
+                    @Html.EditorFor(model => model.TaskHandler, new { htmlAttributes = new { @class = "form-control" } })
+                </div>
+
+                <div class=" col-lg-12 ">
+                    <h4 style="clear:both;">Internal approval note: </h4>
+                    @Html.EditorFor(model => model.ApprNote, new { htmlAttributes = new { @class = "form-control", style = "height:100px" } })
+                    @Html.ValidationMessageFor(model => model.ApprNote, "", new { @class = "text-danger" })
+                </div>
+                @{
+                    Html.RenderPartial("_PartialM1JobHiddenAttributes");
+                    Html.RenderPartial("_SaveCompleteReopen");
+                    Html.RenderPartial("_TaskSending");
+
+                }
+
             </div>
 
-            <div class=" col-lg-12 ">
-                <h4 style="clear:both;">Internal approval note: </h4>
-                @Html.EditorFor(model => model.ApprNote, new { htmlAttributes = new { @class = "form-control", style = "height:100px" } })
-                @Html.ValidationMessageFor(model => model.ApprNote, "", new { @class = "text-danger" })
-            </div>
-            @{
-                Html.RenderPartial("_PartialM1JobHiddenAttributes");
-                Html.RenderPartial("_SaveCompleteReopen");
-                Html.RenderPartial("_TaskSending");
-
-            }
-
-        </div>
-        
-    }
+        }
         <hr />
     </page>
 </body>
@@ -240,9 +239,9 @@
     var taskNo = 1;
     var taskStatusFlag = "feeSetter"; //who completed the task
     var taskCompleteDate = "feeSetTime";
-    var taskCompleteStr = "The draft IORA is prepared by ";
+    var taskCompleteStr = "The draft PCA is prepared by ";
 
-    renderTaskShowHide(taskNo, taskStatusFlag, taskCompleteDate, taskCompleteStr, userSignature);
+        renderTaskActions(taskNo, taskStatusFlag, taskCompleteDate, taskCompleteStr, userSignature);
     renderTaskHandling(LUser, bm);
 
         ptpCreateEditableTable("tbløPED_PCA_Product");
@@ -299,9 +298,9 @@
                 });
         }
 
-      
 
 
-</script>
-  
+
+    </script>
+
 }

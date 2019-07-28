@@ -87,6 +87,8 @@ function generateCalendarTable(parent, destField) {
             } else {
                 var destObj = document.getElementById(destField + "_Input");
                 var OriSrcObj = document.getElementById(destField);
+                console.log(destField);
+                console.log(OriSrcObj);
                 //calendarIter.format("m/dd/yy");
                 // alert(dateFormat(calendarIter, "dddd, mmmm dS, yyyy, h:MM:ss TT"));
                 cell.onclick= function() {

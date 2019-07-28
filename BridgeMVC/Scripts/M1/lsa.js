@@ -74,7 +74,6 @@ function readLSACert(Job, cert) {
                 line = "";
             }
 
-
             if (line.startsWith(bulletPoint)) {
                 line = line.slice(bulletPoint.length);
                 $("#" + chapter).append("<ul><li>" + line + "<br>");

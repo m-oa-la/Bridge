@@ -43,9 +43,9 @@ function taskComplete(taskNo, taskStatusFlag, taskCompleteDate, taskCompleteStr,
 }
 
 // TODO
-function renderTaskShowHide(taskNo, taskStatusFlagId, taskCompleteDateId, taskCompleteStr, userSignature) {
+function renderTaskActions(taskNo, taskStatusFlagId, taskCompleteDateId, taskCompleteStr, userSignature) {
     /*
-    Renders which elements to show and hide.
+     Renders task status and task action buttons like re-open, save and complete.
     :arg taskNo: int, the task number
     :arg taskStatusFlagId: string, the id of the document taskStatusFlag
     :arg taskCompleteDateId: string, the id of the document date element
@@ -53,7 +53,7 @@ function renderTaskShowHide(taskNo, taskStatusFlagId, taskCompleteDateId, taskCo
     :arg userSignature: string, the signature of the user
     */
     var taskStatus = null;
-    console.log("hi");
+
     if ($("#" + taskStatusFlagId).val().length > 0) {
         taskStatus = taskCompleteStr + $("#" + taskStatusFlagId).val()
             + " on " + $("#" + taskCompleteDateId).val();
@@ -67,12 +67,12 @@ function renderTaskShowHide(taskNo, taskStatusFlagId, taskCompleteDateId, taskCo
         $("#TaskComplete").show();
     }
 
-    // actions when taskcomplete button is clicked
+    // Add event listener to TaskComplete element
     $("#TaskComplete").click(function () {
         taskComplete(taskNo, taskStatusFlagId, taskCompleteDateId, taskCompleteStr, userSignature);
     });
 
-    // actions when reopen the job
+    // Add event listener to ReOpenTask element
     $("#ReOpenTask").click(function () {
         $("#Task" + taskNo).val("TASK");
         $("#" + taskCompleteDateId).val(null);

@@ -1,24 +1,12 @@
 ﻿@model IEnumerable<BridgeMVC.Models.DocReq>
 @{
-    Layout = null;
+    Layout = "~/Views/Shared/_LayoutNoLogin.cshtml";
+}
+
+@{
     string bridgeModule = (string)Session["BridgeModule"];
 }
 
-<head>
-    <meta charset="utf-8" />
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Bridge</title>
-    @Styles.Render("~/Content/css")
-    @Scripts.Render("~/bundles/modernizr")
-    <script language="JavaScript" type="text/javascript" src="~/Scripts/jquery-3.3.1.min.js"></script>
-    @*<script language="JavaScript" type="text/javascript" src="~/Scripts/bridgeScript.js"></script>*@
-    <style>
-
-        body {
-            font: Avenir Next;
-        }
-    </style>
-</head>
 
 <h4 style="margin-top:1px"><span id="listTitle">Approval Conditions: (to be added in IORA 'SoW' chapter)</span> <span style="float:right; padding-right:4em"> @Html.ActionLink("Add New", "Create")</span></h4>
 

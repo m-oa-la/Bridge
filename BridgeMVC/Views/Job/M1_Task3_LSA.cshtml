@@ -20,6 +20,7 @@
 @using (Html.BeginForm(null, null, FormMethod.Post, new { id = "jobForm" }))
 {
     @Html.AntiForgeryToken()
+    @Html.HiddenFor(model => model.SurveyDate) //important for jCalendar
 
     <p class="col-lg-12" id="paraNpsJobId">
         <span class="col-lg-4 bName">NPS Job ID:</span>

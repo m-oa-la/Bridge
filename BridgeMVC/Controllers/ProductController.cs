@@ -22,6 +22,20 @@ namespace BridgeMVC.Controllers
 
             return ("");
         }
+
+        public async Task<string> SetMainSubProdViewBags()
+        {
+            var bm = (string)Session["BridgeModule"];
+            var lmp = await DocumentDBRepository.GetItemsAsync<BList>(d => d.Tag == "BList" && d.BridgeModule == bm && d.ListType == "MainProdType");
+            lmp = lmp.OrderBy(d => d.ListItem);
+            ViewBag.LMainProdType = lmp;
+
+            var lsp = await DocumentDBRepository.GetItemsAsync<BList>(d => d.Tag == "BList" && d.BridgeModule == bm && d.ListType == "SubProdType");
+            lsp = lsp.OrderBy(d => d.ListItem);
+            ViewBag.LSubProdType = lsp;
+            return "";
+        }
+
         // GET: Product
         [ActionName("Index")]
         public async Task<ActionResult> IndexAsync()
@@ -29,6 +43,15 @@ namespace BridgeMVC.Controllers
             string dbjid = (string)Session["DbJobId"];
             await AddPTPifEmpty(dbjid);
             var items = await DocumentDBRepository.GetItemsAsync<Product>(d => d.Tag == "Product" && d.DbJobId == dbjid);
+            return View(items);
+        }
+
+        [ActionName("IndexNonePED")]
+        public async Task<ActionResult> IndexNonePED()
+        {
+
+            var items = await DocumentDBRepository.GetItemsAsync<Product>(d => d.Tag == "Product" && d.DbJobId == (string)Session["DbJobId"]);
+            //Session["BridgeModule"] = items.FirstOrDefault().BridgeModule;
             return View(items);
         }
         [ActionName("IndexReadOnly")]
@@ -76,7 +99,7 @@ namespace BridgeMVC.Controllers
             Product r = await DocumentDBRepository.GetItemAsync<Product>(id);
             await DocumentDBRepository.DeleteItemAsync(r.Id);
 
-            return RedirectToAction("Index");
+            return RedirectToAction("IndexNonePED");
         }
         [HttpPost]
         [ActionName("SavePTP")]
@@ -100,8 +123,9 @@ namespace BridgeMVC.Controllers
                 BridgeModule = (string)Session["BridgeModule"]
 
             };
-            await DocumentDBRepository.CreateItemAsync<Product>(p);
-            return RedirectToAction("Index"); 
+            //await DocumentDBRepository.CreateItemAsync<Product>(p);
+            await SetMainSubProdViewBags();
+            return View(p); 
 
         }
 
@@ -115,7 +139,7 @@ namespace BridgeMVC.Controllers
             {
                 //await SetViewBags();
                 await DocumentDBRepository.CreateItemAsync<Product>(item);
-                return RedirectToAction("Index");
+                return RedirectToAction("IndexNonePED");
             }
 
             return View(item);
@@ -130,7 +154,7 @@ namespace BridgeMVC.Controllers
             if (ModelState.IsValid)
             {
                 await DocumentDBRepository.UpdateItemAsync<Product>(item.Id, item);
-                return RedirectToAction("Index");
+                return RedirectToAction("IndexNonePED");
             }
 
             return View(item);
@@ -150,6 +174,7 @@ namespace BridgeMVC.Controllers
                 return HttpNotFound();
             }
             await SetViewBags();
+            await SetMainSubProdViewBags();
             return View(item);
         }
 

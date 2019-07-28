@@ -426,6 +426,7 @@
     <Content Include="Scripts\jquery.validate.unobtrusive.min.js" />
     <Content Include="Scripts\M1\M1Commons.js" />
     <Content Include="Scripts\M1\task1.js" />
+    <Content Include="Scripts\M2\M2Commons.js" />
     <Content Include="Scripts\M2\m2_task1_ped.js" />
     <Content Include="Scripts\M3\M3Commons.js" />
     <Content Include="Scripts\modernizr-2.8.3.js" />
@@ -575,6 +576,8 @@
     <Content Include="Views\Job\ZTest.cshtml" />
     <Content Include="Views\BList\GenericIndex.cshtml" />
     <Content Include="Views\Shared\_LayoutIndex.cshtml" />
+    <Content Include="Views\Product\IndexNonePED.cshtml" />
+    <Content Include="Views\Shared\_LayoutNoLogin.cshtml" />
   </ItemGroup>
   <ItemGroup>
     <Folder Include="App_Data\M1\Projects\" />

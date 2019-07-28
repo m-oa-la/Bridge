@@ -241,7 +241,7 @@ namespace BridgeMVC.Controllers
                 return new HttpStatusCodeResult(HttpStatusCode.BadRequest);
             }
 
-            if (item.MainProdType.ToLower().Contains("life-saving appliances") && !item.CertType.ToLower().Contains("med-f"))
+            if ((item.MainProdType + "x").ToLower().Contains("life-saving appliances") && !item.CertType.ToLower().Contains("med-f"))
             {
                 item.StatusNote = "";
 

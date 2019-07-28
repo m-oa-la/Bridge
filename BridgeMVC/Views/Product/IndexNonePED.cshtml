@@ -1,0 +1,61 @@
+﻿@model IEnumerable<BridgeMVC.Models.Product>
+
+
+@{
+    Layout = "~/Views/Shared/_LayoutNoLogin.cshtml";
+}
+
+
+<h4 style="margin-top:1px">Products <span style="float:right; padding-right:4em"> @Html.ActionLink("Add New", "Create")</span></h4>
+
+
+<table class="table">
+    <colgroup>
+        <col span="1" style="width: 20%;">
+        <col span="1" style="width: 20%;">
+        <col span="1" style="width: 40%;">
+        <col span="1" style="width: 100px;">
+        <col span="1" style="width: 100px;">
+    </colgroup>
+
+    <tr>
+        <th>
+            Main Type
+        </th>
+        <th>
+            Sub Type
+        </th>
+        <th>
+            Product name
+        </th>
+
+    </tr>
+
+    @foreach (var item in Model)
+    {
+    <tr>
+        <td>
+            @Html.DisplayFor(modelItem => item.MainProdType)
+        </td>
+        <td>
+            @Html.DisplayFor(modelItem => item.SubProdType)
+        </td>
+        <td>
+            @Html.DisplayFor(modelItem => item.ProdDescription)
+        </td>
+
+        <td>
+            @Html.ActionLink("Edit", "Edit", new { id = item.Id })
+        </td>
+
+        <td>
+            @using (Html.BeginForm("Delete", "Product", new { id = item.Id }, FormMethod.Post, null))
+            {@Html.AntiForgeryToken()
+            <input type="submit" value="Delete" />
+        }
+        </td>
+
+
+    </tr>
+    }
+</table>

@@ -18,7 +18,7 @@
 @using (Html.BeginForm(null, null, FormMethod.Post, new { id = "jobForm" }))
 {
     @Html.AntiForgeryToken()
-
+    @Html.HiddenFor(model => model.SurveyDate) //important for jCalendar
     <div class="form-horizontal" id="jobBing">
         <div class="bing col-lg-6" id="paraNpsJobId">
             <p> NPS Job ID: </p>
@@ -148,7 +148,7 @@
             @Html.ValidationMessageFor(model => model.Fee, "", new { @class = "text-danger" })
         </div>
         <div class="bing col-lg-6" id="paraBudgetHour">
-            Budget hour: <img id="budgetHourButton"  src="~/Content/pictures/magic.png" class="magicWand" />
+            Budget hour: <img id="budgetHourButton" src="~/Content/pictures/magic.png" class="magicWand" />
             @Html.EditorFor(model => model.BudgetHour, new { htmlAttributes = new { @class = "form-control" } })
             @Html.ValidationMessageFor(model => model.BudgetHour, "", new { @class = "text-danger" })
         </div>

@@ -1,29 +1,14 @@
 ﻿@model BridgeMVC.Models.Product
 
 @{
+    Layout = "~/Views/Shared/_LayoutNoLogin.cshtml";
+}
 
-    Layout = null;
+@{
     var LMainProdType = ViewBag.LMainProdType;
     var LSubProdType = ViewBag.LSubProdType;
 }
 
-<head>
-    <meta charset="utf-8" />
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Bridge</title>
-    @Styles.Render("~/Content/css")
-    @Scripts.Render("~/bundles/modernizr")
-    <script language="JavaScript" type="text/javascript" src="~/Scripts/jquery-3.3.1.min.js"></script>
-    <script language="JavaScript" type="text/javascript" src="~/Scripts/Common/bridgeScript.js"></script>
-    <script language="JavaScript" type="text/javascript" src="~/Scripts/jquery-ui.min.js"></script>
-
-
-    <style>
-        body {
-            font: Avenir Next;
-        }
-    </style>
-</head>
 <h4 style="margin-top:1px"> Add Product </h4>
 @using (Html.BeginForm())
 {
@@ -65,27 +50,13 @@
                     @Html.EditorFor(model => model.ProdDescription, new { htmlAttributes = new { @class = "form-control" } })
                     @Html.ValidationMessageFor(model => model.ProdDescription, "", new { @class = "text-danger" })
                 </td>
-                <td>
-                    Design pressure:
-                    @Html.EditorFor(model => model.DesignPara1, new { htmlAttributes = new { @class = "form-control" } })
-                    @Html.ValidationMessageFor(model => model.DesignPara1, "", new { @class = "text-danger" })
-                </td>
-                <td>
-                    Design temperature:
-                    @Html.EditorFor(model => model.DesignPara2, new { htmlAttributes = new { @class = "form-control" } })
-                    @Html.ValidationMessageFor(model => model.DesignPara2, "", new { @class = "text-danger" })
-                </td>
-                <td>
-                    Note:
-                    @Html.EditorFor(model => model.Note, new { htmlAttributes = new { @class = "form-control" } })
-                    @Html.ValidationMessageFor(model => model.Note, "", new { @class = "text-danger" })
-                </td>
+
                 <td>
                     <input type="submit" value="ADD" class="btn btn-info" />
 
                 </td>
                 <td>
-                    @Html.ActionLink("Cancel", "Index")
+                    @Html.ActionLink("Cancel", "IndexNonPED")
                 </td>
 
             </tr>

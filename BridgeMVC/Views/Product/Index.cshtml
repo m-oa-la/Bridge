@@ -1,10 +1,14 @@
 ﻿@model IEnumerable<BridgeMVC.Models.Product>
 
+
+@{
+    Layout = "~/Views/Shared/_LayoutNoLogin.cshtml";
+}
+
+
 @{
     /**/
 
-    Layout = "~/Views/Shared/_LayoutM3TaskStandard.cshtml";
-    Layout = null;
     var sn = 0;
     var Job = ViewBag.Job;
     var LMainProdType = ViewBag.LMainProdType;
@@ -38,7 +42,7 @@
 
 @if (bridgeModule != "M3")
 {
-    <h4 style="margin-top:1px" > <span style="float:right; padding-right:4em"> @Html.ActionLink("Add New", "Create")</span></h4>
+    <h4 style="margin-top:1px"> <span style="float:right; padding-right:4em"> @Html.ActionLink("Add New", "Create")</span></h4>
 }
 else
 {
@@ -53,7 +57,8 @@ else
                 },
         htmlAttributes: null
     )
-        </span></h4>
+        </span>
+    </h4>
 }
 
 <tr></tr>
@@ -67,15 +72,15 @@ else
     foreach (var para in item.PTPs)
     {
         string classStr2 = classStr + " " + paraSN;
-    <div class="form-group">
-        <div class="bing col-lg-6">
-            <p style="font-weight:bold"> @para.TechParaName</p>
-            <p>
-                @Html.EditorFor(model => para.TechParaValue, new { htmlAttributes = new { @class = classStr2 } })
-                @Html.ValidationMessageFor(model => para.TechParaValue, "", new { @class = "text-danger" })
-            </p>
+        <div class="form-group">
+            <div class="bing col-lg-6">
+                <p style="font-weight:bold"> @para.TechParaName</p>
+                <p>
+                    @Html.EditorFor(model => para.TechParaValue, new { htmlAttributes = new { @class = classStr2 } })
+                    @Html.ValidationMessageFor(model => para.TechParaValue, "", new { @class = "text-danger" })
+                </p>
+            </div>
         </div>
-    </div>
         paraSN = paraSN + 1;
     }
 
