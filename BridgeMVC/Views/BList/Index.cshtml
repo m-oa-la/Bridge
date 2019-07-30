@@ -144,15 +144,17 @@
 
         // Add new list item by click
         $('a[id^=newlistitemø]').click(function () {
-            var id = this.id;
-            // get tbl
-            var tbl = document.getElementById(id).parentElement;
-            var listType = id.split("ø")[1];
-            var v = createListItem(listType);
+            var r = window.confirm("Add item?");
+            if (r) {
+                var id = this.id;
+                // get tbl
+                var tbl = document.getElementById(id).parentElement;
+                var listType = id.split("ø")[1];
+                var v = createListItem(listType);
 
-            window.location.reload(false);
-        });
-
+                window.location.reload(false);
+            }
+         });
 
     });
 
@@ -163,26 +165,32 @@
         td.innerText = newval;
         console.log(id);
         if (oldval != newval) {
-            var bid = id.split("ø")[1];
-            if (bid == "BLType") {
-                // Change ListType Name
-                bid = id.split("ø")[2];
-                changeblisttypename(oldval, newval);
-            }
-
-            // Change BList ListItem Name
-            return $.ajax({
-                type: 'GET',
-                url: '/BList/Saveblistvalue/',
-                data: {
-                    id: bid, newval: newval
-                },
-                cache: false,
-                success: function () {
-                    window.location.reload(true); // Refresh page
-                    console.log("Changed Item Name");
+            var r = window.confirm("Save changes?")
+            if (r) {
+                var bid = id.split("ø")[1];
+                if (bid == "BLType") {
+                    // Change ListType Name
+                    bid = id.split("ø")[2];
+                    changeblisttypename(oldval, newval);
                 }
-            });
+
+                // Change BList ListItem Name
+                return $.ajax({
+                    type: 'GET',
+                    url: '/BList/Saveblistvalue/',
+                    data: {
+                        id: bid, newval: newval
+                    },
+                    cache: false,
+                    success: function () {
+                        window.location.reload(true); // Refresh page
+                        console.log("Changed Item Name");
+                    }
+                });
+            }
+            else {
+                td.innerText = oldval;
+            }
 
         }
     }
