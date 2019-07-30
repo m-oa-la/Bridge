@@ -152,5 +152,27 @@ namespace BridgeMVC.Controllers
             return str.Split(("\"")[0])[0];
         }
 
+
+        [ActionName("ChangeBlistTypeName")]
+        public async Task<string> ChangeBlistTypeName(string oldval, string newval)
+        {
+
+            string bm = (string)Session["BridgeModule"];
+            var BLs = await DocumentDBRepository.GetItemsAsync<BList>(d => d.Tag == "BList" && d.BridgeModule == bm && d.ListType == oldval);
+            if (BLs == null)
+            {
+                return "bad request, invalid old value";
+            }
+
+            foreach (BList b in BLs)
+            {
+                b.ListType = newval;
+                var v = await DocumentDBRepository.UpdateItemAsync<BList>(b.Id, b);
+            }
+
+           return "";
+        }
+
+
     }
 }

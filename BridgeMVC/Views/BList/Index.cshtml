@@ -17,23 +17,25 @@
         .blistTable tr td {
             white-space: nowrap;
         }
+
     .blistTableEdit {
         width: 40px;
-        border:none;
+        border: none;
     }
 
     .tableListDiv {
-          /*margin:3em;*/
-    }
-    .blistTableTh {
-        background-color: lightgray;
-        font-weight:bold;
-    }
-    .addBlistBtn{
-        font-size:x-large;
-        padding-left:1px;
+        /*margin:3em;*/
     }
 
+    .blistTableTh {
+        background-color: lightgray;
+        font-weight: bold;
+    }
+
+    .addBlistBtn {
+        font-size: x-large;
+        padding-left: 1px;
+    }
 </style>
 
 <h2> @Html.ActionLink(" >> Generic Index - list view", "GenericIndex")</h2>
@@ -45,10 +47,10 @@
 
 
 
-<div id="tableListDiv" class="tableListDiv"   > </div>
+<div id="tableListDiv" class="tableListDiv"> </div>
 
-<script>
-     var LBList = @Html.Raw(Json.Encode(Model));
+<script type="text/javascript">
+    var LBList = @Html.Raw(Json.Encode(Model));
     listTablesByType(LBList, "tableListDiv", "ListType", ["ListItem"]);
 
 
@@ -56,12 +58,13 @@
         var doc = document;
         var div = doc.getElementById(parentdivid);
         var tblname = "";
-
+        console.log(datasource);
         $.each(datasource, function (key, data) {
-
             if (data[mainattr] !== tblname) {
+                // Create new table
                 tblname = data[mainattr];
 
+                // Table header
                 var td = doc.createElement("td");
                 td.textContent = tblname;
                 td.setAttribute("class", "blistTableTh");
@@ -70,39 +73,50 @@
 
                 var a = doc.createElement("a");
                 a.textContent = "+";
-                 a.setAttribute("class", "btn addBlistBtn");
+                a.setAttribute("class", "btn addBlistBtn");
                 a.id = "newlistitemø" + data["ListType"];
 
                 var tda = doc.createElement("td");
                 tda.appendChild(a);
                 tda.setAttribute("class", "blistTableEdit");
-
                 tr.appendChild(tda);
 
                 var tbl = doc.createElement("table");
                 tbl.setAttribute("class", "blistTable");
                 tbl.appendChild(tr);
                 div.appendChild(tbl);
+                // Table header finished and table defined
 
+                // First row
                 var td1 = doc.createElement("td");
                 td1.textContent = data.ListItem;
-                td1.id = "editø" + data.Id;
+
+                if (data.ListType == "BListType") {
+                    td1.id = "editøBLTypeø" + data.Id;
+                }
+                else {
+                    td1.id = "editø" + data.Id;
+                }
 
                 var tr1 = doc.createElement("tr");
                 tr1.appendChild(td1);
                 tbl.appendChild(tr1);
 
-            } else {
+            } else { // More rows
                 var td1 = doc.createElement("td");
                 td1.textContent = data.ListItem;
-                td1.id = "editø" + data.Id;
-      
-                var tr1 = doc.createElement("tr");
-                tr1.appendChild(td1);
- 
+                if (data.ListType == "BListType") {
+                    td1.id = "editøBLTypeø" + data.Id;
+                }
+                else {
+                    td1.id = "editø" + data.Id;
+                }
+
+                var tr = doc.createElement("tr");
+                tr.appendChild(td1);
 
                 var tbl = div.lastChild;
-                tbl.appendChild(tr1);
+                tbl.appendChild(tr);
                }
 
         });
@@ -112,6 +126,7 @@
 
     $(document).ready(function () {
 
+        // Edit name of item by double click
         $('td[id^=editø]').dblclick(function () {
             var oldval = this.innerText;
             var id = this.id;
@@ -119,24 +134,29 @@
             var input = document.createElement("input");
             input.value = oldval;
             input.setAttribute("class", "form-control");
+
+
             input.onblur = function () {
                 saveblistvalue(id, oldval, this.value);
             }
             this.appendChild(input);
         });
 
+        // Add new list item by click
         $('a[id^=newlistitemø]').click(function () {
             var id = this.id;
+            // get tbl
             var tbl = document.getElementById(id).parentElement;
+            var listType = id.split("ø")[1];
+            var v = createListItem(listType);
 
-            var v = createListItem(id.split("ø")[1]);
-
-            window.location.reload(false); 
+            window.location.reload(false);
         });
 
 
     });
 
+    // Save BList value, called from double click event 
     function saveblistvalue(id, oldval, newval) {
         var td = document.getElementById(id);
         td.innerHtml = "";
@@ -144,7 +164,13 @@
         console.log(id);
         if (oldval != newval) {
             var bid = id.split("ø")[1];
+            if (bid == "BLType") {
+                // Change ListType Name
+                bid = id.split("ø")[2];
+                changeblisttypename(oldval, newval);
+            }
 
+            // Change BList ListItem Name
             return $.ajax({
                 type: 'GET',
                 url: '/BList/Saveblistvalue/',
@@ -152,11 +178,30 @@
                     id: bid, newval: newval
                 },
                 cache: false,
-                success: {
-                },
+                success: function () {
+                    window.location.reload(true); // Refresh page
+                    console.log("Changed Item Name");
+                }
             });
+
         }
-     }
+    }
+
+    function changeblisttypename(oldval, newval) {
+        // Change BList ListType Name;    
+        return $.ajax({
+            type: 'GET',
+            url: '/BList/ChangeBlistTypeName/',
+            data: {
+                oldval: oldval, newval: newval
+            },
+            cache: false,
+            success: function () {
+                console.log("Changed Type Name");  
+            }
+        });
+    }
+
 
     function createListItem(listType) {
          $.ajax({
@@ -168,7 +213,7 @@
             cache: false,
              success: function (data) {
                  return data;
-            },
+            }
         });
     }
 

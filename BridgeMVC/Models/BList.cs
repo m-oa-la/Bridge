@@ -28,7 +28,7 @@ namespace BridgeMVC.Models
         [JsonProperty(PropertyName = "listType")] // CertType, Rule, EqtType, SubEqtType 
         public string ListType { get; set; }
 
-        [DisplayName("Item name")]
+        [DisplayName("Item name")] // Value
         [JsonProperty(PropertyName = "listItem")]
         public string ListItem { get; set; }
 
