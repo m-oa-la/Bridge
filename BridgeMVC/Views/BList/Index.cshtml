@@ -1,10 +1,7 @@
 ﻿@model IEnumerable<BridgeMVC.Models.BList>
 
 <style>
-    /*td, th {
-        border: 1px solid lightgray;
-    }*/
-
+    
     .blistTable {
         display: table;
         float: left;
@@ -19,6 +16,14 @@
             border: 1px solid lightgray;
         }
 
+        .blistTable th {
+            background-color: lightgray;
+            white-space: nowrap;
+            padding: 0px 14px 3px 14px;
+            border: 1px solid lightgray;
+
+        }
+
     .blistTableEdit {
         width: 40px;
         border: none !important;
@@ -27,15 +32,6 @@
     .tableListDiv {
         /*margin:3em;*/
     }
-
-    .blistTable th {
-        background-color: lightgray;
-        white-space: nowrap;
-        padding: 0px 14px 3px 14px;
-        border: 1px solid lightgray;
-
-    }
-
     .addBlistBtn {
         font-size: x-large;
         padding-left: 1px;
@@ -71,10 +67,6 @@
         var doc = document;
         var div = doc.getElementById(parentdivid);
         var tblname = "";
-        //var hoverclass = "hoverclass";
-        var count = 1;
-        var countTH = 1;
-        console.log(datasource);
         $.each(datasource, function (key, data) {
             if (data[mainattr] !== tblname) {
                 // Create new table
@@ -83,8 +75,7 @@
                 // Table header
                 var th = doc.createElement("th");
                 th.textContent = tblname;
-                th.setAttribute("class", "blistTableTh" + " hoverclass" + countTH);
-                countTH++;
+                th.setAttribute("class", "blistTableTh" + " hoverclass" + tblname.replace(".", ""));
                 var tr = doc.createElement("tr");
                 tr.appendChild(th);
 
@@ -100,7 +91,8 @@
 
                 var tbl = doc.createElement("table");
                 tbl.setAttribute("class", "blistTable");
-                tbl.id = data[mainattr].replace(" ", "");
+                tbl.id = tblname.replace(" ", "").replace(".","");
+                
                 tbl.appendChild(tr);
                 div.appendChild(tbl);
                 // Table header finished and table defined
@@ -111,9 +103,7 @@
 
                 if (data.ListType == "BListType") {
                     td1.id = "editøBLTypeø" + data.Id;
-                    td1.classList.add("hoverclass" + count/*data.ListItem.replace(" ","")*/);
-                    count++;
-                    
+                    td1.setAttribute("class", "hoverclass" + data.ListItem.replace(" ", "").replace(".", ""));           
                 }
                 else {
                     td1.id = "editø" + data.Id;
@@ -129,8 +119,7 @@
                 td1.textContent = data.ListItem;
                 if (data.ListType == "BListType") {
                     td1.id = "editøBLTypeø" + data.Id;
-                    td1.classList.add("hoverclass" + count/*data.ListItem.replace(" ","")*/);
-                    count++
+                    td1.setAttribute("class", "hoverclass" + data.ListItem.replace(" ","").replace(".", ""));
                 }
                 else {
                     td1.id = "editø" + data.Id;
@@ -179,14 +168,18 @@
             }
         });
 
+        // Hovering event
         $("[class*='hoverclass']").hover(function () { // Hovering
             var r = this.className;
+            r = r.replace(".", "");
             if (r.includes(" ")) {
                 r = r.split(" ")[1];
             };
-            $("." + r).css("background-color", "#d4f2bf");
+            console.log("."+r);
+            $("." + r).css("background-color", "#d4f2bf"); // Color when hovering
         }, function () { // Stop hovering
             var r = this.className;
+            r = r.replace(".", "");
             var th = false; // Table header
             if (r.includes(" ")) {
                 r = r.split(" ")[1];
@@ -196,10 +189,10 @@
             if (th) {
                 $("." + r).css("background-color", "transparent");
                 if (this.innerHTML == "BListType") {
-                    $(this).css("background-color", "deepskyblue");
+                    $(this).css("background-color", "deepskyblue"); // Color BlistType header
                 }
                 else {
-                    $(this).css("background-color", "lightgray");
+                    $(this).css("background-color", "lightgray"); // Color of headers
                 }
             }
             else {
