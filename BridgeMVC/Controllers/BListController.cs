@@ -27,7 +27,8 @@ namespace BridgeMVC.Controllers
         {
             string bm = (string)Session["BridgeModule"];
             var BLs = await DocumentDBRepository.GetItemsAsync<BList>(d => d.Tag == "BList" && d.BridgeModule == bm);
-            BLs.OrderBy(s => s.BridgeModule);
+            //BLs.OrderBy(s => s.BridgeModule);
+            BLs = BLs.OrderBy(s => s.ListItem);
 
             if (!String.IsNullOrEmpty(searchString))
             {

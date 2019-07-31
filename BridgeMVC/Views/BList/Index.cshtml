@@ -1,12 +1,12 @@
 ﻿@model IEnumerable<BridgeMVC.Models.BList>
 
 <style>
-    td {
-        border: 1px solid lightgrey;
-    }
+    /*td, th {
+        border: 1px solid lightgray;
+    }*/
 
     .blistTable {
-        display: compact;
+        display: table;
         float: left;
         margin: 1em;
         width: auto;
@@ -14,28 +14,41 @@
         /*border: 1px solid grey;*/
     }
 
-        .blistTable tr td {
+        .blistTable td {
             white-space: nowrap;
+            border: 1px solid lightgray;
         }
 
     .blistTableEdit {
         width: 40px;
-        border: none;
+        border: none !important;
     }
 
     .tableListDiv {
         /*margin:3em;*/
     }
 
-    .blistTableTh {
+    .blistTable th {
         background-color: lightgray;
-        font-weight: bold;
+        white-space: nowrap;
+        padding: 0px 14px 3px 14px;
+        border: 1px solid lightgray;
+
     }
 
     .addBlistBtn {
         font-size: x-large;
         padding-left: 1px;
     }
+
+    #BListType td, #BListType th {
+        border: 1px solid black;
+    }
+
+    #BListType th {
+        background-color: deepskyblue;
+    }
+
 </style>
 
 <h2> @Html.ActionLink(" >> Generic Index - list view", "GenericIndex")</h2>
@@ -58,6 +71,9 @@
         var doc = document;
         var div = doc.getElementById(parentdivid);
         var tblname = "";
+        //var hoverclass = "hoverclass";
+        var count = 1;
+        var countTH = 1;
         console.log(datasource);
         $.each(datasource, function (key, data) {
             if (data[mainattr] !== tblname) {
@@ -65,11 +81,12 @@
                 tblname = data[mainattr];
 
                 // Table header
-                var td = doc.createElement("td");
-                td.textContent = tblname;
-                td.setAttribute("class", "blistTableTh");
+                var th = doc.createElement("th");
+                th.textContent = tblname;
+                th.setAttribute("class", "blistTableTh" + " hoverclass" + countTH);
+                countTH++;
                 var tr = doc.createElement("tr");
-                tr.appendChild(td);
+                tr.appendChild(th);
 
                 var a = doc.createElement("a");
                 a.textContent = "+";
@@ -83,6 +100,7 @@
 
                 var tbl = doc.createElement("table");
                 tbl.setAttribute("class", "blistTable");
+                tbl.id = data[mainattr].replace(" ", "");
                 tbl.appendChild(tr);
                 div.appendChild(tbl);
                 // Table header finished and table defined
@@ -93,6 +111,9 @@
 
                 if (data.ListType == "BListType") {
                     td1.id = "editøBLTypeø" + data.Id;
+                    td1.classList.add("hoverclass" + count/*data.ListItem.replace(" ","")*/);
+                    count++;
+                    
                 }
                 else {
                     td1.id = "editø" + data.Id;
@@ -102,11 +123,14 @@
                 tr1.appendChild(td1);
                 tbl.appendChild(tr1);
 
-            } else { // More rows
+            }
+            else { // More rows
                 var td1 = doc.createElement("td");
                 td1.textContent = data.ListItem;
                 if (data.ListType == "BListType") {
                     td1.id = "editøBLTypeø" + data.Id;
+                    td1.classList.add("hoverclass" + count/*data.ListItem.replace(" ","")*/);
+                    count++
                 }
                 else {
                     td1.id = "editø" + data.Id;
@@ -114,10 +138,9 @@
 
                 var tr = doc.createElement("tr");
                 tr.appendChild(td1);
-
                 var tbl = div.lastChild;
                 tbl.appendChild(tr);
-               }
+            }
 
         });
 
@@ -154,18 +177,52 @@
 
                 window.location.reload(false);
             }
-         });
+        });
+
+        $("[class*='hoverclass']").hover(function () { // Hovering
+            var r = this.className;
+            if (r.includes(" ")) {
+                r = r.split(" ")[1];
+            };
+            $("." + r).css("background-color", "#d4f2bf");
+        }, function () { // Stop hovering
+            var r = this.className;
+            var th = false; // Table header
+            if (r.includes(" ")) {
+                r = r.split(" ")[1];
+                th = true;
+            };
+                
+            if (th) {
+                $("." + r).css("background-color", "transparent");
+                if (this.innerHTML == "BListType") {
+                    $(this).css("background-color", "deepskyblue");
+                }
+                else {
+                    $(this).css("background-color", "lightgray");
+                }
+            }
+            else {
+                if (this.innerHTML == "BListType") {
+                    $("." + r).css("background-color", "deepskyblue");
+                }
+                else {
+                    $("." + r).css("background-color", "lightgray");    
+                }
+                $(this).css("background-color", "transparent");
+            }            
+        });
 
     });
 
-    // Save BList value, called from double click event 
+    // Save BList value, called from double click event
     function saveblistvalue(id, oldval, newval) {
         var td = document.getElementById(id);
         td.innerHtml = "";
         td.innerText = newval;
         console.log(id);
         if (oldval != newval) {
-            var r = window.confirm("Save changes?")
+            var r = window.confirm("Save change?")
             if (r) {
                 var bid = id.split("ø")[1];
                 if (bid == "BLType") {
@@ -196,7 +253,7 @@
     }
 
     function changeblisttypename(oldval, newval) {
-        // Change BList ListType Name;    
+        // Change BList ListType Name;
         return $.ajax({
             type: 'GET',
             url: '/BList/ChangeBlistTypeName/',
@@ -205,7 +262,7 @@
             },
             cache: false,
             success: function () {
-                console.log("Changed Type Name");  
+                console.log("Changed Type Name");
             }
         });
     }
@@ -224,6 +281,5 @@
             }
         });
     }
-
 
 </script>
