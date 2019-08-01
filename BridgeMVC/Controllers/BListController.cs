@@ -157,21 +157,35 @@ namespace BridgeMVC.Controllers
         [ActionName("ChangeBlistTypeName")]
         public async Task<string> ChangeBlistTypeName(string oldval, string newval)
         {
-
             string bm = (string)Session["BridgeModule"];
+
             var BLs = await DocumentDBRepository.GetItemsAsync<BList>(d => d.Tag == "BList" && d.BridgeModule == bm && d.ListType == oldval);
+            
+            
             if (BLs == null)
             {
                 return "bad request, invalid old value";
             }
-
             foreach (BList b in BLs)
             {
                 b.ListType = newval;
                 var v = await DocumentDBRepository.UpdateItemAsync<BList>(b.Id, b);
             }
 
-           return "";
+            if (bm == "M3")
+            {
+                var BPTPara = await DocumentDBRepository.GetItemsAsync<BProdTechPara>(d => d.Tag == "BProdTechPara" && d.BridgeModule == bm && d.ValueSource == oldval);
+                if (BPTPara != null)
+                {
+                    foreach (BProdTechPara b in BPTPara)
+                    {
+                        b.ValueSource = newval;
+                        var v = await DocumentDBRepository.UpdateItemAsync<BProdTechPara>(b.Id, b);
+                    }
+                }
+            }
+
+            return "";
         }
 
 
