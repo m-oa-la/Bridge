@@ -62,12 +62,16 @@
     var LBList = @Html.Raw(Json.Encode(Model));
     listTablesByType(LBList, "tableListDiv", "ListType", ["ListItem"]);
 
-
     function listTablesByType(datasource, parentdivid, mainattr, attrtobelisted) {
         var doc = document;
         var div = doc.getElementById(parentdivid);
         var tblname = "";
-        $.each(datasource, function (key, data) {
+        // Make BListType be the first table
+        var data1 = datasource.filter(x => x.ListType == "BListType");
+        var data2 = datasource.filter(x => x.ListType != "BListType");
+        var datasorted = data1.concat(data2);  
+        // Make tables
+        $.each(datasorted, function (key, data) {
             if (data[mainattr] !== tblname) {
                 // Create new table
                 tblname = data[mainattr];
@@ -130,10 +134,7 @@
                 var tbl = div.lastChild;
                 tbl.appendChild(tr);
             }
-
         });
-
-
     }
 
     $(document).ready(function () {
@@ -175,12 +176,11 @@
             if (r.includes(" ")) {
                 r = r.split(" ")[1];
             };
-            console.log("."+r);
             $("." + r).css("background-color", "#d4f2bf"); // Color when hovering
         }, function () { // Stop hovering
             var r = this.className;
             r = r.replace(".", "");
-            var th = false; // Table header
+            var th = false; // Table header, table headers have 2 classes
             if (r.includes(" ")) {
                 r = r.split(" ")[1];
                 th = true;
@@ -192,15 +192,15 @@
                     $(this).css("background-color", "deepskyblue"); // Color BlistType header
                 }
                 else {
-                    $(this).css("background-color", "lightgray"); // Color of headers
+                    $(this).css("background-color", "lightgray"); // Color headers
                 }
             }
             else {
                 if (this.innerHTML == "BListType") {
-                    $("." + r).css("background-color", "deepskyblue");
+                    $("." + r).css("background-color", "deepskyblue"); // Color BlistType header
                 }
                 else {
-                    $("." + r).css("background-color", "lightgray");    
+                    $("." + r).css("background-color", "lightgray"); // Color headers   
                 }
                 $(this).css("background-color", "transparent");
             }            
