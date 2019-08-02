@@ -574,7 +574,8 @@
     <Content Include="Views\Customer\Index.cshtml" />
     <Content Include="Views\Job\ZTest.cshtml" />
     <Content Include="Views\BList\GenericIndex.cshtml" />
-    <Content Include="Views\Shared\_LayoutIndex.cshtml" />
+    <Content Include="Views\Job\_LayoutIndex.cshtml" />
+    <Content Include="Views\Job\_IndexNavBar.cshtml" />
   </ItemGroup>
   <ItemGroup>
     <Folder Include="App_Data\M1\Projects\" />

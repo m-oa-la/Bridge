@@ -31,7 +31,6 @@
                 x = Number(x.replace(",", "."));
                 y = Number(y.replace(",", "."));
             }
-
             /*check if the two rows should switch place,
             based on the direction, asc or desc:*/
             if (dir == "asc" && x > y) {
@@ -63,18 +62,21 @@
         }
     }
 
-    var arrows = document.getElementsByClassName("arrows");
-    for (i = 0; i < arrows.length; i++) {
-        if (arrows[i].innerHTML.length > 0) {
-            arrows[i].innerHTML = "&#11046"; // 11045 for all black diamond
-        }
-    }
-    if (arrows[n].innerHTML.length > 0) {
-        if (dir == "asc") {
-            arrows[n].innerHTML = "&#9652";
-        }
-        else if (dir == "desc") {
-            arrows[n].innerHTML = "&#9662" // "&#9660";
-        }
-    }
+   // If you want to have arrows as well
+        //var arrow = document.getElementsByClassName("arrows");
+        //for (i = 0; i < arrow.length; i++) {
+        //    if (arrow[i].innerHTML.length > 0) {
+        //        arrow[i].innerHTML = "&#11046"; // 11045 for all black diamond
+        //    }
+        //}
+        //if (arrow[n].innerHTML.length > 0) {
+        //    if (dir == "asc") {
+        //        arrow[n].innerHTML = "&#9652";
+        //    }
+        //    else if (dir == "desc") {
+        //        arrow[n].innerHTML = "&#9662" // "&#9660";
+        //    }
+        //}
+    
+
 }

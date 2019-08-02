@@ -162,14 +162,14 @@ body {
     word-break: break-all;
 }
 
-.table th, td {
+.table th, .table td {
     border-radius: 25px;
     border: 1px solid white !important;
 }
 
-.table th {
+/*.table th {
     cursor: pointer;
-}
+}*/
 
 .title {
     font-size: x-large;
@@ -192,8 +192,8 @@ body {
     text-align: center;
 }
 
-.arrows {
-    float: right;
+.sort {
+    cursor: pointer;
 }
 
 .stats td {

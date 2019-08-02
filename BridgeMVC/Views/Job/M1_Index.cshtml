@@ -18,8 +18,8 @@
 
 <div class="title">
     MY BRIDGE JOBLIST - @bridgeLongName
-
 </div>
+
 <hr />
 
 @Html.Partial("~/Views/Job/_IndexNavBar.cshtml")
@@ -38,18 +38,18 @@
         <col span="1" style="width: 66px" />
     </colgroup>
     <tr>
-        <th onclick="sortTable(0)"> JOB ID       <div class="arrows"> &#11046 </div> </th>
-        <th onclick="sortTable(1)"> PROGRESS     <div class="arrows"> &#11046 </div> </th>
-        <th onclick="sortTable(2)"> CUSTOMER     <div class="arrows"> &#11046 </div> </th>
-        <th onclick="sortTable(3)"> PROJECT NAME <div class="arrows"> &#11046 </div> </th>
+        <th class="sort" onclick="sortTable(0)"> JOB ID @*<div class="arrows"> &#11046 </div>*@</th>
+        <th> PROGRESS </th>
+        <th class="sort" onclick="sortTable(2)"> CUSTOMER </th>
+        <th class="sort" onclick="sortTable(3)"> PROJECT NAME </th>
         @{ int col = 4; }
         @foreach (string taskname in taskNames)
         {
-            <th onclick="sortTable(@col)"> @taskname <div class="arrows"></div> </th>
+            <th class="sort" onclick="sortTable(@col)"> @taskname </th>
             col++;
         }
-        <th onclick="sortTable(@col)"> IORA STATUS <div class="arrows"> &#11046 </div>  </th>
-        <th onclick="sortTable(9)"> DAYS <div class="arrows"> &#11046 </div>  </th>
+        <th class="sort" onclick="sortTable(@col)"> IORA STATUS </th>
+        <th class="sort" onclick="sortTable(9)"> DAYS </th>
         @*<th>            @Html.DisplayNameFor(model => model.TaskHandler)        </th>
             <th>            @Html.DisplayNameFor(model => model.Completed)        </th>*@
     </tr>
