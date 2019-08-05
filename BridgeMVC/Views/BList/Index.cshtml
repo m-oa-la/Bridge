@@ -106,7 +106,12 @@
                 td1.textContent = data.ListItem;
 
                 if (data.ListType == "BListType") {
-                    td1.id = "editøBLTypeø" + data.Id;
+                    if (data.ListItem == "BListType") {
+                        td1.id = "no_editøBLTypeø" + data.Id;
+                    }
+                    else {
+                        td1.id = "editøBLTypeø" + data.Id;
+                    }
                     td1.setAttribute("class", "hoverclass" + data.ListItem.replace(" ", "").replace(".", ""));           
                 }
                 else {
@@ -122,7 +127,12 @@
                 var td1 = doc.createElement("td");
                 td1.textContent = data.ListItem;
                 if (data.ListType == "BListType") {
-                    td1.id = "editøBLTypeø" + data.Id;
+                     if (data.ListItem == "BListType") {
+                        td1.id = "no_editøBLTypeø" + data.Id;
+                    }
+                    else {
+                        td1.id = "editøBLTypeø" + data.Id;
+                    }
                     td1.setAttribute("class", "hoverclass" + data.ListItem.replace(" ","").replace(".", ""));
                 }
                 else {
@@ -157,8 +167,7 @@
 
         // Add new list item by click
         $('a[id^=newlistitemø]').click(function () {
-            var r = window.confirm("Add item?");
-            if (r) {
+            if (window.confirm("Add item?")) {
                 var id = this.id;
                 // get tbl
                 var tbl = document.getElementById(id).parentElement;
@@ -215,8 +224,7 @@
         td.innerText = newval;
         console.log(id);
         if (oldval != newval) {
-            var r = window.confirm("Save change?")
-            if (r) {
+            if (window.confirm("Save change?")) {
                 var bid = id.split("ø")[1];
                 if (bid == "BLType") {
                     // Change ListType Name
@@ -226,7 +234,7 @@
 
                 // Change BList ListItem Name
                 return $.ajax({
-                    type: 'GET',
+                    type: 'POST',
                     url: '/BList/Saveblistvalue/',
                     data: {
                         id: bid, newval: newval
@@ -248,7 +256,7 @@
     function changeblisttypename(oldval, newval) {
         // Change BList ListType Name;
         return $.ajax({
-            type: 'GET',
+            type: 'POST',
             url: '/BList/ChangeBlistTypeName/',
             data: {
                 oldval: oldval, newval: newval
@@ -263,7 +271,7 @@
 
     function createListItem(listType) {
          $.ajax({
-            type: 'GET',
+            type: 'POST',
             url: '/BList/CreateBlistItem/',
             data: {
                 listType: listType

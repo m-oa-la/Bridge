@@ -114,6 +114,7 @@ namespace BridgeMVC.Controllers
             return View(item);
         }
 
+        [HttpPost]
         [ActionName("Saveblistvalue")]
         public async Task<string> Saveblistvalue(string id, string newval)
         {
@@ -132,6 +133,7 @@ namespace BridgeMVC.Controllers
             return "";
         }
 
+        [HttpPost]
         [ActionName("CreateBlistItem")]
         public async Task<string> CreateBlistItem(string listType)
         {
@@ -153,7 +155,7 @@ namespace BridgeMVC.Controllers
             return str.Split(("\"")[0])[0];
         }
 
-
+        [HttpPost]
         [ActionName("ChangeBlistTypeName")]
         public async Task<string> ChangeBlistTypeName(string oldval, string newval)
         {
