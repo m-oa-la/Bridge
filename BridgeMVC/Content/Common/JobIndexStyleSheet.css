@@ -167,20 +167,13 @@ body {
     border: 1px solid white !important;
 }
 
-/*.table th {
-    cursor: pointer;
-}*/
-
 .title {
     font-size: x-large;
     font-weight: bold;
 }
 
-.styleFooter td {
-    border: none !important;
-}
 
-.jobList td, p {
+.jobList td, .jobList p {
     padding: 0px 4px 0px 4px !important;
     margin: 0px !important;
 }
@@ -196,12 +189,11 @@ body {
     cursor: pointer;
 }
 
-.stats td {
-    width: 33%;
-    text-align: center;
-}
-
-.stats hr {
+footer hr {
     margin-top: 5px;
     margin-bottom: 10px;
+}
+
+#stats {
+    text-align:center;
 }

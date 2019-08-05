@@ -1,18 +1,16 @@
 ﻿@model IEnumerable<BridgeMVC.Models.Job>
 
 @{
-
-    ViewBag.Title = "Index";
     Layout = "~/Views/Job/_LayoutIndex.cshtml";
     string BridgeLastUsed = (string)Session["BridgeModule"];
     string UserSignature = (string)Session["UserSignature"];
     var LUser = ViewBag.LUser;
     var US = ViewBag.userSig;
+
     BridgeMVC.Models.BBridge bridge = (BridgeMVC.Models.BBridge)ViewBag.bridge;
-    string bridgeLongName = bridge.BridgeLongName;
     List<string> taskNames = bridge.TaskName.Split(';').ToList<string>();
     var BFlist = (IEnumerable<BridgeMVC.Models.BFinancial>)ViewBag.LCertType;
-    var jobNum = Model.Count();
+    int JobNum = Model.Count();
     int TotalFee = 0;
 
     string getColorCode(string ct)
@@ -27,15 +25,7 @@
         }
         return "background-color:" + c;
     }
-
-
 }
-
-<div class="title">
-    MY BRIDGE JOBLIST - @bridgeLongName
-</div>
-
-<hr />
 
 @Html.Partial("~/Views/Job/_IndexNavBar.cshtml")
 
@@ -58,12 +48,12 @@
         @{ int col = 3; }
         @foreach (string taskname in taskNames)
         {
-            <th class="sort" onclick="sortTable(@col)"> @taskname </th>
+            <th id="@taskname" class="sort" onclick="sortTable(@col)"> @taskname </th>
             col++;
         }
 
         <th> </th>
-        <th class="sort" onclick="sortTable(8)"> DAYS </th>
+        <th class="sort" onclick="sortTable(8)" title="Days since registering the job"> DAYS </th>
         @*<th>            @Html.DisplayNameFor(model => model.TaskHandler)        </th>
             <th>            @Html.DisplayNameFor(model => model.Completed)        </th>*@
 
@@ -169,90 +159,12 @@
 
 </table>
 
-<br /><br />
-
-<div class="stats">
-    <table>
-        <tr>
-            <td><strong> In total: </strong></td>
-            <td> Jobs: @jobNum </td>
-            <td> Fee: @TotalFee NOK </td>
-        </tr>
-    </table>
-    <hr />
-</div>
-
-
-<script type="text/javascript">
+@section Scripts{
+    <script type="text/javascript">
     var LUser = @Html.Raw(Json.Encode(LUser));
     var us = @Html.Raw(Json.Encode(US));
 
-    console.log(LUser);
+    stats(@JobNum, @TotalFee);
 
-    $("#userSig").append(new Option(us, us));
-
-    $.each(LUser, function (key, data) {
-        $("#userSig").append(new Option(data.Signature, data.Signature));
-    });
-
-    function startPause(clickedId) {
-        var newNote = "";
-        var clickedItem = clickedId.split("_")[0];
-        var jid = clickedId.split('_')[1];
-        var statusid = "status_" + jid;
-        document.getElementById(clickedId).style.display = 'none';
-        if (clickedItem == "start")
-        {
-            newNote = "Resumed_on:" + formateDateNow() + " by " + us + ";";
-        }
-        else if (clickedItem == "pause")
-        {
-            newNote = "OH_from:" + formateDateNow() + " by " + us + ";";
-        }
-        updateOhNote(jid, newNote)
-        document.getElementById(statusid).innerHTML = newNote;
-    }
-
-    function updateOhNote(jid, newNote) {
-        $.ajax(
-            {
-                type: 'GET',
-                url: '/Job/UpdateOnHoldNote',
-                data: { id: jid, newNote: newNote },
-
-                success: function (data) {
-
-                    console.log(data);
-                },
-                error: function (e) {
-                    alert('Error: ' + e);
-
-                }
-            });
-    }
-
-
-    function formateDateNow() {
-        var d = new Date();
-
-        var day = d.getDay();
-        var hr = d.getHours();
-        var min = d.getMinutes();
-        var ss = d.getSeconds();
-        if (min < 10) {
-            min = "0" + min;
-        }
-        //var ampm = "am";
-        //if (hr > 12) {
-        //    hr -= 12;
-        //    ampm = "pm";
-        //}
-        var date = d.getDate();
-        var month = d.getMonth();
-        var year = d.getFullYear();
-
-        return year + '-' + month + '-' + date + ' ' + hr + ':' + min + ':00';
-    }
-
-
-</script>
+    </script>
+}

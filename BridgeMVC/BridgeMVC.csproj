@@ -324,7 +324,7 @@
     <Content Include="Content\bootstrap-theme.min.css" />
     <Content Include="Content\bootstrap.css" />
     <Content Include="Content\bootstrap.min.css" />
-    <Content Include="Content\Common\IndexStyleSheet.css" />
+    <Content Include="Content\Common\JobIndexStyleSheet.css" />
     <Content Include="Content\jCalendar.css" />
     <Content Include="Content\jquery-ui.css" />
     <Content Include="Content\M1\index.css" />
@@ -396,7 +396,7 @@
     <None Include="Properties\PublishProfiles\FolderProfile.pubxml" />
     <None Include="Properties\PublishProfiles\MABridgeDev - Web Deploy.pubxml" />
     <None Include="Scripts\jquery-3.3.1.intellisense.js" />
-    <Content Include="Scripts\Common\Index.js" />
+    <Content Include="Scripts\Common\JobIndex.js" />
     <Content Include="Scripts\Common\jqueryUtilities.js" />
     <Content Include="Scripts\Common\ptphandling.js" />
     <Content Include="Scripts\Common\utilities.js" />

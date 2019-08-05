@@ -21,17 +21,19 @@
     </header>
     <div class="container body-content">
         @RenderBody()
+        <br />
     </div>
 
     <footer>
-        <table class="table table-mid-align-rows hoverRow styleFooter" style="table-layout:fixed;">
+        <hr />
+        <table class="table table-mid-align-rows hoverRow" style="table-layout:fixed;">
             <tr class="jobList">
                 <td style="width:35px;"><div class="classTY"></div></td>
                 <td><p>Task is completed</p></td>
                 <td style="width:35px;"><div class="classTTASK"></div></td>
                 <td><p>Task is assigned to you (ongoing)</p></td>
                 @*<td class="classT"></td>
-                    <td style="@styleTxt">IORA pending verification</td>*@
+                <td style="@styleTxt">IORA pending verification</td>*@
                 <td style="width:35px;"><div class="classTPENDING">X</div></td>
                 <td><p>Task is pending for X days</p></td>
                 <td style="width:35px;"><div class="classT"></div></td>
