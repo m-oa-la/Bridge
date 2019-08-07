@@ -13,8 +13,11 @@
     int TotalFee = 0;
 }
 
-@Html.Partial("~/Views/Job/_IndexNavBar.cshtml")
+    <div style="float:right" class="btn btn-secondary">
+        @Html.ActionLink("Report", "Index", "Report", routeValues: new { userSig = US }, htmlAttributes: null)
+    </div>
 
+@Html.Partial("~/Views/Job/_IndexNavBar.cshtml")
 
 <table id="sortTable" class="table table-mid-align-rows hoverRow" style="table-layout:fixed;">
     <colgroup>
