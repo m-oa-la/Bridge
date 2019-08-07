@@ -6,14 +6,11 @@ function task1CertChangeEvent(certActionDropTag, certTypeDropTag,
     var certAction = $(certActionDropTag).find(":selected").text();
     var root = getElementParent(certTypeParaTag.substr(1), 1);
     var siblings = getElementChildren(root.id, -1)[0];
-
     var paragraphs = [];
     for (var i = 0; i < siblings.length; i++) {
         paragraphs.push(siblings[i].id);
     }
-
     paragraphs = arrayRemoveEmpties(paragraphs);
-
     // Get invalid paragraphs
     var paragraphsToShow = [];
     var paragraphsToHide = [];
@@ -22,13 +19,10 @@ function task1CertChangeEvent(certActionDropTag, certTypeDropTag,
     paragraphsToHide.push.apply(paragraphsToHide, extension);
     extension = task1CertActionGetInvalidParagraphs(certAction);
     paragraphsToHide.push.apply(paragraphsToHide, extension);
-
     paragraphsToShow = arrayApplyFilter(paragraphs, paragraphsToHide);
-
     // Render paragraphs
     displayElements(paragraphsToShow, show = true);
     displayElements(paragraphsToHide, show = false);
-
     // Call dependent change event
     task1CertTypeChangeEvent(certTypeDropTag, mainDropTag,
         subDropTag, medDropTag, medParaTag);
@@ -49,8 +43,8 @@ function task1CertTypeChangeEvent(certTypeDropTag, mainDropTag,
     var medOptions = getDropdownMenuValues(medDropTag, false);
     var validMeds = task1CertTypeGetValidMeds(certType, medOptions);
     var invalidMeds = arrayApplyFilter(medOptions, validMeds);
-
-    if (certType.toLocaleUpperCase().startsWith("MED")) {
+    console.log(certType.toLocaleUpperCase().indexOf("MED"))
+    if (certType.toLocaleUpperCase().indexOf("MED") == 0) {
         $(medParaTag).show();
         updateDropdownMenu(medDropTag, invalidMeds);
         task1MedChangeEvent(mainDropTag, subDropTag, medDropTag,
@@ -91,19 +85,16 @@ function task1MedChangeEvent(mainDropTag, subDropTag, medDropTag,
     }
 }
 
-// TODO
-function task1MainChangeEvent(mainDropTag, subDropTag, subItemList, subAttri) {
+function task1MainChangeEvent(mainDropTag, subDropTag, subItemList, filterAttri, subAttri) {
+    // Get selected main type
     var mainSelected = getDropdownSelected(mainDropTag);
+    // Get all subtype options
     var allSubOptions = getDropdownMenuValues(subDropTag, false);
-    var subObjects = getObjectsWithAttribute(subItemList, subAttri, mainSelected)
-    var validSubOptions = getObjectAttributeValues(subObjects, "ListItem") // Incorrect output
+    // Filter sub type options
+    var subObjects = getObjectsWithAttribute(subItemList, filterAttri, mainSelected)
+    var validSubOptions = getObjectAttributeValues(subObjects, subAttri)
     var invalidSubOptions = arrayApplyFilter(allSubOptions, validSubOptions);
-    // arrayRemoveDuplicates()
-    console.log("subObjects", subObjects);
-    console.log("allSubOptions", allSubOptions);
-    console.log("validSubOptions", validSubOptions);
-    console.log("invalidSubOptions", invalidSubOptions);
-
+    // Update sub type dropdown options
     updateDropdownMenu(subDropTag, invalidSubOptions);
 }
 
@@ -138,7 +129,6 @@ function task1CertTypeGetInvalidParagraphs(certType) {
         default:
             break;
     }
-
     return invalidParagraphs;
 }
 
@@ -205,7 +195,7 @@ function task1MedGetValidSubs(medNumber) {
     if (medNumber != "N/A") {
         var lastChar = medNumber.substr(medNumber.length - 1);
         var appendices = ["a", "b", "c", "d", "e", "f", "g"];
-        if (appendices.includes(lastChar)) {
+        if (arrayHasElement(appendices, lastChar)) {
             medNumber = medNumber.slice(0, -1);
         }
     }
@@ -234,9 +224,4 @@ function task1MedGetValidSubs(medNumber) {
             break;
     }
     return valids;
-}
-
-// TODO
-function task1MainGetValidSubs(mainType, subItems) {
-
 }

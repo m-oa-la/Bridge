@@ -1,5 +1,5 @@
 ﻿String.prototype.includes = function (str) {//If not supported, then define the method
-    return this.indexOf(str) !== -1;
+    return this.indexOf(str) != -1;
 };
 
 Array.prototype.includes = function (str) {//If not supported, then define the method
@@ -57,29 +57,25 @@ if (!Array.prototype.fill) {
         }
     });
 }
+
 function findSortingIndices(arr) {
-    /*
-    Finds the indices that sorts an 1D array of numbers.
-    :arg arr: an array of numbers, the data
-    :return: an array of numbers, the sorting indices of the data
-    */
+    /* Finds the indices that sorts an 1D array of numbers.
+     * arg arr: an array of numbers, the data
+     * return: an array of numbers, the sorting indices of the data */
     var arrWithIndex = [];
     for (var i in arr) {
         arrWithIndex.push([arr[i], Number(i)]);
     }
-
     // Overloading sort function
     arrWithIndex.sort(function (left, right) {
         return left[0] < right[0] ? -1 : 1;
     });
-
     var indices = [];
     arr = [];
     for (var ii in arrWithIndex) {
         arr.push(arrWithIndex[ii][0]);
         indices.push(arrWithIndex[ii][1]);
     }
-
     return indices;
 }
 
@@ -164,6 +160,10 @@ function arrayToUpper(arr) {
         }
     }
     return arr;
+}
+
+function arrayHasElement(arr, el) {
+    return !(arr.indexOf(el) < 0);
 }
 
 function arrayRemoveEmpties(arr) {

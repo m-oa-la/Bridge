@@ -203,7 +203,7 @@ function isValidJQueryEvent(event) {
         "keypress", "keydown", "keyup", "submit", "change", "focus",
         "blur", "load", "resize", "scroll", "unload"];
 
-    return eventOptions.includes(event);
+    return arrayHasElement(eventOptions, event);
 }
 
 function htmlElementExists(tag) {
@@ -265,25 +265,22 @@ function updateDropdownMenu(tag, excludes) {
         console.log("Html element with tag " + tag + " is not a select element...");
         return;
     }
-
     excludes = arrayToLower(excludes);
-
     var selected = $(tag + " :selected").val();
-    var isInvalid = excludes.includes(selected.toLowerCase());
-
+    var isInvalid = arrayHasElement(excludes, selected.toLowerCase());
     var options = $(tag).find("option");
     var option = null;
     for (var i = 0; i < options.length; i++) {
         option = options[i];
-        if (excludes.includes(option.text.toLowerCase())) {
-            option.hidden = true;
+        if (arrayHasElement(excludes, option.text.toLowerCase())) {
+            //option.hidden = true;
             option.disabled = true;
         } else {
             if (isInvalid) {
                 $(tag).val(option.value);
                 isInvalid = false;
             }
-            option.hidden = false;
+            //option.hidden = false;
             option.disabled = false;
         }
     }
