@@ -1,83 +1,47 @@
 ﻿@model IEnumerable<BridgeMVC.Models.Job>
 
 @{
-    ViewBag.Title = "Index";
-    Layout = "~/Views/Shared/_LayoutIndex.cshtml";
+    Layout = "~/Views/Job/_LayoutIndex.cshtml";
     string BridgeLastUsed = (string)Session["BridgeModule"];
     string UserSignature = (string)Session["UserSignature"];
     var LUser = ViewBag.LUser;
     var US = ViewBag.userSig;
 
     BridgeMVC.Models.BBridge bridge = (BridgeMVC.Models.BBridge)ViewBag.bridge;
-    string bridgeLongName = bridge.BridgeLongName;
     List<string> taskNames = bridge.TaskName.Split(';').ToList<string>();
-    var jobNum = Model.Count();
+    int JobNum = Model.Count();
     int TotalFee = 0;
-
 }
 
-<div class="title">
-    MY BRIDGE JOBLIST - @bridgeLongName
+@Html.Partial("~/Views/Job/_IndexNavBar.cshtml")
 
-</div>
-<hr />
-
-@using (Html.BeginForm())
-{
-    <table>
-        <colgroup>
-            <col span="1" style="width: 15%;">
-            <col span="1" style="width: 70%;">
-            <col span="1" style="width: 15%;">
-            <col span="1" style="width: 80px;">
-        </colgroup>
-        <tr>
-            <td>
-                @Html.TextBox("SearchString", null, new { @class = "form-control" })
-
-            </td>
-            <td>
-                <input type="submit" value="Search" />
-            </td>
-
-            <td style="text-align:right">
-                <select id="userSig" name="userSig" class="form-control"></select>
-            </td>
-            <td>
-                <input type="submit" value="Change User" />
-            </td>
-        </tr>
-    </table>
-}
-<br />
 
 <table id="sortTable" class="table table-mid-align-rows hoverRow" style="table-layout:fixed;">
     <colgroup>
-        <col span="1" style="width: 21%;">
-        <col span="1" style="width: 120px;">
-        <col span="1" style="width: 24%;">
-        <col span="1" style="width: 24%;">
-        <col span="1" style="width: 35px">
-        <col span="1" style="width: 35px">
-        <col span="1" style="width: 35px">
-        <col span="1" style="width: 50px">
-        <col span="1" style="width: 24%;">
-        <col span="1" style="width: 66px">
+        <col span="1" style="width: 21%;" />
+        <col span="1" style="width: 120px;" />
+        <col span="1" style="width: 24%;" />
+        <col span="1" style="width: 24%;" />
+        <col span="1" style="width: 35px" />
+        <col span="1" style="width: 35px" />
+        <col span="1" style="width: 35px" />
+        <col span="1" style="width: 50px" />
+        <col span="1" style="width: 24%;" />
+        <col span="1" style="width: 66px" />
     </colgroup>
     <tr>
-        <th onclick="sortTable(0)"> JOB ID       <div class="arrows"> &#11046 </div> </th>
-        <th onclick="sortTable(1)"> PROGRESS     <div class="arrows"> &#11046 </div> </th>
-        <th onclick="sortTable(2)"> CUSTOMER     <div class="arrows"> &#11046 </div> </th>
-        <th onclick="sortTable(3)"> PROJECT NAME <div class="arrows"> &#11046 </div> </th>
+        <th class="sort" onclick="sortTable(0)"> JOB ID @*<div class="arrows"> &#11046 </div>*@</th>
+        <th title="[Hours registered in Ncert / Budget hours]"> PROGRESS </th>
+        <th class="sort" onclick="sortTable(2)"> CUSTOMER </th>
+        <th class="sort" onclick="sortTable(3)"> PROJECT NAME </th>
         @{ int col = 4; }
         @foreach (string taskname in taskNames)
         {
-            <th onclick="sortTable(@col)"> @taskname <div class="arrows"></div> </th>
+            <th id="@taskname" class="sort" onclick="sortTable(@col)"> @taskname </th>
             col++;
         }
-        <th onclick="sortTable(@col)"> IORA STATUS <div class="arrows"> &#11046 </div>  </th>
-        @{ col++; }
-        <th onclick="sortTable(@col)"> DAYS <div class="arrows"> &#11046 </div>  </th>
+        <th class="sort" onclick="sortTable(@col)" title="From IORA Central"> IORA STATUS </th>
+        <th class="sort" onclick="sortTable(9)" title="Days since registering the job"> DAYS </th>
         @*<th>            @Html.DisplayNameFor(model => model.TaskHandler)        </th>
             <th>            @Html.DisplayNameFor(model => model.Completed)        </th>*@
     </tr>
@@ -111,12 +75,12 @@
         string linkNcertReporting = "'/Job/NCertReporting/" + item.Id + "'";
         string t2tag = "T2TAG" + item.Task2 + "T2TAG";
 
-        string daysSince = "0";
+        int days = 0;
         string receivedClass = "";
         if (item.ReceivedTime != null)
         {
             TimeSpan timeSpan = DateTime.Now - (DateTime)item.ReceivedTime;
-            double days = timeSpan.TotalDays;
+            days = (int)timeSpan.TotalDays;
             if (days > 60)
             {
                 receivedClass = "color: red;";
@@ -125,10 +89,7 @@
             {
                 receivedClass = "color: orange;";
             }
-            daysSince = days.ToString("0.0");
         }
-
-
 
 
         <tr class="jobList">
@@ -138,7 +99,7 @@
             <td>
                 <div style="background-color:lightgray; cursor: pointer; width:100%;" onclick="location.href=@linkNcertReporting">
 
-                    <div style="background-color:green;width:66.66%;position:relative;top:0px;height:24px;margin:0px">
+                    <div style="background-color:green;width:66.66%; position:relative; top:0px; height:24px; margin:0px">
                         <div style="color:white; margin:auto;">
                             bhrs
                         </div>
@@ -186,30 +147,25 @@
                 </p>
             </td>
             <td style="text-align:right; @receivedClass">
-                @daysSince
+                @days
             </td>
         </tr>
     }
 </table>
-<br /><br /><br />
-
-<table class="stats">
-    <tr>
-        <td><strong> In total: </strong></td>
-        <td> Jobs: @jobNum </td>
-        <td> Fee: @TotalFee NOK </td>
-    </tr>
-</table>
-
-<hr />
 
 
-<script type="text/javascript">
+@section Scripts{
+    <script type="text/javascript">
+
     var LUser = @Html.Raw(Json.Encode(LUser));
     var us = @Html.Raw(Json.Encode(US));
-    $("#userSig").append(new Option(us, us));
-    $.each(LUser, function (key, data) {
-        $("#userSig").append(new Option(data.Signature, data.Signature));
-    });
 
-</script>
+    stats(@JobNum, @TotalFee);
+
+    document.getElementById("FEE").title = "Fee setting";
+    document.getElementById("AGR").title = "Agreement/IORA";
+    document.getElementById("EXE").title = "Job execution";
+    document.getElementById("INV").title = "Invoicing/Finalization";
+
+    </script>
+}

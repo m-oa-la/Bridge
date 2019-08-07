@@ -46,12 +46,10 @@ function getElementParent(id, lvl) {
 }
 
 function getElementChildren(id, lvl) {
-    /*
-    Gets the children elements n levels down the element tree.
+    /* Gets the children elements n levels down the element tree.
     :arg id: string, the root element id
     :arg lvl: int, the number of levels to descend
-    :return: a list of html elements
-    */
+    :return: a list of html elements */
     var elems = [document.getElementById(id)];
     var elem = null;
     var temp = [];
@@ -86,12 +84,9 @@ function getElementChildren(id, lvl) {
 }
 
 function displayElements(elemIds, show) {
-    /*
-    Renders elements
+    /* Renders elements
     :arg elemIds: list of strings, the element ids
-    :arg show: boolean, whether the elements shall be shown (default: true)
-    */
- 
+    :arg show: boolean, whether the elements shall be shown (default: true) */
     for (var i = 0; i < elemIds.length; i++) {
         id = "#" + elemIds[i];
 
@@ -114,18 +109,14 @@ function readBUser(sig) {
 }
 
 function returnTargetUser(data) {
-    /*
-    Add function description.
-    */
+    /* Add function description. */
     TargetUser = jQuery.parseJSON(data);
 }
 
 function appendElementOptions(id, obj) {
-    /*
-    Adds options from a json object to a html element.
+    /* Adds options from a json object to a html element.
     :arg id: the element id
-    :arg obj: a json object with key-value pairs
-    */
+    :arg obj: a json object with key-value pairs */
     id = "#" + id;
 
     if ($(id).length > 0) {
@@ -139,12 +130,10 @@ function appendElementOptions(id, obj) {
 }
 
 function budgetHourCallback(module, taskNo, certType) {
-    /*
-    Add function description.
+    /* Add function description.
     :arg module: string, the Bridge module
     :arg taskNo: int, the task number
-    :arg certType: string, the certificate type
-    */
+    :arg certType: string, the certificate type */
     var validModules = ["M1"];
     var validTaskNos = [1];
     var urlString = "/Job/";
@@ -171,10 +160,8 @@ function budgetHourCallback(module, taskNo, certType) {
 }
 
 function calcBudgetHour(data) {
-    /*
-    Calculates the budget hours based on the certificate type.
-    :arg data: string, data in JSON format
-    */
+    /* Calculates the budget hours based on the certificate type.
+    :arg data: string, data in JSON format */
     var f = jQuery.parseJSON(data);
     var dis = (1 - f.allocationFee) * (1 - f.tsa - f.msa);
     var feee = document.getElementById("Fee").value;
@@ -255,18 +242,20 @@ function initializeDropdownMenu(tag, itemList, attribute) {
         console.log("Html element with tag " + tag + " is not a select element...");
         return;
     }
-
+    // Add valid options to dropdown menu
     var selected = $(tag + " :selected").val();
     var item = null;
     for (var i in itemList) {
         item = itemList[i];
         if (!item.hasOwnProperty(attribute)) {
             continue;
-        } else if (selected == item[attribute]) {
+        } else if (item[attribute] == selected) {
             continue;
+        } else {
+            $(tag).append(new Option(item[attribute], item[attribute]));
         }
-        $(tag).append(new Option(item[attribute], item[attribute]));
     }
+    // Sort dropdown menu options
     sortDropdownMenuOptions(tag);
 }
 
@@ -312,13 +301,10 @@ function sortDropdownMenuOptions(tag) {
         console.log("Html element with tag " + tag + " does not exist...");
         return;
     }
-
     var menu = $(tag);
-    var selected = menu.val();
-    var optionList = menu.find("option");
-    optionList.sort(function (a, b) { return $(a).text() > $(b).text() ? 1 : -1; });
-    menu.html("").append(optionList);
-    menu.val(selected);
+    menu.html(menu.find("option").sort(function (x, y) {
+        return $(x).text() > $(y).text() ? 1 : -1;
+    }));
 }
 
 function getDropdownMenuValues(tag, onlyVisible) {

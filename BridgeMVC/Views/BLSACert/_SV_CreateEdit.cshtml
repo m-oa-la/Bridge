@@ -85,6 +85,8 @@
         @Html.ValidationMessageFor(model => model.Condition, "", new { @class = "text-danger" })
     </div>
 </div>
+
+
 @*To be further developped. The list below should be refreshed when itemno changes*@
 <div>
 
@@ -118,7 +120,6 @@
 </div>
 
 <script>
-
     var LMEDItemNo = @Html.Raw(Json.Encode(LMEDItemNo));
     var Job = @Html.Raw(Json.Encode(Job));
     var Product = @Html.Raw(Json.Encode(Product));
