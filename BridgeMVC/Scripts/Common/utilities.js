@@ -130,16 +130,107 @@ function getTodayDate() {
     return dt;
 }
 
-function filterArray(arr, toRemove) {
-    /*
-    Removes the elements that are contained in one array from the other.
-    :arg arr: list, the array
-    :arg toRemove: list, the elements to be removed
-    */
+function arrayApplyFilter(arr, filter) {
+    /* Removes the elements of a filter from an array.
+     * arg arr: array
+     * arg filter: array */
     arr = arr.filter(function (el) {
-        return toRemove.indexOf(el) < 0;
+        return filter.indexOf(el) < 0;
     });
-
     return arr;
 }
 
+function arrayToLower(arr) {
+    /* Makes the string elements of an array lower case.
+     * arg arr: array */
+    var elem = null;
+    for (var i = 0; i < arr.length; i++) {
+        elem = arr[i];
+        if (typeof elem == "string") {
+            arr[i] = arr[i].toLowerCase();
+        }
+    }
+    return arr;
+}
+
+function arrayToUpper(arr) {
+    /* Makes the string elements of an array upper case.
+     * arg arr: array */
+    var elem = null;
+    for (var i = 0; i < arr.length; i++) {
+        elem = arr[i];
+        if (typeof elem == "string") {
+            arr[i] = arr[i].toUpperCase();
+        }
+    }
+    return arr;
+}
+
+function arrayRemoveEmpties(arr) {
+    /* Removes empty strings from an array.
+     * arg arr: array */
+    arr = arr.filter(function (el) {
+        return el != "";
+    });
+    return arr;
+}
+
+function arrayRemoveDuplicates(arr) {
+    /* Removes duplicate entries from an array.
+     * arg arr: list 
+     * return: list */
+    var uniques = [];
+    var elem = null;
+    for (var i = 0; i < arr.length; i++) {
+        elem = arr[i];
+        if (uniques.indexOf(elem) == -1) {
+            uniques.push(elem);
+        }
+    }
+    return uniques;
+}
+
+function filterArray(arr, toRemove) {
+    /* Removes the elements that are contained in one array from the other.
+     * arg arr: list
+     * arg toRemove: list, the elements to be removed */
+    arr = arr.filter(function (el) {
+        return toRemove.indexOf(el) < 0;
+    });
+    return arr;
+}
+
+function getObjectAttributeValues(objects, attribute) {
+    /* Returns the attribute values from a list of objects.
+     * arg objects: list of objects
+     * arg attribute: string
+     * return: list */
+    var list = [];
+    var object = null;
+    for (var i = 0; i < objects.length; i++) {
+        object = objects[i];
+        if (object.hasOwnProperty(attribute)) {
+            list.push(object[attribute]);
+        }
+    }
+    return list;
+}
+
+function getObjectsWithAttribute(objects, attribute, value) {
+    /* Returns the objects that have an attribute with a certain value.
+     * arg objects: list of objects
+     * arg attribute: string
+     * arg value: - 
+     * return: list of objects */
+    var list = [];
+    var object = null;
+    for (var i = 0; i < objects.length; i++) {
+        object = objects[i];
+        if (object.hasOwnProperty(attribute)) {
+            if (object[attribute] == value) {
+                list.push(object);
+            }
+        }
+    }
+    return list;
+}

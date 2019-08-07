@@ -94,17 +94,17 @@ function task1MedChangeEvent(mainDropTag, subDropTag, medDropTag,
 // TODO
 function task1MainChangeEvent(mainDropTag, subDropTag, subItemList, subAttri) {
     var mainSelected = getDropdownSelected(mainDropTag);
-    var allSubOptions = getDropdownMenuValues(subDropTag);
+    var allSubOptions = getDropdownMenuValues(subDropTag, false);
     var subObjects = getObjectsWithAttribute(subItemList, subAttri, mainSelected)
     var validSubOptions = getObjectAttributeValues(subObjects, "ListItem") // Incorrect output
     var invalidSubOptions = arrayApplyFilter(allSubOptions, validSubOptions);
+    // arrayRemoveDuplicates()
+    console.log("subObjects", subObjects);
+    console.log("allSubOptions", allSubOptions);
+    console.log("validSubOptions", validSubOptions);
+    console.log("invalidSubOptions", invalidSubOptions);
 
-    console.log(subObjects);
-    console.log(allSubOptions);
-    console.log(validSubOptions);
-    console.log(invalidSubOptions);
-
-    updateDropdownMenu(subDropTag, invalidSubOptions); // Look into way to remove duplicates
+    updateDropdownMenu(subDropTag, invalidSubOptions);
 }
 
 // Paragraph retrieval functions
