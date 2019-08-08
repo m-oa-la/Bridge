@@ -8,7 +8,6 @@
         margin: 1em;
         width: auto;
         min-width: 45%;
-        /*border: 1px solid grey;*/
     }
 
         .blistTable td {
@@ -42,7 +41,7 @@
     }
 
     #BListType th {
-        background-color: deepskyblue;
+        background-color: #33b2e1;
     }
 
 </style>
@@ -54,9 +53,9 @@
 
 <b style="background-color:yellow">Double click to modify</b>
 
-
-
 <div id="tableListDiv" class="tableListDiv"> </div>
+
+
 
 <script type="text/javascript">
     var LBList = @Html.Raw(Json.Encode(Model));
@@ -66,10 +65,12 @@
         var doc = document;
         var div = doc.getElementById(parentdivid);
         var tblname = "";
+
         // Make BListType be the first table
-        var data1 = datasource.filter(x => x.ListType == "BListType");
-        var data2 = datasource.filter(x => x.ListType != "BListType");
-        var datasorted = data1.concat(data2);  
+        var data1 = datasource.filter(function (elem) { return elem.ListType == "BListType"; });
+        var data2 = datasource.filter(function (elem) { return elem.ListType != "BListType"; });
+        var datasorted = data1.concat(data2);
+
         // Make tables
         $.each(datasorted, function (key, data) {
             if (data[mainattr] !== tblname) {
@@ -106,7 +107,7 @@
                 td1.textContent = data.ListItem;
 
                 if (data.ListType == "BListType") {
-                    if (data.ListItem == "BListType") {
+                    if (data.ListItem == "BListType") { // Not possible to change BListType name
                         td1.id = "no_editøBLTypeø" + data.Id;
                     }
                     else {
@@ -128,7 +129,7 @@
                 td1.textContent = data.ListItem;
                 if (data.ListType == "BListType") {
                      if (data.ListItem == "BListType") {
-                        td1.id = "no_editøBLTypeø" + data.Id;
+                        td1.id = "no_editøBLTypeø" + data.Id; // Not possible to change BListType name
                     }
                     else {
                         td1.id = "editøBLTypeø" + data.Id;
@@ -198,7 +199,7 @@
             if (th) {
                 $("." + r).css("background-color", "transparent");
                 if (this.innerHTML == "BListType") {
-                    $(this).css("background-color", "deepskyblue"); // Color BlistType header
+                    $(this).css("background-color", "#33b2e1"); // Color BlistType header
                 }
                 else {
                     $(this).css("background-color", "lightgray"); // Color headers
@@ -206,7 +207,7 @@
             }
             else {
                 if (this.innerHTML == "BListType") {
-                    $("." + r).css("background-color", "deepskyblue"); // Color BlistType header
+                    $("." + r).css("background-color", "#33b2e1"); // Color BlistType header
                 }
                 else {
                     $("." + r).css("background-color", "lightgray"); // Color headers   
@@ -219,6 +220,7 @@
 
     // Save BList value, called from double click event
     function saveblistvalue(id, oldval, newval) {
+        var changetypename = false;
         var td = document.getElementById(id);
         td.innerHtml = "";
         td.innerText = newval;
@@ -229,7 +231,7 @@
                 if (bid == "BLType") {
                     // Change ListType Name
                     bid = id.split("ø")[2];
-                    changeblisttypename(oldval, newval);
+                    changetypename = true;
                 }
 
                 // Change BList ListItem Name
@@ -237,12 +239,14 @@
                     type: 'POST',
                     url: '/BList/Saveblistvalue/',
                     data: {
-                        id: bid, newval: newval
+                        id: bid, newval: newval,
+                        oldval: oldval, changeTypeName: changetypename
                     },
-                    cache: false,
-                    success: function () {
-                        window.location.reload(true); // Refresh page
+                    success: function (data, status) {
+                        window.location.reload(true); // Reload page from server
                         console.log("Changed Item Name");
+                        console.log(data);
+                        console.log(status);
                     }
                 });
             }
@@ -252,22 +256,6 @@
 
         }
     }
-
-    function changeblisttypename(oldval, newval) {
-        // Change BList ListType Name;
-        return $.ajax({
-            type: 'POST',
-            url: '/BList/ChangeBlistTypeName/',
-            data: {
-                oldval: oldval, newval: newval
-            },
-            cache: false,
-            success: function () {
-                console.log("Changed Type Name");
-            }
-        });
-    }
-
 
     function createListItem(listType) {
          $.ajax({

@@ -116,8 +116,9 @@ namespace BridgeMVC.Controllers
 
         [HttpPost]
         [ActionName("Saveblistvalue")]
-        public async Task<string> Saveblistvalue(string id, string newval)
+        public async Task<string> Saveblistvalue(string id, string newval, string oldval, bool changeTypeName)
         {
+            var check = "";
             if (id == null)
             {
                 return "bad request, id cannot be null";
@@ -128,8 +129,16 @@ namespace BridgeMVC.Controllers
             {
                 return "bad request, invalid id";
             }
-            item.ListItem = newval;
-            var v = await DocumentDBRepository.UpdateItemAsync<BList>(item.Id, item);
+            if (changeTypeName)
+            {
+                check = await ChangeBlistTypeName(oldval, newval);
+            }
+            if (check == "")
+            {
+                item.ListItem = newval;
+                await DocumentDBRepository.UpdateItemAsync<BList>(item.Id, item);
+            }
+
             return "";
         }
 
