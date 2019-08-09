@@ -1,7 +1,11 @@
 ﻿@{
     string name = (string)ViewBag.bridge.BridgeLongName;
-
+    string US = ViewBag.userSig;
 }
+
+<div style="float:right" class="btn btn-secondary">
+    @Html.ActionLink("Report", "Job_Index", "Report", routeValues: new { userSig = US }, htmlAttributes: null)
+</div>
 
 <div class="title" style="display:inline-block">
     MY BRIDGE JOBLIST - @name

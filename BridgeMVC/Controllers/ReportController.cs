@@ -14,9 +14,9 @@ namespace BridgeMVC.Controllers
     //[Authorize]
     public class ReportController : Controller
     {
-        [ActionName("Index")]
+        [ActionName("Job_Index")]
         // GET: Report
-        public async Task<ActionResult> IndexAsync(string completed, string userSig)
+        public async Task<ActionResult> Job_IndexAsync(string completed, string userSig)
         {
             if (string.IsNullOrEmpty(userSig))
             {

@@ -1,0 +1,330 @@
+﻿@model IEnumerable<BridgeMVC.Models.Job>
+
+@{
+    Layout = "~/Views/Shared/_LayoutM1TaskA4.cshtml";
+    string US = ViewBag.userSig;
+    int jobNum = Model.Count();
+
+    string[] tabHeader = { "Job ID", "Received Time", "Fee Set Time", "Cert Type", "Customer Name", "Project Name",
+        "Main Prod Type", "Sub Prod Type", "Fee"};
+    string isComplete = "";
+    string timeFormat = "yyyy'/'MM'/'dd' T 'HH':'mm':'ss";
+}
+
+<style>
+
+    .reportTab td {
+        border: 1px solid black;
+        /*border-bottom: 1px solid black;*/
+        font-size: 8pt;
+        padding: 0px 2px 1px 2px;
+    }
+
+    .reportTab th {
+        border: 1px solid black;
+        /*border-bottom: 1px solid black;*/
+        padding: 0px 2px 1px 2px;
+        font-size: 9pt;
+        background-color: #33b2e1;
+        color: white;
+    }
+
+    /*.reportTab td:last-child, .reportTab th:last-child {
+            border-right: none;
+        }*/
+
+    .dropbtn {
+        background-color: #3f9c35;
+        color: white;
+        padding: 8px;
+        font-size: 14px;
+        border: none;
+        margin-left: 8px;
+
+    }
+
+    .dropdown {
+        position: relative;
+        display: inline-block;
+        float: right;
+        width: 50%;
+    }
+
+    .dropdown-content {
+        /*display: none;*/
+        position: absolute;
+        background-color: #f1f1f1;
+        width: 300px;
+        height: 200px;
+        min-width: 160px;
+        box-shadow: 0px 8px 16px 0px rgba(0,0,0,0.2);
+        z-index: 1;
+    }
+
+    .closed {
+        display: none;
+    }
+
+    .open {
+        display: block;
+    }
+
+    .dropbtn:hover {
+        background-color: #0f204b;
+    }
+
+    .title {
+        font-weight: bold;
+        font-size: 14pt;
+        margin-bottom: 10px;
+    }
+
+    .filters {
+        float: left;
+        width: 50%;
+        border: 1px solid black;
+        padding-left: 8px;
+        margin-bottom: 10px;
+    }
+
+    .sort {
+        cursor: pointer;
+    }
+</style>
+
+<div href="/"><img style="width:170mm" src="~/Content/pictures/DNVGLLogo.PNG"></div>
+
+<div style="width:100%">
+    <div class="title"> Jobs Report </div>
+
+    <div class="filters">
+
+        <strong>Filters used: </strong><br />
+        @ViewBag.jobType jobs for @US. <br />
+        Total: <span id="jobs">@jobNum</span> jobs. <br />
+        <span id="filtersText" style="display:none"></span>
+        <span id="explainOldNew" style="display:none"><span> Active job &nbsp;&nbsp;</span><span style="background-color:whitesmoke"> Historic job &nbsp;&nbsp;</span> </span>
+
+    </div>
+
+
+    <div class="dropdown no-print">
+        <button id="filterbtn" class="dropbtn">Filters</button>
+        <div class="dropdown-content closed">
+            @using (Html.BeginForm())
+            {
+                <table style="table-layout:auto;">
+                    <tr>
+                        <td colspan="2">Type of job: </td>
+                    </tr>
+
+                    <tr>
+                        <td>
+                            <select id="completed" name="completed" class="form-control">
+                                <option value="Active" selected>Active</option>
+                                <option value="Historic">Historic</option>
+                                <option value="All">All</option>
+                            </select>
+                        </td>
+                        <td>
+                            <input type="submit" value="Search" />
+                        </td>
+                    </tr>
+
+                    <tr>
+                        <td colspan="2">Dynamic search in a column:</td>
+                    </tr>
+                    <tr>
+                        <td>
+                            <select id="column" name="column" class="form-control">
+                                <option value="100" selected>All</option>
+                            </select>
+                        </td>
+                        <td>
+                            <input type="text" id="myInput" placeholder="Search for content.." title="Type in text">
+                        </td>
+                    </tr>
+                </table>
+            }
+
+
+        </div>
+    </div>
+
+
+</div>
+
+
+<table id="sortTable" class="reportTab" style="width:100%; table-layout:auto;">
+    @*<colgroup>
+            <col span="1" style="width: 10%;" />
+            <col span="1" style="width: 10%;" />
+            <col span="1" style="width: 10%;" />
+            <col span="1" style="width: 10%;" />
+            <col span="1" style="width: 10%;" />
+            <col span="1" style="width: 10%;" />
+            <col span="1" style="width: 10%;" />
+            <col span="1" style="width: 10%;" />
+            <col span="1" style="width: 10%;" />
+            <col span="1" style="width: 10%;" />
+        </colgroup>*@
+    <tr>
+        @for (int i = 0; i < tabHeader.Length; i++)
+        {
+            <th class="sort" onclick="sortTable(@i)"> @tabHeader[i]  </th>
+        }
+
+
+    </tr>
+
+    @foreach (var item in Model)
+    {
+        if (item.IsComplete)
+        {
+            isComplete = "background-color: whitesmoke;";
+        }
+        else
+        {
+            isComplete = "";
+        }
+
+        string ReceivedTime = "";
+        string FeeSetTime = "";
+        if (item.ReceivedTime != null)
+        {
+            DateTime receivedtime = (DateTime)item.ReceivedTime;
+            ReceivedTime = receivedtime.ToString(timeFormat);
+        }
+        if (item.FeeSetTime != null)
+        {
+            DateTime feetime = (DateTime)item.FeeSetTime;
+            FeeSetTime = feetime.ToString(timeFormat);
+        }
+
+
+        <tr style="@isComplete">
+            <td>
+                @item.NpsJobId
+
+            </td>
+            <td>
+                @ReceivedTime
+            </td>
+            <td>
+                @FeeSetTime
+            </td>
+
+            <td>
+                @item.CertType
+            </td>
+            <td>
+                @item.CustomerName
+            </td>
+            <td>
+                @item.NpsJobName
+            </td>
+
+            <td>
+                @item.MainProdType
+            </td>
+            <td>
+                @item.SubProdType
+            </td>
+            <td>
+                @item.Fee
+            </td>
+
+
+        </tr>
+    }
+</table>
+<br />
+
+<div class="no-print" style="float:right">
+    @Html.ActionLink("RETURN TO WORKLIST", "_Index", "Job")
+</div>
+
+@section Scripts{
+    <script type="text/javascript">
+    var headers = @Html.Raw(Json.Encode(tabHeader));
+    
+
+    $(document).ready(function () {
+
+        if ("@ViewBag.jobType" == "All") {
+            $("#explainOldNew").css("display", "");
+        }
+
+        // Change which column to search in
+        var col = 100; // By default all columns
+        $("select[id=column]").change(function () {
+        col = $(this).val();
+
+        })
+
+        // Dynamic filter of table
+        $("#myInput").keyup(function () {
+            var text = $(this).val().toLowerCase();
+            var td;
+            var column = "";
+            var rows = $("#sortTable tr:gt(0)");
+            if (col == 100) {
+                column = "all columns";
+                rows.filter(function () {
+                    $(this).toggle($(this).text().toLowerCase().indexOf(text) > -1);
+                });
+            
+            } else {
+                column = headers[col];
+                $.each(rows, function (i, data) {
+                    td = data.getElementsByTagName("td")[col];
+                    if (td) {
+                        txtValue = td.textContent || td.innerText;
+                        if (txtValue.toLowerCase().indexOf(text) > -1) {
+                            data.style.display = "";
+                        } else {
+                            rows[i].style.display = "none";
+                        }
+                    }
+                })
+            }
+
+            // Adjust number of jobs
+            var jobs = $("#sortTable tr:visible").length - 1;
+            $("#jobs").text(jobs);
+
+            // Filter text
+            if (text == "") {
+                $("#filtersText").css("display", "none");
+            }
+            else {
+                $("#filtersText").css("display", "");
+                $("#filtersText").html("Searched for: \"" + text + "\" in " + column + ".<br />");
+            }
+
+        });
+
+        // Add table headers to input select in the column search field
+        $.each(headers, function (key, data) {
+            $("#column").append(new Option(data, key));
+        })
+
+       // Styling the filter botton
+        $("#filterbtn").click(function () {
+            if ($("#filterbtn").text() == "Filters") {
+                $("#filterbtn").text("Close");
+                $("#filterbtn").css("background-color", "#0f204b");
+            }
+            else {
+                $("#filterbtn").text("Filters");
+                $("#filterbtn").css("background-color", "#3f9c35");
+            }
+            $(".dropdown-content").toggleClass("closed open")
+        })
+
+    });
+       
+    </script>
+
+}
+
