@@ -126,12 +126,12 @@ function getTodayDate() {
     return dt;
 }
 
-function arrayApplyFilter(arr, filter) {
+function arrayApplyFilter(arr, filterArr) {
     /* Removes the elements of a filter from an array.
      * arg arr: array
      * arg filter: array */
     arr = arr.filter(function (el) {
-        return filter.indexOf(el) < 0;
+        return filterArr.indexOf(el) < 0;
     });
     return arr;
 }
