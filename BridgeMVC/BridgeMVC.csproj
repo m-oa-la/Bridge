@@ -326,6 +326,7 @@
     <Content Include="Content\bootstrap.css" />
     <Content Include="Content\bootstrap.min.css" />
     <Content Include="Content\Common\JobIndexStyleSheet.css" />
+    <Content Include="Content\Common\A4.css" />
     <Content Include="Content\jCalendar.css" />
     <Content Include="Content\jquery-ui.css" />
     <Content Include="Content\M1\index.css" />
@@ -578,6 +579,7 @@
     <Content Include="Views\Job\_LayoutIndex.cshtml" />
     <Content Include="Views\Job\_IndexNavBar.cshtml" />
     <Content Include="Views\Report\Job_Index.cshtml" />
+    <Content Include="Views\Shared\_A4.cshtml" />
   </ItemGroup>
   <ItemGroup>
     <Folder Include="App_Data\M1\Projects\" />
