@@ -1,7 +1,7 @@
 ﻿@model IEnumerable<BridgeMVC.Models.Job>
 
 @{
-    Layout = "~/Views/Shared/_LayoutM1TaskA4.cshtml";
+    Layout = "~/Views/Shared/_A4.cshtml";
     string US = ViewBag.userSig;
     int jobNum = Model.Count();
 
@@ -13,14 +13,19 @@
 
 <style>
 
-    .reportTab td {
+    .reportTable {
+        width: 100%;
+        table-layout:auto;
+    }
+
+    .reportTable td {
         border: 1px solid black;
         /*border-bottom: 1px solid black;*/
         font-size: 8pt;
         padding: 0px 2px 1px 2px;
     }
 
-    .reportTab th {
+    .reportTable th {
         border: 1px solid black;
         /*border-bottom: 1px solid black;*/
         padding: 0px 2px 1px 2px;
@@ -40,7 +45,6 @@
         font-size: 14px;
         border: none;
         margin-left: 8px;
-
     }
 
     .dropdown {
@@ -147,15 +151,12 @@
                 </table>
             }
 
-
         </div>
     </div>
-
-
 </div>
 
 
-<table id="sortTable" class="reportTab" style="width:100%; table-layout:auto;">
+<table id="sortTable" class="reportTable">
     @*<colgroup>
             <col span="1" style="width: 10%;" />
             <col span="1" style="width: 10%;" />
@@ -173,7 +174,6 @@
         {
             <th class="sort" onclick="sortTable(@i)"> @tabHeader[i]  </th>
         }
-
 
     </tr>
 
@@ -234,7 +234,6 @@
                 @item.Fee
             </td>
 
-
         </tr>
     }
 </table>
@@ -247,7 +246,7 @@
 @section Scripts{
     <script type="text/javascript">
     var headers = @Html.Raw(Json.Encode(tabHeader));
-    
+
 
     $(document).ready(function () {
 
@@ -273,7 +272,7 @@
                 rows.filter(function () {
                     $(this).toggle($(this).text().toLowerCase().indexOf(text) > -1);
                 });
-            
+
             } else {
                 column = headers[col];
                 $.each(rows, function (i, data) {
@@ -323,7 +322,7 @@
         })
 
     });
-       
+
     </script>
 
 }

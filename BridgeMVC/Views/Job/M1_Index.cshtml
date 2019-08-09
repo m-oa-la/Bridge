@@ -81,11 +81,11 @@
         {
             TimeSpan timeSpan = DateTime.Now - (DateTime)item.ReceivedTime;
             days = (int)timeSpan.TotalDays;
-            if (days > 60)
+            if (days > 100)
             {
                 receivedClass = "color: red;";
             }
-            else if (days > 30)
+            else if (days > 50)
             {
                 receivedClass = "color: orange;";
             }
@@ -153,19 +153,17 @@
     }
 </table>
 
-
 @section Scripts{
     <script type="text/javascript">
+        var LUser = @Html.Raw(Json.Encode(LUser));
+        var us = @Html.Raw(Json.Encode(US));
 
-    var LUser = @Html.Raw(Json.Encode(LUser));
-    var us = @Html.Raw(Json.Encode(US));
+        stats(@JobNum, @TotalFee);
 
-    stats(@JobNum, @TotalFee);
-
-    document.getElementById("FEE").title = "Fee setting";
-    document.getElementById("AGR").title = "Agreement/IORA";
-    document.getElementById("EXE").title = "Job execution";
-    document.getElementById("INV").title = "Invoicing/Finalization";
+        document.getElementById("FEE").title = "Fee setting";
+        document.getElementById("AGR").title = "Agreement/IORA";
+        document.getElementById("EXE").title = "Job execution";
+        document.getElementById("INV").title = "Invoicing/Finalization";
 
     </script>
 }
