@@ -11,7 +11,7 @@ using System.Web.Mvc;
 
 namespace BridgeMVC.Controllers
 {
-    //[Authorize]
+    [Authorize]
     public class ReportController : Controller
     {
         [ActionName("Job_Index")]

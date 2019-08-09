@@ -61,6 +61,11 @@
         string classT1 = "classT" + item.Task1;
         string classT2 = "classT" + item.Task2;
 
+        if (Int32.TryParse(item.Task2, out int d))
+        {
+            classT2 = "classTPENDING";
+        }
+
         if (classT2 == "classTTASK")
         {
             classT2 = "classTTASKIORA";
