@@ -6,9 +6,9 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Bridge</title>
     @Styles.Render("~/Content/css")
+    @Styles.Render("~/Content/Common/JobIndexStyleSheet.css")
     @Scripts.Render("~/bundles/modernizr")
     @Scripts.Render("~/bundles/jquery")
-    @Styles.Render("~/Content/Common/IndexStyleSheet.css")
 </head>
 
 <body>
@@ -21,28 +21,30 @@
     </header>
     <div class="container body-content">
         @RenderBody()
+        <br />
     </div>
 
     <footer>
-        <table class="table table-mid-align-rows hoverRow styleFooter" style="table-layout:fixed;">
-            <tr>
-                <td class="classTY"></td>
+        <hr />
+        <table class="table table-mid-align-rows hoverRow" style="table-layout:fixed;">
+            <tr class="jobList">
+                <td style="width:35px;"><div class="classTY"></div></td>
                 <td><p>Task is completed</p></td>
-                <td class="classTTASK"></td>
+                <td style="width:35px;"><div class="classTTASK"></div></td>
                 <td><p>Task is assigned to you (ongoing)</p></td>
                 @*<td class="classT"></td>
-                    <td style="@styleTxt">IORA pending verification</td>*@
-                <td class="classTPENDING" align="center">X</td>
+                <td style="@styleTxt">IORA pending verification</td>*@
+                <td style="width:35px;"><div class="classTPENDING">X</div></td>
                 <td><p>Task is pending for X days</p></td>
-                <td class="classT"></td>
+                <td style="width:35px;"><div class="classT"></div></td>
                 <td><p>Task is not assigned</p></td>
             </tr>
         </table>
     </footer>
-
-    @*@Scripts.Render("~/bundles/jquery")*@
+    
     @Scripts.Render("~/bundles/bootstrap")
+    @Scripts.Render("~/Scripts/Common/JobIndex.js")
     @RenderSection("scripts", required: false)
-    @Scripts.Render("~/Scripts/Common/Index.js")
+
 </body>
 </html>

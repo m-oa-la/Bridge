@@ -1,18 +1,17 @@
 ﻿@model BridgeMVC.Models.BProdTechPara
 
 @{
-    ViewBag.Title = "Edit";
-    @Scripts.Render("~/bundles/jquery")
+    string bm = (string)Session["BridgeModule"];
 }
 
 <h2>Edit</h2>
-
 
 @using (Html.BeginForm())
 {
     @Html.AntiForgeryToken()
 
 <div class="form-horizontal">
+    <input type="hidden" id="changeBLSACert" name="changeBLSACert" value="false" />
     @Html.HiddenFor(model => model.Id)
     @Html.Partial("../BProdTechPara/_SV_CreateEdit", Model)
 </div>
@@ -24,4 +23,22 @@
 
 @section Scripts {
     @Scripts.Render("~/bundles/jqueryval")
+    <script type="text/javascript">
+        var bm = "@bm";
+        var oldmodel = @Html.Raw(Json.Encode(Model));
+
+        $(document).ready(function () {
+            if (bm == "M3") {
+                $(".btn.btn-default").click(function () {
+                    if (oldmodel.TechParaName != $("#TechParaName").val()) {
+                        if (window.confirm("Also update BLSACert formulas and conditions?")) {
+                            $("#changeBLSACert").val("true");
+                        }
+                    }
+                return true;
+                })
+            }
+        
+        });
+</script>
 }

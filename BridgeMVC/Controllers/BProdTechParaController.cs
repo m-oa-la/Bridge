@@ -29,14 +29,14 @@ namespace BridgeMVC.Controllers
             return true;
         }
 
-        public async Task<String> SetViewBag()
+        public async Task<string> SetViewBag()
         {
             string bm = (string)Session["BridgeModule"];
             var lmeditemno = await DocumentDBRepository.GetItemsAsync<BList>(d => d.Tag == "BList" && d.BridgeModule == bm && d.ListType == "MEDItemNo");
             lmeditemno = lmeditemno.OrderBy(d => d.ListItem);
             ViewBag.LMEDItemNo = lmeditemno;
 
-            var lvalueresource = await DocumentDBRepository.GetItemsAsync<BList>(d => d.Tag == "BList" && d.BridgeModule == bm 
+            var lvalueresource = await DocumentDBRepository.GetItemsAsync<BList>(d => d.Tag == "BList" && d.BridgeModule == bm
             && d.ListType.ToLower().Contains("blisttype") && (d.ListItem.ToLower().Contains("autocomplete") || d.ListItem.ToLower().Contains("dropdown") || d.ListItem.ToLower().Contains("free text")));
 
             lvalueresource = lvalueresource.OrderBy(d => d.ListItem);
@@ -78,7 +78,7 @@ namespace BridgeMVC.Controllers
         {
             if (IsAdmin())
             {
-               
+
                 if (ModelState.IsValid)
                 {
                     await DocumentDBRepository.CreateItemAsync<BProdTechPara>(item);
@@ -93,12 +93,26 @@ namespace BridgeMVC.Controllers
         [ActionName("Edit")]
         [ValidateAntiForgeryToken]
         public async Task<ActionResult> EditAsync([Bind(Include = "Tag,Id,BridgeModule,ProdName,TechParaName," +
-            "Description,ValueSource,DefaultValue,ValueType,ViewSequence")] BProdTechPara item)
+            "Description,ValueSource,DefaultValue,ValueType,ViewSequence")] BProdTechPara item, bool changeBLSACert)
         {
             if (IsAdmin())
             {
+
                 if (ModelState.IsValid)
                 {
+                    if (changeBLSACert)
+                    {
+                        string bm = (string)Session["BridgeModule"];
+                        if (bm == "M3")
+                        {
+                            BProdTechPara olditem = await DocumentDBRepository.GetItemAsync<BProdTechPara>(item.Id);
+                            if (olditem.TechParaName != item.TechParaName)
+                            {
+                                await ChangeBLSACertValues(bm, olditem.TechParaName, item.TechParaName);
+                            }
+                        }
+                    }
+
                     await DocumentDBRepository.UpdateItemAsync<BProdTechPara>(item.Id, item);
                     return RedirectToAction("Index");
                 }
@@ -126,7 +140,7 @@ namespace BridgeMVC.Controllers
 
         [HttpPost]
         [ActionName("SaveViewSequence")]
-        public async Task<ActionResult> SaveViewSequence (string id, string value)
+        public async Task<ActionResult> SaveViewSequence(string id, string value)
         {
             BProdTechPara item = await DocumentDBRepository.GetItemAsync<BProdTechPara>(id);
             item.ViewSequence = value;
@@ -134,6 +148,19 @@ namespace BridgeMVC.Controllers
             return null;
         }
 
-
+        [HttpPost]
+        [ActionName("ChangeBLSACertValues")]
+        public async Task<string> ChangeBLSACertValues(string bm, string oldval, string newval)
+        {
+            var BLSAcert = await DocumentDBRepository.GetItemsAsync<BLSACert>(d => d.Tag == "BLSACert" && d.BridgeModule == bm
+                        && d.Formula.Contains(oldval) || d.Condition.Contains(oldval));
+            foreach (BLSACert b in BLSAcert)
+            {
+                b.Formula = b.Formula.Replace("[" + oldval + "]", "[" + newval + "]");
+                b.Condition = b.Condition.Replace("[" + oldval + "]", "[" + newval + "]");
+                await DocumentDBRepository.UpdateItemAsync<BLSACert>(b.Id, b);
+            }
+            return "";
+        }
     }
 }

@@ -1,8 +1,7 @@
 ﻿@model IEnumerable<BridgeMVC.Models.Job>
 
 @{
-    ViewBag.Title = "Index";
-    Layout = "~/Views/Shared/_LayoutIndex.cshtml";
+    Layout = "~/Views/Job/_LayoutIndex.cshtml";
     string BridgeLastUsed = (string)Session["BridgeModule"];
     string UserSignature = (string)Session["UserSignature"];
     var LUser = ViewBag.LUser;
@@ -10,9 +9,8 @@
     var BFlist = (IEnumerable<BridgeMVC.Models.BFinancial>)ViewBag.LCertType;
 
     BridgeMVC.Models.BBridge bridge = (BridgeMVC.Models.BBridge)ViewBag.bridge;
-    string bridgeLongName = bridge.BridgeLongName;
     List<string> taskNames = bridge.TaskName.Split(';').ToList<string>();
-    var jobNum = Model.Count();
+    int JobNum = Model.Count();
     int TotalFee = 0;
 
     string getColorCode(string ct)
@@ -28,77 +26,45 @@
 
         return "background-color:" + c;
     }
-
-
 }
 
-<div class="h2">
-    MY BRIDGE JOBLIST - @bridgeLongName
-    <p style="float:right" class="btn btn-secondary">
-        @Html.ActionLink("Whiteboard", "Whiteboard")
-    </p>
+<div style="float:right" class="btn btn-secondary">
+    @Html.ActionLink("Whiteboard", "Whiteboard")
 </div>
-<hr />
 
-@using (Html.BeginForm())
-{
-    <table>
-        <colgroup>
-            <col span="1" style="width: 15%;">
-            <col span="1" style="width: 70%;">
-            <col span="1" style="width: 15%;">
-            <col span="1" style="width: 80px;">
-
-        </colgroup>
-        <tr>
-            <td>
-                @Html.TextBox("SearchString", null, new { @class = "form-control" })
-
-            </td>
-            <td>
-                <input type="submit" value="Search" />
-            </td>
-
-            <td style="text-align:right">
-                <select id="userSig" name="userSig" class="form-control"></select>
-            </td>
-            <td>
-                <input type="submit" value="Change User" />
-            </td>
-        </tr>
-
-    </table>
-}
-<br />
+@Html.Partial("~/Views/Job/_IndexNavBar.cshtml", Model)
 
 <table id="sortTable" class="table table-mid-align-rows hoverRow" style="table-layout:fixed;">
     <colgroup>
-        <col span="1" style="width: 20%;">
-        <col span="1" style="width: 20%;">
-        <col span="1" style="width: 20%;">
-        <col span="1" style="width: 35px;">
-        <col span="1" style="width: 35px;">
-        <col span="1" style="width: 50px;">
-        <col span="1" style="width: 30%;">
-        <col span="1" style="width: 35px;">
-        <col span="1" style="width: 66px;">
+        <col span="1" style="width: 20%;" />
+        <col span="1" style="width: 20%;" />
+        <col span="1" style="width: 20%;" />
+        <col span="1" style="width: 35px;" />
+        <col span="1" style="width: 35px;" />
+        <col span="1" style="width: 49px;" />
+        <col span="1" style="width: 1px" />
+        <col span="1" style="width: 30%;" />
+        <col span="1" style="width: 35px;" />
+        <col span="1" style="width: 66px;" />
     </colgroup>
     <tr>
-        <th onclick="sortTable(0)"> JOB ID       <div class="arrows"> &#11046 </div> </th>
-        <th onclick="sortTable(1)"> CUSTOMER     <div class="arrows"> &#11046 </div> </th>
-        <th onclick="sortTable(2)"> PROJECT NAME <div class="arrows"> &#11046 </div> </th>
+        <th class="sort" onclick="sortTable(0)"> JOB ID @*<div class="arrows"> &#11046 </div>*@</th>
+        <th class="sort" onclick="sortTable(1)"> CUSTOMER </th>
+        <th class="sort" onclick="sortTable(2)"> PROJECT NAME </th>
         @{ int col = 3; }
         @foreach (string taskname in taskNames)
         {
-            <th onclick="sortTable(@col)"> @taskname <div class="arrows"></div> </th>
+            <th id="@taskname" class="sort" onclick="sortTable(@col)"> @taskname </th>
             col++;
         }
-        <th onclick="sortTable(6)"> IORA STATUS   <div class="arrows"> &#11046 </div> </th>
-        <th onclick="sortTable(7)"> <div class="arrows"> &#11046 </div> </th>
-        <th onclick="sortTable(8)"> DAYS <div class="arrows"> &#11046 </div> </th>
+        <th> </th>
+        <th class="sort" onclick="sortTable(7)" title="From IORA Central"> IORA STATUS </th>
+        <th class="sort" onclick="sortTable(8)"> </th>
+        <th class="sort" onclick="sortTable(9)" title="Days since registering the job"> DAYS </th>
         @*<th>            @Html.DisplayNameFor(model => model.TaskHandler)        </th>
             <th>            @Html.DisplayNameFor(model => model.Completed)        </th>*@
     </tr>
+
     @foreach (var item in Model)
     {
         if (item.Fee != null)
@@ -136,12 +102,12 @@
         string editlink3 = "'/Job/CommonTask3/" + item.Id + "'";
         string editlink4 = "'/Job/CommonTask4/" + item.Id + "'";
 
-        string daysSince = "0";
+        int days = 0;
         string receivedClass = "";
         if (item.ReceivedTime != null)
         {
             TimeSpan timeSpan = DateTime.Now - (DateTime)item.ReceivedTime;
-            double days = timeSpan.TotalDays;
+            days = (int)timeSpan.TotalDays;
             if (days > 60)
             {
                 receivedClass = "color: red;";
@@ -150,7 +116,6 @@
             {
                 receivedClass = "color: orange;";
             }
-            daysSince = days.ToString("0.0");
         }
 
 
@@ -181,6 +146,8 @@
                 </div>
             </td>
 
+            <td></td>
+
             <td id="@statusId">
                 <p>
                     @if (!string.IsNullOrEmpty(item.OnHoldNote) && item.IsHold)
@@ -209,80 +176,21 @@
             </td>
 
             <td style="text-align:right; @receivedClass">
-                @daysSince
+                @days
             </td>
         </tr>
     }
-
-</table>
-<br /><br /><br />
-
-<table class="stats">
-    <tr>
-        <td><strong> In total: </strong></td>
-        <td> Jobs: @jobNum </td>
-        <td> Fee: @TotalFee NOK </td>
-    </tr>
 </table>
 
-<hr />
 
-<script type="text/javascript">
+@section Scripts{
+    <script type="text/javascript">
     var LUser = @Html.Raw(Json.Encode(LUser));
     var us = @Html.Raw(Json.Encode(US));
-    console.log(LUser);
-    $("#userSig").append(new Option(us, us));
-    $.each(LUser, function (key, data) {
-        $("#userSig").append(new Option(data.Signature, data.Signature));
-    });
-    function startPause(clickedId) {
-        var newNote = "";
-        var clickedItem = clickedId.split("_")[0];
-        var jid = clickedId.split('_')[1];
-        var statusid = "status_" + jid;
-        document.getElementById(clickedId).style.display = 'none';
-        if (clickedItem == "start")
-        {
-            newNote = "Resumed_on:" + formateDateNow() + " by " + us + ";";
-        }
-        else if (clickedItem == "pause")
-        {
-            newNote = "OH_from:" + formateDateNow() + " by " + us + ";";
-        }
-        updateOhNote(jid, newNote)
-        document.getElementById(statusid).innerHTML = newNote;
-    }
-    function updateOhNote(jid, newNote) {
-        $.ajax(
-            {
-                type: 'GET',
-                url: '/Job/UpdateOnHoldNote',
-                data: { id: jid, newNote: newNote },
-                success: function (data) {
-                    console.log(data);
-                },
-                error: function (e) {
-                    alert('Error: ' + e);
-                }
-            });
-    }
-    function formateDateNow() {
-        var d = new Date();
-        var day = d.getDay();
-        var hr = d.getHours();
-        var min = d.getMinutes();
-        var ss = d.getSeconds();
-        if (min < 10) {
-            min = "0" + min;
-        }
-        //var ampm = "am";
-        //if (hr > 12) {
-        //    hr -= 12;
-        //    ampm = "pm";
-        //}
-        var date = d.getDate();
-        var month = d.getMonth();
-        var year = d.getFullYear();
-        return year + '-' + month + '-' + date + ' ' + hr + ':' + min + ':00';
-        }
-</script>
+
+    stats(@JobNum, @TotalFee);
+
+    document.getElementById("FEE").title = "Fee setting";
+
+    </script>
+}

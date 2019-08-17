@@ -1,17 +1,17 @@
 ﻿@model IEnumerable<BridgeMVC.Models.Job>
 
 @{
-
-    ViewBag.Title = "Index";
-    Layout = "~/Views/Shared/_Layout.cshtml";
+    Layout = "~/Views/Job/_LayoutIndex.cshtml";
     string BridgeLastUsed = (string)Session["BridgeModule"];
     string UserSignature = (string)Session["UserSignature"];
     var LUser = ViewBag.LUser;
     var US = ViewBag.userSig;
+
     BridgeMVC.Models.BBridge bridge = (BridgeMVC.Models.BBridge)ViewBag.bridge;
-    string bridgeLongName = bridge.BridgeLongName;
     List<string> taskNames = bridge.TaskName.Split(';').ToList<string>();
     var BFlist = (IEnumerable<BridgeMVC.Models.BFinancial>)ViewBag.LCertType;
+    int JobNum = Model.Count();
+    int TotalFee = 0;
 
     string getColorCode(string ct)
     {
@@ -25,141 +25,35 @@
         }
         return "background-color:" + c;
     }
-
-
 }
 
-<style>
-    .hoverRow p {
-        display: block;
-        overflow: hidden;
-        text-overflow: clip;
-        white-space: nowrap;
-        max-width: 480px;
-    }
+@Html.Partial("~/Views/Job/_IndexNavBar.cshtml")
 
-    .hoverRow td:hover p {
-        white-space: normal;
-        word-wrap: normal;
-        word-break: break-all;
-    }
-
-    .table th, td {
-        border-radius: 20px;
-        /*border: 0.1px solid white;*/
-    }
-
-    .classTY {
-        background-color: seagreen;
-        color: transparent;
-        cursor: pointer;
-        width: 40px;
-        border-style: none;
-    }
-
-    .classTN {
-        background-color: gainsboro;
-        color: transparent;
-        cursor: pointer;
-        width: 40px;
-        border-style: none;
-    }
-
-    .classTTASK {
-        background-color: DodgerBlue;
-        color: transparent;
-        cursor: pointer;
-        width: 40px;
-        border-style: solid;
-    }
-
-    .classTTASKIORA {
-        background-color: DodgerBlue;
-        color: transparent;
-        cursor: pointer;
-        width: 40px;
-        border-style: none;
-    }
-
-    .classTPENDING {
-        background-color: gold;
-        color: black;
-        cursor: pointer;
-        width: 40px;
-        border-style: none;
-        font-size: large;
-        font-weight: bold;
-    }
-
-    .classT {
-        background-color: darkseagreen;
-        color: transparent;
-        cursor: pointer;
-        width: 40px;
-        border-style: none;
-    }
-</style>
-
-<div class="h2">
-    MY BRIDGE JOBLIST - @bridgeLongName
-</div>
-
-<hr />
-
-@using (Html.BeginForm())
-{
-    <table>
-        <colgroup>
-            <col span="1" style="width: 12%;">
-            <col span="1" style="width: 76%;">
-            <col span="1" style="width: 12%;">
-
-        </colgroup>
-        <tr>
-            <td>
-                @Html.TextBox("SearchString", null, new { @class = "form-control" })
-
-            </td>
-            <td>
-                <input type="submit" value="Search" />
-            </td>
-            <td style="float:right">
-                <select id="userSig" name="userSig" class="form-control"></select>
-            </td>
-            <td>
-                <input type="submit" value="Change User" />
-            </td>
-        </tr>
-
-    </table>
-
-}
-<br />
-
-<table class="table table-mid-align-rows hoverRow" style="table-layout:fixed;">
+<table id="sortTable" class="table table-mid-align-rows hoverRow" style="table-layout:fixed;">
     <colgroup>
-        <col span="1" style="width: 10%;">
-        <col span="1" style="width: 20%;">
-        <col span="1" style="width: 30%;">
-        <col span="1" style="width: 120px;">
-        <col span="1" style="width: 1px;">
-        <col span="1" style="width: 1px;">
-        <col span="1" style="width: 1px;">
-        <col span="1" style="width: 1px;">
-        <col span="1" style="width: 1px;">
+        <col span="1" style="width: 20%;" />
+        <col span="1" style="width: 25%;" />
+        <col span="1" style="width: 30%;" />
+        <col span="1" style="width: 80px;" />
+        <col span="1" style="width: 1px;" />
+        <col span="1" style="width: 1px;" />
+        <col span="1" style="width: 1px;" />
+        <col span="1" style="width: 1px;" />
+        <col span="1" style="width: 66px;" />
     </colgroup>
     <tr>
-        <th style="border-top:none">           JOB ID       </th>
-        <th style="border-top:none">            CUSTOMER        </th>
-        <th style="border-top:none">           PROJECT NAME     </th>
+        <th class="sort" onclick="sortTable(0)"> JOB ID @*<div class="arrows"> &#11046 </div>*@</th>
+        <th class="sort" onclick="sortTable(1)"> CUSTOMER </th>
+        <th class="sort" onclick="sortTable(2)"> PROJECT NAME </th>
+        @{ int col = 3; }
         @foreach (string taskname in taskNames)
         {
-            <th style="border-top:none">           @taskname     </th>
+            <th id="@taskname" class="sort" onclick="sortTable(@col)"> @taskname </th>
+            col++;
         }
 
-        <th style="border-top:none">                  </th>
-        <th></th>
-        <th></th>
+        <th> </th>
+        <th class="sort" onclick="sortTable(8)" title="Days since registering the job"> DAYS </th>
         @*<th>            @Html.DisplayNameFor(model => model.TaskHandler)        </th>
             <th>            @Html.DisplayNameFor(model => model.Completed)        </th>*@
 
@@ -167,6 +61,10 @@
 
     @foreach (var item in Model)
     {
+        if (item.Fee != null)
+        {
+            TotalFee += (int)item.Fee;
+        }
         string npsJobName = item.NpsJobName;
         string pauseIconId = "pause_" + item.Id;
         string startIconId = "start_" + item.Id;
@@ -175,6 +73,10 @@
         string classT1 = "classT" + item.Task1;
         string classT2 = "classT" + item.Task2;
 
+        if (classT1 != "classTTASK")
+        {
+            classT1 = "classTTASK";
+        }
         if (classT2 == "classTTASK")
         {
             classT2 = "classTTASKIORA";
@@ -196,119 +98,73 @@
 
         string editlink3 = "'/Job/CommonTask3/" + item.Id + "'";
         string editlink4 = "'/Job/CommonTask4/" + item.Id + "'";
-    <tr>
-        <td style="@ctColorCode">
-            <p>  @Html.DisplayFor(modelItem => item.NpsJobId)</p>
-        </td>
-        <td>
-            <p>  @Html.DisplayFor(modelItem => item.CustomerName)</p>
-        </td>
-        <td>
-            <p>
-                @npsJobName
-            </p>
-        </td>
 
-        <td class="@classT1" onclick="location.href=@editlink1">
-            @Html.DisplayFor(modelItem => item.Task1)
-        </td>
-        <td></td>
-        <td></td>
-        <td></td>
-        <td id="@statusId">
-            <p>
-                @if (!string.IsNullOrEmpty(item.OnHoldNote) && item.IsHold)
-                {
-                    @item.OnHoldNote.ToUpper().Split(new[] { ';' })[0]
+        int days = 0;
+        string receivedClass = "";
+        if (item.ReceivedTime != null)
+        {
+            TimeSpan timeSpan = DateTime.Now - (DateTime)item.ReceivedTime;
+            days = (int)timeSpan.TotalDays;
+            if (days > 60)
+            {
+                receivedClass = "color: red;";
+            }
+            else if (days > 30)
+            {
+                receivedClass = "color: orange;";
+            }
+        }
 
-                }
-                else
-                {
-                    @Html.DisplayFor(modelItem => item.IoraDbId)
 
-                }
+        <tr class="jobList">
+            <td style="@ctColorCode">
+                <p> @Html.DisplayFor(modelItem => item.NpsJobId) </p>
+            </td>
+            <td>
+                <p> @Html.DisplayFor(modelItem => item.CustomerName) </p>
+            </td>
+            <td>
+                <p> @npsJobName </p>
+            </td>
 
-            </p>
-        </td>
-        <td></td>
-    </tr>
+            <td class="@classT1" onclick="location.href=@editlink1">
+                @Html.DisplayFor(modelItem => item.Task1)
+            </td>
+
+            <td> </td>
+            <td> </td>
+            <td> </td>
+
+            <td id="@statusId">
+                <p>
+                    @if (!string.IsNullOrEmpty(item.OnHoldNote) && item.IsHold)
+                    {
+                        @item.OnHoldNote.ToUpper().Split(new[] { ';' })[0]
+
+                    }
+                    else
+                    {
+                        @Html.DisplayFor(modelItem => item.IoraDbId)
+
+                    }
+
+                </p>
+            </td>
+
+            <td style="text-align: right; @receivedClass">
+                @days
+            </td>
+        </tr>
     }
 
 </table>
 
-<br /><br /><br />
-
-
-<script>
+@section Scripts{
+    <script type="text/javascript">
     var LUser = @Html.Raw(Json.Encode(LUser));
     var us = @Html.Raw(Json.Encode(US));
 
-    console.log(LUser);
+    stats(@JobNum, @TotalFee);
 
-    $("#userSig").append(new Option(us, us));
-
-    $.each(LUser, function (key, data) {
-        $("#userSig").append(new Option(data.Signature, data.Signature));
-    });
-
-    function startPause(clickedId) {
-        var newNote = "";
-        var clickedItem = clickedId.split("_")[0];
-        var jid = clickedId.split('_')[1];
-        var statusid = "status_" + jid;
-        document.getElementById(clickedId).style.display = 'none';
-        if (clickedItem == "start")
-        {
-            newNote = "Resumed_on:" + formateDateNow() + " by " + us + ";";
-        }
-        else if (clickedItem == "pause")
-        {
-            newNote = "OH_from:" + formateDateNow() + " by " + us + ";";
-        }
-        updateOhNote(jid, newNote)
-        document.getElementById(statusid).innerHTML = newNote;
-    }
-
-    function updateOhNote(jid, newNote) {
-        $.ajax(
-            {
-                type: 'GET',
-                url: '/Job/UpdateOnHoldNote',
-                data: { id: jid, newNote: newNote },
-
-                success: function (data) {
-
-                    console.log(data);
-                },
-                error: function (e) {
-                    alert('Error: ' + e);
-
-                }
-            });
-    }
-
-
-    function formateDateNow() {
-        var d = new Date();
-
-        var day = d.getDay();
-        var hr = d.getHours();
-        var min = d.getMinutes();
-        var ss = d.getSeconds();
-        if (min < 10) {
-            min = "0" + min;
-        }
-        //var ampm = "am";
-        //if (hr > 12) {
-        //    hr -= 12;
-        //    ampm = "pm";
-        //}
-        var date = d.getDate();
-        var month = d.getMonth();
-        var year = d.getFullYear();
-
-        return year + '-' + month + '-' + date + ' ' + hr + ':' + min + ':00';
-    }
-
-
-</script>
+    </script>
+}

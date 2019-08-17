@@ -1,0 +1,49 @@
+﻿@{
+    string name = (string)ViewBag.bridge.BridgeLongName;
+    string US = ViewBag.userSig;
+}
+
+<div style="float:right" class="btn btn-secondary">
+    @Html.ActionLink("Report", "Job_Index", "Report", routeValues: new { userSig = US }, htmlAttributes: null)
+</div>
+
+<div class="title" style="display:inline-block">
+    MY BRIDGE JOBLIST - @name
+
+</div>
+
+<hr />
+
+@using (Html.BeginForm())
+{
+    <table class="table-mid-align-rows hoverRow" style="table-layout:auto">
+        <colgroup>
+            <col span="1" style="width: 20%;">
+            <col span="1" style="width: 10%;">
+            <col span="1" style="width: 50%;">
+            <col span="1" style="width: 20%;">
+            <col span="1">
+        </colgroup>
+        <tr class="jobList">
+            <td>
+                @Html.TextBox("SearchString", null, new { @class = "form-control" })
+
+            </td>
+            <td>
+                <input type="submit" value="Search" />
+            </td>
+            <td id="stats">
+                <strong> In total: </strong> &nbsp;&nbsp;&nbsp;&nbsp;
+                Jobs: 0 &nbsp;&nbsp;&nbsp;&nbsp;
+                Fee: 0 NOK
+            </td>
+            <td style="text-align:right">
+                <select id="userSig" name="userSig" class="form-control"></select>
+            </td>
+            <td>
+                <input type="submit" value="Change User" />
+            </td>
+        </tr>
+    </table>
+}
+<br />

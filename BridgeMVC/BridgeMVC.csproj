@@ -282,6 +282,7 @@
     <Compile Include="Controllers\OnboardingController.cs" />
     <Compile Include="Controllers\OrderController.cs" />
     <Compile Include="Controllers\ProductController.cs" />
+    <Compile Include="Controllers\ReportController.cs" />
     <Compile Include="Controllers\RuleController.cs" />
     <Compile Include="Controllers\TechChecklistBackupController.cs" />
     <Compile Include="Controllers\TechChecklistController.cs" />
@@ -324,7 +325,8 @@
     <Content Include="Content\bootstrap-theme.min.css" />
     <Content Include="Content\bootstrap.css" />
     <Content Include="Content\bootstrap.min.css" />
-    <Content Include="Content\Common\IndexStyleSheet.css" />
+    <Content Include="Content\Common\JobIndexStyleSheet.css" />
+    <Content Include="Content\Common\A4.css" />
     <Content Include="Content\jCalendar.css" />
     <Content Include="Content\jquery-ui.css" />
     <Content Include="Content\M1\index.css" />
@@ -396,7 +398,7 @@
     <None Include="Properties\PublishProfiles\FolderProfile.pubxml" />
     <None Include="Properties\PublishProfiles\MABridgeDev - Web Deploy.pubxml" />
     <None Include="Scripts\jquery-3.3.1.intellisense.js" />
-    <Content Include="Scripts\Common\Index.js" />
+    <Content Include="Scripts\Common\JobIndex.js" />
     <Content Include="Scripts\Common\jqueryUtilities.js" />
     <Content Include="Scripts\Common\ptphandling.js" />
     <Content Include="Scripts\Common\utilities.js" />
@@ -578,6 +580,10 @@
     <Content Include="Views\Shared\_LayoutIndex.cshtml" />
     <Content Include="Views\Product\IndexNonePED.cshtml" />
     <Content Include="Views\Shared\_LayoutNoLogin.cshtml" />
+    <Content Include="Views\Job\_LayoutIndex.cshtml" />
+    <Content Include="Views\Job\_IndexNavBar.cshtml" />
+    <Content Include="Views\Report\Job_Index.cshtml" />
+    <Content Include="Views\Shared\_A4.cshtml" />
   </ItemGroup>
   <ItemGroup>
     <Folder Include="App_Data\M1\Projects\" />

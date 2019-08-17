@@ -189,11 +189,13 @@
     var LMainProdType = @Html.Raw(Json.Encode(LMainProdType));
     var LSubProdType = @Html.Raw(Json.Encode(LSubProdType));
     var LUser = @Html.Raw(Json.Encode(LUser));
+
     // Task parameters
     var taskNo = 1;
     var taskStatusFlag = "FeeSetter"; //who completed the task
     var taskCompleteDate = "FeeSetTime";
     var taskCompleteStr = "The fee is set by ";
+
     // Tags
     var certTypeDropTag = "#selectCertType";
     var certActionDropTag = "#selectCertAction";
@@ -204,18 +206,22 @@
     var mainParaTag = "#paraMainProdType";
     var subParaTag = "#paraSubProdType";
     var medParaTag = "#paraMEDItemNo";
-    // Initial task configuration
+
+    // Initialize task configuration
     renderTaskActions(taskNo, taskStatusFlag, taskCompleteDate, taskCompleteStr, userSignature);
     renderTaskHandling(LUser, bm);
+
     // Initialize dropdown menus
     initializeDropdownMenu(certTypeDropTag, LCertType, "CertType");
     initializeDropdownMenu(certActionDropTag, LCertAction, "ListItem");
     initializeDropdownMenu(medDropTag, LMEDItemNo, "ListItem");
     initializeDropdownMenu(mainDropTag, LMainProdType, "ListItem");
     initializeDropdownMenu(subDropTag, LSubProdType, "ListItem");
+    
     // Initial certificate configuration
     task1CertChangeEvent(certActionDropTag, certTypeDropTag,
         mainDropTag, subDropTag, medDropTag, certTypeParaTag, medParaTag)
+
     // Event handlers
     $(certActionDropTag).on("change", function () {
         task1CertChangeEvent(certActionDropTag, certTypeDropTag, mainDropTag,
@@ -231,35 +237,12 @@
             mainParaTag, subParaTag)
     });
     $(mainDropTag).on("change", function () {
-        task1MainChangeEvent(mainDropTag, subDropTag, LSubProdType, "UpperLvl");
+        task1MainChangeEvent(mainDropTag, subDropTag, LSubProdType, "UpperLvl", "ListItem");
     });
     // Budge hour button click handler
     $("#budgetHourButton").on("click", function () {
         budgetHourCallback(bm, taskNo, Job.CertType);
     });
-    /*
-    var mval = $("#selectMainProdType :selected").text();
-    $.each(LSubProdType, function (key, data) {
-        if (data.UpperLvl == mval) {
-            $("#selectSubProdType").append(new Option(data.ListItem, data.ListItem));
-        }
-    });
-    // Setting up jQuery change listener for selectMainProdType
-    $("#selectMainProdType").on("change", function () {
-        var mval = $("#selectMainProdType :selected").text();
-        $('#selectSubProdType option').each(function () {
-            if ($(this).val() != 'X') {
-                $(this).remove();
-            }
-        });
-        $("#selectSubProdType option").remove();
-        $.each(LSubProdType, function (key, data) {
-            if (data.UpperLvl == mval) {
-                $("#selectSubProdType").append(new Option(data.ListItem, data.ListItem));
-            }
-        });
-    });
-    */
     </script>
 }
 

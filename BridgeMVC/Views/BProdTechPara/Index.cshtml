@@ -2,7 +2,21 @@
 
 @{
     ViewBag.Title = "Index";
+    string parameter = "mainParameter";
 }
+
+<style>
+    .subParameter{
+        background-color: whitesmoke;
+    }
+    .subParameter:hover{
+        background-color: #d4f2bf !important;
+    }
+    .subParameter td{
+        padding-left: 20px !important;      
+    }
+    
+</style>
 
 <h2>Index</h2>
 
@@ -11,12 +25,12 @@
 </p>
 <table class="table">
     <colgroup>
-        <col span="1" style="width: 48px;">
-        <col span="1" style="width: 48px;">
-        <col span="1" style="width: 50%;">
-        <col span="1" style="width: 20%;">
-        <col span="1" style="width: 20%;">
-        <col span="1" style="width: 10%;">
+        <col span="1" style="width: 48px;" />
+        <col span="1" style="width: 48px;" />
+        <col span="1" style="width: 50%;" />
+        <col span="1" style="width: 20%;" />
+        <col span="1" style="width: 20%;" />
+        <col span="1" style="width: 10%;" />
     </colgroup>
     <tr>
 
@@ -41,8 +55,16 @@
 
     @foreach (var item in Model)
     {
-        <tr>
-
+        if(item.TechParaName.Contains("_"))
+        {
+            parameter = "subParameter";
+        }
+        else
+        {
+            parameter = "mainParameter";
+            
+        }
+        <tr class="@parameter">
             <td>
                 @Html.DisplayFor(modelItem => item.ProdName)
             </td>
@@ -58,7 +80,6 @@
             <td>
                 @Html.DisplayFor(modelItem => item.DefaultValue)
             </td>
-
             <td>
                 @Html.ActionLink("Edit", "Edit", new { id = item.Id })
             </td>
@@ -66,7 +87,20 @@
     }
 
 </table>
-<script>
+
+<hr />
+<table class="table">
+    <tr>
+        <td class="mainParameter">
+            Main parameter    
+        </td>
+        <td class="subParameter">
+            Sub parameter
+        </td>
+    </tr>
+</table>
+
+<script type="text/javascript">
     $("input[class^='vs']").on('change', function () {
 
         var id = $(this).attr('id');

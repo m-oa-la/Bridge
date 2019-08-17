@@ -1,13 +1,11 @@
 ﻿// TODO
 function taskComplete(taskNo, taskStatusFlag, taskCompleteDate, taskCompleteStr, userSignature) {
-    /*
-    Add function description.
+    /* Add function description.
     :arg taskNo:
     :arg taskStatusFlag:
     :arg taskCompleteDate:
     :arg taskCompleteStr:
-    :arg userSignature:
-    */
+    :arg userSignature: */
     $("#Task" + taskNo).val("Y");
     var dt = getTodayDate();
     $("#" + taskCompleteDate).val(dt);
@@ -44,14 +42,12 @@ function taskComplete(taskNo, taskStatusFlag, taskCompleteDate, taskCompleteStr,
 
 // TODO
 function renderTaskActions(taskNo, taskStatusFlagId, taskCompleteDateId, taskCompleteStr, userSignature) {
-    /*
-     Renders task status and task action buttons like re-open, save and complete.
+    /* Renders task status and task action buttons like re-open, save and complete.
     :arg taskNo: int, the task number
     :arg taskStatusFlagId: string, the id of the document taskStatusFlag
     :arg taskCompleteDateId: string, the id of the document date element
     :arg taskCompleteStr: string, task complete message
-    :arg userSignature: string, the signature of the user
-    */
+    :arg userSignature: string, the signature of the user */
     var taskStatus = null;
 
     if ($("#" + taskStatusFlagId).val().length > 0) {
@@ -86,11 +82,9 @@ function renderTaskActions(taskNo, taskStatusFlagId, taskCompleteDateId, taskCom
 
 // TODO
 function renderTaskHandling(LUser, bm) {
-    /*
-    Add function description.
+    /* Add function description.
     :arg LUser: List of users(?).
-    :arg bm: The bridge module.
-    */
+    :arg bm: The bridge module. */
     $("#selectListHandler").append(new Option("-- Please select --", null));
     $.each(LUser, function (key, data) {
         $("#selectListHandler").append(new Option(data.Signature, data.Signature));
@@ -109,23 +103,19 @@ function renderTaskHandling(LUser, bm) {
 }
 
 function renderTaskInputFields(certType, certAction) {
-    /*
-    Renders input fields based on the type of certificate that is selected.
+    /* Renders input fields based on the type of certificate that is selected.
     :arg certType: string, the certificate type
-    :arg certAction: string, the certificate action
-    */
+    :arg certAction: string, the certificate action */
     var elemIds = getDisplayElements(certType, certAction);
     displayElements(elemIds[0], show = true);
     displayElements(elemIds[1], show = false);
 }
 
 function getDisplayElements(certType, certAction) {
-    /*
-    Gets the ids of the elements that should be shown.
+    /* Gets the ids of the elements that should be shown.
     :arg certType: string, the certificate type
     :arg certAction: string, the certificate action
-    :return: list of lists of strings, the element ids
-    */
+    :return: list of lists of strings, the element ids */
 
     // Default element ids to hide.
     var toHide = ["MEDFBNo", "MEDFBDue", "SerialNo", "CertAmount", "MWL", "MEDItemNo",
@@ -146,12 +136,10 @@ function getDisplayElements(certType, certAction) {
 }
 
 function getCertificateTypeDisplayElements(certType) {
-    /*
-    Module business logic. Returns the ids of the elements that should
+    /* Module business logic. Returns the ids of the elements that should
     be shown based on the certificate type.
     :arg certType: string, the certificate type
-    :return: list of strings, the element ids
-    */
+    :return: list of strings, the element ids */
     var elemIds = [];
 
     switch (certType) {
@@ -182,12 +170,10 @@ function getCertificateTypeDisplayElements(certType) {
 }
 
 function getCertificateActionDisplayElements(certAction) {
-    /*
-    Module business logic. Returns the ids of the elements that should
+    /* Module business logic. Returns the ids of the elements that should
     be shown based on the certificate action.
     :arg certAction: string, the certificate action
-    :return: list of strings, the element ids
-    */
+    :return: list of strings, the element ids */
     var elemIds = [];
 
     switch(certAction) {
