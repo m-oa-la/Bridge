@@ -101,6 +101,18 @@ body {
     border-style: none;
 }
 
+/*This datalist equal classTN*/
+.classT {
+    background-color: gainsboro;
+    color: transparent;
+    cursor: pointer;
+    width: 25px;
+    height: 25px;
+    border-radius: 12.5px;
+    text-align: center;
+    border-style: none;
+}
+
 .classTTASK {
     background-color: DodgerBlue;
     color: transparent;
@@ -112,7 +124,8 @@ body {
     border-style: none;
 }
 
-.classTTASKIORA {
+/*This is equal classTTAKS*/
+.classTTASKIORA { 
     background-color: DodgerBlue;
     color: transparent;
     cursor: pointer;
@@ -136,16 +149,7 @@ body {
     font-weight: bold;
 }
 
-.classT {
-    background-color: gainsboro;
-    color: transparent;
-    cursor: pointer;
-    width: 25px;
-    height: 25px;
-    border-radius: 12.5px;
-    text-align: center;
-    border-style: none;
-}
+
 
 
 .hoverRow p {

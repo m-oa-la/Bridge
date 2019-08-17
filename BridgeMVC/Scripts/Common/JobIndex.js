@@ -1,68 +1,24 @@
 ﻿function sortTable(n) {
     // n is the column number to be sorted
     // Add onclick="sortTable(n)" in <th>
-    // If sorted numerically, only number string inside <th>
-    var table, rows, switching, i, num, x, y, shouldSwitch, dir, switchcount = 0;
-    table = document.getElementById("sortTable");
-    switching = true;
-    //Set the sorting direction to ascending:
-    dir = "asc";
-    /*Make a loop that will continue until
-    no switching has been done:*/
-    while (switching) {
-        //start by saying: no switching is done:
-        switching = false;
-        rows = table.rows;
-        /*Loop through all table rows (except the
-        first, which contains table headers):*/
-        for (i = 1; i < (rows.length - 1); i++) {
-            //start by saying there should be no switching:
-            shouldSwitch = false;
-            /*Get the two elements you want to compare,
-            one from current row and one from the next:*/
-            x = rows[i].getElementsByTagName("td")[n].innerHTML;
-            y = rows[i + 1].getElementsByTagName("td")[n].innerHTML;
-            /*Check if the column is numbers or letters */
-            if (isNaN(x.replace(",", ".")) && isNaN(y.replace(",", "."))) {
-                x = x.toLowerCase();
-                y = y.toLowerCase();
-            }
-            else {
-                x = Number(x.replace(",", "."));
-                y = Number(y.replace(",", "."));
-            }
-            /*check if the two rows should switch place,
-            based on the direction, asc or desc:*/
-            if (dir == "asc" && x > y) {
-                //if so, mark as a switch and break the loop:
-                shouldSwitch = true;
-                break;
-            }
-            else if (dir == "desc" && x < y) {
-                //if so, mark as a switch and break the loop:
-                shouldSwitch = true;
-                break;
-            }
-        }
+    // If to be sorted numerically, only number-string inside <td>
+    var table = $("#sortTable");
+    // Get rows greater than 0. Not header
+    var rows = table.find("tr:gt(0)").toArray()
+    var firstVal = getCellValue(rows[0], n);
+    // Sort ascending
+    rows = rows.sort(comparer(n))
 
-        if (shouldSwitch) {
-            /*If a switch has been marked, make the switch
-            and mark that a switch has been done:*/
-            rows[i].parentNode.insertBefore(rows[i + 1], rows[i]);
-            switching = true;
-            //Each time a switch is done, increase this count by 1:
-            switchcount++;
-        } else {
-            /*If no switching has been done AND the direction is "asc",
-            set the direction to "desc" and run the while loop again.*/
-            if (switchcount == 0 && dir == "asc") {
-                dir = "desc";
-                switching = true;
-            }
-        }
+    if (firstVal == getCellValue(rows[0], n)) {
+        // Sort descending 
+        rows = rows.reverse()
     }
 
-   // If you want to have arrows as well
+    for (var i = 0; i < rows.length; i++) {
+        table.append(rows[i])
+    }
+
+       // If you want to have arrows as well
         //var arrow = document.getElementsByClassName("arrows");
         //for (i = 0; i < arrow.length; i++) {
         //    if (arrow[i].innerHTML.length > 0) {
@@ -78,6 +34,18 @@
         //    }
         //}
 }
+
+function comparer(index) {
+    return function (a, b) {
+        var valA = getCellValue(a, index), valB = getCellValue(b, index)
+        return $.isNumeric(valA) && $.isNumeric(valB) ? valA - valB : valA.toString().localeCompare(valB)
+    }
+}
+
+function getCellValue(row, index) {
+    return $(row).children('td').eq(index).text()
+}
+
 
 function stats(jobs, fee) {
     var stringFee = fee.toString().replace(/(\d)(?=(\d{3})+(?!\d))/g, '$1 ');
