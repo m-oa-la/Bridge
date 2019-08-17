@@ -111,9 +111,10 @@ function renderTaskInputFields(certType, certAction) {
     :arg certAction: string, the certificate action
     */
     var elemIds = getDisplayElements(certType, certAction);
-    displayElements(elemIds[0], show = true);
-    displayElements(elemIds[1], show = false);
+    displayElementsParent(elemIds[0], show = true);
+    displayElementsParent(elemIds[1], show = false);
 }
+
 
 function getDisplayElements(certType, certAction) {
     /*
@@ -188,4 +189,22 @@ function getCertificateActionDisplayElements(certAction) {
     }
 
     return elemIds;
+}
+
+function displayElementsParent(elemIds, show) {
+    /*
+    Renders elements
+    :arg elemIds: list of strings, the element ids
+    :arg show: boolean, whether the elements shall be shown (default: true)
+    */
+
+    for (var i = 0; i < elemIds.length; i++) {
+        id = "#" + elemIds[i];
+
+        if (show) {
+            $(id).parent().parent().show();
+        } else {
+            $(id).parent().parent().hide();
+        }
+    }
 }
